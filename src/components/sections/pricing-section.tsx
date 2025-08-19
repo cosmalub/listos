@@ -48,7 +48,7 @@ export function PricingSection() {
                       className="bg-gradient-primary text-white hover:opacity-90 transition-all duration-300 px-8 py-3 text-lg font-semibold rounded-2xl shadow-lg w-full sm:w-auto"
                       onClick={() => window.location.href = '/order'}
                     >
-                      Замовити за 399 грн
+                      Замовити зараз
                     </Button>
                   </div>
 
@@ -66,7 +66,7 @@ export function PricingSection() {
               <div className="bg-gradient-subtle p-8 lg:p-12 flex flex-col items-center justify-center text-center relative">
                 <div className="relative">
                   <img 
-                    src="/lovable-uploads/98b9ac57-70e6-41db-9354-14e9f857e503.png" 
+                    src="/lovable-uploads/bfc3ff59-dfa5-40be-a6ec-6d9dbe6007d8.png" 
                     alt="Маскот з табличкою ціни 399 грн" 
                     className="w-64 h-64 object-contain animate-subtle-move"
                   />
