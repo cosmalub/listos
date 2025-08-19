@@ -60,13 +60,12 @@ export function MascotSection() {
                   <div className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-accent flex items-center justify-center text-white text-lg font-bold">
                     1
                   </div>
-                  <h3 className="text-xl font-bold mb-3 text-primary">Створюєш послання</h3>
+                  <h3 className="text-xl font-bold mb-3 text-primary">Створюєш слова і пісню</h3>
                   <p className="text-muted-foreground">
-                    Ти складаєш <span className="font-semibold text-primary">особисті слова</span> та обираєш{" "}
-                    <span className="font-semibold text-primary">стиль пісні</span> для твого привітання, вибачення чи
-                    подяки. Листосик допоможе знайти правильні слова! Протягом одного дня ми{" "}
-                    <span className="font-semibold text-primary">озвучимо твоє послання</span> та надішлемо кілька
-                    варіантів на вибір.
+                    Ти складаєш <span className="font-semibold text-primary">слова пісні</span> та відразу{" "}
+                    <span className="font-semibold text-primary">створюєш саму пісню</span> для твого привітання, вибачення чи
+                    подяки. Листосик допоможе знайти правильні слова та мелодію! Ти отримуєш{" "}
+                    <span className="font-semibold text-primary">готову персоналізовану пісню</span> одразу після створення.
                   </p>
                 </div>
               </div>
