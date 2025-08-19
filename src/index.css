@@ -112,3 +112,57 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+/* Hero section animations */
+@media (max-width: 768px) {
+  .animate-float {
+    animation: none !important;
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px rgba(106, 90, 205, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 15px rgba(106, 90, 205, 0.6);
+  }
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+.animate-subtle-move {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-subtle-move-slow {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animate-subtle-move-reverse {
+  animation: float 7s ease-in-out infinite reverse;
+}
+
+.animate-subtle-move-slow-reverse {
+  animation: float 9s ease-in-out infinite reverse;
+}
