@@ -45,7 +45,7 @@ export function PricingSection() {
                 </div>
 
                 {/* Right side - Mascot */}
-                <div className="w-full md:w-1/3 flex justify-center md:justify-end mt-6 md:mt-0">
+                <div className="flex justify-center flex-shrink-0">
                   <div className="relative">
                     <img 
                       src="/lovable-uploads/bfc3ff59-dfa5-40be-a6ec-6d9dbe6007d8.png" 
