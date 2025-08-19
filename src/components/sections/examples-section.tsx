@@ -15,7 +15,6 @@ type Example = {
   title: string;       // Название (на обложке/внизу)
   occasion: string;    // Повод
   author: string;      // Подпись/кто дарит
-  creator: string;     // Создатель (Листосик)
   audioUrl?: string;   // Ссылка на аудио
   frontImg?: string;   // Фронт (если есть)
   backImg?: string;    // Оборот (если есть)
@@ -27,21 +26,18 @@ export function ExamplesSection() {
       title: "З днем народження, мамо",
       occasion: "Вітання з днем народження",
       author: "Від Ані",
-      creator: "Листосик",
       audioUrl: "/audio/birthday-sample.mp3", // подставим позже ваш URL
     },
     {
       title: "Ти — моє все",
       occasion: "Освідчення в коханні",
       author: "Від Максима",
-      creator: "Листосик",
       audioUrl: "/audio/love-sample.mp3",
     },
     {
       title: "Дякую за все",
       occasion: "Подяка близькій людині",
       author: "Від Олега",
-      creator: "Листосик",
       audioUrl: "/audio/thanks-sample.mp3",
     },
   ];
@@ -101,9 +97,9 @@ export function ExamplesSection() {
           className="w-full h-full object-cover rounded-xl"
         />
       ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/80 to-primary rounded-xl">
-          <div className="absolute inset-4 rounded-lg bg-white/75 p-4 flex items-end">
-            <div className="text-primary font-semibold text-lg">{example.title}</div>
+        <div className="absolute inset-0 bg-gradient-to-br from-[#6A5ACD]/80 to-[#8A7CDD] rounded-xl">
+          <div className="absolute inset-4 rounded-lg bg-white/85 p-4 flex items-end">
+            <div className="text-[#6A5ACD] font-semibold text-lg">{example.title}</div>
           </div>
         </div>
       )}
@@ -121,13 +117,13 @@ export function ExamplesSection() {
       ) : (
         <div className="absolute inset-0 bg-card rounded-xl">
           <div className="absolute inset-0 p-6">
-            <div className="rounded-lg border-2 border-primary/50 h-full p-4 text-sm text-card-foreground">
-              <div className="mb-2 font-semibold text-primary">Особисте повідомлення</div>
+            <div className="rounded-lg border-2 border-[#6A5ACD]/50 h-full p-4 text-sm text-card-foreground">
+              <div className="mb-2 font-semibold text-[#6A5ACD]">Особисте повідомлення</div>
               <p className="text-muted-foreground leading-relaxed">
                 Тут буде тепле побажання, спогади або зізнання — все, що зробить подарунок
                 по-справжньому неповторним.
               </p>
-              <div className="mt-4 text-right text-primary">— {example.author}</div>
+              <div className="mt-4 text-right text-[#6A5ACD]">— {example.author}</div>
             </div>
           </div>
         </div>
@@ -139,10 +135,10 @@ export function ExamplesSection() {
     <section className="py-12 md:py-16 bg-gradient-soft">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#6A5ACD] to-[#8A7CDD] bg-clip-text text-transparent mb-6">
             Приклади музичних листівок
           </h2>
-          <p className="text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-[#6A5ACD]/80 max-w-3xl mx-auto leading-relaxed">
             Крутiть листівку як 3D-об'єкт, переглядайте обидві сторони та слухайте пісню.
           </p>
         </div>
@@ -185,10 +181,6 @@ export function ExamplesSection() {
                     {error && (
                       <p className="mt-3 text-sm text-destructive">{error}</p>
                     )}
-
-                    <div className="mt-2 text-xs text-muted-foreground">
-                      <span className="opacity-80">{ex.creator}</span>
-                    </div>
                   </Card>
                 </CarouselItem>
               ))}
