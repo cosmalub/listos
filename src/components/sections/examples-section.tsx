@@ -1,79 +1,181 @@
-import { Play, RotateCcw, ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Play, Pause } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { Postcard3D } from "@/components/postcards/Postcard3D";
+
+type Example = {
+  title: string;       // Название (на обложке/внизу)
+  occasion: string;    // Повод
+  author: string;      // Подпись/кто дарит
+  creator: string;     // Создатель (Листосик)
+  audioUrl?: string;   // Ссылка на аудио
+  frontImg?: string;   // Фронт (если есть)
+  backImg?: string;    // Оборот (если есть)
+};
 
 export function ExamplesSection() {
-  const examples = [
+  const examples: Example[] = [
     {
-      title: "Вітання з днем народження",
-      subtitle: "Музична листівка для мами з теплими словами та улюбленою піснею",
-      author: "З днем народження, мамо",
+      title: "З днем народження, мамо",
+      occasion: "Вітання з днем народження",
+      author: "Від Ані",
       creator: "Листосик",
-      error: "Не вдалося завантажити аудіо. Спробуйте пізніше."
+      audioUrl: "/audio/birthday-sample.mp3", // подставим позже ваш URL
     },
     {
-      title: "Освідчення в коханні", 
-      subtitle: "Романтична листівка з ніжною мелодією для коханої людини",
-      author: "Ти - моє все",
+      title: "Ти — моє все",
+      occasion: "Освідчення в коханні",
+      author: "Від Максима",
       creator: "Листосик",
-      error: "Не вдалося завантажити аудіо. Спробуйте пізніше."
-    }
+      audioUrl: "/audio/love-sample.mp3",
+    },
+    {
+      title: "Дякую за все",
+      occasion: "Подяка близькій людині",
+      author: "Від Олега",
+      creator: "Листосик",
+      audioUrl: "/audio/thanks-sample.mp3",
+    },
   ];
+
+  // Один общий аудио-плеер
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [playingIndex, setPlayingIndex] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    audioRef.current = new Audio();
+    const onEnded = () => setPlayingIndex(null);
+    const onError = () => setError("Не вдалося завантажити аудіо. Спробуйте пізніше.");
+    audioRef.current.addEventListener("ended", onEnded);
+    audioRef.current.addEventListener("error", onError);
+    return () => {
+      audioRef.current?.pause();
+      audioRef.current?.removeEventListener("ended", onEnded);
+      audioRef.current?.removeEventListener("error", onError);
+      audioRef.current = null;
+    };
+  }, []);
+
+  const togglePlay = async (idx: number) => {
+    setError(null);
+    const ex = examples[idx];
+    if (!audioRef.current) return;
+
+    // Если тот же — пауза
+    if (playingIndex === idx) {
+      audioRef.current.pause();
+      setPlayingIndex(null);
+      return;
+    }
+
+    // Новый трек
+    if (ex.audioUrl) {
+      try {
+        audioRef.current.src = ex.audioUrl;
+        await audioRef.current.play();
+        setPlayingIndex(idx);
+      } catch {
+        setError("Не вдалося завантажити аудіо. Спробуйте пізніше.");
+        setPlayingIndex(null);
+      }
+    } else {
+      setError("Аудіо недоступне для цього прикладу.");
+    }
+  };
+
+  const Front = ({ title }: { title: string }) => (
+    <div className="absolute inset-0 bg-gradient-to-br from-primary/80 to-primary">
+      <div className="absolute inset-4 rounded-lg bg-white/75 p-4 flex items-end">
+        <div className="text-primary font-semibold text-lg">{title}</div>
+      </div>
+    </div>
+  );
+
+  const Back = ({ author }: { author: string }) => (
+    <div className="absolute inset-0 bg-card">
+      <div className="absolute inset-0 p-6">
+        <div className="rounded-lg border-2 border-primary/50 h-full p-4 text-sm text-card-foreground">
+          <div className="mb-2 font-semibold text-primary">Особисте повідомлення</div>
+          <p className="text-muted-foreground leading-relaxed">
+            Тут буде тепле побажання, спогади або зізнання — все, що зробить подарунок
+            по-справжньому неповторним.
+          </p>
+          <div className="mt-4 text-right text-primary">— {author}</div>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <section className="py-20 bg-gradient-soft">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
             Приклади музичних листівок
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Погляньте на листівки, які вже створили наші клієнти. Ви можете повертати їх, 
-            щоб побачити обидві сторони, та послухати пісні.
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+            Крутiть листівку як 3D-об'єкт, переглядайте обидві сторони та слухайте пісню.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
-          {examples.map((example, index) => (
-            <Card key={index} className="bg-card p-6 rounded-3xl shadow-card border-2 border-accent/20 hover:shadow-soft transition-all duration-300">
-              <h3 className="text-xl font-bold text-primary mb-2">{example.title}</h3>
-              <p className="text-muted-foreground mb-6">{example.subtitle}</p>
-              
-              {/* Postcard preview */}
-              <div className="aspect-[4/3] bg-muted rounded-xl mb-6 relative overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10"></div>
-                <div className="absolute top-3 right-3">
-                  <Button variant="ghost" size="icon" className="bg-white/80 backdrop-blur-sm hover:bg-white">
-                    <RotateCcw className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
+        <div className="relative max-w-5xl mx-auto">
+          <Carousel
+            opts={{ align: "start", loop: true }}
+            className="w-full"
+          >
+            <CarouselContent>
+              {examples.map((ex, idx) => (
+                <CarouselItem key={idx} className="md:basis-1/2">
+                  <Card className="bg-card p-6 rounded-3xl shadow-card border-2 border-primary/40 hover:shadow-soft transition-all duration-300">
+                    {/* 3D postcard */}
+                    <div className="mb-6 group">
+                      <Postcard3D
+                        className="bg-muted rounded-xl"
+                        front={<Front title={ex.title} />}
+                        back={<Back author={ex.author} />}
+                      />
+                    </div>
 
-              {/* Audio player */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-semibold text-card-foreground">{example.author}</h4>
-                    <p className="text-sm text-muted-foreground">{example.creator}</p>
-                  </div>
-                  <Button size="icon" className="bg-gradient-primary hover:shadow-soft rounded-full">
-                    <Play className="h-4 w-4 fill-white" />
-                  </Button>
-                </div>
-                <p className="text-sm text-destructive">{example.error}</p>
-              </div>
-            </Card>
-          ))}
-        </div>
+                    {/* Meta + play */}
+                    <div className="flex items-center justify-between">
+                      <div className="min-w-0">
+                        <div className="font-semibold text-card-foreground truncate">{ex.title}</div>
+                        <div className="text-sm text-muted-foreground truncate">{ex.occasion}</div>
+                      </div>
+                      <Button
+                        size="icon"
+                        className="rounded-full bg-primary hover:bg-primary/90 text-white"
+                        onClick={() => togglePlay(idx)}
+                        aria-label={playingIndex === idx ? "Пауза" : "Відтворити"}
+                      >
+                        {playingIndex === idx ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+                      </Button>
+                    </div>
 
-        {/* Navigation arrows */}
-        <div className="flex justify-center gap-4">
-          <Button variant="outline" size="icon" className="rounded-full border-2 border-primary/30">
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <Button variant="outline" size="icon" className="rounded-full border-2 border-primary/30">
-            <ChevronRight className="h-4 w-4" />
-          </Button>
+                    {error && (
+                      <p className="mt-3 text-sm text-destructive">{error}</p>
+                    )}
+
+                    <div className="mt-2 text-xs text-muted-foreground">
+                      <span className="opacity-80">{ex.creator}</span>
+                    </div>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+
+            <CarouselPrevious className="border-2 border-primary/60 text-primary bg-white/70 hover:bg-white" />
+            <CarouselNext className="border-2 border-primary/60 text-primary bg-white/70 hover:bg-white" />
+          </Carousel>
         </div>
       </div>
     </section>
