@@ -41,8 +41,8 @@ export function MascotSection() {
                   {/* Speech bubble pointer - only visible on md screens and up */}
                   <div className="hidden md:block absolute top-1/2 -left-3 transform -translate-y-1/2 w-6 h-6 rotate-45 border-l-2 border-b-2 border-[#B8B3FF]/60 group-hover:border-[#B8B3FF] transition-colors bg-card"></div>
 
-                  <h3 className="text-xl font-bold text-[#6A5ACD] mb-3">Привіт, я Листосик!</h3>
-                  <p className="text-muted-foreground">
+                  <h3 className="text-xl font-bold text-[#6A5ACD] mb-3 text-left">Привіт, я Листосик!</h3>
+                  <p className="text-muted-foreground text-left">
                     Розкажи, що хочеш сказати — «дякую», «вибач», «вітаю» чи «кохаю», — а я допоможу написати пісню,
                     зроблю дизайн листівки з QR-кодом, надрукую та надішлю її тобі, щоб ти подарував її особливій людині.
                   </p>
