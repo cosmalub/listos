@@ -36,10 +36,10 @@ export function MascotSection() {
               </div>
 
               {/* Speech Bubble */}
-              <div className="w-full md:w-2/3 relative">
-                <div className="bg-card p-6 rounded-3xl border-2 border-[#6A5ACD] shadow-soft relative">
+              <div className="w-full md:w-2/3 relative group">
+                <div className="bg-card p-6 rounded-3xl border-2 border-[#B8B3FF]/60 group-hover:border-[#B8B3FF] transition-colors group-hover:shadow-md relative">
                   {/* Speech bubble pointer - only visible on md screens and up */}
-                  <div className="hidden md:block absolute top-1/2 -left-3 transform -translate-y-1/2 w-6 h-6 rotate-45 border-l-2 border-b-2 border-[#6A5ACD] bg-card"></div>
+                  <div className="hidden md:block absolute top-1/2 -left-3 transform -translate-y-1/2 w-6 h-6 rotate-45 border-l-2 border-b-2 border-[#B8B3FF]/60 group-hover:border-[#B8B3FF] transition-colors bg-card"></div>
 
                   <h3 className="text-xl font-bold text-primary mb-3">Привіт, я Листосик!</h3>
                   <p className="text-muted-foreground">
@@ -91,8 +91,8 @@ export function MascotSection() {
 
               {/* Step 2 */}
               <div className="flex-1 relative">
-                <div className="bg-card rounded-xl border-l-4 border-[#6A5ACD] p-6 h-full transition-all hover:shadow-soft">
-                  <div className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-[#6A5ACD] flex items-center justify-center text-white text-lg font-bold">
+                <div className="bg-card rounded-xl border-l-4 border-[#B8B3FF]/60 hover:border-[#B8B3FF] p-6 h-full transition-colors hover:shadow-md">
+                  <div className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-[#B8B3FF] flex items-center justify-center text-white text-lg font-bold">
                     2
                   </div>
                   <h3 className="text-xl font-bold mb-3 text-primary">Створюєш дизайн листівки</h3>
@@ -182,7 +182,7 @@ export function MascotSection() {
               <h3 className="text-xl font-bold mb-6 text-center text-primary">
                 Подивіться, як це працює:
               </h3>
-              <div className="relative rounded-xl overflow-hidden shadow-soft border-2 border-[#6A5ACD] bg-card">
+              <div className="relative rounded-xl overflow-hidden shadow-soft border-2 border-[#B8B3FF]/60 hover:border-[#B8B3FF] transition-colors hover:shadow-md bg-card">
                 <div className="aspect-video">
                   <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center relative">
                     {/* Custom play button overlay */}
