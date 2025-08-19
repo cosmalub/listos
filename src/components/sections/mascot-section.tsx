@@ -4,7 +4,7 @@ export function MascotSection() {
   return (
     <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
-        <div className="mt-20 text-center">
+        <div className="mt-8 text-center">
           <p className="text-lg text-[#6A5ACD]/80 italic animate-pulse-slow">
             А тепер — познайомся з Листосиком, котиком, який перетворить твої слова й почуття на листівку з піснею
           </p>
