@@ -28,7 +28,7 @@ export function PricingSection() {
               </div>
 
               {/* Content Grid */}
-              <div className="grid lg:grid-cols-2 gap-8 mb-8">
+              <div className="grid lg:grid-cols-2 gap-6 mb-8">
                 
                 {/* Left side - Features */}
                 <div className="flex flex-col justify-center">
@@ -60,10 +60,10 @@ export function PricingSection() {
               <div className="text-center space-y-4">
                 <Button 
                   size="lg" 
-                  className="bg-gradient-primary text-white hover:opacity-90 transition-all duration-300 px-8 py-3 text-lg font-semibold rounded-2xl shadow-lg"
+                  className="bg-gradient-primary text-white hover:opacity-90 transition-all duration-300 px-8 py-6 text-lg font-semibold rounded-full shadow-soft"
                   onClick={() => window.location.href = '/order'}
                 >
-                  Замовити зараз
+                  Створити листівку
                 </Button>
 
                 <div className="flex items-center justify-center gap-3">
