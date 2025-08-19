@@ -5,8 +5,8 @@ export function PricingSection() {
   const features = ["Ви створюєте текст пісні і обираєте настрій для мелодії", "Ми друкуємо красиву листівку з унікальним QR-кодом для прослуховування", "Доставляємо Новою поштою безкоштовно по всій Україні", "Отримуєте за 1–2 дні готовий персональний музичний подарунок"];
   return <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto relative">
-          <Card className="bg-card border border-[#6A5ACD]/20 rounded-3xl shadow-lg overflow-hidden">
+        <div className="max-w-4xl mx-auto relative">
+          <Card className="bg-card border-2 border-[#6A5ACD]/30 rounded-3xl shadow-lg overflow-hidden">
             <div className="p-8 lg:p-12">
               
               {/* Header - Centered */}
