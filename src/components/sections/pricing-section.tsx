@@ -20,7 +20,7 @@ export function PricingSection() {
               </div>
 
               {/* Content Grid */}
-              <div className="flex flex-col md:flex-row items-center gap-8 mb-8">
+              <div className="flex flex-col md:flex-row items-center gap-2 mb-8">
                 
                 {/* Left side - Features */}
                 <div className="flex-1 flex flex-col justify-center">
