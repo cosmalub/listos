@@ -64,7 +64,7 @@ export function Postcard3D({
     <div
       ref={wrapperRef}
       className={cn(
-        "relative rounded-xl",
+        "relative w-full rounded-xl",
         orientation === "portrait" ? "aspect-[105/148]" : "aspect-[148/105]",
         "[perspective:1200px]",
         "select-none touch-none group",

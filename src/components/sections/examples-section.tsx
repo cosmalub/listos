@@ -136,13 +136,13 @@ export function ExamplesSection() {
   );
 
   return (
-    <section className="py-20 bg-gradient-soft">
+    <section className="py-12 md:py-16 bg-gradient-soft">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
             Приклади музичних листівок
           </h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
             Крутiть листівку як 3D-об'єкт, переглядайте обидві сторони та слухайте пісню.
           </p>
         </div>
@@ -154,10 +154,10 @@ export function ExamplesSection() {
           >
             <CarouselContent>
               {examples.map((ex, idx) => (
-                <CarouselItem key={idx} className="md:basis-1/2">
-                  <Card className="bg-card p-6 rounded-3xl shadow-card border-2 border-primary/40 hover:shadow-soft transition-all duration-300">
+                <CarouselItem key={idx} className="basis-[240px] sm:basis-[260px] md:basis-[300px] lg:basis-[320px]">
+                  <Card className="bg-card p-4 md:p-5 rounded-2xl shadow-card border border-primary/30 hover:shadow-soft transition-all">
                     {/* 3D postcard */}
-                    <div className="mb-6 group">
+                    <div className="mb-5 group mx-auto w-[220px] sm:w-[240px] md:w-[280px] lg:w-[300px] max-w-[85vw]">
                       <Postcard3D
                         className="bg-muted rounded-xl"
                         orientation="portrait"
@@ -178,7 +178,7 @@ export function ExamplesSection() {
                         onClick={() => togglePlay(idx)}
                         aria-label={playingIndex === idx ? "Пауза" : "Відтворити"}
                       >
-                        {playingIndex === idx ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+                        {playingIndex === idx ? <Pause className="h-3.5 w-3.5 md:h-4 md:w-4" /> : <Play className="h-3.5 w-3.5 md:h-4 md:w-4" />}
                       </Button>
                     </div>
 
