@@ -35,15 +35,15 @@ export function PricingSection() {
 
               {/* CTA with Pricing */}
               <div className="text-center space-y-4">
-                <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6">
-                  <Button size="lg" className="text-lg px-8 py-6 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold" onClick={() => window.location.href = '/order'}>
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
+                  <div className="flex items-center gap-3 order-2 md:order-1">
+                    <span className="line-through text-gray-400 text-base md:text-lg">600 грн</span>
+                    <span className="text-green-600 font-bold text-xl md:text-2xl">399 грн</span>
+                  </div>
+                  
+                  <Button size="lg" className="text-lg px-8 py-6 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold order-1 md:order-2" onClick={() => window.location.href = '/order'}>
                     Створити листівку
                   </Button>
-                  
-                  <div className="flex items-center gap-3">
-                    <span className="line-through text-[#6A5ACD]/60 text-base md:text-lg">600 грн</span>
-                    <span className="text-[#6A5ACD] font-bold text-xl md:text-2xl">399 грн</span>
-                  </div>
                 </div>
               </div>
             </div>
