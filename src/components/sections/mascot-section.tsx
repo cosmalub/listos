@@ -1,5 +1,4 @@
 import { Play } from "lucide-react";
-import listosykMascot from "@/assets/listosyk-mascot.png";
 
 export function MascotSection() {
   return (
@@ -30,7 +29,7 @@ export function MascotSection() {
               {/* Cat Image */}
               <div className="w-full md:w-1/3 flex justify-center">
                 <img
-                  src={listosykMascot}
+                  src="/lovable-uploads/26b60a97-63b1-4ff3-93d6-e0607581e4b0.png"
                   alt="Листосик - кіт-помічник для створення музичних листівок"
                   className="w-64 h-64 transform transition-transform hover:scale-105 drop-shadow-2xl"
                 />
