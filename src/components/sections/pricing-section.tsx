@@ -19,10 +19,10 @@ export function PricingSection() {
               
               {/* Header - Centered */}
               <div className="text-center mb-8">
-                <h2 className="font-baloo text-2xl md:text-3xl font-bold text-foreground mb-3">
+                <h2 className="font-baloo text-2xl md:text-3xl font-bold text-[#6A5ACD] mb-3">
                   Персональна музична листівка
                 </h2>
-                <p className="text-base text-muted-foreground">
+                <p className="text-base text-[#6A5ACD]/80">
                   Друк і відправка за 1–2 дні • Безкоштовна доставка «Новою поштою»
                 </p>
               </div>
@@ -38,7 +38,7 @@ export function PricingSection() {
                         <div className="w-8 h-8 bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] rounded-xl flex items-center justify-center flex-shrink-0 mt-1">
                           <Check className="h-4 w-4 text-white" />
                         </div>
-                        <span className="text-foreground text-sm md:text-base leading-relaxed">{feature}</span>
+                        <span className="text-[#6A5ACD] text-sm md:text-base leading-relaxed">{feature}</span>
                       </div>
                     ))}
                   </div>
@@ -68,7 +68,7 @@ export function PricingSection() {
 
                 <div className="flex items-center justify-center gap-3">
                   <ShieldCheck className="h-5 w-5 text-success flex-shrink-0" />
-                  <span className="text-sm text-muted-foreground">
+                  <span className="text-sm text-[#6A5ACD]/80">
                     Гарантія повернення коштів, якщо не сподобається
                   </span>
                 </div>
