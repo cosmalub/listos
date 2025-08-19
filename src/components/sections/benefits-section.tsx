@@ -1,69 +1,73 @@
-import { Gift, Sparkles, Heart, Frown } from "lucide-react";
-import { Card } from "@/components/ui/card";
+// Data for the situations
+const commonSituations = [
+  {
+    title: "Стандартні подарунки не передають почуття",
+    problemText:
+      "Хочеш показати близькій людині, наскільки вона важлива, але всі готові листівки здаються надто звичайними?",
+    solutionText: "Листівка з піснею говорить за тебе й залишається назавжди.",
+    image: "/placeholder.svg",
+    alt: "Людина дарує подарунок, який не викликає емоцій",
+  },
+  {
+    title: '"Дякую" звучить сухо',
+    problemText: 'Відчуваєш океан вдячності, але просте "дякую" не передає навіть краплинки того, що ти відчуваєш?',
+    solutionText: "Пісня всередині листівки зробить це щиро та голосно.",
+    image: "/placeholder.svg",
+    alt: "Магічна пляшечка з написом 'Дякую', що випромінює світло",
+  },
+  {
+    title: "Страх банальності у важливих словах",
+    problemText: "Настав момент розкрити свої почуття, але боїшся, що звичайні слова здадуться банальними чи нещирими?",
+    solutionText: "Листівка з піснею надасть зізнанню глибини.",
+    image: "/placeholder.svg",
+    alt: "Бульбашки з важливими словами: Вітаю, Кохаю, Дякую",
+  },
+  {
+    title: "Складно щиро вибачитись",
+    problemText: "Шукаєш спосіб вибачитися так, щоб людина відчула всю щирість твоїх намірів?",
+    solutionText: "Пісня скаже «пробач» від серця.",
+    image: "/placeholder.svg",
+    alt: "Людина тримає табличку з написом 'Вибач'",
+  },
+];
 
 export function BenefitsSection() {
-  const benefits = [
-    {
-      icon: Gift,
-      title: "Стандартні подарунки не передають почуття",
-      description: "Хочеш показати близькій людині, наскільки вона важлива, але всі готові листівки здаються надто звичайними? → Листівка з піснею говорить за тебе й залишається назавжди.",
-      iconColor: "text-primary"
-    },
-    {
-      icon: Sparkles,
-      title: "\"Дякую\" звучить сухо",
-      description: "Відчуваєш океан вдячності, але просте \"дякую\" не передає навіть крапельки того, що ти відчуваєш? → Пісня всередині листівки зробить це щиро та голосно.",
-      iconColor: "text-accent-foreground"
-    },
-    {
-      icon: Heart,
-      title: "Страх банальності у важливих словах",
-      description: "Настав момент розкрити свої почуття, але боїшся, що звичайні слова здадуться банальними чи нещирими? → Листівка з піснею надасть значення глибини.",
-      iconColor: "text-destructive"
-    },
-    {
-      icon: Frown,
-      title: "Складно щиро вибачитись",
-      description: "Шукаєш спосіб вибачитися так, щоб людина відчула всю щирість твоїх намірів? → Пісня скаже \"пробач\" від серця.",
-      iconColor: "text-orange-500"
-    }
-  ];
-
   return (
-    <section className="py-20 bg-background">
+    <section className="py-12 mt-8 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
-            Коли стандартні слова безсилі, допоможе<br />
-            особиста листівка з піснею — ось як саме:
-          </h2>
-        </div>
+        <h2 className="text-2xl font-medium mt-8 mb-8 text-center text-[#6A5ACD] max-w-3xl mx-auto">
+          Коли стандартні слова безсилі, допоможе
+          <br />
+          особиста листівка з піснею — ось як саме:
+        </h2>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {benefits.map((benefit, index) => (
-            <Card key={index} className="p-8 bg-card border-0 shadow-card rounded-3xl hover:shadow-soft transition-all duration-300">
-              <div className="text-center mb-6">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-secondary rounded-2xl mb-4">
-                  <benefit.icon className={`h-10 w-10 ${benefit.iconColor}`} />
-                </div>
-                <h3 className="text-xl font-bold text-primary mb-4">
-                  {benefit.title}
-                </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          {commonSituations.map((situation, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-lg border-2 border-[#F3D1FF]/50 hover:border-[#B8B3FF] shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden h-full flex flex-col"
+            >
+              <div className="h-[140px] sm:h-[160px] md:h-[180px] relative flex-shrink-0 mx-auto w-full">
+                <img
+                  src={situation.image}
+                  alt={situation.alt}
+                  className="w-full h-full object-contain p-2"
+                />
               </div>
-              <p className="text-muted-foreground leading-relaxed text-center">
-                {benefit.description}
-              </p>
-            </Card>
+              <div className="p-4 flex-1 flex flex-col">
+                <h3 className="text-sm sm:text-base font-bold mb-3 text-[#6A5ACD] text-center">{situation.title}</h3>
+                <div className="text-xs sm:text-sm text-center">
+                  <p className="text-[#6A5ACD]/80">
+                    {situation.problemText}{" "}
+                    <span className="inline-flex items-center mx-1">
+                      <span className="text-[#B8B3FF] mx-1">→</span>
+                    </span>
+                    <span className="text-[#6A5ACD] font-medium">{situation.solutionText}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
           ))}
-        </div>
-
-        <div className="text-center mt-16">
-          <p className="text-lg text-muted-foreground italic">
-            А тепер — познайомся з Листосиком, котиком, який перетворить твої слова й почуття на листівку з піснею
-          </p>
-          <div className="mt-4">
-            <div className="w-8 h-8 mx-auto border-l-2 border-b-2 border-primary transform rotate-45 animate-bounce"></div>
-          </div>
         </div>
       </div>
     </section>
