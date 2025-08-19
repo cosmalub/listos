@@ -2,7 +2,7 @@ export function Footer() {
   return (
     <footer className="py-16 bg-gradient-to-b from-white to-[#B8B3FF]">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12 text-center md:text-right">
           {/* Useful Information */}
           <div className="space-y-4">
             <h3 className="font-bold text-[#6A5ACD] text-lg">Корисна інформація</h3>
@@ -16,12 +16,12 @@ export function Footer() {
           </div>
 
           {/* Contact Info */}
-          <div className="space-y-4 md:text-right">
+          <div className="space-y-4">
             <h3 className="font-bold text-[#6A5ACD] text-lg">Зв'язок</h3>
             <div className="space-y-2 text-[#6A5ACD]/80">
               <p>info@listosyk.com</p>
               <p>+380 XX XXX XX XX</p>
-              <div className="flex space-x-4 pt-2 md:justify-end">
+              <div className="flex space-x-4 pt-2 justify-center md:justify-end">
                 <a href="#" className="hover:text-[#6A5ACD] transition-colors">Instagram</a>
                 <a href="#" className="hover:text-[#6A5ACD] transition-colors">Telegram</a>
               </div>
