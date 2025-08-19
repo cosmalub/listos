@@ -2,37 +2,16 @@ export function Footer() {
   return (
     <footer className="py-16 bg-gradient-to-b from-white to-[#B8B3FF]">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
-          {/* Main Navigation */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
+          {/* Useful Information */}
           <div className="space-y-4">
-            <h3 className="font-bold text-[#6A5ACD] text-lg">Навігація</h3>
+            <h3 className="font-bold text-[#6A5ACD] text-lg">Корисна інформація</h3>
             <ul className="space-y-2">
-              <li><a href="/" className="text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Головна</a></li>
-              <li><a href="#benefits" className="text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Переваги</a></li>
-              <li><a href="#examples" className="text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Приклади</a></li>
-              <li><a href="#pricing" className="text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Ціни</a></li>
-            </ul>
-          </div>
-
-          {/* Services */}
-          <div className="space-y-4">
-            <h3 className="font-bold text-[#6A5ACD] text-lg">Послуги</h3>
-            <ul className="space-y-2">
-              <li><a href="/order" className="text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Створити листівку</a></li>
-              <li><a href="#" className="text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Шаблони</a></li>
-              <li><a href="#" className="text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Персоналізація</a></li>
-              <li><a href="#" className="text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Доставка</a></li>
-            </ul>
-          </div>
-
-          {/* Support */}
-          <div className="space-y-4">
-            <h3 className="font-bold text-[#6A5ACD] text-lg">Підтримка</h3>
-            <ul className="space-y-2">
-              <li><a href="#faq" className="text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">FAQ</a></li>
-              <li><a href="#" className="text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Контакти</a></li>
+              <li><a href="#faq" className="text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Часті запитання</a></li>
+              <li><a href="#" className="text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Доставка та оплата</a></li>
               <li><a href="#" className="text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Політика конфіденційності</a></li>
               <li><a href="#" className="text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Умови користування</a></li>
+              <li><a href="/order" className="text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Створити листівку</a></li>
             </ul>
           </div>
 
