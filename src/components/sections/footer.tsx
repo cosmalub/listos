@@ -1,6 +1,5 @@
 export function Footer() {
-  return (
-    <footer className="py-16 bg-gradient-to-b from-white to-[#B8B3FF]">
+  return <footer className="py-16 bg-gradient-to-b from-white to-[#B8B3FF]">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-center gap-8 md:gap-16 mb-12">
           {/* Useful Information */}
@@ -17,7 +16,7 @@ export function Footer() {
 
           {/* Contact Info */}
           <div className="space-y-4 text-center md:text-right">
-            <h3 className="font-bold text-[#6A5ACD] text-lg">Зв'язок</h3>
+            <h3 className="font-bold text-[#6A5ACD] text-lg px-[30px]">Зв'язок</h3>
             <div className="space-y-2 text-[#6A5ACD]/80">
               <p>info@listosyk.com</p>
               <p>+380 XX XXX XX XX</p>
@@ -38,6 +37,5 @@ export function Footer() {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 }
