@@ -36,7 +36,7 @@ export default function FaqAndCtaSections() {
   return (
     <>
       {/* FAQ Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
         <div className="container mx-auto px-4 max-w-3xl">
           <h2 className="text-3xl font-bold mb-12 text-center text-[#6A5ACD] font-baloo">Часті запитання</h2>
 
