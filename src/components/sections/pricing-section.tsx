@@ -60,7 +60,7 @@ export function PricingSection() {
               <div className="text-center space-y-4">
                 <Button 
                   size="lg" 
-                  className="bg-gradient-primary text-white hover:opacity-90 transition-all duration-300 px-8 py-6 text-lg font-semibold rounded-full shadow-soft"
+                  className="text-lg px-8 py-6 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold"
                   onClick={() => window.location.href = '/order'}
                 >
                   Створити листівку
