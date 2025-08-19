@@ -92,7 +92,7 @@ export function MascotSection() {
               {/* Step 2 */}
               <div className="flex-1 relative">
                 <div className="bg-card rounded-xl border-l-4 border-[#E8B3FF]/60 hover:border-[#E8B3FF] p-6 h-full transition-colors hover:shadow-md">
-                  <div className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-[#B8B3FF] flex items-center justify-center text-white text-lg font-bold">
+                  <div className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-[#E8B3FF] flex items-center justify-center text-white text-lg font-bold">
                     2
                   </div>
                   <h3 className="text-xl font-bold mb-3 text-[#6A5ACD]">Створюєш дизайн листівки</h3>
