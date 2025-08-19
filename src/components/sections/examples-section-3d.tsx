@@ -315,10 +315,10 @@ export default function ExamplesSection3D() {
   return (
     <section className="py-16 bg-gradient-to-b from-white to-[#6A5ACD]/10">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#6A5ACD] to-[#8A7CDD] bg-clip-text text-transparent mb-6 text-center">
+        <h2 className="text-4xl md:text-5xl font-bold font-baloo bg-gradient-to-r from-[#6A5ACD] to-[#8A7CDD] bg-clip-text text-transparent mb-6 text-center">
           Приклади музичних листівок
         </h2>
-        <p className="text-lg md:text-xl text-[#6A5ACD]/80 max-w-3xl mx-auto leading-relaxed mb-12 text-center">
+        <p className="text-lg md:text-xl font-baloo text-[#6A5ACD]/80 max-w-3xl mx-auto leading-relaxed mb-12 text-center">
           Крутiть листівку як 3D-об'єкт, переглядайте обидві сторони та слухайте пісню.
         </p>
 
