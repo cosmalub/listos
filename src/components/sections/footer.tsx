@@ -16,12 +16,12 @@ export function Footer() {
           </div>
 
           {/* Contact Info */}
-          <div className="space-y-4">
+          <div className="space-y-4 md:text-right">
             <h3 className="font-bold text-[#6A5ACD] text-lg">Зв'язок</h3>
             <div className="space-y-2 text-[#6A5ACD]/80">
               <p>info@listosyk.com</p>
               <p>+380 XX XXX XX XX</p>
-              <div className="flex space-x-4 pt-2">
+              <div className="flex space-x-4 pt-2 md:justify-end">
                 <a href="#" className="hover:text-[#6A5ACD] transition-colors">Instagram</a>
                 <a href="#" className="hover:text-[#6A5ACD] transition-colors">Telegram</a>
               </div>
