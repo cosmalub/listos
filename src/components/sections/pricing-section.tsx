@@ -28,14 +28,14 @@ export function PricingSection() {
               </div>
 
               {/* Content Grid */}
-              <div className="grid lg:grid-cols-2 gap-6 mb-8">
+              <div className="grid lg:grid-cols-2 gap-4 mb-8">
                 
                 {/* Left side - Features */}
                 <div className="flex flex-col justify-center">
                   <div className="space-y-4">
                     {features.map((feature, index) => (
                       <div key={index} className="flex items-start gap-4">
-                        <div className="w-8 h-8 bg-gradient-primary rounded-xl flex items-center justify-center flex-shrink-0 mt-1">
+                        <div className="w-8 h-8 bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] rounded-xl flex items-center justify-center flex-shrink-0 mt-1">
                           <Check className="h-4 w-4 text-white" />
                         </div>
                         <span className="text-foreground text-sm md:text-base leading-relaxed">{feature}</span>
