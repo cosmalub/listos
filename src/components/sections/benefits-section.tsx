@@ -33,7 +33,7 @@ const commonSituations = [
 
 export function BenefitsSection() {
   return (
-    <section id="benefits" className="py-12 -mt-8 bg-gradient-to-b from-white/20 to-white relative z-10 scroll-mt-24">
+    <section className="py-12 -mt-8 bg-gradient-to-b from-white/20 to-white relative z-10">
       <div className="container mx-auto px-4">
         <h2 className="text-2xl font-medium mt-8 mb-8 text-center text-[#6A5ACD] max-w-3xl mx-auto">
           Коли стандартні слова безсилі, допоможе

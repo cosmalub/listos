@@ -98,7 +98,7 @@ function CustomerCounter() {
 export function HeroSection() {
   return (
       
-      <section id="home" className="relative py-16 md:py-24 overflow-hidden bg-gradient-to-b from-[#FFD1DC] to-white/20 scroll-mt-24">
+      <section className="relative py-16 md:py-24 overflow-hidden bg-gradient-to-b from-[#FFD1DC] to-white/20">
         {/* Top corners */}
         <div className="absolute top-10 left-[10%] transform -rotate-3 hidden lg:block z-10 animate-subtle-move">
           <ReviewBubble name="Олена С." rating={5} text="Чудова ідея для подарунка!" initials="ОС" bgColor="#FFD1DC" />

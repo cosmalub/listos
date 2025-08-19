@@ -11,7 +11,7 @@ export function PricingSection() {
   ];
 
   return (
-    <section id="pricing" className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10 scroll-mt-24">
+    <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <Card className="bg-card border border-[#6A5ACD]/20 rounded-3xl shadow-lg overflow-hidden">
