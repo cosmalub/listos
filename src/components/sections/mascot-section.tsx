@@ -179,7 +179,7 @@ export function MascotSection() {
 
             {/* Video demonstration */}
             <div className="mt-16 max-w-4xl mx-auto">
-              <h3 className="text-xl font-bold mb-6 text-center text-[#6A5ACD]">
+              <h3 className="text-2xl font-bold mb-6 text-center text-[#6A5ACD]">
                 Подивіться, як це працює:
               </h3>
               <div className="relative rounded-xl overflow-hidden shadow-soft border-2 border-[#B8B3FF]/60 hover:border-[#B8B3FF] transition-colors hover:shadow-md bg-card">
