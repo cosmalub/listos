@@ -14,15 +14,15 @@ export function PricingSection() {
     <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          <Card className="bg-card border border-primary/20 rounded-3xl shadow-lg overflow-hidden">
+          <Card className="bg-card border border-[#4C6FFF]/20 rounded-3xl shadow-lg overflow-hidden">
             <div className="p-8 lg:p-12">
               
               {/* Header - Centered */}
               <div className="text-center mb-8">
-                <h2 className="font-baloo text-2xl md:text-3xl font-bold text-primary mb-3">
+                <h2 className="font-baloo text-2xl md:text-3xl font-bold text-[#4C6FFF] mb-3">
                   Персональна музична листівка
                 </h2>
-                <p className="text-base text-primary/80">
+                <p className="text-base text-[#4C6FFF]/80">
                   Друк і відправка за 1–2 дні • Безкоштовна доставка «Новою поштою»
                 </p>
               </div>
@@ -35,10 +35,10 @@ export function PricingSection() {
                   <div className="space-y-4">
                     {features.map((feature, index) => (
                       <div key={index} className="flex items-start gap-4">
-                        <div className="w-8 h-8 bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] rounded-xl flex items-center justify-center flex-shrink-0 mt-1">
+                        <div className="w-8 h-8 bg-gradient-to-r from-[#5B72F2] to-[#9AA9FF] rounded-xl flex items-center justify-center flex-shrink-0 mt-1">
                           <Check className="h-4 w-4 text-white" />
                         </div>
-                        <span className="text-primary text-sm md:text-base leading-relaxed">{feature}</span>
+                        <span className="text-[#4C6FFF] text-sm md:text-base leading-relaxed">{feature}</span>
                       </div>
                     ))}
                   </div>
@@ -68,7 +68,7 @@ export function PricingSection() {
 
                 <div className="flex items-center justify-center gap-3">
                   <ShieldCheck className="h-5 w-5 text-success flex-shrink-0" />
-                  <span className="text-sm text-primary/80">
+                  <span className="text-sm text-[#4C6FFF]/80">
                     Гарантія повернення коштів, якщо не сподобається
                   </span>
                 </div>
