@@ -50,6 +50,17 @@ export default function FaqAndCtaSections() {
           </Accordion>
         </div>
       </section>
+
+      {/* Final CTA Section */}
+      <section className="py-16 bg-gradient-to-b from-white to-[#B8B3FF]">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-6 text-[#6A5ACD] font-baloo">Готові створити свою музичну листівку?</h2>
+          <p className="text-lg mb-8 max-w-2xl mx-auto text-[#6A5ACD]/80">
+            Подаруйте емоції та спогади, які залишаться назавжди.
+          </p>
+          <CreatePostcardButton />
+        </div>
+      </section>
     </>
   )
 }
