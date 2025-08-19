@@ -1,4 +1,4 @@
-import { Play } from "lucide-react";
+import { Music4, Palette, QrCode } from "lucide-react";
 
 export function MascotSection() {
   return (
@@ -51,152 +51,90 @@ export function MascotSection() {
             </div>
           </div>
 
-          {/* Process Steps - directly after Lystosyk introduction without heading */}
-          <div className="max-w-5xl mx-auto mt-16 mb-12 px-4">
-            <div className="flex flex-col md:flex-row gap-6 md:gap-0">
+          {/* Process Steps - Beautiful redesigned version */}
+          <div className="max-w-6xl mx-auto mt-16 mb-12 px-4">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-4 relative">
+              {/* Desktop connector line */}
+              <div className="hidden lg:block absolute top-20 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-accent/30 to-transparent"></div>
+              
               {/* Step 1 */}
-              <div className="flex-1 relative">
-                <div className="bg-card rounded-xl border-l-4 border-accent p-6 h-full transition-all hover:shadow-soft">
-                  <div className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-accent flex items-center justify-center text-white text-lg font-bold">
+              <div className="relative group">
+                <div className="bg-gradient-to-br from-card via-card to-accent/10 rounded-2xl p-8 h-full border border-accent/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 relative overflow-hidden">
+                  {/* Floating number */}
+                  <div className="absolute -top-6 left-8 w-12 h-12 rounded-full bg-gradient-to-r from-accent to-accent/80 flex items-center justify-center text-white text-xl font-bold shadow-lg z-10">
                     1
                   </div>
-                  <h3 className="text-xl font-bold mb-3 text-primary">Створюєш слова і пісню</h3>
-                  <p className="text-muted-foreground">
+                  
+                  {/* Icon */}
+                  <div className="flex justify-center mb-6 mt-4">
+                    <div className="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center group-hover:bg-accent/30 transition-colors">
+                      <Music4 size={32} className="text-accent" />
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-xl font-bold mb-4 text-center text-primary">Створюєш слова і пісню</h3>
+                  <p className="text-muted-foreground text-center leading-relaxed">
                     Ти складаєш <span className="font-semibold text-primary">слова пісні</span> та відразу{" "}
-                    <span className="font-semibold text-primary">створюєш саму пісню</span> для твого привітання, вибачення чи
-                    подяки. Листосик допоможе знайти правильні слова та мелодію! Ти отримуєш{" "}
-                    <span className="font-semibold text-primary">готову персоналізовану пісню</span> одразу після створення.
+                    <span className="font-semibold text-primary">створюєш саму пісню</span> для твого привітання. 
+                    Листосик допоможе знайти правильні слова та мелодію!
                   </p>
                 </div>
-              </div>
-
-              {/* Arrow 1 */}
-              <div className="hidden md:flex items-center justify-center w-12">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="48"
-                  height="24"
-                  viewBox="0 0 48 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-accent"
-                >
-                  <path d="M5 12h38" />
-                  <path d="M30 5l13 7-13 7" />
-                </svg>
               </div>
 
               {/* Step 2 */}
-              <div className="flex-1 relative">
-                <div className="bg-card rounded-xl border-l-4 border-secondary p-6 h-full transition-all hover:shadow-soft">
-                  <div className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-white text-lg font-bold">
+              <div className="relative group">
+                <div className="bg-gradient-to-br from-card via-card to-secondary/10 rounded-2xl p-8 h-full border border-secondary/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 relative overflow-hidden">
+                  {/* Floating number */}
+                  <div className="absolute -top-6 left-8 w-12 h-12 rounded-full bg-gradient-to-r from-secondary to-secondary/80 flex items-center justify-center text-white text-xl font-bold shadow-lg z-10">
                     2
                   </div>
-                  <h3 className="text-xl font-bold mb-3 text-primary">Створюєш дизайн листівки</h3>
-                  <p className="text-muted-foreground">
+                  
+                  {/* Icon */}
+                  <div className="flex justify-center mb-6 mt-4">
+                    <div className="w-16 h-16 rounded-full bg-secondary/20 flex items-center justify-center group-hover:bg-secondary/30 transition-colors">
+                      <Palette size={32} className="text-secondary" />
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-xl font-bold mb-4 text-center text-primary">Створюєш дизайн листівки</h3>
+                  <p className="text-muted-foreground text-center leading-relaxed">
                     Ти оформлюєш <span className="font-semibold text-primary">лицеву сторону листівки</span> з головним
-                    посланням. Потім додаєш{" "}
-                    <span className="font-semibold text-primary">особисті слова на зворотній стороні</span> та підпис –
-                    щоб зробити подарунок по-справжньому неповторним.
+                    посланням та додаєш{" "}
+                    <span className="font-semibold text-primary">особисті слова на зворотній стороні</span>.
                   </p>
                 </div>
-              </div>
-
-              {/* Arrow 2 */}
-              <div className="hidden md:flex items-center justify-center w-12">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="48"
-                  height="24"
-                  viewBox="0 0 48 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-accent"
-                >
-                  <path d="M5 12h38" />
-                  <path d="M30 5l13 7-13 7" />
-                </svg>
               </div>
 
               {/* Step 3 */}
-              <div className="flex-1 relative">
-                <div className="bg-card rounded-xl border-l-4 border-accent p-6 h-full transition-all hover:shadow-soft">
-                  <div className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-accent flex items-center justify-center text-white text-lg font-bold">
+              <div className="relative group">
+                <div className="bg-gradient-to-br from-card via-card to-primary/10 rounded-2xl p-8 h-full border border-primary/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 relative overflow-hidden">
+                  {/* Floating number */}
+                  <div className="absolute -top-6 left-8 w-12 h-12 rounded-full bg-gradient-to-r from-primary to-primary/80 flex items-center justify-center text-white text-xl font-bold shadow-lg z-10">
                     3
                   </div>
-                  <h3 className="text-xl font-bold mb-3 text-primary">Отримуєш готову листівку</h3>
-                  <p className="text-muted-foreground">
-                    Ось і все! Твоя <span className="font-semibold text-primary">унікальна листівка</span> з
-                    персоналізованою піснею готова. Завдяки{" "}
-                    <span className="font-semibold text-primary">спеціальному QR-коду</span> на листівці, твій одержувач
-                    зможе відразу почути твоє музичне послання.
-                  </p>
-                </div>
-              </div>
-
-              {/* Mobile arrows */}
-              <div className="flex justify-center md:hidden my-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-accent"
-                >
-                  <path d="M12 5v14" />
-                  <path d="M19 12l-7 7-7-7" />
-                </svg>
-              </div>
-              <div className="flex justify-center md:hidden my-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-accent"
-                >
-                  <path d="M12 5v14" />
-                  <path d="M19 12l-7 7-7-7" />
-                </svg>
-              </div>
-            </div>
-
-            {/* Video demonstration */}
-            <div className="mt-16 max-w-4xl mx-auto">
-              <h3 className="text-xl font-bold mb-6 text-center text-primary">
-                Подивіться, як це працює:
-              </h3>
-              <div className="relative rounded-xl overflow-hidden shadow-soft border-2 border-accent bg-card">
-                <div className="aspect-video">
-                  <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center relative">
-                    {/* Custom play button overlay */}
-                    <div className="bg-card/90 backdrop-blur-sm text-primary rounded-full p-4 transform transition-transform hover:scale-110 shadow-soft cursor-pointer">
-                      <Play size={32} />
+                  
+                  {/* Icon */}
+                  <div className="flex justify-center mb-6 mt-4">
+                    <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center group-hover:bg-primary/30 transition-colors">
+                      <QrCode size={32} className="text-primary" />
                     </div>
                   </div>
-                </div>
-
-                <div className="p-4 bg-card">
-                  <p className="text-muted-foreground text-center">
-                    Від ідеї до готової музичної листівки — весь процес створення за 2 хвилини
+                  
+                  <h3 className="text-xl font-bold mb-4 text-center text-primary">Отримуєш готову листівку</h3>
+                  <p className="text-muted-foreground text-center leading-relaxed">
+                    Твоя <span className="font-semibold text-primary">унікальна листівка</span> з
+                    персоналізованою піснею готова! Завдяки{" "}
+                    <span className="font-semibold text-primary">QR-коду</span> одержувач почує твоє послання.
                   </p>
                 </div>
+              </div>
+
+              {/* Mobile vertical connector */}
+              <div className="lg:hidden flex justify-center col-span-1 -my-4">
+                <div className="w-0.5 h-8 bg-gradient-to-b from-accent/50 to-transparent"></div>
+              </div>
+              <div className="lg:hidden flex justify-center col-span-1 -my-4">
+                <div className="w-0.5 h-8 bg-gradient-to-b from-secondary/50 to-transparent"></div>
               </div>
             </div>
           </div>
