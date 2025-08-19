@@ -22,14 +22,7 @@ export function PricingSection() {
               {/* Content Grid */}
               <div className="flex flex-col md:flex-row items-center justify-center mb-8">
                 
-                {/* Left side - Mascot */}
-                <div className="flex justify-center flex-shrink-0">
-                  <div className="relative">
-                    <img src="/lovable-uploads/bfc3ff59-dfa5-40be-a6ec-6d9dbe6007d8.png" alt="Маскот з табличкою ціни 399 грн" className="w-56 h-56 object-contain animate-subtle-move" />
-                  </div>
-                </div>
-
-                {/* Right side - Features */}
+                {/* Left side - Features */}
                 <div className="flex flex-col justify-center">
                   <div className="space-y-4 max-w-lg">
                     {features.map((feature, index) => <div key={index} className="flex items-start gap-4">
@@ -38,6 +31,13 @@ export function PricingSection() {
                         </div>
                         <span className="text-[#6A5ACD] text-sm md:text-base leading-relaxed">{feature}</span>
                       </div>)}
+                  </div>
+                </div>
+
+                {/* Right side - Mascot */}
+                <div className="flex justify-center flex-shrink-0">
+                  <div className="relative">
+                    <img src="/lovable-uploads/bfc3ff59-dfa5-40be-a6ec-6d9dbe6007d8.png" alt="Маскот з табличкою ціни 399 грн" className="w-56 h-56 object-contain animate-subtle-move" />
                   </div>
                 </div>
               </div>
