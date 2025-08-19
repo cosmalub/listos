@@ -1,17 +1,9 @@
 import { Check, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-
 export function PricingSection() {
-  const features = [
-    "Ви створюєте текст пісні і обираєте настрій для мелодії",
-    "Ми друкуємо красиву листівку з унікальним QR-кодом для прослуховування", 
-    "Доставляємо Новою поштою безкоштовно по всій Україні",
-    "Отримуєте за 1–2 дні готовий персональний музичний подарунок"
-  ];
-
-  return (
-    <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
+  const features = ["Ви створюєте текст пісні і обираєте настрій для мелодії", "Ми друкуємо красиву листівку з унікальним QR-кодом для прослуховування", "Доставляємо Новою поштою безкоштовно по всій Україні", "Отримуєте за 1–2 дні готовий персональний музичний подарунок"];
+  return <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <Card className="bg-card border border-[#6A5ACD]/20 rounded-3xl shadow-lg overflow-hidden">
@@ -33,36 +25,26 @@ export function PricingSection() {
                 {/* Left side - Features */}
                 <div className="w-full md:w-2/3 flex flex-col justify-center">
                   <div className="space-y-4">
-                    {features.map((feature, index) => (
-                      <div key={index} className="flex items-start gap-4">
+                    {features.map((feature, index) => <div key={index} className="flex items-start gap-4 px-[99px]">
                         <div className="w-8 h-8 bg-gradient-to-r from-[#6A5ACD] to-[#8A7CDD] rounded-xl flex items-center justify-center flex-shrink-0 mt-1">
                           <Check className="h-4 w-4 text-white" />
                         </div>
                         <span className="text-[#6A5ACD] text-sm md:text-base leading-relaxed">{feature}</span>
-                      </div>
-                    ))}
+                      </div>)}
                   </div>
                 </div>
 
                 {/* Right side - Mascot */}
                 <div className="flex justify-center flex-shrink-0">
                   <div className="relative">
-                    <img 
-                      src="/lovable-uploads/bfc3ff59-dfa5-40be-a6ec-6d9dbe6007d8.png" 
-                      alt="Маскот з табличкою ціни 399 грн" 
-                      className="w-56 h-56 object-contain animate-subtle-move"
-                    />
+                    <img src="/lovable-uploads/bfc3ff59-dfa5-40be-a6ec-6d9dbe6007d8.png" alt="Маскот з табличкою ціни 399 грн" className="w-56 h-56 object-contain animate-subtle-move" />
                   </div>
                 </div>
               </div>
 
               {/* Bottom - CTA and Guarantee - Centered */}
               <div className="text-center space-y-4">
-                <Button 
-                  size="lg" 
-                  className="text-lg px-8 py-6 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold"
-                  onClick={() => window.location.href = '/order'}
-                >
+                <Button size="lg" className="text-lg px-8 py-6 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold" onClick={() => window.location.href = '/order'}>
                   Створити листівку
                 </Button>
 
@@ -77,6 +59,5 @@ export function PricingSection() {
           </Card>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 }
