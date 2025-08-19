@@ -20,7 +20,7 @@ export function PricingSection() {
               </div>
 
               {/* Content Grid */}
-              <div className="flex flex-col md:flex-row items-center mb-8">
+              <div className="flex flex-col md:flex-row items-center justify-center mb-8">
                 
                 {/* Left side - Features */}
                 <div className="flex flex-col justify-center">
