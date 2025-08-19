@@ -92,26 +92,46 @@ export function ExamplesSection() {
     }
   };
 
-  const Front = ({ title }: { title: string }) => (
-    <div className="absolute inset-0 bg-gradient-to-br from-primary/80 to-primary">
-      <div className="absolute inset-4 rounded-lg bg-white/75 p-4 flex items-end">
-        <div className="text-primary font-semibold text-lg">{title}</div>
-      </div>
+  const Front = ({ example }: { example: Example }) => (
+    <div className="h-full relative">
+      {example.frontImg ? (
+        <img 
+          src={example.frontImg} 
+          alt={example.title}
+          className="w-full h-full object-cover rounded-xl"
+        />
+      ) : (
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/80 to-primary rounded-xl">
+          <div className="absolute inset-4 rounded-lg bg-white/75 p-4 flex items-end">
+            <div className="text-primary font-semibold text-lg">{example.title}</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 
-  const Back = ({ author }: { author: string }) => (
-    <div className="absolute inset-0 bg-card">
-      <div className="absolute inset-0 p-6">
-        <div className="rounded-lg border-2 border-primary/50 h-full p-4 text-sm text-card-foreground">
-          <div className="mb-2 font-semibold text-primary">Особисте повідомлення</div>
-          <p className="text-muted-foreground leading-relaxed">
-            Тут буде тепле побажання, спогади або зізнання — все, що зробить подарунок
-            по-справжньому неповторним.
-          </p>
-          <div className="mt-4 text-right text-primary">— {author}</div>
+  const Back = ({ example }: { example: Example }) => (
+    <div className="h-full relative">
+      {example.backImg ? (
+        <img 
+          src={example.backImg} 
+          alt={`${example.title} - зворотна сторона`}
+          className="w-full h-full object-cover rounded-xl"
+        />
+      ) : (
+        <div className="absolute inset-0 bg-card rounded-xl">
+          <div className="absolute inset-0 p-6">
+            <div className="rounded-lg border-2 border-primary/50 h-full p-4 text-sm text-card-foreground">
+              <div className="mb-2 font-semibold text-primary">Особисте повідомлення</div>
+              <p className="text-muted-foreground leading-relaxed">
+                Тут буде тепле побажання, спогади або зізнання — все, що зробить подарунок
+                по-справжньому неповторним.
+              </p>
+              <div className="mt-4 text-right text-primary">— {example.author}</div>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 
@@ -140,8 +160,9 @@ export function ExamplesSection() {
                     <div className="mb-6 group">
                       <Postcard3D
                         className="bg-muted rounded-xl"
-                        front={<Front title={ex.title} />}
-                        back={<Back author={ex.author} />}
+                        orientation="portrait"
+                        front={<Front example={ex} />}
+                        back={<Back example={ex} />}
                       />
                     </div>
 

@@ -7,6 +7,7 @@ type Postcard3DProps = {
   front: React.ReactNode;
   back: React.ReactNode;
   className?: string;
+  orientation?: "landscape" | "portrait";
   initialTilt?: { x: number; y: number };
   maxTilt?: { x: number; y: number };
 };
@@ -15,8 +16,9 @@ export function Postcard3D({
   front,
   back,
   className,
+  orientation = "landscape",
   initialTilt = { x: -2, y: 8 },
-  maxTilt = { x: 18, y: 28 },
+  maxTilt = { x: 15, y: 20 },
 }: Postcard3DProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [rot, setRot] = useState<{ x: number; y: number }>(initialTilt);
@@ -63,7 +65,8 @@ export function Postcard3D({
       ref={wrapperRef}
       className={cn(
         "relative rounded-xl",
-        "aspect-[148/105] [perspective:1200px]",
+        orientation === "portrait" ? "aspect-[105/148]" : "aspect-[148/105]",
+        "[perspective:1200px]",
         "select-none touch-none group",
         className
       )}
