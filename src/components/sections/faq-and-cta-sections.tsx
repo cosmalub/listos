@@ -34,33 +34,19 @@ function CreatePostcardButton() {
 
 export default function FaqAndCtaSections() {
   return (
-    <>
-      {/* FAQ Section */}
-      <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
-        <div className="container mx-auto px-4 max-w-3xl">
-          <h2 className="text-3xl font-bold mb-12 text-center text-[#6A5ACD] font-baloo">Часті запитання</h2>
+    <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
+      <div className="container mx-auto px-4 max-w-3xl">
+        <h2 className="text-3xl font-bold mb-12 text-center text-[#6A5ACD] font-baloo">Часті запитання</h2>
 
-          <Accordion type="single" collapsible className="w-full">
-            {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-lg font-medium text-[#6A5ACD]">{faq.question}</AccordionTrigger>
-                <AccordionContent className="text-[#6A5ACD]/80">{faq.answer}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-      </section>
-
-      {/* Final CTA Section */}
-      <section className="py-16 bg-gradient-to-b from-white to-[#B8B3FF]">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6 text-[#6A5ACD] font-baloo">Готові створити свою музичну листівку?</h2>
-          <p className="text-lg mb-8 max-w-2xl mx-auto text-[#6A5ACD]/80">
-            Подаруйте емоції та спогади, які залишаться назавжди.
-          </p>
-          <CreatePostcardButton />
-        </div>
-      </section>
-    </>
+        <Accordion type="single" collapsible className="w-full">
+          {faqs.map((faq, index) => (
+            <AccordionItem key={index} value={`item-${index}`}>
+              <AccordionTrigger className="text-lg font-medium text-[#6A5ACD]">{faq.question}</AccordionTrigger>
+              <AccordionContent className="text-[#6A5ACD]/80">{faq.answer}</AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
+    </section>
   )
 }
