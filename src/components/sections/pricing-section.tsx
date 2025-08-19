@@ -20,10 +20,10 @@ export function PricingSection() {
               </div>
 
               {/* Content Grid */}
-              <div className="flex flex-col md:flex-row items-center gap-2 mb-8">
+              <div className="flex flex-col md:flex-row items-center mb-8">
                 
                 {/* Left side - Features */}
-                <div className="flex-1 flex flex-col justify-center">
+                <div className="flex flex-col justify-center">
                   <div className="space-y-4 max-w-lg">
                     {features.map((feature, index) => <div key={index} className="flex items-start gap-4">
                         <div className="w-8 h-8 bg-gradient-to-r from-[#6A5ACD] to-[#8A7CDD] rounded-xl flex items-center justify-center flex-shrink-0 mt-1">
