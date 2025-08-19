@@ -28,10 +28,10 @@ export function PricingSection() {
               </div>
 
               {/* Content Grid */}
-              <div className="grid lg:grid-cols-2 gap-4 mb-8">
+              <div className="flex flex-col md:flex-row items-center justify-between mb-8">
                 
                 {/* Left side - Features */}
-                <div className="flex flex-col justify-center">
+                <div className="w-full md:w-2/3 flex flex-col justify-center">
                   <div className="space-y-4">
                     {features.map((feature, index) => (
                       <div key={index} className="flex items-start gap-4">
@@ -45,7 +45,7 @@ export function PricingSection() {
                 </div>
 
                 {/* Right side - Mascot */}
-                <div className="flex items-center justify-center">
+                <div className="w-full md:w-1/3 flex justify-center md:justify-end mt-6 md:mt-0">
                   <div className="relative">
                     <img 
                       src="/lovable-uploads/bfc3ff59-dfa5-40be-a6ec-6d9dbe6007d8.png" 
