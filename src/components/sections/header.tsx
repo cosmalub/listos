@@ -68,13 +68,13 @@ const Header = () => {
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] bg-background/95 backdrop-blur-lg border-l border-white/10">
+              <SheetContent side="right" className="w-[300px] bg-black/35 dark:bg-black/30 supports-[backdrop-filter]:bg-black/25 backdrop-blur-md border-l border-white/10">
                 <div className="flex flex-col space-y-6 mt-8">
                   {menuItems.map((item) => (
                     <button
                       key={item.name}
                       onClick={() => scrollToSection(item.href)}
-                      className="text-left text-lg text-foreground/80 hover:text-foreground transition-colors duration-300 py-2 focus:outline-none focus:ring-2 focus:ring-primary/20 rounded-md"
+                      className="text-left text-lg text-white/90 hover:text-white transition-colors duration-300 py-2 focus:outline-none focus:ring-2 focus:ring-primary/20 rounded-md"
                     >
                       {item.name}
                     </button>
