@@ -24,7 +24,7 @@ const Header = () => {
   };
 
   return (
-    <header className="absolute top-0 left-0 right-0 z-50 px-4 py-6">
+    <header className="absolute top-0 left-0 right-0 z-50 px-4 py-3 md:py-5">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <div className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
