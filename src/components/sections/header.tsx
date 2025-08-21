@@ -24,8 +24,8 @@ const Header = () => {
   };
 
   return (
-    <header className="absolute top-0 left-0 right-0 z-50 px-4 py-3 md:py-5 pt-safe-top">
-      <div className="max-w-7xl mx-auto backdrop-blur-md bg-background/30 border border-white/10 rounded-2xl px-6 py-4 shadow-lg shadow-black/5">
+    <header className="sticky md:absolute top-0 left-0 right-0 z-50 px-4 py-2 md:py-5 pt-safe-top">
+      <div className="max-w-7xl mx-auto md:backdrop-blur-md md:bg-background/30 md:border md:border-white/10 md:rounded-2xl px-6 py-3 md:py-4 md:shadow-lg md:shadow-black/5">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
