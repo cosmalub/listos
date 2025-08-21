@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Globe } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Menu } from "lucide-react";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,17 +47,14 @@ const Header = () => {
         {/* Language Switcher & Mobile Menu */}
         <div className="flex items-center gap-4">
           {/* Language Switcher */}
-          <Select defaultValue="ua">
-            <SelectTrigger className="w-[140px] bg-background/20 backdrop-blur-sm border-white/20 text-foreground">
-              <Globe className="w-4 h-4 mr-2" />
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="ua">🇺🇦 Українська</SelectItem>
-              <SelectItem value="en">🇺🇸 English</SelectItem>
-              <SelectItem value="ru">🇷🇺 Русский</SelectItem>
-            </SelectContent>
-          </Select>
+          <ToggleGroup type="single" defaultValue="ua" className="bg-white/90 backdrop-blur-sm rounded-full p-1">
+            <ToggleGroupItem value="ua" className="rounded-full px-3 py-1 text-sm font-medium text-primary data-[state=on]:bg-primary data-[state=on]:text-white">
+              UA
+            </ToggleGroupItem>
+            <ToggleGroupItem value="en" className="rounded-full px-3 py-1 text-sm font-medium text-primary data-[state=on]:bg-primary data-[state=on]:text-white">
+              EN
+            </ToggleGroupItem>
+          </ToggleGroup>
 
           {/* Mobile Menu */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>

@@ -100,10 +100,10 @@ export function HeroSection() {
       
       <section className="relative py-16 md:py-24 overflow-hidden bg-gradient-to-b from-[#FFD1DC] to-white/20">
         {/* Top corners */}
-        <div className="absolute top-10 left-[10%] transform -rotate-3 hidden lg:block z-10 animate-subtle-move">
+        <div className="absolute top-28 left-[10%] transform -rotate-3 hidden lg:block z-10 animate-subtle-move">
           <ReviewBubble name="Олена С." rating={5} text="Чудова ідея для подарунка!" initials="ОС" bgColor="#FFD1DC" />
         </div>
-        <div className="absolute top-10 right-[10%] transform rotate-3 hidden lg:block z-10 animate-subtle-move-slow-reverse">
+        <div className="absolute top-28 right-[10%] transform rotate-3 hidden lg:block z-10 animate-subtle-move-slow-reverse">
           <ReviewBubble
             name="Софія М."
             rating={5}
