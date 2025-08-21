@@ -13,22 +13,22 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       <Header />
-      <section id="hero" className="scroll-mt-16 md:scroll-mt-0">
+      <section id="hero">
         <HeroSection />
       </section>
-      <section id="benefits" className="scroll-mt-16 md:scroll-mt-28">
+      <section id="benefits">
         <BenefitsSection />
       </section>
-      <section id="mascot" className="scroll-mt-16 md:scroll-mt-28">
+      <section id="mascot">
         <MascotSection />
       </section>
-      <section id="examples" className="scroll-mt-16 md:scroll-mt-28">
+      <section id="examples">
         <ExamplesSection3D />
       </section>
-      <section id="pricing" className="scroll-mt-16 md:scroll-mt-28">
+      <section id="pricing">
         <PricingSection />
       </section>
-      <section id="faq" className="scroll-mt-16 md:scroll-mt-28">
+      <section id="faq">
         <FaqAndCtaSections />
       </section>
       <Footer />

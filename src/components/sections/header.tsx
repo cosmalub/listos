@@ -24,8 +24,8 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky md:absolute top-0 left-0 right-0 z-50 px-4 py-2 md:py-2 pt-safe-top">
-      <div className="max-w-7xl mx-auto px-6 py-3 md:py-3 md:bg-transparent bg-white/10 backdrop-blur-md border-b md:border-b-0 border-white/10 rounded-b-2xl md:rounded-none mb-2 md:mb-0">
+    <header className="absolute top-0 left-0 right-0 z-50 px-4 py-3 md:py-5 pt-safe-top">
+      <div className="max-w-7xl mx-auto backdrop-blur-md bg-background/30 border border-white/10 rounded-2xl px-6 py-4 shadow-lg shadow-black/5">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
@@ -48,11 +48,11 @@ const Header = () => {
           {/* Language Switcher & Mobile Menu */}
           <div className="flex items-center gap-3">
             {/* Language Switcher */}
-            <ToggleGroup type="single" defaultValue="ua" className="md:bg-black/30 md:dark:bg-black/30 md:supports-[backdrop-filter]:bg-black/20 bg-white/20 backdrop-blur-md border border-white/10 rounded-lg p-0.5">
-              <ToggleGroupItem value="ua" className="rounded-md px-2.5 py-1 text-xs font-medium md:text-white/80 text-foreground/80 data-[state=on]:bg-primary data-[state=on]:text-white transition-all duration-200 md:hover:bg-white/10 hover:bg-foreground/10">
+            <ToggleGroup type="single" defaultValue="ua" className="bg-background/60 backdrop-blur-sm border border-white/10 rounded-lg p-0.5">
+              <ToggleGroupItem value="ua" className="rounded-md px-2.5 py-1 text-xs font-medium text-foreground/80 data-[state=on]:bg-primary data-[state=on]:text-white transition-all duration-200 hover:bg-primary/10">
                 UA
               </ToggleGroupItem>
-              <ToggleGroupItem value="en" className="rounded-md px-2.5 py-1 text-xs font-medium md:text-white/80 text-foreground/80 data-[state=on]:bg-primary data-[state=on]:text-white transition-all duration-200 md:hover:bg-white/10 hover:bg-foreground/10">
+              <ToggleGroupItem value="en" className="rounded-md px-2.5 py-1 text-xs font-medium text-foreground/80 data-[state=on]:bg-primary data-[state=on]:text-white transition-all duration-200 hover:bg-primary/10">
                 EN
               </ToggleGroupItem>
             </ToggleGroup>
@@ -63,18 +63,18 @@ const Header = () => {
                 <Button 
                   variant="ghost" 
                   size="icon"
-                  className="md:bg-black/30 md:dark:bg-black/30 md:supports-[backdrop-filter]:bg-black/20 bg-white/20 backdrop-blur-md border border-white/10 md:hover:bg-black/40 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                  className="bg-background/60 backdrop-blur-sm border border-white/10 hover:bg-background/40 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-200"
                 >
-                  <Menu className="h-5 w-5 md:text-white text-foreground" />
+                  <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] bg-black/35 dark:bg-black/30 supports-[backdrop-filter]:bg-black/25 backdrop-blur-md border-l border-white/10">
+              <SheetContent side="right" className="w-[300px] bg-background/95 backdrop-blur-lg border-l border-white/10">
                 <div className="flex flex-col space-y-6 mt-8">
                   {menuItems.map((item) => (
                     <button
                       key={item.name}
                       onClick={() => scrollToSection(item.href)}
-                      className="text-left text-lg text-white/90 hover:text-white transition-colors duration-300 py-2 focus:outline-none focus:ring-2 focus:ring-primary/20 rounded-md"
+                      className="text-left text-lg text-foreground/80 hover:text-foreground transition-colors duration-300 py-2 focus:outline-none focus:ring-2 focus:ring-primary/20 rounded-md"
                     >
                       {item.name}
                     </button>
