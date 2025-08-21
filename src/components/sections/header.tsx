@@ -48,11 +48,11 @@ const Header = () => {
           {/* Language Switcher & Mobile Menu */}
           <div className="flex items-center gap-3">
             {/* Language Switcher */}
-            <ToggleGroup type="single" defaultValue="ua" className="bg-background/60 backdrop-blur-sm border border-white/10 rounded-lg p-0.5">
-              <ToggleGroupItem value="ua" className="rounded-md px-2.5 py-1 text-xs font-medium text-foreground/80 data-[state=on]:bg-primary data-[state=on]:text-white transition-all duration-200 hover:bg-primary/10">
+            <ToggleGroup type="single" defaultValue="ua" className="bg-black/30 dark:bg-black/30 supports-[backdrop-filter]:bg-black/20 backdrop-blur-md border border-white/10 rounded-lg p-0.5">
+              <ToggleGroupItem value="ua" className="rounded-md px-2.5 py-1 text-xs font-medium text-white/80 data-[state=on]:bg-primary data-[state=on]:text-white transition-all duration-200 hover:bg-white/10">
                 UA
               </ToggleGroupItem>
-              <ToggleGroupItem value="en" className="rounded-md px-2.5 py-1 text-xs font-medium text-foreground/80 data-[state=on]:bg-primary data-[state=on]:text-white transition-all duration-200 hover:bg-primary/10">
+              <ToggleGroupItem value="en" className="rounded-md px-2.5 py-1 text-xs font-medium text-white/80 data-[state=on]:bg-primary data-[state=on]:text-white transition-all duration-200 hover:bg-white/10">
                 EN
               </ToggleGroupItem>
             </ToggleGroup>
@@ -63,9 +63,9 @@ const Header = () => {
                 <Button 
                   variant="ghost" 
                   size="icon"
-                  className="bg-background/60 backdrop-blur-sm border border-white/10 hover:bg-background/40 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                  className="bg-black/30 dark:bg-black/30 supports-[backdrop-filter]:bg-black/20 backdrop-blur-md border border-white/10 hover:bg-black/40 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-200"
                 >
-                  <Menu className="h-5 w-5" />
+                  <Menu className="h-5 w-5 text-white" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] bg-black/35 dark:bg-black/30 supports-[backdrop-filter]:bg-black/25 backdrop-blur-md border-l border-white/10">
