@@ -25,7 +25,7 @@ const Header = () => {
 
   return (
     <header className="sticky md:absolute top-0 left-0 right-0 z-50 px-4 py-2 md:py-2 pt-safe-top">
-      <div className="max-w-7xl mx-auto px-6 py-3 md:py-3">
+      <div className="max-w-7xl mx-auto px-6 py-3 md:py-3 md:bg-transparent bg-white/10 backdrop-blur-md border-b md:border-b-0 border-white/10 rounded-b-2xl md:rounded-none mb-2 md:mb-0">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
@@ -48,11 +48,11 @@ const Header = () => {
           {/* Language Switcher & Mobile Menu */}
           <div className="flex items-center gap-3">
             {/* Language Switcher */}
-            <ToggleGroup type="single" defaultValue="ua" className="bg-black/30 dark:bg-black/30 supports-[backdrop-filter]:bg-black/20 backdrop-blur-md border border-white/10 rounded-lg p-0.5">
-              <ToggleGroupItem value="ua" className="rounded-md px-2.5 py-1 text-xs font-medium text-white/80 data-[state=on]:bg-primary data-[state=on]:text-white transition-all duration-200 hover:bg-white/10">
+            <ToggleGroup type="single" defaultValue="ua" className="md:bg-black/30 md:dark:bg-black/30 md:supports-[backdrop-filter]:bg-black/20 bg-white/20 backdrop-blur-md border border-white/10 rounded-lg p-0.5">
+              <ToggleGroupItem value="ua" className="rounded-md px-2.5 py-1 text-xs font-medium md:text-white/80 text-foreground/80 data-[state=on]:bg-primary data-[state=on]:text-white transition-all duration-200 md:hover:bg-white/10 hover:bg-foreground/10">
                 UA
               </ToggleGroupItem>
-              <ToggleGroupItem value="en" className="rounded-md px-2.5 py-1 text-xs font-medium text-white/80 data-[state=on]:bg-primary data-[state=on]:text-white transition-all duration-200 hover:bg-white/10">
+              <ToggleGroupItem value="en" className="rounded-md px-2.5 py-1 text-xs font-medium md:text-white/80 text-foreground/80 data-[state=on]:bg-primary data-[state=on]:text-white transition-all duration-200 md:hover:bg-white/10 hover:bg-foreground/10">
                 EN
               </ToggleGroupItem>
             </ToggleGroup>
@@ -63,9 +63,9 @@ const Header = () => {
                 <Button 
                   variant="ghost" 
                   size="icon"
-                  className="bg-black/30 dark:bg-black/30 supports-[backdrop-filter]:bg-black/20 backdrop-blur-md border border-white/10 hover:bg-black/40 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                  className="md:bg-black/30 md:dark:bg-black/30 md:supports-[backdrop-filter]:bg-black/20 bg-white/20 backdrop-blur-md border border-white/10 md:hover:bg-black/40 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-200"
                 >
-                  <Menu className="h-5 w-5 text-white" />
+                  <Menu className="h-5 w-5 md:text-white text-foreground" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] bg-black/35 dark:bg-black/30 supports-[backdrop-filter]:bg-black/25 backdrop-blur-md border-l border-white/10">
