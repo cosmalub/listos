@@ -54,7 +54,7 @@ export function PricingSection() {
             {/* Cat Image */}
             <div className="w-full md:w-1/3 flex justify-center">
               <img
-                src="/lovable-uploads/bfc3ff59-dfa5-40be-a6ec-6d9dbe6007d8.png"
+                src="/lovable-uploads/77bbb0e6-5d90-4aed-8a02-55f9e194890a.png"
                 alt="Листосик - гарантія якості"
                 className="w-64 h-64 transform transition-transform hover:scale-105 drop-shadow-2xl"
               />
