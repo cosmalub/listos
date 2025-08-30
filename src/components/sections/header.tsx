@@ -31,7 +31,7 @@ const Header = () => {
     setIsOpen(false);
   };
   return <header className="absolute top-0 left-0 right-0 z-50 px-4 py-0.5 md:py-1 pt-safe-top">
-      <div className="max-w-7xl backdrop-blur-md bg-background/30 border border-white/10 rounded-2xl px-6 shadow-lg shadow-black/5 my-0 mx-0 py-[5px]">
+      <div className="max-w-7xl backdrop-blur-md bg-background/30 border border-white/10 rounded-2xl px-6 shadow-lg shadow-black/5 my-[3px] py-0 mx-px">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
