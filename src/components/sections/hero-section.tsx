@@ -137,7 +137,9 @@ export function HeroSection() {
 
         <div className="container mx-auto px-4 relative z-20">
           {/* Customer counter */}
-          <CustomerCounter />
+          <div className="mt-2.5 md:mt-0">
+            <CustomerCounter />
+          </div>
 
           <div className="max-w-4xl mx-auto text-center relative z-20 p-8">
             <h1 className="text-3xl md:text-5xl font-bold mb-4 text-[#6A5ACD]">

@@ -36,7 +36,7 @@ const Header = () => {
   return (
     <header className="absolute top-0 left-0 right-0 z-50 px-4 py-0.5 md:py-1 pt-safe-top">
       <div className="w-full max-w-[90rem] 2xl:max-w-screen-2xl backdrop-blur-md bg-background/30 border border-white/10 rounded-2xl px-6 shadow-lg shadow-black/5 my-[3px] py-0 mx-auto">
-        <div className="grid grid-cols-3 items-center md:justify-items-center">
+        <div className="grid grid-cols-[auto_1fr_auto] md:grid-cols-3 items-center md:justify-items-center">
           {/* Logo */}
           <div className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent justify-self-start">
             Listosyk
