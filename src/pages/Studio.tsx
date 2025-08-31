@@ -106,7 +106,7 @@ const Studio = () => {
       <Header centerTitle="Студія створення листівки" hideNav showMenu={false} />
 
       {/* Steps indicator */}
-      <div className="bg-background/50 border-b border-border">
+      <div className="bg-background/50 border-b border-border pt-20">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between max-w-4xl mx-auto">
             {steps.map((step, index) => (
@@ -148,7 +148,7 @@ const Studio = () => {
       </div>
 
       {/* Main content */}
-      <main className="container mx-auto px-4 py-8 pt-24 min-h-[calc(100vh-200px)]">
+      <main className="container mx-auto px-4 py-8 min-h-[calc(100vh-200px)]">
         {renderStepContent()}
       </main>
 
