@@ -6,12 +6,14 @@ import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ChatInterface } from '@/components/studio/ChatInterface';
 import { LyricsDraft } from '@/components/studio/LyricsDraft';
+import { Header } from '@/components/sections/header';
+import { Footer } from '@/components/sections/footer';
 
 const steps = [
-  { id: 1, title: 'Создание слов', description: 'Создаем слова для песни' },
-  { id: 2, title: 'Генерация песни', description: 'Выбираем мелодию' },
-  { id: 3, title: 'Дизайн лицевой части', description: 'Оформляем лицо открытки' },
-  { id: 4, title: 'Дизайн обратной части', description: 'Оформляем оборот открытки' },
+  { id: 1, title: 'Створення слів', description: 'Створюємо слова для пісні' },
+  { id: 2, title: 'Генерація пісні', description: 'Генеруємо 3 варіанти на основі слів' },
+  { id: 3, title: 'Дизайн лицьової сторони', description: 'Оформлюємо лицьову частину листівки' },
+  { id: 4, title: 'Дизайн зворотної сторони', description: 'Оформлюємо зворотну частину листівки' },
 ];
 
 const Studio = () => {
@@ -43,7 +45,7 @@ const Studio = () => {
               <Tabs defaultValue="chat" className="h-full flex flex-col">
                 <TabsList className="grid w-full grid-cols-2 mb-4">
                   <TabsTrigger value="chat">Чат</TabsTrigger>
-                  <TabsTrigger value="draft">Черновик</TabsTrigger>
+                  <TabsTrigger value="draft">Чернетка</TabsTrigger>
                 </TabsList>
                 <TabsContent value="chat" className="flex-1">
                   <Card className="p-4 h-full">
@@ -62,35 +64,35 @@ const Studio = () => {
       case 2:
         return (
           <Card className="p-8 text-center">
-            <h3 className="text-xl font-semibold mb-4">Генерация песни</h3>
+            <h3 className="text-xl font-semibold mb-4">Генерація пісні</h3>
             <p className="text-muted-foreground mb-6">
-              Здесь будет генерация 3 вариантов песни на основе созданных слов
+              Тут буде генерація 3 варіантів пісні на основі створених слів
             </p>
             <Button variant="outline" onClick={() => setCurrentStep(3)}>
-              Перейти к дизайну лицевой части
+              Перейти до дизайну лицьової сторони
             </Button>
           </Card>
         );
       case 3:
         return (
           <Card className="p-8 text-center">
-            <h3 className="text-xl font-semibold mb-4">Дизайн лицевой части</h3>
+            <h3 className="text-xl font-semibold mb-4">Дизайн лицьової сторони</h3>
             <p className="text-muted-foreground mb-6">
-              Здесь будет создание дизайна лицевой части открытки
+              Тут буде створення дизайну лицьової сторони листівки
             </p>
             <Button variant="outline" onClick={() => setCurrentStep(4)}>
-              Перейти к дизайну обратной части
+              Перейти до дизайну зворотної сторони
             </Button>
           </Card>
         );
       case 4:
         return (
           <Card className="p-8 text-center">
-            <h3 className="text-xl font-semibold mb-4">Дизайн обратной части</h3>
+            <h3 className="text-xl font-semibold mb-4">Дизайн зворотної сторони</h3>
             <p className="text-muted-foreground mb-6">
-              Здесь будет создание дизайна обратной части открытки
+              Тут буде створення дизайну зворотної сторони листівки
             </p>
-            <Button>Завершить создание открытки</Button>
+            <Button>Завершити створення листівки</Button>
           </Card>
         );
       default:
@@ -101,19 +103,7 @@ const Studio = () => {
   return (
     <div className="min-h-screen bg-gradient-soft">
       {/* Header */}
-      <header className="bg-background/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link to="/">
-              <Button variant="ghost" size="sm">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Назад
-              </Button>
-            </Link>
-            <h1 className="text-xl font-semibold">Студия создания открыток</h1>
-          </div>
-        </div>
-      </header>
+      <Header centerTitle="Студія створення листівки" hideNav showMenu={false} />
 
       {/* Steps indicator */}
       <div className="bg-background/50 border-b border-border">
@@ -158,9 +148,12 @@ const Studio = () => {
       </div>
 
       {/* Main content */}
-      <main className="container mx-auto px-4 py-8 h-[calc(100vh-200px)]">
+      <main className="container mx-auto px-4 py-8 pt-24 min-h-[calc(100vh-200px)]">
         {renderStepContent()}
       </main>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

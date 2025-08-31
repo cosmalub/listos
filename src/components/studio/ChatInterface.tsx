@@ -19,17 +19,17 @@ interface ChatInterfaceProps {
 }
 
 const hintChips = [
-  'Кому предназначена открытка?',
-  'Какой стиль песни вы предпочитаете?',
-  'Какое настроение должно быть?',
-  'Есть ли особые пожелания?',
+  'Кому призначена листівка?',
+  'Який стиль пісні ви віддаєте перевагу?',
+  'Який настрій повинен бути?',
+  'Чи є особливі побажання?',
 ];
 
 export const ChatInterface: React.FC<ChatInterfaceProps> = ({ onLyricsGenerated }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: 'Привет! Я Листосик, и я помогу тебе создать прекрасные слова для песни на открытку. Расскажи мне, кому предназначена эта открытка и какие чувства ты хочешь передать?',
+      content: 'Привіт! Я Лістосик, і я допоможу тобі створити прекрасні слова для пісні на листівку. Розкажи мені, кому призначена ця листівка і які почуття ти хочеш передати?',
       sender: 'assistant',
       timestamp: new Date(),
     },
@@ -71,7 +71,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ onLyricsGenerated 
       setIsTyping(false);
 
       // If response contains lyrics, update the draft
-      if (assistantResponse.content.includes('Вот текст песни')) {
+      if (assistantResponse.content.includes('Ось текст пісні')) {
         const lyricsMatch = assistantResponse.content.match(/```([\s\S]*?)```/);
         if (lyricsMatch) {
           onLyricsGenerated(lyricsMatch[1].trim());
@@ -82,30 +82,30 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ onLyricsGenerated 
 
   const generateAssistantResponse = (userInput: string): string => {
     const responses = [
-      'Замечательно! Расскажи мне больше о получателе. Какие у вас отношения?',
-      'Отлично! Какое настроение должно быть у песни - веселое, романтичное, трогательное?',
-      'Понятно! А есть ли какие-то особые воспоминания или моменты, которые хочется отразить в песне?',
-      `Спасибо за подробности! Вот текст песни, который я создал специально для вас:
+      'Чудово! Розкажи мені більше про отримувача. Які у вас стосунки?',
+      'Відмінно! Який настрій повинен бути у пісні - веселий, романтичний, зворушливий?',
+      'Зрозуміло! А чи є якісь особливі спогади або моменти, які хочеться відобразити в пісні?',
+      `Дякую за подробиці! Ось текст пісні, який я створив спеціально для вас:
 
 \`\`\`
-В сердце моем живет тепло,
-Что дарит мне твоя любовь,
-Пусть этот день будет светло,
-И счастье льется вновь и вновь.
+У серці моєму живе тепло,
+Що дарує мені твоя любов,
+Нехай цей день буде світло,
+І щастя ллється знов і знов.
 
-Припев:
-Ты мой свет в темной ночи,
-Ты мой друг навсегда,
-Пусть исполнятся мечты,
-Будь счастлив всегда!
+Приспів:
+Ти моє світло в темній ночі,
+Ти мій друг назавжди,
+Нехай здійсняться мрії,
+Будь щасливим завжди!
 
-Каждый день с тобой как праздник,
-Каждый миг дороже золота,
-Пусть улыбка не погаснет,
-И душа поет от счастья!
+Кожен день з тобою як свято,
+Кожна мить дорожча золота,
+Нехай посмішка не згасне,
+І душа співає від щастя!
 \`\`\`
 
-Как вам такой вариант? Если что-то нужно изменить, просто скажите!`,
+Як вам такий варіант? Якщо щось потрібно змінити, просто скажіть!`,
     ];
 
     return responses[Math.min(messages.length - 1, responses.length - 1)];
@@ -131,8 +131,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ onLyricsGenerated 
           <AvatarFallback>Л</AvatarFallback>
         </Avatar>
         <div>
-          <h3 className="font-semibold">Листосик</h3>
-          <p className="text-sm text-muted-foreground">Помощник по созданию песен</p>
+          <h3 className="font-semibold">Лістосик</h3>
+          <p className="text-sm text-muted-foreground">Помічник зі створення пісень</p>
         </div>
       </div>
 
@@ -163,7 +163,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ onLyricsGenerated 
               </div>
               {message.sender === 'user' && (
                 <Avatar className="w-8 h-8">
-                  <AvatarFallback>Вы</AvatarFallback>
+                  <AvatarFallback>Ви</AvatarFallback>
                 </Avatar>
               )}
             </div>
@@ -189,7 +189,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ onLyricsGenerated 
       {/* Hint chips */}
       {messages.length === 1 && (
         <div className="my-4">
-          <p className="text-sm text-muted-foreground mb-2">Примеры вопросов:</p>
+          <p className="text-sm text-muted-foreground mb-2">Приклади запитань:</p>
           <div className="flex flex-wrap gap-2">
             {hintChips.map((hint) => (
               <Badge
@@ -209,7 +209,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ onLyricsGenerated 
       <div className="flex gap-2 pt-4 border-t border-border">
         <Textarea
           ref={textareaRef}
-          placeholder="Введите ваше сообщение..."
+          placeholder="Введіть ваше повідомлення..."
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyPress={handleKeyPress}
