@@ -101,7 +101,7 @@ const Studio = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] to-white/20">
+    <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] via-white to-white">
       {/* Header */}
       <Header centerTitle="Студія створення листівки" hideNav showMenu={false} />
 
