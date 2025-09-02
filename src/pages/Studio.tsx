@@ -101,12 +101,12 @@ const Studio = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] via-white to-white">
+    <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] to-white/20">
       {/* Header */}
       <Header centerTitle="Студія створення листівки" hideNav showMenu={false} />
 
       {/* Steps indicator */}
-      <div className="bg-white/60 backdrop-blur-sm border-b border-white/30 pt-20">
+      <div className="bg-transparent pt-24 md:pt-28">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between max-w-4xl mx-auto">
             {steps.map((step, index) => (
