@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, Circle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ChatInterface } from '@/components/studio/ChatInterface';
+import { ChatInterface, ChatInterfaceRef } from '@/components/studio/ChatInterface';
 import { LyricsDraft } from '@/components/studio/LyricsDraft';
 import { Header } from '@/components/sections/header';
 import { Footer } from '@/components/sections/footer';
@@ -21,6 +21,7 @@ const Studio = () => {
   const [lyrics, setLyrics] = useState('');
   const [mobileTab, setMobileTab] = useState('chat');
   const [hasUnconfirmedLyrics, setHasUnconfirmedLyrics] = useState(false);
+  const chatRef = useRef<ChatInterfaceRef>(null);
 
   const handleLyricsConfirmed = (confirmedLyrics: string) => {
     setLyrics(confirmedLyrics);
@@ -37,6 +38,13 @@ const Studio = () => {
     }
   };
 
+  const handleRequestEdit = (editText: string) => {
+    setMobileTab('chat');
+    setTimeout(() => {
+      chatRef.current?.prefillAndFocus(editText);
+    }, 100);
+  };
+
   const renderStepContent = () => {
     switch (currentStep) {
       case 1:
@@ -46,13 +54,18 @@ const Studio = () => {
             <div className="hidden md:grid md:grid-cols-2 md:gap-6 h-full">
               <Card className="p-6 h-full">
                 <ChatInterface 
+                  ref={chatRef}
                   onLyricsGenerated={handleLyricsGenerated}
                   onConfirmLyrics={handleLyricsConfirmed}
                   onEditLyrics={() => setMobileTab('draft')}
                 />
               </Card>
               <Card className="p-6 h-full">
-                <LyricsDraft lyrics={lyrics} onConfirm={handleLyricsConfirmed} />
+                <LyricsDraft 
+                  lyrics={lyrics} 
+                  onConfirm={handleLyricsConfirmed}
+                  onRequestEdit={handleRequestEdit}
+                />
               </Card>
             </div>
 
@@ -71,6 +84,7 @@ const Studio = () => {
                 <TabsContent value="chat" className="flex-1">
                   <Card className="p-4 h-full">
                     <ChatInterface 
+                      ref={chatRef}
                       onLyricsGenerated={handleLyricsGenerated}
                       onConfirmLyrics={handleLyricsConfirmed}
                       onEditLyrics={() => setMobileTab('draft')}
@@ -79,7 +93,11 @@ const Studio = () => {
                 </TabsContent>
                 <TabsContent value="draft" className="flex-1">
                   <Card className="p-4 h-full">
-                    <LyricsDraft lyrics={lyrics} onConfirm={handleLyricsConfirmed} />
+                    <LyricsDraft 
+                      lyrics={lyrics} 
+                      onConfirm={handleLyricsConfirmed}
+                      onRequestEdit={handleRequestEdit}
+                    />
                   </Card>
                 </TabsContent>
               </Tabs>

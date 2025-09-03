@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { Send, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -12,6 +12,10 @@ interface Message {
   content: string;
   sender: 'user' | 'assistant';
   timestamp: Date;
+}
+
+export interface ChatInterfaceRef {
+  prefillAndFocus: (text: string) => void;
 }
 
 interface ChatInterfaceProps {
@@ -34,11 +38,11 @@ const refineChips = [
   'Простіше слова'
 ];
 
-export const ChatInterface: React.FC<ChatInterfaceProps> = ({ 
+export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({ 
   onLyricsGenerated, 
   onConfirmLyrics,
   onEditLyrics 
-}) => {
+}, ref) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -207,6 +211,18 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
     setEditingMessageId(null);
     setEditingContent('');
   };
+
+  useImperativeHandle(ref, () => ({
+    prefillAndFocus: (text: string) => {
+      setNewMessage(text);
+      setTimeout(() => {
+        textareaRef.current?.focus();
+        if (textareaRef.current) {
+          textareaRef.current.setSelectionRange(text.length, text.length);
+        }
+      }, 100);
+    }
+  }));
 
   const handleCancelEdit = () => {
     setEditingMessageId(null);
@@ -411,4 +427,4 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       </div>
     </div>
   );
-};
+});
