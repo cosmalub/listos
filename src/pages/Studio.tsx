@@ -172,7 +172,8 @@ const Studio = () => {
       {/* Steps indicator */}
       <div className="bg-transparent pt-24 md:pt-28">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between max-w-4xl mx-auto">
+          {/* Desktop: Horizontal layout with connecting lines */}
+          <div className="hidden md:flex items-center justify-between max-w-4xl mx-auto">
             {steps.map((step, index) => (
               <div key={step.id} className="flex items-center flex-1">
                 <div className="flex flex-col items-center">
@@ -195,7 +196,7 @@ const Studio = () => {
                     }`}>
                       {step.title}
                     </div>
-                    <div className="text-xs text-muted-foreground hidden sm:block">
+                    <div className="text-xs text-muted-foreground">
                       {step.description}
                     </div>
                   </div>
@@ -205,6 +206,34 @@ const Studio = () => {
                     currentStep > step.id ? 'bg-success' : 'bg-border'
                   }`} />
                 )}
+              </div>
+            ))}
+          </div>
+
+          {/* Mobile: Compact grid layout */}
+          <div className="md:hidden grid grid-cols-4 gap-2 max-w-sm mx-auto">
+            {steps.map((step) => (
+              <div key={step.id} className="flex flex-col items-center">
+                <div className={`flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors ${
+                  currentStep > step.id 
+                    ? 'bg-success border-success text-success-foreground' 
+                    : currentStep === step.id 
+                      ? 'bg-primary border-primary text-primary-foreground' 
+                      : 'bg-background border-border text-muted-foreground'
+                }`}>
+                  {currentStep > step.id ? (
+                    <CheckCircle className="h-4 w-4" />
+                  ) : (
+                    <span className="text-xs font-medium">{step.id}</span>
+                  )}
+                </div>
+                <div className="mt-1 text-center h-8 overflow-hidden">
+                  <div className={`text-[11px] leading-tight font-medium ${
+                    currentStep >= step.id ? 'text-foreground' : 'text-muted-foreground'
+                  }`}>
+                    {step.title}
+                  </div>
+                </div>
               </div>
             ))}
           </div>
