@@ -27,6 +27,13 @@ const hintChips = [
   'Чи є особливі побажання?',
 ];
 
+const refineChips = [
+  'Зробити веселіше',
+  'Додати більше рими',
+  'Більше емоцій',
+  'Простіше слова'
+];
+
 export const ChatInterface: React.FC<ChatInterfaceProps> = ({ 
   onLyricsGenerated, 
   onConfirmLyrics,
@@ -44,6 +51,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const [isTyping, setIsTyping] = useState(false);
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
   const [editingContent, setEditingContent] = useState('');
+  const [lastLyricsMessage, setLastLyricsMessage] = useState<string | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -53,25 +61,26 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
     }
   }, [messages]);
 
-  const handleSendMessage = async () => {
-    if (!newMessage.trim()) return;
+  const handleSendMessage = async (customMessage?: string, isRefining = false) => {
+    const messageText = customMessage || newMessage.trim();
+    if (!messageText) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
-      content: newMessage,
+      content: messageText,
       sender: 'user',
       timestamp: new Date(),
     };
 
     setMessages(prev => [...prev, userMessage]);
-    setNewMessage('');
+    if (!customMessage) setNewMessage('');
     setIsTyping(true);
 
     // Simulate assistant response
     setTimeout(() => {
       const assistantResponse: Message = {
         id: (Date.now() + 1).toString(),
-        content: generateAssistantResponse(newMessage),
+        content: generateAssistantResponse(messageText, isRefining),
         sender: 'assistant',
         timestamp: new Date(),
       };
@@ -79,16 +88,51 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       setIsTyping(false);
 
       // If response contains lyrics, update the draft
-      if (assistantResponse.content.includes('Ось текст пісні')) {
+      if (assistantResponse.content.includes('Ось текст пісні') || assistantResponse.content.includes('Ось оновлений варіант')) {
         const lyricsMatch = assistantResponse.content.match(/```([\s\S]*?)```/);
         if (lyricsMatch) {
-          onLyricsGenerated(lyricsMatch[1].trim());
+          const lyrics = lyricsMatch[1].trim();
+          onLyricsGenerated(lyrics);
+          setLastLyricsMessage(lyrics);
         }
       }
     }, 1500);
   };
 
-  const generateAssistantResponse = (userInput: string): string => {
+  const generateAssistantResponse = (userInput: string, isRefining = false): string => {
+    if (isRefining && lastLyricsMessage) {
+      // Simulate refinement based on user feedback
+      let refinedLyrics = lastLyricsMessage;
+      
+      if (userInput.includes('веселіше') || userInput.includes('веселі')) {
+        refinedLyrics = refinedLyrics.replace('тепло', 'радість').replace('темній ночі', 'яскравий день');
+      } else if (userInput.includes('рим') || userInput.includes('римув')) {
+        refinedLyrics = refinedLyrics.replace('золота', 'срібла').replace('щастя', 'радості');
+      } else if (userInput.includes('емоцій') || userInput.includes('почуття')) {
+        refinedLyrics = refinedLyrics.replace('серці', 'душі палкій').replace('любов', 'пристрасть');
+      } else if (userInput.includes('простіше')) {
+        refinedLyrics = 'Ти мій друг найкращий,\nЗ тобою все прекрасно,\nБудь завжди щасливим,\nІ посміхайся ясно!';
+      } else if (userInput.includes('не так') || userInput.includes('переробити')) {
+        refinedLyrics = `Дружба наша міцна,
+Як весняна квітка,
+Разом ми сильніші,
+Це не просто мітка!
+
+Приспів:
+Друже мій вірний,
+Поруч завжди,
+Щастя нам світить,
+Мрії здійсни!
+
+Кожен день разом -
+То велика сила,
+Наша дружба вічна,
+Світла і красива!`;
+      }
+      
+      return `Ось оновлений варіант:\n\n\`\`\`\n${refinedLyrics}\n\`\`\`\n\nТак краще? Можемо ще щось змінити!`;
+    }
+
     const responses = [
       'Чудово! Розкажи мені більше про отримувача. Які у вас стосунки?',
       'Відмінно! Який настрій повинен бути у пісні - веселий, романтичний, зворушливий?',
@@ -122,6 +166,14 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const handleHintClick = (hint: string) => {
     setNewMessage(hint);
     textareaRef.current?.focus();
+  };
+
+  const handleRefineClick = (refinement: string) => {
+    handleSendMessage(refinement, true);
+  };
+
+  const handleGeneralFeedback = () => {
+    setNewMessage('Щось не так з цим текстом, можеш переробити?');
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -216,31 +268,57 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                   
                   {/* Lyrics action buttons */}
                   {hasLyrics && !isEditing && (
-                    <div className="flex flex-wrap gap-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleEditMessage(message.id, message.content)}
-                      >
-                        Редагувати в чаті
-                      </Button>
-                      {onEditLyrics && (
+                    <div className="space-y-3 mt-3 pt-3 border-t border-border">
+                      {/* Quick refine options */}
+                      <div className="space-y-2">
+                        <p className="text-xs text-muted-foreground">Швидко покращити:</p>
+                        <div className="flex flex-wrap gap-2">
+                          {refineChips.map((chip) => (
+                            <button
+                              key={chip}
+                              onClick={() => handleRefineClick(chip)}
+                              className="px-3 py-1 text-xs rounded-full bg-secondary hover:bg-secondary/80 transition-colors"
+                            >
+                              {chip}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* General feedback and actions */}
+                      <div className="flex flex-wrap gap-2">
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={onEditLyrics}
+                          onClick={handleGeneralFeedback}
+                          className="text-xs"
                         >
-                          Відкрити у чернетці
+                          Щось не так?
                         </Button>
-                      )}
-                      {onConfirmLyrics && (
-                        <Button
-                          size="sm"
-                          onClick={() => onConfirmLyrics(extractLyricsFromMessage(message.content) || '')}
-                        >
-                          Підтвердити і далі
-                        </Button>
-                      )}
+                        {onEditLyrics && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={onEditLyrics}
+                            className="text-xs"
+                          >
+                            Детальне редагування
+                          </Button>
+                        )}
+                        {onConfirmLyrics && (
+                          <Button
+                            size="sm"
+                            onClick={() => onConfirmLyrics(extractLyricsFromMessage(message.content) || '')}
+                            className="text-xs bg-primary text-primary-foreground hover:bg-primary/90"
+                          >
+                            Підтвердити і далі →
+                          </Button>
+                        )}
+                      </div>
+                      
+                      <p className="text-xs text-muted-foreground">
+                        Листосик допоможе вам покращити пісню, просто скажіть що хочете змінити
+                      </p>
                     </div>
                   )}
                   
@@ -315,7 +393,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       <div className="flex gap-2 pt-4 border-t border-border">
         <Textarea
           ref={textareaRef}
-          placeholder="Введіть ваше повідомлення..."
+          placeholder={lastLyricsMessage ? "Скажіть що хочете змінити у пісні..." : "Введіть ваше повідомлення..."}
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyPress={handleKeyPress}
@@ -323,7 +401,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           rows={1}
         />
         <Button 
-          onClick={handleSendMessage} 
+          onClick={() => handleSendMessage()} 
           disabled={!newMessage.trim() || isTyping}
           size="icon"
           className="self-end"
