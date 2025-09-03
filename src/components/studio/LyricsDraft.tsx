@@ -106,7 +106,7 @@ export const LyricsDraft: React.FC<LyricsDraftProps> = ({ lyrics, onConfirm }) =
                 className="ml-auto"
               >
                 <CheckCircle className="h-4 w-4 mr-1" />
-                Підтвердити слова
+                Підтвердити і перейти далі
               </Button>
             </div>
           </>
@@ -115,8 +115,11 @@ export const LyricsDraft: React.FC<LyricsDraftProps> = ({ lyrics, onConfirm }) =
             <div className="text-center text-muted-foreground">
               <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
               <p className="text-lg font-medium mb-2">Чернетка порожня</p>
-              <p className="text-sm">
+              <p className="text-sm mb-3">
                 Слова пісні з'являться тут після спілкування з Лістосиком
+              </p>
+              <p className="text-xs text-muted-foreground">
+                💡 Ви зможете редагувати слова як тут, так і прямо в чаті
               </p>
             </div>
           </div>

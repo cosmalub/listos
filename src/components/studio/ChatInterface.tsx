@@ -16,6 +16,8 @@ interface Message {
 
 interface ChatInterfaceProps {
   onLyricsGenerated: (lyrics: string) => void;
+  onConfirmLyrics?: (lyrics: string) => void;
+  onEditLyrics?: () => void;
 }
 
 const hintChips = [
@@ -25,7 +27,11 @@ const hintChips = [
   'Чи є особливі побажання?',
 ];
 
-export const ChatInterface: React.FC<ChatInterfaceProps> = ({ onLyricsGenerated }) => {
+export const ChatInterface: React.FC<ChatInterfaceProps> = ({ 
+  onLyricsGenerated, 
+  onConfirmLyrics,
+  onEditLyrics 
+}) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -36,6 +42,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ onLyricsGenerated 
   ]);
   const [newMessage, setNewMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
+  const [editingContent, setEditingContent] = useState('');
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -123,6 +131,36 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ onLyricsGenerated 
     }
   };
 
+  const extractLyricsFromMessage = (content: string): string | null => {
+    const lyricsMatch = content.match(/```([\s\S]*?)```/);
+    return lyricsMatch ? lyricsMatch[1].trim() : null;
+  };
+
+  const handleEditMessage = (messageId: string, content: string) => {
+    setEditingMessageId(messageId);
+    const lyrics = extractLyricsFromMessage(content);
+    setEditingContent(lyrics || content);
+  };
+
+  const handleSaveEdit = (messageId: string) => {
+    setMessages(prev => prev.map(msg => 
+      msg.id === messageId 
+        ? { ...msg, content: msg.content.includes('```') 
+            ? msg.content.replace(/```[\s\S]*?```/, `\`\`\`\n${editingContent}\n\`\`\``)
+            : editingContent
+          }
+        : msg
+    ));
+    onLyricsGenerated(editingContent);
+    setEditingMessageId(null);
+    setEditingContent('');
+  };
+
+  const handleCancelEdit = () => {
+    setEditingMessageId(null);
+    setEditingContent('');
+  };
+
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center gap-3 mb-4 pb-4 border-b border-border">
@@ -138,36 +176,101 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ onLyricsGenerated 
 
       <ScrollArea className="flex-1 pr-4" ref={scrollAreaRef}>
         <div className="space-y-4">
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex gap-3 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-            >
-              {message.sender === 'assistant' && (
-                <Avatar className="w-8 h-8">
-                  <AvatarImage src={listosMascot} alt="Листосик" />
-                  <AvatarFallback>Л</AvatarFallback>
-                </Avatar>
-              )}
+          {messages.map((message) => {
+            const hasLyrics = message.sender === 'assistant' && extractLyricsFromMessage(message.content);
+            const isEditing = editingMessageId === message.id;
+            
+            return (
               <div
-                className={`max-w-[80%] rounded-lg px-4 py-2 ${
-                  message.sender === 'user'
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted text-muted-foreground'
-                }`}
+                key={message.id}
+                className={`flex gap-3 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
-                <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                <p className="text-xs opacity-70 mt-1">
-                  {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </p>
+                {message.sender === 'assistant' && (
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage src={listosMascot} alt="Листосик" />
+                    <AvatarFallback>Л</AvatarFallback>
+                  </Avatar>
+                )}
+                <div className="max-w-[80%] flex flex-col gap-2">
+                  <div
+                    className={`rounded-lg px-4 py-2 ${
+                      message.sender === 'user'
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-muted text-muted-foreground'
+                    }`}
+                  >
+                    {isEditing ? (
+                      <Textarea
+                        value={editingContent}
+                        onChange={(e) => setEditingContent(e.target.value)}
+                        className="w-full min-h-[100px] text-sm"
+                        placeholder="Редагуйте текст пісні..."
+                      />
+                    ) : (
+                      <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                    )}
+                    <p className="text-xs opacity-70 mt-1">
+                      {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </p>
+                  </div>
+                  
+                  {/* Lyrics action buttons */}
+                  {hasLyrics && !isEditing && (
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleEditMessage(message.id, message.content)}
+                      >
+                        Редагувати в чаті
+                      </Button>
+                      {onEditLyrics && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={onEditLyrics}
+                        >
+                          Відкрити у чернетці
+                        </Button>
+                      )}
+                      {onConfirmLyrics && (
+                        <Button
+                          size="sm"
+                          onClick={() => onConfirmLyrics(extractLyricsFromMessage(message.content) || '')}
+                        >
+                          Підтвердити і далі
+                        </Button>
+                      )}
+                    </div>
+                  )}
+                  
+                  {/* Edit mode buttons */}
+                  {isEditing && (
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        onClick={() => handleSaveEdit(message.id)}
+                      >
+                        Зберегти
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={handleCancelEdit}
+                      >
+                        Скасувати
+                      </Button>
+                    </div>
+                  )}
+                </div>
+                {message.sender === 'user' && (
+                  <Avatar className="w-8 h-8">
+                    <AvatarFallback>Ви</AvatarFallback>
+                  </Avatar>
+                )}
               </div>
-              {message.sender === 'user' && (
-                <Avatar className="w-8 h-8">
-                  <AvatarFallback>Ви</AvatarFallback>
-                </Avatar>
-              )}
-            </div>
-          ))}
+            );
+          })}
           {isTyping && (
             <div className="flex gap-3 justify-start">
               <Avatar className="w-8 h-8">
@@ -202,6 +305,9 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ onLyricsGenerated 
               </Badge>
             ))}
           </div>
+          <p className="text-xs text-muted-foreground mt-2">
+            💡 Після створення слів ви зможете їх відредагувати прямо в чаті або у чернетці
+          </p>
         </div>
       )}
 

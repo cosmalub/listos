@@ -19,10 +19,22 @@ const steps = [
 const Studio = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [lyrics, setLyrics] = useState('');
+  const [mobileTab, setMobileTab] = useState('chat');
+  const [hasUnconfirmedLyrics, setHasUnconfirmedLyrics] = useState(false);
 
   const handleLyricsConfirmed = (confirmedLyrics: string) => {
     setLyrics(confirmedLyrics);
+    setHasUnconfirmedLyrics(false);
     setCurrentStep(2);
+  };
+
+  const handleLyricsGenerated = (generatedLyrics: string) => {
+    setLyrics(generatedLyrics);
+    setHasUnconfirmedLyrics(true);
+    // Auto-switch to draft tab on mobile for first-time lyrics
+    if (mobileTab === 'chat' && !lyrics) {
+      setMobileTab('draft');
+    }
   };
 
   const renderStepContent = () => {
@@ -33,7 +45,11 @@ const Studio = () => {
             {/* Desktop: Two-column layout */}
             <div className="hidden md:grid md:grid-cols-2 md:gap-6 h-full">
               <Card className="p-6 h-full">
-                <ChatInterface onLyricsGenerated={setLyrics} />
+                <ChatInterface 
+                  onLyricsGenerated={handleLyricsGenerated}
+                  onConfirmLyrics={handleLyricsConfirmed}
+                  onEditLyrics={() => setMobileTab('draft')}
+                />
               </Card>
               <Card className="p-6 h-full">
                 <LyricsDraft lyrics={lyrics} onConfirm={handleLyricsConfirmed} />
@@ -41,15 +57,24 @@ const Studio = () => {
             </div>
 
             {/* Mobile: Tabbed layout */}
-            <div className="md:hidden h-full">
-              <Tabs defaultValue="chat" className="h-full flex flex-col">
+            <div className="md:hidden h-full relative">
+              <Tabs value={mobileTab} onValueChange={setMobileTab} className="h-full flex flex-col">
                 <TabsList className="grid w-full grid-cols-2 mb-4">
                   <TabsTrigger value="chat">Чат</TabsTrigger>
-                  <TabsTrigger value="draft">Чернетка</TabsTrigger>
+                  <TabsTrigger value="draft" className="relative">
+                    Чернетка
+                    {hasUnconfirmedLyrics && currentStep === 1 && (
+                      <span className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full"></span>
+                    )}
+                  </TabsTrigger>
                 </TabsList>
                 <TabsContent value="chat" className="flex-1">
                   <Card className="p-4 h-full">
-                    <ChatInterface onLyricsGenerated={setLyrics} />
+                    <ChatInterface 
+                      onLyricsGenerated={handleLyricsGenerated}
+                      onConfirmLyrics={handleLyricsConfirmed}
+                      onEditLyrics={() => setMobileTab('draft')}
+                    />
                   </Card>
                 </TabsContent>
                 <TabsContent value="draft" className="flex-1">
@@ -58,6 +83,27 @@ const Studio = () => {
                   </Card>
                 </TabsContent>
               </Tabs>
+
+              {/* Mobile bottom CTA panel */}
+              {mobileTab === 'chat' && hasUnconfirmedLyrics && currentStep === 1 && (
+                <div className="fixed bottom-4 left-4 right-4 bg-background border border-border rounded-lg p-3 shadow-lg flex gap-2 z-10">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => setMobileTab('draft')}
+                    className="flex-1"
+                  >
+                    Редагувати
+                  </Button>
+                  <Button 
+                    size="sm" 
+                    onClick={() => handleLyricsConfirmed(lyrics)}
+                    className="flex-1"
+                  >
+                    Підтвердити і далі
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         );
