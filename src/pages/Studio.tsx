@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, Circle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -20,6 +20,8 @@ const steps = [
 ];
 
 const Studio = () => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [lyrics, setLyrics] = useState('');
   const [mobileTab, setMobileTab] = useState('chat');
@@ -27,6 +29,17 @@ const Studio = () => {
   const [selectedMusicVariant, setSelectedMusicVariant] = useState<any>(null);
   const [pageData, setPageData] = useState<any>(null);
   const chatRef = useRef<ChatInterfaceRef>(null);
+
+  // Sync current step with URL parameter
+  useEffect(() => {
+    const stepParam = searchParams.get('step');
+    if (stepParam) {
+      const step = parseInt(stepParam, 10);
+      if (step >= 1 && step <= 5) {
+        setCurrentStep(step);
+      }
+    }
+  }, [searchParams]);
 
   const handleLyricsConfirmed = (confirmedLyrics: string) => {
     setLyrics(confirmedLyrics);

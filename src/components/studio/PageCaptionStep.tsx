@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { FileText, Info, ArrowRight } from 'lucide-react';
@@ -13,7 +13,6 @@ interface PageCaptionData {
   recipient: string;
   sender: string;
   tone: string;
-  customMessage: string;
 }
 
 interface PageCaptionStepProps {
@@ -47,12 +46,12 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
   musicVariant,
   onComplete
 }) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<PageCaptionData>({
     occasion: '',
     recipient: '',
     sender: '',
-    tone: '',
-    customMessage: ''
+    tone: ''
   });
 
   const handleInputChange = (field: keyof PageCaptionData, value: string) => {
@@ -65,8 +64,8 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
       alert('Будь ласка, заповніть всі поля');
       return;
     }
-    // Redirect to draft page for editing
-    window.location.href = `/s/draft?occasion=${formData.occasion}&recipient=${formData.recipient}&sender=${formData.sender}&tone=${formData.tone}`;
+    // Navigate to draft page for editing
+    navigate(`/s/draft?occasion=${formData.occasion}&recipient=${encodeURIComponent(formData.recipient)}&sender=${encodeURIComponent(formData.sender)}&tone=${formData.tone}`);
   };
 
   const isFormValid = formData.occasion && formData.recipient && formData.sender;

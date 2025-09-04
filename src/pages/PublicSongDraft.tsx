@@ -82,7 +82,7 @@ const PublicSongDraft = () => {
   const handleApprove = () => {
     // Save the message and redirect to next step
     console.log('Final message:', message);
-    alert('Сторінка затверджена! Переходимо до наступного кроку.');
+    alert('Сторінка затверджена та опублікована! Переходимо до наступного кроку.');
     navigate('/studio?step=4');
   };
 
@@ -121,7 +121,7 @@ const PublicSongDraft = () => {
               <Button 
                 variant="ghost" 
                 size="sm"
-                onClick={() => navigate('/studio')}
+                onClick={() => navigate('/studio?step=3')}
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Назад до студії
@@ -141,11 +141,16 @@ const PublicSongDraft = () => {
             <Card className="bg-white/95 backdrop-blur-sm">
               <CardHeader className="text-center">
                 <div className="space-y-2">
-                  <Badge variant="secondary" className="mx-auto">
-                    {occasion === 'congratulations' ? 'Вітання' : 
-                     occasion === 'thanks' ? 'Подяка' : 
-                     occasion === 'apology' ? 'Вибачення' : 'Особлива нагода'}
-                  </Badge>
+                  <div className="flex items-center justify-center gap-2">
+                    <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-300">
+                      Чернетка
+                    </Badge>
+                    <Badge variant="secondary" className="mx-auto">
+                      {occasion === 'congratulations' ? 'Вітання' : 
+                       occasion === 'thanks' ? 'Подяка' : 
+                       occasion === 'apology' ? 'Вибачення' : 'Особлива нагода'}
+                    </Badge>
+                  </div>
                   <CardTitle className="text-2xl">{song.title}</CardTitle>
                   <p className="text-muted-foreground">Для {recipient} від {sender}</p>
                 </div>
@@ -207,7 +212,7 @@ const PublicSongDraft = () => {
 
             {/* Action Buttons */}
             <div className="flex gap-3 justify-center">
-              <Button variant="outline" onClick={() => navigate('/studio')}>
+              <Button variant="outline" onClick={() => navigate('/studio?step=3')}>
                 Повернутися до редагування
               </Button>
               <Button onClick={handleApprove} className="min-w-[200px]">
