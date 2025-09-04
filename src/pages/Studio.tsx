@@ -7,14 +7,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ChatInterface, ChatInterfaceRef } from '@/components/studio/ChatInterface';
 import { LyricsDraft } from '@/components/studio/LyricsDraft';
 import { MusicGeneration } from '@/components/studio/MusicGeneration';
+import { PageCaptionStep } from '@/components/studio/PageCaptionStep';
 import { Header } from '@/components/sections/header';
 import { Footer } from '@/components/sections/footer';
 
 const steps = [
   { id: 1, title: 'Створення слів', description: 'Створюємо слова для пісні' },
   { id: 2, title: 'Генерація музики', description: 'Генеруємо 2 варіанти на основі тексту' },
-  { id: 3, title: 'Дизайн лицьової сторони', description: 'Оформлюємо лицьову частину листівки' },
-  { id: 4, title: 'Дизайн зворотної сторони', description: 'Оформлюємо зворотну частину листівки' },
+  { id: 3, title: 'Сторінка з піснею', description: 'Створюємо персональну сторінку' },
 ];
 
 const Studio = () => {
@@ -23,6 +23,7 @@ const Studio = () => {
   const [mobileTab, setMobileTab] = useState('chat');
   const [hasUnconfirmedLyrics, setHasUnconfirmedLyrics] = useState(false);
   const [selectedMusicVariant, setSelectedMusicVariant] = useState<any>(null);
+  const [pageData, setPageData] = useState<any>(null);
   const chatRef = useRef<ChatInterfaceRef>(null);
 
   const handleLyricsConfirmed = (confirmedLyrics: string) => {
@@ -47,7 +48,14 @@ const Studio = () => {
 
   const handleMusicVariantSelected = (variant: any) => {
     setSelectedMusicVariant(variant);
-    setCurrentStep(3); // Move to postcard design step
+    setCurrentStep(3); // Move to page caption step
+  };
+
+  const handlePageCaptionComplete = (data: any) => {
+    setPageData(data);
+    // Here we would typically save the page data and redirect to the postcard design
+    console.log("Page data:", data);
+    alert("Сторінка створена! Далі буде дизайн листівки.");
   };
 
   const handleRequestSpecialist = () => {
@@ -145,25 +153,11 @@ const Studio = () => {
         );
       case 3:
         return (
-          <Card className="p-8 text-center">
-            <h3 className="text-xl font-semibold mb-4">Дизайн лицьової сторони</h3>
-            <p className="text-muted-foreground mb-6">
-              Тут буде створення дизайну лицьової сторони листівки
-            </p>
-            <Button variant="outline" onClick={() => setCurrentStep(4)}>
-              Перейти до дизайну зворотної сторони
-            </Button>
-          </Card>
-        );
-      case 4:
-        return (
-          <Card className="p-8 text-center">
-            <h3 className="text-xl font-semibold mb-4">Дизайн зворотної сторони</h3>
-            <p className="text-muted-foreground mb-6">
-              Тут буде створення дизайну зворотної сторони листівки
-            </p>
-            <Button>Завершити створення листівки</Button>
-          </Card>
+          <PageCaptionStep
+            lyrics={lyrics}
+            musicVariant={selectedMusicVariant}
+            onComplete={handlePageCaptionComplete}
+          />
         );
       default:
         return null;

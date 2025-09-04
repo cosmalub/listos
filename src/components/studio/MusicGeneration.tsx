@@ -3,7 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
-import { Loader2, Music, Sparkles, RefreshCw, HeadphonesIcon, UserCheck } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Loader2, Music, Sparkles, RefreshCw, HeadphonesIcon, UserCheck, Info } from 'lucide-react';
 import { MusicVariantCard } from './MusicVariantCard';
 
 interface MusicVariant {
@@ -104,6 +105,15 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
         </p>
       </div>
 
+      {/* Info Alert */}
+      <Alert className="border-primary/20 bg-primary/5">
+        <Info className="h-4 w-4" />
+        <AlertDescription>
+          <strong>Що далі:</strong> Після вибору варіанту музики, ми створимо персональну сторінку з вашою піснею та побажанням. 
+          Потім згенеруємо листівку з QR-кодом, який веде на цю сторінку.
+        </AlertDescription>
+      </Alert>
+
       {/* Generation Status */}
       {isGenerating && (
         <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-secondary/5">
@@ -136,7 +146,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
       {variants.length > 0 && !isGenerating && (
         <div className="space-y-4 animate-fade-in">
           <div className="text-center">
-            <h3 className="text-lg font-semibold mb-2">Оберіть варіант:</h3>
+            <h3 className="text-lg font-semibold mb-2">Оберіть один варіант, щоб продовжити:</h3>
             <p className="text-sm text-muted-foreground">
               Спроба {generationAttempt} з 2
             </p>
