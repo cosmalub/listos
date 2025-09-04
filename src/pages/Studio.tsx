@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ChatInterface, ChatInterfaceRef } from '@/components/studio/ChatInterface';
 import { LyricsDraft } from '@/components/studio/LyricsDraft';
+import { MusicGeneration } from '@/components/studio/MusicGeneration';
 import { Header } from '@/components/sections/header';
 import { Footer } from '@/components/sections/footer';
 
@@ -21,6 +22,7 @@ const Studio = () => {
   const [lyrics, setLyrics] = useState('');
   const [mobileTab, setMobileTab] = useState('chat');
   const [hasUnconfirmedLyrics, setHasUnconfirmedLyrics] = useState(false);
+  const [selectedMusicVariant, setSelectedMusicVariant] = useState<any>(null);
   const chatRef = useRef<ChatInterfaceRef>(null);
 
   const handleLyricsConfirmed = (confirmedLyrics: string) => {
@@ -41,6 +43,16 @@ const Studio = () => {
     setTimeout(() => {
       chatRef.current?.prefillAndFocus(editText);
     }, 100);
+  };
+
+  const handleMusicVariantSelected = (variant: any) => {
+    setSelectedMusicVariant(variant);
+    setCurrentStep(3); // Move to postcard design step
+  };
+
+  const handleRequestSpecialist = () => {
+    // Handle specialist request - could show a contact form or similar
+    console.log("Specialist requested for music generation");
   };
 
   const renderStepContent = () => {
@@ -125,15 +137,11 @@ const Studio = () => {
         );
       case 2:
         return (
-          <Card className="p-8 text-center">
-            <h3 className="text-xl font-semibold mb-4">Генерація пісні</h3>
-            <p className="text-muted-foreground mb-6">
-              Тут буде генерація 3 варіантів пісні на основі створених слів
-            </p>
-            <Button variant="outline" onClick={() => setCurrentStep(3)}>
-              Перейти до дизайну лицьової сторони
-            </Button>
-          </Card>
+          <MusicGeneration
+            lyrics={lyrics}
+            onVariantSelected={handleMusicVariantSelected}
+            onRequestSpecialist={handleRequestSpecialist}
+          />
         );
       case 3:
         return (
