@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FileText, Edit, Trash2, CheckCircle, MessageCircle, ArrowRight, Save } from 'lucide-react';
+import { FileText, Edit, Trash2, CheckCircle, MessageCircle, ArrowRight, Save, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
@@ -14,6 +14,7 @@ export const LyricsDraft: React.FC<LyricsDraftProps> = ({ lyrics, onConfirm, onR
   const [editableLyrics, setEditableLyrics] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [selectedText, setSelectedText] = useState('');
+  const [feedbackText, setFeedbackText] = useState('');
 
   useEffect(() => {
     setEditableLyrics(lyrics);
@@ -42,6 +43,13 @@ export const LyricsDraft: React.FC<LyricsDraftProps> = ({ lyrics, onConfirm, onR
       'Щось не так з піснею, підправ її';
     onRequestEdit(text);
     setSelectedText('');
+  };
+
+  const handleSendFeedback = () => {
+    if (feedbackText.trim()) {
+      onRequestEdit(feedbackText);
+      setFeedbackText('');
+    }
   };
 
   const handleTextSelection = () => {
@@ -110,81 +118,94 @@ export const LyricsDraft: React.FC<LyricsDraftProps> = ({ lyrics, onConfirm, onR
               </Card>
             )}
 
-            {/* Simplified action buttons */}
-            <div className="mt-6 space-y-3">
-              {/* Info block */}
-              <div className="bg-muted/30 rounded-lg p-3 border border-border/50">
-                <p className="text-sm text-muted-foreground">
-                  {selectedText ? (
-                    <>Обрано текст: "<em>{selectedText.slice(0, 50)}{selectedText.length > 50 ? '...' : ''}</em>"</>
-                  ) : (
-                    <>Виділіть частину тексту для точного редагування або використайте загальні кнопки</>
-                  )}
+            {/* How do you like it prompt */}
+            <div className="mt-6 space-y-4">
+              <div className="bg-primary/5 rounded-lg p-4 border border-primary/20">
+                <h4 className="font-medium text-foreground mb-2">Як вам пісня? 🎵</h4>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Якщо все підходить - підтверджуйте і йдемо далі. Якщо треба підправити - напишіть що змінити.
                 </p>
-              </div>
-
-              {/* Two main action buttons */}
-              <div className="grid grid-cols-1 gap-3">
-                <Button 
-                  variant="outline" 
-                  onClick={handleRequestEdit}
-                  size="lg"
-                  className="h-14 justify-start text-left"
-                >
-                  <MessageCircle className="h-5 w-5 mr-3 shrink-0" />
-                  <div>
-                    <div className="font-medium">Попросити підправити</div>
-                    <div className="text-xs text-muted-foreground">
-                      {selectedText ? 'Підправить обрану частину' : 'Спитає що не подобається'}
-                    </div>
-                  </div>
-                </Button>
                 
-                <Button 
-                  onClick={handleConfirmLyrics}
-                  disabled={!editableLyrics.trim()}
-                  size="lg"
-                  className="h-14 justify-start text-left"
-                >
-                  <CheckCircle className="h-5 w-5 mr-3 shrink-0" />
-                  <div>
-                    <div className="font-medium">Підтвердити і далі</div>
-                    <div className="text-xs opacity-80">
-                      Переходити до створення пісні
-                    </div>
+                {/* Mini feedback composer */}
+                <div className="space-y-3">
+                  <Textarea
+                    value={feedbackText}
+                    onChange={(e) => setFeedbackText(e.target.value)}
+                    placeholder="Наприклад: 'Зроби більш весело' або 'Додай рим до другого куплету'"
+                    className="min-h-[60px] text-sm"
+                  />
+                  
+                  {/* Two main action buttons */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <Button 
+                      variant="outline" 
+                      onClick={handleSendFeedback}
+                      disabled={!feedbackText.trim()}
+                      className="justify-center"
+                    >
+                      <Send className="h-4 w-4 mr-2" />
+                      Надіслати в чат
+                    </Button>
+                    
+                    <Button 
+                      onClick={handleConfirmLyrics}
+                      disabled={!editableLyrics.trim()}
+                      className="justify-center"
+                    >
+                      <CheckCircle className="h-4 w-4 mr-2" />
+                      Підтвердити і далі
+                      <ArrowRight className="h-4 w-4 ml-2" />
+                    </Button>
                   </div>
-                  <ArrowRight className="h-4 w-4 ml-auto shrink-0" />
-                </Button>
+                </div>
               </div>
 
-              {/* Advanced editing options */}
-              <details className="group">
-                <summary className="cursor-pointer text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Додаткові опції редагування
-                </summary>
-                <div className="mt-3 flex gap-2">
-                  <Button
-                    variant="outline"
+              {/* Text selection hint */}
+              {selectedText && (
+                <div className="bg-accent/30 rounded-lg p-3 border border-accent/30">
+                  <p className="text-sm text-muted-foreground">
+                    Обрано текст: "<em className="text-accent-foreground">{selectedText.slice(0, 50)}{selectedText.length > 50 ? '...' : ''}</em>"
+                  </p>
+                  <Button 
+                    variant="outline" 
                     size="sm"
-                    onClick={() => setIsEditing(!isEditing)}
-                    disabled={!editableLyrics}
+                    onClick={handleRequestEdit}
+                    className="mt-2"
                   >
-                    <Edit className="h-4 w-4 mr-1" />
-                    {isEditing ? 'Перегляд' : 'Редагувати'}
-                  </Button>
-                  {isEditing && (
-                    <Button variant="outline" size="sm" onClick={handleSaveEdit}>
-                      <Save className="h-4 w-4 mr-1" />
-                      Зберегти
-                    </Button>
-                  )}
-                  <Button variant="outline" size="sm" onClick={handleClearDraft}>
-                    <Trash2 className="h-4 w-4 mr-1" />
-                    Очистити
+                    <MessageCircle className="h-4 w-4 mr-1" />
+                    Підправити цю частину
                   </Button>
                 </div>
-              </details>
+              )}
             </div>
+
+            {/* Advanced editing options */}
+            <details className="group mt-4">
+              <summary className="cursor-pointer text-sm text-muted-foreground hover:text-foreground transition-colors">
+                Додаткові опції редагування
+              </summary>
+              <div className="mt-3 flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsEditing(!isEditing)}
+                  disabled={!editableLyrics}
+                >
+                  <Edit className="h-4 w-4 mr-1" />
+                  {isEditing ? 'Перегляд' : 'Редагувати'}
+                </Button>
+                {isEditing && (
+                  <Button variant="outline" size="sm" onClick={handleSaveEdit}>
+                    <Save className="h-4 w-4 mr-1" />
+                    Зберегти
+                  </Button>
+                )}
+                <Button variant="outline" size="sm" onClick={handleClearDraft}>
+                  <Trash2 className="h-4 w-4 mr-1" />
+                  Очистити
+                </Button>
+              </div>
+            </details>
           </>
         ) : (
           <div className="flex-1 flex items-center justify-center">

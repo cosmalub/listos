@@ -32,10 +32,8 @@ const Studio = () => {
   const handleLyricsGenerated = (generatedLyrics: string) => {
     setLyrics(generatedLyrics);
     setHasUnconfirmedLyrics(true);
-    // Auto-switch to draft tab on mobile for first-time lyrics
-    if (mobileTab === 'chat' && !lyrics) {
-      setMobileTab('draft');
-    }
+    // Auto-switch to draft tab on mobile after lyrics generation
+    setMobileTab('draft');
   };
 
   const handleRequestEdit = (editText: string) => {
