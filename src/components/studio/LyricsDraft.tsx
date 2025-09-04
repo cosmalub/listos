@@ -40,7 +40,7 @@ export const LyricsDraft: React.FC<LyricsDraftProps> = ({ lyrics, onConfirm, onR
   const handleRequestEdit = () => {
     const text = selectedText ? 
       `Підправ цю частину: "${selectedText}"` : 
-      'Щось не так з піснею, підправ її';
+      'Щось не так з текстом пісні, підправ його';
     onRequestEdit(text);
     setSelectedText('');
   };
@@ -77,7 +77,7 @@ export const LyricsDraft: React.FC<LyricsDraftProps> = ({ lyrics, onConfirm, onR
       <div className="flex items-center justify-between mb-4 pb-4 border-b border-border">
         <div className="flex items-center gap-2">
           <FileText className="h-5 w-5 text-primary" />
-          <h3 className="font-semibold">Чернетка пісні</h3>
+          <h3 className="font-semibold">Чернетка тексту пісні</h3>
         </div>
         <div className="flex gap-2">
           {lyrics && lyrics !== editableLyrics && (
@@ -121,9 +121,9 @@ export const LyricsDraft: React.FC<LyricsDraftProps> = ({ lyrics, onConfirm, onR
             {/* How do you like it prompt */}
             <div className="mt-6 space-y-4">
               <div className="bg-primary/5 rounded-lg p-4 border border-primary/20">
-                <h4 className="font-medium text-foreground mb-2">Як вам пісня? 🎵</h4>
+                <h4 className="font-medium text-foreground mb-2">Як вам текст пісні? 🎵</h4>
                 <p className="text-sm text-muted-foreground mb-3">
-                  Якщо все підходить - підтверджуйте і йдемо далі. Якщо треба підправити - напишіть що змінити.
+                  Якщо все підходить - підтверджуйте і згенеруємо музику. Якщо треба підправити - напишіть що змінити.
                 </p>
                 
                 {/* Mini feedback composer */}
@@ -153,7 +153,7 @@ export const LyricsDraft: React.FC<LyricsDraftProps> = ({ lyrics, onConfirm, onR
                       className="justify-center"
                     >
                       <CheckCircle className="h-4 w-4 mr-2" />
-                      Підтвердити і далі
+                      Підтвердити і згенерувати музику
                       <ArrowRight className="h-4 w-4 ml-2" />
                     </Button>
                   </div>
