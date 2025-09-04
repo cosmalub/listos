@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2, FileText, Sparkles, Info, ArrowRight, ExternalLink } from 'lucide-react';
+import { FileText, Info, ArrowRight } from 'lucide-react';
 
 interface PageCaptionData {
   occasion: string;
@@ -54,36 +54,22 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
     tone: '',
     customMessage: ''
   });
-  const [isGenerating, setIsGenerating] = useState(false);
 
   const handleInputChange = (field: keyof PageCaptionData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const generateTestMessage = () => {
-    setIsGenerating(true);
-    
-    // Simulate API call delay
-    setTimeout(() => {
-      const occasionLabel = occasions.find(o => o.value === formData.occasion)?.label || formData.occasion;
-      const toneLabel = tones.find(t => t.value === formData.tone)?.label || formData.tone;
-      
-      const demoMessage = `Дорог${formData.recipient.endsWith('ї') || formData.recipient.endsWith('і') ? 'а' : 'ий'} ${formData.recipient}! Ця пісня написана спеціально для тебе з нагоди ${occasionLabel.toLowerCase()}. Нехай вона принесе тобі радість та натхнення. З любов'ю, ${formData.sender} 💫`;
-      
-      setFormData(prev => ({ ...prev, customMessage: demoMessage }));
-      setIsGenerating(false);
-    }, 1500);
-  };
 
   const handleComplete = () => {
-    if (!formData.occasion || !formData.recipient || !formData.sender || !formData.customMessage) {
+    if (!formData.occasion || !formData.recipient || !formData.sender) {
       alert('Будь ласка, заповніть всі поля');
       return;
     }
-    onComplete(formData);
+    // Redirect to draft page for editing
+    window.location.href = `/s/draft?occasion=${formData.occasion}&recipient=${formData.recipient}&sender=${formData.sender}&tone=${formData.tone}`;
   };
 
-  const isFormValid = formData.occasion && formData.recipient && formData.sender && formData.customMessage;
+  const isFormValid = formData.occasion && formData.recipient && formData.sender;
 
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
@@ -167,57 +153,11 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
             </Select>
           </div>
 
-          {/* Generate Message Button */}
-          <Button
-            onClick={generateTestMessage}
-            disabled={isGenerating || !formData.occasion || !formData.recipient || !formData.sender}
-            className="w-full"
-            variant="outline"
-          >
-            {isGenerating ? (
-              <>
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                Генеруємо повідомлення...
-              </>
-            ) : (
-              <>
-                <Sparkles className="h-4 w-4 mr-2" />
-                Згенерувати повідомлення ШІ
-              </>
-            )}
-          </Button>
-
-          {/* Custom Message */}
-          <div className="space-y-2">
-            <Label htmlFor="message">Особисте повідомлення *</Label>
-            <Textarea
-              id="message"
-              value={formData.customMessage}
-              onChange={(e) => handleInputChange('customMessage', e.target.value)}
-              placeholder="Введіть або згенеруйте особисте повідомлення..."
-              className="min-h-[100px]"
-              maxLength={200}
-            />
-            <p className="text-xs text-muted-foreground">
-              {formData.customMessage.length}/200 символів
-            </p>
-          </div>
         </CardContent>
       </Card>
 
       {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-3 justify-center">
-        <Button
-          variant="outline"
-          size="lg"
-          asChild
-          className="min-w-[200px]"
-        >
-          <a href="/s/test" target="_blank" rel="noopener noreferrer">
-            <ExternalLink className="h-4 w-4 mr-2" />
-            Дивитися приклад сторінки
-          </a>
-        </Button>
+      <div className="flex justify-center">
         <Button
           onClick={handleComplete}
           disabled={!isFormValid}

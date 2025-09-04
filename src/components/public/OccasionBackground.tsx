@@ -55,17 +55,19 @@ export const OccasionBackground: React.FC<OccasionBackgroundProps> = ({
           <div
             key={i}
             className={cn(
-              "absolute w-2 h-2 rounded-full opacity-20",
-              occasion === 'congratulations' && "bg-yellow-400",
-              occasion === 'apology' && "bg-blue-400", 
-              occasion === 'thanks' && "bg-green-400",
-              !['congratulations', 'apology', 'thanks'].includes(occasion) && "bg-primary"
+              "absolute rounded-full opacity-60",
+              occasion === 'congratulations' && "w-3 h-3 bg-yellow-400 animate-bounce",
+              occasion === 'apology' && "w-2 h-2 bg-blue-400", 
+              occasion === 'thanks' && "w-2 h-2 bg-green-400",
+              !['congratulations', 'apology', 'thanks'].includes(occasion) && "w-2 h-2 bg-primary"
             )}
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               animationDelay: `${Math.random() * 5}s`,
-              animation: `float ${3 + Math.random() * 4}s ease-in-out infinite`
+              animation: occasion === 'congratulations' 
+                ? `bounce ${1 + Math.random() * 2}s ease-in-out infinite`
+                : `float ${3 + Math.random() * 4}s ease-in-out infinite`
             }}
           />
         ))}

@@ -15,6 +15,8 @@ const steps = [
   { id: 1, title: 'Створення слів', description: 'Створюємо слова для пісні' },
   { id: 2, title: 'Генерація музики', description: 'Генеруємо 2 варіанти на основі тексту' },
   { id: 3, title: 'Сторінка з піснею', description: 'Створюємо персональну сторінку' },
+  { id: 4, title: 'Дизайн листівки', description: 'Обираємо дизайн та стиль листівки' },
+  { id: 5, title: 'Замовлення', description: 'Оформлюємо замовлення та доставку' },
 ];
 
 const Studio = () => {
@@ -53,9 +55,7 @@ const Studio = () => {
 
   const handlePageCaptionComplete = (data: any) => {
     setPageData(data);
-    // Here we would typically save the page data and redirect to the postcard design
-    console.log("Page data:", data);
-    alert("Сторінка створена! Далі буде дизайн листівки.");
+    setCurrentStep(4);
   };
 
   const handleRequestSpecialist = () => {
@@ -158,6 +158,26 @@ const Studio = () => {
             musicVariant={selectedMusicVariant}
             onComplete={handlePageCaptionComplete}
           />
+        );
+      case 4:
+        return (
+          <div className="text-center space-y-6 max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold">Крок 4: Дизайн листівки</h2>
+            <p className="text-muted-foreground">Тут буде вибір дизайну та стилю листівки</p>
+            <Button onClick={() => setCurrentStep(5)} size="lg">
+              Перейти до замовлення
+            </Button>
+          </div>
+        );
+      case 5:
+        return (
+          <div className="text-center space-y-6 max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold">Крок 5: Оформлення замовлення</h2>
+            <p className="text-muted-foreground">Тут буде форма оформлення замовлення та доставки</p>
+            <Button variant="outline" onClick={() => setCurrentStep(4)}>
+              Повернутися до дизайну
+            </Button>
+          </div>
         );
       default:
         return null;
