@@ -4,8 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Play, Pause, Heart, ArrowLeft, CheckCircle } from 'lucide-react';
+import { Play, Pause, CheckCircle } from 'lucide-react';
 import { OccasionBackground } from '@/components/public/OccasionBackground';
+import { Header } from '@/components/sections/header';
+import { StepsHeader } from '@/components/studio/StepsHeader';
+import { Footer } from '@/components/sections/footer';
 
 const PublicSongDraft = () => {
   const [searchParams] = useSearchParams();
@@ -92,143 +95,115 @@ const PublicSongDraft = () => {
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] via-white to-white">
       <OccasionBackground occasion={occasion} />
       
-      {/* Confetti effect for congratulations */}
-      {showConfetti && occasion === 'congratulations' && (
-        <div className="fixed inset-0 pointer-events-none z-50">
-          {[...Array(50)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-2 h-2 bg-yellow-400 rounded-full animate-bounce"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 2}s`,
-                animationDuration: `${2 + Math.random() * 3}s`
-              }}
-            />
-          ))}
-        </div>
-      )}
+      {/* Header */}
+      <Header centerTitle="Студія створення листівки" hideNav showMenu={false} />
+      
+      {/* Steps indicator */}
+      <StepsHeader currentStep={3} />
 
-      <div className="min-h-screen relative z-10">
-        {/* Header */}
-        <div className="bg-white/90 backdrop-blur-sm border-b border-border/50">
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex items-center gap-4">
-              <Button 
-                variant="ghost" 
-                size="sm"
-                onClick={() => navigate('/studio?step=3')}
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Назад до студії
-              </Button>
-              <div>
-                <h1 className="text-lg font-semibold">Попередній перегляд сторінки</h1>
-                <p className="text-sm text-muted-foreground">Редагуйте повідомлення та затвердьте сторінку</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Main content */}
-        <div className="container mx-auto px-4 py-8">
-          <div className="max-w-2xl mx-auto space-y-6">
-            {/* Song Card */}
-            <Card className="bg-white/95 backdrop-blur-sm">
-              <CardHeader className="text-center">
-                <div className="space-y-2">
-                  <div className="flex items-center justify-center gap-2">
-                    <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-300">
-                      Чернетка
-                    </Badge>
-                    <Badge variant="secondary" className="mx-auto">
-                      {occasion === 'congratulations' ? 'Вітання' : 
-                       occasion === 'thanks' ? 'Подяка' : 
-                       occasion === 'apology' ? 'Вибачення' : 'Особлива нагода'}
-                    </Badge>
-                  </div>
-                  <CardTitle className="text-2xl">{song.title}</CardTitle>
-                  <p className="text-muted-foreground">Для {recipient} від {sender}</p>
+      {/* Main content */}
+      <main className="container mx-auto px-4 py-8 min-h-[calc(100vh-200px)] relative z-10">
+        <div className="max-w-2xl mx-auto space-y-6">
+          {/* Song Card */}
+          <Card className="bg-white/95 backdrop-blur-sm">
+            <CardHeader className="text-center">
+              <div className="space-y-2">
+                <div className="flex items-center justify-center gap-2">
+                  <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-300">
+                    Чернетка
+                  </Badge>
+                  <Badge variant="secondary" className="mx-auto">
+                    {occasion === 'congratulations' ? 'Вітання' : 
+                     occasion === 'thanks' ? 'Подяка' : 
+                     occasion === 'apology' ? 'Вибачення' : 'Особлива нагода'}
+                  </Badge>
                 </div>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Audio Player */}
-                <div className="bg-muted/50 rounded-lg p-4">
-                  <div className="flex items-center gap-4">
-                    <Button
-                      size="lg"
-                      variant={isPlaying ? "secondary" : "default"}
-                      onClick={togglePlay}
-                      className="w-12 h-12 rounded-full p-0"
-                    >
-                      {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
-                    </Button>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between text-sm text-muted-foreground mb-1">
-                        <span>Ваша персональна пісня</span>
-                        <span>{song.duration}</span>
-                      </div>
-                      <div className="w-full bg-border rounded-full h-2">
-                        <div className="bg-primary h-2 rounded-full w-1/3 transition-all"></div>
-                      </div>
+                <CardTitle className="text-2xl">{song.title}</CardTitle>
+                <p className="text-muted-foreground">Для {recipient} від {sender}</p>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Audio Player */}
+              <div className="bg-muted/50 rounded-lg p-4">
+                <div className="flex items-center gap-4">
+                  <Button
+                    size="lg"
+                    variant={isPlaying ? "secondary" : "default"}
+                    onClick={togglePlay}
+                    className="w-12 h-12 rounded-full p-0"
+                  >
+                    {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+                  </Button>
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between text-sm text-muted-foreground mb-1">
+                      <span>Ваша персональна пісня</span>
+                      <span>{song.duration}</span>
+                    </div>
+                    <div className="w-full bg-border rounded-full h-2">
+                      <div className="bg-primary h-2 rounded-full w-1/3 transition-all"></div>
                     </div>
                   </div>
                 </div>
+              </div>
 
-                {/* Song Lyrics */}
-                <div className="space-y-2">
-                  <h3 className="font-medium">Текст пісні</h3>
-                  <div className="bg-muted/30 rounded-lg p-4 text-sm whitespace-pre-line">
-                    {song.lyrics}
-                  </div>
+              {/* Song Lyrics */}
+              <div className="space-y-2">
+                <h3 className="font-medium">Текст пісні</h3>
+                <div className="bg-muted/30 rounded-lg p-4 text-sm whitespace-pre-line">
+                  {song.lyrics}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </CardContent>
+          </Card>
 
-            {/* Message Editor */}
-            <Card className="bg-white/95 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle>Особисте повідомлення</CardTitle>
-                <p className="text-sm text-muted-foreground">
-                  Відредагуйте повідомлення, яке побачить {recipient}
-                </p>
-              </CardHeader>
-              <CardContent>
-                <Textarea
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  className="min-h-[120px] resize-none"
-                  maxLength={300}
-                />
-                <p className="text-xs text-muted-foreground mt-2">
-                  {message.length}/300 символів
-                </p>
-              </CardContent>
-            </Card>
+          {/* Message Editor */}
+          <Card className="bg-white/95 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle>Особисте повідомлення</CardTitle>
+              <p className="text-sm text-muted-foreground">
+                Відредагуйте повідомлення, яке побачить {recipient}
+              </p>
+            </CardHeader>
+            <CardContent>
+              <Textarea
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                className="min-h-[120px] resize-none"
+                maxLength={300}
+              />
+              <p className="text-xs text-muted-foreground mt-2">
+                {message.length}/300 символів
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </main>
 
-            {/* Action Buttons */}
-            <div className="flex gap-3 justify-center">
-              <Button variant="outline" onClick={() => navigate('/studio?step=3')}>
-                Повернутися до редагування
-              </Button>
-              <Button onClick={handleApprove} className="min-w-[200px]">
-                <CheckCircle className="h-4 w-4 mr-2" />
-                Затвердити сторінку
-              </Button>
-            </div>
-
-            {/* Footer note */}
-            <div className="text-center text-sm text-muted-foreground">
-              <p>Після затвердження ця сторінка буде доступна за QR-кодом на листівці</p>
-            </div>
+      {/* Sticky bottom buttons */}
+      <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border p-4 z-20">
+        <div className="container mx-auto max-w-2xl">
+          <div className="flex gap-3 justify-center">
+            <Button variant="outline" onClick={() => navigate('/studio?step=3')}>
+              Повернутися до редагування
+            </Button>
+            <Button onClick={handleApprove} className="min-w-[200px]">
+              <CheckCircle className="h-4 w-4 mr-2" />
+              Затвердити сторінку
+            </Button>
+          </div>
+          {/* Footer note */}
+          <div className="text-center text-sm text-muted-foreground mt-2">
+            <p>Після затвердження ця сторінка буде доступна за QR-кодом на листівці</p>
           </div>
         </div>
       </div>
-    </>
+
+      {/* Footer */}
+      <Footer />
+    </div>
   );
 };
 
