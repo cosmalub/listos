@@ -183,15 +183,22 @@ const PublicSongDraft = () => {
       </main>
 
       {/* Sticky bottom buttons */}
-      <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border p-4 z-20">
+      <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border p-4 z-20 pb-safe">
         <div className="container mx-auto max-w-2xl">
-          <div className="flex gap-3 justify-center">
-            <Button variant="outline" onClick={() => navigate('/studio?step=3')}>
+          <div className="flex flex-col sm:flex-row gap-3 sm:justify-center">
+            <Button 
+              variant="outline" 
+              onClick={() => navigate('/studio?step=3')}
+              className="w-full sm:w-auto text-center"
+            >
               Повернутися до редагування
             </Button>
-            <Button onClick={handleApprove} className="min-w-[200px]">
-              <CheckCircle className="h-4 w-4 mr-2" />
-              Затвердити сторінку
+            <Button 
+              onClick={handleApprove} 
+              className="w-full sm:w-auto sm:min-w-[200px] text-center"
+            >
+              <CheckCircle className="h-4 w-4 mr-2 flex-shrink-0" />
+              <span className="whitespace-nowrap">Затвердити сторінку</span>
             </Button>
           </div>
           {/* Footer note */}
