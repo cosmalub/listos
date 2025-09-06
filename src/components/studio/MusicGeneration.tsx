@@ -105,15 +105,6 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
         </p>
       </div>
 
-      {/* Info Alert */}
-      <Alert className="border-primary/20 bg-primary/5">
-        <Info className="h-4 w-4" />
-        <AlertDescription>
-          <strong>Що далі:</strong> Після вибору варіанту музики, ми створимо персональну сторінку з вашою піснею та побажанням. 
-          Потім згенеруємо листівку з QR-кодом, який веде на цю сторінку.
-        </AlertDescription>
-      </Alert>
-
       {/* Generation Status */}
       {isGenerating && (
         <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-secondary/5">
@@ -186,6 +177,15 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
               </Button>
             )}
           </div>
+
+          {/* Info Alert - What's next */}
+          <Alert className="border-primary/20 bg-primary/5">
+            <Info className="h-4 w-4" />
+            <AlertDescription>
+              <strong>Що далі:</strong> Після вибору варіанту музики, ми створимо персональну сторінку з вашою піснею та побажанням. 
+              Потім згенеруємо листівку з QR-кодом, який веде на цю сторінку.
+            </AlertDescription>
+          </Alert>
         </div>
       )}
 
