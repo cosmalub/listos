@@ -11,6 +11,7 @@ import { PageCaptionStep } from '@/components/studio/PageCaptionStep';
 import { Header } from '@/components/sections/header';
 import { Footer } from '@/components/sections/footer';
 import { StepsHeader } from '@/components/studio/StepsHeader';
+import { StepExplanation } from '@/components/studio/StepExplanation';
 
 const steps = [
   { id: 1, title: 'Створення слів', description: 'Створюємо слова для пісні' },
@@ -205,6 +206,9 @@ const Studio = () => {
 
       {/* Steps indicator */}
       <StepsHeader currentStep={currentStep} />
+
+      {/* Step explanation */}
+      <StepExplanation currentStep={currentStep} />
 
       {/* Main content */}
       <main className="container mx-auto px-4 py-8 min-h-[calc(100vh-200px)]">
