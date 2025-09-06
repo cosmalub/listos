@@ -74,22 +74,11 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
     <div className="space-y-6 max-w-2xl mx-auto">
       {/* Header */}
       <div className="text-center space-y-2">
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <FileText className="h-6 w-6 text-primary" />
-          <h2 className="text-2xl font-bold">Сторінка з піснею та побажанням</h2>
-        </div>
+        <h2 className="text-2xl font-bold">Сторінка з піснею та побажанням</h2>
         <p className="text-muted-foreground">
           Створимо персональну сторінку, на яку буде вести QR-код з листівки
         </p>
       </div>
-
-      {/* Info Alert */}
-      <Alert className="border-primary/20 bg-primary/5">
-        <Info className="h-4 w-4" />
-        <AlertDescription>
-          Ця сторінка буде містити вашу пісню та особисте повідомлення. Кожна людина, яка відскануватиме QR-код з листівки, побачить цю сторінку.
-        </AlertDescription>
-      </Alert>
 
       <Card>
         <CardHeader>

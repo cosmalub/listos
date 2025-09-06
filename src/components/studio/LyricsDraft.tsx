@@ -75,8 +75,7 @@ export const LyricsDraft: React.FC<LyricsDraftProps> = ({ lyrics, onConfirm, onR
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between mb-4 pb-4 border-b border-border">
-        <div className="flex items-center gap-2">
-          <FileText className="h-5 w-5 text-primary" />
+        <div>
           <h3 className="font-semibold">Чернетка тексту пісні</h3>
         </div>
         <div className="flex gap-2">

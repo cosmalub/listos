@@ -96,10 +96,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center space-y-2">
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <Music className="h-6 w-6 text-primary" />
-          <h2 className="text-2xl font-bold">Генерація музики</h2>
-        </div>
+        <h2 className="text-2xl font-bold">Генерація музики</h2>
         <p className="text-muted-foreground">
           Створюємо музичні варіанти на основі ваших слів
         </p>
