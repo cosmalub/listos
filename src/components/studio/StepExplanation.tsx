@@ -22,7 +22,7 @@ export const StepExplanation: React.FC<StepExplanationProps> = ({ currentStep })
   return (
     <div className="container mx-auto px-4 mb-4">
       <div className="max-w-4xl mx-auto">
-        <p className="text-center text-sm text-muted-foreground bg-muted/20 rounded-lg px-4 py-2">
+        <p className="text-center text-[15px] md:text-base text-foreground font-medium bg-muted/20 rounded-lg px-4 py-2">
           {hint}
         </p>
       </div>
