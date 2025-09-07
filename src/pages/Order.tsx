@@ -39,7 +39,7 @@ export default function Order() {
                 Замовити музичну листівку
               </h1>
               <p className="text-lg md:text-xl mb-8 text-[#6A5ACD]/80">
-                Заповніть форму та отримайте свою унікальну листівку за 1-2 дні
+                З Листосиком створіть особисту пісню після оплати, отримайте готову листівку за 1-2 дні
               </p>
             </div>
           </div>
@@ -193,16 +193,6 @@ export default function Order() {
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="comment">Коментар до замовлення</Label>
-                  <Textarea
-                    id="comment"
-                    value={formData.comment}
-                    onChange={(e) => handleInputChange("comment", e.target.value)}
-                    placeholder="Розкажіть про настрій листівки, тему пісні або інші побажання..."
-                    rows={4}
-                  />
-                </div>
 
                 <div className="bg-[#6A5ACD]/10 p-4 rounded-lg border border-[#6A5ACD]/20">
                   <div className="flex justify-between items-center text-lg font-semibold">
@@ -219,7 +209,7 @@ export default function Order() {
                   size="lg" 
                   className="w-full text-lg px-8 py-6 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold"
                 >
-                  🎵 Оформити замовлення за 399 грн
+                  Оформити замовлення
                 </Button>
               </form>
             </CardContent>
