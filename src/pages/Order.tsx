@@ -31,18 +31,8 @@ export default function Order() {
     <div className="min-h-screen">
       <Header centerTitle="Замовлення" hideNav={false} showMenu={true} />
       
-      <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] to-white/20 py-12 pt-24">
+      <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] to-white/20 py-8 pt-24">
         <div className="container mx-auto px-4 max-w-2xl">
-          <div className="mb-8">
-            <div className="text-center">
-              <h1 className="text-3xl md:text-5xl font-bold mb-4 text-[#6A5ACD]">
-                Замовити музичну листівку
-              </h1>
-              <p className="text-lg md:text-xl mb-8 text-[#6A5ACD]/80">
-                З Листосиком створіть особисту пісню після оплати, отримайте готову листівку за 1-2 дні
-              </p>
-            </div>
-          </div>
 
           {/* Процесс создания */}
           <div className="grid md:grid-cols-2 gap-6 mb-8">
