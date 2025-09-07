@@ -182,7 +182,7 @@ const Studio = () => {
       <StepExplanation currentStep={currentStep} />
 
       {/* Main content */}
-      <main className="container mx-auto px-4 py-8 min-h-[calc(100vh-200px)] max-w-4xl">
+      <main className="container mx-auto px-4 py-8 min-h-[calc(100vh-200px)] max-w-3xl">
         {renderStepContent()}
       </main>
 
