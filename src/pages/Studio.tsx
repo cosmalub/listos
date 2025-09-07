@@ -16,9 +16,8 @@ import { StepExplanation } from '@/components/studio/StepExplanation';
 const steps = [
   { id: 1, title: 'Створення слів', description: 'Створюємо слова для пісні' },
   { id: 2, title: 'Генерація музики', description: 'Генеруємо 2 варіанти на основі тексту' },
-  { id: 3, title: 'Сторінка з піснею', description: 'Створюємо персональну сторінку' },
-  { id: 4, title: 'Дизайн листівки', description: 'Обираємо дизайн та стиль листівки' },
-  { id: 5, title: 'Замовлення', description: 'Оформлюємо замовлення та доставку' },
+  { id: 3, title: 'Дизайн листівки', description: 'Обираємо дизайн та стиль листівки' },
+  { id: 4, title: 'Сторінка з піснею', description: 'Створюємо персональну сторінку' },
 ];
 
 const Studio = () => {
@@ -37,7 +36,7 @@ const Studio = () => {
     const stepParam = searchParams.get('step');
     if (stepParam) {
       const step = parseInt(stepParam, 10);
-      if (step >= 1 && step <= 5) {
+      if (step >= 1 && step <= 4) {
         setCurrentStep(step);
       }
     }
@@ -65,7 +64,7 @@ const Studio = () => {
 
   const handleMusicVariantSelected = (variant: any) => {
     setSelectedMusicVariant(variant);
-    setCurrentStep(3); // Move to page caption step
+    setCurrentStep(3); // Move to postcard design step
   };
 
   const handlePageCaptionComplete = (data: any) => {
@@ -168,33 +167,22 @@ const Studio = () => {
         );
       case 3:
         return (
+          <div className="text-center space-y-6 max-w-4xl mx-auto">
+            <Card className="p-6">
+              <p className="text-muted-foreground mb-4">Тут буде вибір дизайну та стилю листівки</p>
+              <Button onClick={() => setCurrentStep(4)} size="lg">
+                Створити сторінку з піснею
+              </Button>
+            </Card>
+          </div>
+        );
+      case 4:
+        return (
           <PageCaptionStep
             lyrics={lyrics}
             musicVariant={selectedMusicVariant}
             onComplete={handlePageCaptionComplete}
           />
-        );
-      case 4:
-        return (
-          <div className="text-center space-y-6 max-w-4xl mx-auto">
-            <Card className="p-6">
-              <p className="text-muted-foreground mb-4">Тут буде вибір дизайну та стилю листівки</p>
-              <Button onClick={() => setCurrentStep(5)} size="lg">
-                Перейти до замовлення
-              </Button>
-            </Card>
-          </div>
-        );
-      case 5:
-        return (
-          <div className="text-center space-y-6 max-w-4xl mx-auto">
-            <Card className="p-6">
-              <p className="text-muted-foreground mb-4">Тут буде форма оформлення замовлення та доставки</p>
-              <Button variant="outline" onClick={() => setCurrentStep(4)}>
-                Повернутися до дизайну
-              </Button>
-            </Card>
-          </div>
         );
       default:
         return null;

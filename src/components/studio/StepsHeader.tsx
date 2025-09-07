@@ -4,9 +4,8 @@ import { CheckCircle } from 'lucide-react';
 const steps = [
   { id: 1, title: 'Створення слів', description: 'Створюємо слова для пісні' },
   { id: 2, title: 'Генерація музики', description: 'Генеруємо 2 варіанти на основі тексту' },
-  { id: 3, title: 'Сторінка з піснею', description: 'Створюємо персональну сторінку' },
-  { id: 4, title: 'Дизайн листівки', description: 'Обираємо дизайн та стиль листівки' },
-  { id: 5, title: 'Замовлення', description: 'Оформлюємо замовлення та доставку' },
+  { id: 3, title: 'Дизайн листівки', description: 'Обираємо дизайн та стиль листівки' },
+  { id: 4, title: 'Сторінка з піснею', description: 'Створюємо персональну сторінку' },
 ];
 
 interface StepsHeaderProps {
@@ -56,7 +55,7 @@ export const StepsHeader: React.FC<StepsHeaderProps> = ({ currentStep }) => {
         </div>
 
         {/* Mobile: Compact grid layout */}
-        <div className="md:hidden grid grid-cols-5 gap-2 max-w-sm mx-auto">
+        <div className="md:hidden grid grid-cols-4 gap-2 max-w-sm mx-auto">
           {steps.map((step) => (
             <div key={step.id} className="flex flex-col items-center">
               <div className={`flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors ${
