@@ -25,7 +25,7 @@ const Studio = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [lyrics, setLyrics] = useState('');
-  const [mobileTab, setMobileTab] = useState('chat');
+  const [activeTab, setActiveTab] = useState('chat');
   const [hasUnconfirmedLyrics, setHasUnconfirmedLyrics] = useState(false);
   const [selectedMusicVariant, setSelectedMusicVariant] = useState<any>(null);
   const [pageData, setPageData] = useState<any>(null);
@@ -51,12 +51,12 @@ const Studio = () => {
   const handleLyricsGenerated = (generatedLyrics: string) => {
     setLyrics(generatedLyrics);
     setHasUnconfirmedLyrics(true);
-    // Auto-switch to draft tab on mobile after lyrics generation
-    setMobileTab('draft');
+    // Auto-switch to draft tab after lyrics generation
+    setActiveTab('draft');
   };
 
   const handleRequestEdit = (editText: string) => {
-    setMobileTab('chat');
+    setActiveTab('chat');
     setTimeout(() => {
       chatRef.current?.prefillAndFocus(editText);
     }, 100);
@@ -82,28 +82,9 @@ const Studio = () => {
       case 1:
         return (
           <div className="h-full">
-            {/* Desktop: Two-column layout */}
-            <div className="hidden md:grid md:grid-cols-2 md:gap-6 h-full">
-              <Card className="p-6 h-full">
-                <ChatInterface 
-                  ref={chatRef}
-                  onLyricsGenerated={handleLyricsGenerated}
-                  onConfirmLyrics={handleLyricsConfirmed}
-                  onEditLyrics={() => setMobileTab('draft')}
-                />
-              </Card>
-              <Card className="p-6 h-full">
-                <LyricsDraft 
-                  lyrics={lyrics} 
-                  onConfirm={handleLyricsConfirmed}
-                  onRequestEdit={handleRequestEdit}
-                />
-              </Card>
-            </div>
-
-            {/* Mobile: Tabbed layout */}
-            <div className="md:hidden h-full relative">
-              <Tabs value={mobileTab} onValueChange={setMobileTab} className="h-full flex flex-col">
+            {/* Unified tabbed layout for both desktop and mobile */}
+            <div className="h-full relative">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
                 <TabsList className="grid w-full grid-cols-2 mb-4">
                   <TabsTrigger value="chat">Чат</TabsTrigger>
                   <TabsTrigger value="draft" className="relative">
@@ -119,7 +100,7 @@ const Studio = () => {
                       ref={chatRef}
                       onLyricsGenerated={handleLyricsGenerated}
                       onConfirmLyrics={handleLyricsConfirmed}
-                      onEditLyrics={() => setMobileTab('draft')}
+                      onEditLyrics={() => setActiveTab('draft')}
                     />
                   </Card>
                 </TabsContent>
@@ -134,13 +115,13 @@ const Studio = () => {
                 </TabsContent>
               </Tabs>
 
-              {/* Mobile bottom CTA panel */}
-              {mobileTab === 'chat' && hasUnconfirmedLyrics && currentStep === 1 && (
-                <div className="fixed bottom-4 left-4 right-4 bg-background border border-border rounded-lg p-3 shadow-lg flex gap-2 z-10">
+              {/* Bottom CTA panel for all screen sizes */}
+              {activeTab === 'chat' && hasUnconfirmedLyrics && currentStep === 1 && (
+                <div className="fixed bottom-4 left-4 right-4 md:left-1/2 md:right-auto md:transform md:-translate-x-1/2 md:w-96 bg-background border border-border rounded-lg p-3 shadow-lg flex gap-2 z-10">
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    onClick={() => setMobileTab('draft')}
+                    onClick={() => setActiveTab('draft')}
                     className="flex-1"
                   >
                     Редагувати
