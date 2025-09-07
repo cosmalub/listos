@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FileText, Edit, Trash2, CheckCircle, MessageCircle, ArrowRight, Save, Send } from 'lucide-react';
+import { FileText, Edit, MessageCircle, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
@@ -151,9 +151,7 @@ export const LyricsDraft: React.FC<LyricsDraftProps> = ({ lyrics, onConfirm, onR
                       disabled={!editableLyrics.trim()}
                       className="justify-center"
                     >
-                      <CheckCircle className="h-4 w-4 mr-2" />
                       Підтвердити і згенерувати музику
-                      <ArrowRight className="h-4 w-4 ml-2" />
                     </Button>
                   </div>
                 </div>
@@ -178,33 +176,6 @@ export const LyricsDraft: React.FC<LyricsDraftProps> = ({ lyrics, onConfirm, onR
               )}
             </div>
 
-            {/* Advanced editing options */}
-            <details className="group mt-4">
-              <summary className="cursor-pointer text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Додаткові опції редагування
-              </summary>
-              <div className="mt-3 flex gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setIsEditing(!isEditing)}
-                  disabled={!editableLyrics}
-                >
-                  <Edit className="h-4 w-4 mr-1" />
-                  {isEditing ? 'Перегляд' : 'Редагувати'}
-                </Button>
-                {isEditing && (
-                  <Button variant="outline" size="sm" onClick={handleSaveEdit}>
-                    <Save className="h-4 w-4 mr-1" />
-                    Зберегти
-                  </Button>
-                )}
-                <Button variant="outline" size="sm" onClick={handleClearDraft}>
-                  <Trash2 className="h-4 w-4 mr-1" />
-                  Очистити
-                </Button>
-              </div>
-            </details>
           </>
         ) : (
           <div className="flex-1 flex items-center justify-center">
