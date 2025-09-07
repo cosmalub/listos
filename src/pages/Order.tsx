@@ -31,23 +31,14 @@ export default function Order() {
     <div className="min-h-screen">
       <Header centerTitle="Замовлення" hideNav={false} showMenu={true} />
       
-      <div className="min-h-screen bg-background py-12 pt-24">
+      <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] to-white/20 py-12 pt-24">
         <div className="container mx-auto px-4 max-w-2xl">
           <div className="mb-8">
-            <Button 
-              variant="ghost" 
-              onClick={() => window.history.back()}
-              className="mb-4"
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Повернутися
-            </Button>
-            
             <div className="text-center">
-              <h1 className="text-3xl font-bold text-primary mb-2">
+              <h1 className="text-3xl md:text-5xl font-bold mb-4 text-[#6A5ACD]">
                 Замовити музичну листівку
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-lg md:text-xl mb-8 text-[#6A5ACD]/80">
                 Заповніть форму та отримайте свою унікальну листівку за 1-2 дні
               </p>
             </div>
@@ -56,69 +47,69 @@ export default function Order() {
           {/* Процесс создания */}
           <div className="grid md:grid-cols-2 gap-6 mb-8">
             {/* Как это работает */}
-            <Card className="border-primary/20">
+            <Card className="border-[#6A5ACD]/20 bg-white/80 backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-primary">
+                <CardTitle className="flex items-center gap-2 text-[#6A5ACD]">
                   <Sparkles className="h-5 w-5" />
                   Як це працює
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex items-start gap-3">
-                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
-                    <CheckCircle className="h-4 w-4 text-primary" />
+                  <div className="bg-[#6A5ACD]/10 rounded-full p-1 mt-0.5">
+                    <CheckCircle className="h-4 w-4 text-[#6A5ACD]" />
                   </div>
                   <div>
-                    <p className="font-medium">1. Оплачуєте замовлення</p>
-                    <p className="text-sm text-muted-foreground">Безпечна оплата через LiqPay</p>
+                    <p className="font-medium text-[#6A5ACD]">1. Оплачуєте замовлення</p>
+                    <p className="text-sm text-[#6A5ACD]/70">Безпечна оплата через LiqPay</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
-                    <CheckCircle className="h-4 w-4 text-primary" />
+                  <div className="bg-[#6A5ACD]/10 rounded-full p-1 mt-0.5">
+                    <CheckCircle className="h-4 w-4 text-[#6A5ACD]" />
                   </div>
                   <div>
-                    <p className="font-medium">2. Отримуєте посилання</p>
-                    <p className="text-sm text-muted-foreground">На студію створення з ШІ</p>
+                    <p className="font-medium text-[#6A5ACD]">2. Отримуєте посилання</p>
+                    <p className="text-sm text-[#6A5ACD]/70">На студію створення з ШІ</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
-                    <CheckCircle className="h-4 w-4 text-primary" />
+                  <div className="bg-[#6A5ACD]/10 rounded-full p-1 mt-0.5">
+                    <CheckCircle className="h-4 w-4 text-[#6A5ACD]" />
                   </div>
                   <div>
-                    <p className="font-medium">3. Створюєте листівку</p>
-                    <p className="text-sm text-muted-foreground">З допомогою ШІ за вашими побажаннями</p>
+                    <p className="font-medium text-[#6A5ACD]">3. Створюєте листівку</p>
+                    <p className="text-sm text-[#6A5ACD]/70">З допомогою ШІ за вашими побажаннями</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
-                    <CheckCircle className="h-4 w-4 text-primary" />
+                  <div className="bg-[#6A5ACD]/10 rounded-full p-1 mt-0.5">
+                    <CheckCircle className="h-4 w-4 text-[#6A5ACD]" />
                   </div>
                   <div>
-                    <p className="font-medium">4. Отримуєте готову листівку</p>
-                    <p className="text-sm text-muted-foreground">Доставка Новою Поштою безкоштовно</p>
+                    <p className="font-medium text-[#6A5ACD]">4. Отримуєте готову листівку</p>
+                    <p className="text-sm text-[#6A5ACD]/70">Доставка Новою Поштою безкоштовно</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             {/* Видео-демонстрация */}
-            <Card className="border-primary/20">
+            <Card className="border-[#6A5ACD]/20 bg-white/80 backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-primary">
+                <CardTitle className="flex items-center gap-2 text-[#6A5ACD]">
                   <Play className="h-5 w-5" />
                   Демонстрація процесу
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="relative bg-gradient-to-br from-primary/5 to-primary/10 rounded-lg aspect-video flex items-center justify-center border-2 border-dashed border-primary/20">
+                <div className="relative bg-gradient-to-br from-[#6A5ACD]/5 to-[#6A5ACD]/10 rounded-lg aspect-video flex items-center justify-center border-2 border-dashed border-[#6A5ACD]/20">
                   <div className="text-center">
-                    <Play className="h-12 w-12 text-primary/60 mx-auto mb-2" />
-                    <p className="text-sm text-muted-foreground">
+                    <Play className="h-12 w-12 text-[#6A5ACD]/60 mx-auto mb-2" />
+                    <p className="text-sm text-[#6A5ACD]/70">
                       Відео буде додано найближчим часом
                     </p>
-                    <p className="text-xs text-muted-foreground mt-1">
+                    <p className="text-xs text-[#6A5ACD]/60 mt-1">
                       Тут ви побачите весь процес створення
                     </p>
                   </div>
@@ -144,9 +135,9 @@ export default function Order() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white/80 backdrop-blur-sm border-[#6A5ACD]/20">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-[#6A5ACD]">
                 <Music className="h-5 w-5" />
                 Дані для замовлення
               </CardTitle>
@@ -213,12 +204,12 @@ export default function Order() {
                   />
                 </div>
 
-                <div className="bg-muted p-4 rounded-lg">
+                <div className="bg-[#6A5ACD]/10 p-4 rounded-lg border border-[#6A5ACD]/20">
                   <div className="flex justify-between items-center text-lg font-semibold">
-                    <span>До сплати:</span>
-                    <span className="text-primary">399 грн</span>
+                    <span className="text-[#6A5ACD]">До сплати:</span>
+                    <span className="text-[#6A5ACD]">399 грн</span>
                   </div>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-sm text-[#6A5ACD]/70 mt-1">
                     Безкоштовна доставка Новою Поштою включена
                   </p>
                 </div>
@@ -226,9 +217,9 @@ export default function Order() {
                 <Button 
                   type="submit" 
                   size="lg" 
-                  className="w-full bg-gradient-primary hover:shadow-soft transition-all duration-300"
+                  className="w-full text-lg px-8 py-6 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold"
                 >
-                  Оформити замовлення за 399 грн
+                  🎵 Оформити замовлення за 399 грн
                 </Button>
               </form>
             </CardContent>
