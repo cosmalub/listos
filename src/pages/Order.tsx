@@ -33,6 +33,13 @@ export default function Order() {
       
       <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] to-white/20 py-8 pt-24">
         <div className="container mx-auto px-4 max-w-2xl">
+          <div className="mb-6">
+            <div className="text-center">
+              <p className="text-base md:text-lg mb-6 text-[#6A5ACD]/80 max-w-lg mx-auto">
+                З Листосиком створіть особисту пісню після оплати, отримайте готову листівку за 1-2 дні
+              </p>
+            </div>
+          </div>
 
           {/* Процесс создания */}
           <div className="grid md:grid-cols-2 gap-6 mb-8">
