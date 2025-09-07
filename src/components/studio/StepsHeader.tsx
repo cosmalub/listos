@@ -72,7 +72,7 @@ export const StepsHeader: React.FC<StepsHeaderProps> = ({ currentStep }) => {
                 )}
               </div>
               <div className="mt-1 text-center h-8 overflow-hidden">
-                <div className={`text-[11px] leading-tight font-medium ${
+                <div className={`text-xs leading-tight font-medium ${
                   currentStep >= step.id ? 'text-foreground' : 'text-muted-foreground'
                 }`}>
                   {step.title}
