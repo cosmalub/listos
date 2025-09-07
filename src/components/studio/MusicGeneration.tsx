@@ -93,26 +93,17 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold">Генерація музики</h2>
-        <p className="text-muted-foreground">
-          Створюємо музичні варіанти на основі ваших слів
-        </p>
-      </div>
-
+    <div className="space-y-6 max-w-4xl mx-auto">
       {/* Generation Status */}
       {isGenerating && (
-        <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-secondary/5">
+        <Card className="border-border bg-muted/20">
           <CardContent className="p-8 text-center">
             <div className="flex flex-col items-center space-y-4">
               <div className="relative">
-                <Loader2 className="h-12 w-12 animate-spin text-primary" />
-                <Sparkles className="h-6 w-6 text-secondary absolute -top-1 -right-1 animate-pulse" />
+                <Loader2 className="h-12 w-12 animate-spin text-foreground" />
               </div>
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold">Аналізуємо ваші слова...</h3>
+                <p className="text-lg font-semibold">Аналізуємо ваші слова...</p>
                 <p className="text-sm text-muted-foreground max-w-md">
                   Наша ШІ створює унікальні музичні промпти та генерує для вас два варіанти композиції
                 </p>
@@ -134,7 +125,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
       {variants.length > 0 && !isGenerating && (
         <div className="space-y-4 animate-fade-in">
           <div className="text-center">
-            <h3 className="text-lg font-semibold mb-2">Оберіть один варіант, щоб продовжити:</h3>
+            <p className="text-lg font-semibold mb-2">Оберіть один варіант, щоб продовжити:</p>
             <p className="text-sm text-muted-foreground">
               Спроба {generationAttempt} з 2
             </p>
@@ -175,10 +166,6 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
             )}
           </div>
 
-          {/* What's next info */}
-          <div className="text-center text-sm text-muted-foreground">
-            Що далі: після вибору музики ми створимо персональну сторінку з піснею та побажанням, а потім — листівку з QR‑кодом.
-          </div>
         </div>
       )}
 

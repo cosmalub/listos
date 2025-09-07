@@ -71,15 +71,7 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
   const isFormValid = formData.occasion && formData.recipient && formData.sender;
 
   return (
-    <div className="space-y-6 max-w-2xl mx-auto">
-      {/* Header */}
-      <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold">Сторінка з піснею та побажанням</h2>
-        <p className="text-muted-foreground">
-          Створимо персональну сторінку, на яку буде вести QR-код з листівки
-        </p>
-      </div>
-
+    <div className="space-y-6 max-w-4xl mx-auto">
       <Card>
         <CardHeader>
           <CardTitle>Інформація про сторінку</CardTitle>

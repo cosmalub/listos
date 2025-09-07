@@ -176,22 +176,24 @@ const Studio = () => {
         );
       case 4:
         return (
-          <div className="text-center space-y-6 max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold">Крок 4: Дизайн листівки</h2>
-            <p className="text-muted-foreground">Тут буде вибір дизайну та стилю листівки</p>
-            <Button onClick={() => setCurrentStep(5)} size="lg">
-              Перейти до замовлення
-            </Button>
+          <div className="text-center space-y-6 max-w-4xl mx-auto">
+            <Card className="p-6">
+              <p className="text-muted-foreground mb-4">Тут буде вибір дизайну та стилю листівки</p>
+              <Button onClick={() => setCurrentStep(5)} size="lg">
+                Перейти до замовлення
+              </Button>
+            </Card>
           </div>
         );
       case 5:
         return (
-          <div className="text-center space-y-6 max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold">Крок 5: Оформлення замовлення</h2>
-            <p className="text-muted-foreground">Тут буде форма оформлення замовлення та доставки</p>
-            <Button variant="outline" onClick={() => setCurrentStep(4)}>
-              Повернутися до дизайну
-            </Button>
+          <div className="text-center space-y-6 max-w-4xl mx-auto">
+            <Card className="p-6">
+              <p className="text-muted-foreground mb-4">Тут буде форма оформлення замовлення та доставки</p>
+              <Button variant="outline" onClick={() => setCurrentStep(4)}>
+                Повернутися до дизайну
+              </Button>
+            </Card>
           </div>
         );
       default:
