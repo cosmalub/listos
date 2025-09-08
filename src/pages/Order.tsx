@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Music, Shield, Play, CheckCircle, Sparkles } from "lucide-react";
+import { ArrowLeft, Music, Shield, Play, CheckCircle, Sparkles, Phone, MessageCircle } from "lucide-react";
 import { Header } from "@/components/sections/header";
 import { Footer } from "@/components/sections/footer";
 
@@ -14,7 +14,9 @@ export default function Order() {
     phone: "",
     city: "",
     novaPoshta: "",
-    comment: ""
+    comment: "",
+    contactType: "phone",
+    telegram: ""
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -154,15 +156,63 @@ export default function Order() {
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Телефон *</Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      value={formData.phone}
-                      onChange={(e) => handleInputChange("phone", e.target.value)}
-                      placeholder="+380 XX XXX XX XX"
-                      required
-                    />
+                    <Label>Спосіб зв'язку *</Label>
+                    <div className="space-y-3">
+                      <div className="flex gap-2 p-1 bg-gray-100 rounded-lg">
+                        <button
+                          type="button"
+                          onClick={() => handleInputChange("contactType", "phone")}
+                          className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-md transition-all duration-200 ${
+                            formData.contactType === "phone" 
+                              ? "bg-[#6A5ACD] text-white shadow-sm" 
+                              : "text-[#6A5ACD] hover:bg-white/50"
+                          }`}
+                        >
+                          <Phone className="h-4 w-4" />
+                          <span className="text-sm font-medium">Телефон</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleInputChange("contactType", "telegram")}
+                          className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-md transition-all duration-200 ${
+                            formData.contactType === "telegram" 
+                              ? "bg-[#6A5ACD] text-white shadow-sm" 
+                              : "text-[#6A5ACD] hover:bg-white/50"
+                          }`}
+                        >
+                          <MessageCircle className="h-4 w-4" />
+                          <span className="text-sm font-medium">Telegram</span>
+                        </button>
+                      </div>
+                      
+                      {formData.contactType === "phone" ? (
+                        <div className="space-y-1">
+                          <Input
+                            id="phone"
+                            type="tel"
+                            value={formData.phone}
+                            onChange={(e) => handleInputChange("phone", e.target.value)}
+                            placeholder="+380 XX XXX XX XX"
+                            required
+                            className="transition-all duration-200"
+                          />
+                        </div>
+                      ) : (
+                        <div className="space-y-1">
+                          <Input
+                            id="telegram"
+                            value={formData.telegram}
+                            onChange={(e) => handleInputChange("telegram", e.target.value)}
+                            placeholder="@username або t.me/username"
+                            required
+                            className="transition-all duration-200"
+                          />
+                          <p className="text-xs text-[#6A5ACD]/60">
+                            Приклади: @username, t.me/username або https://t.me/username
+                          </p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -189,7 +239,6 @@ export default function Order() {
                     />
                   </div>
                 </div>
-
 
                 <div className="bg-[#6A5ACD]/10 p-4 rounded-lg border border-[#6A5ACD]/20">
                   <div className="flex justify-between items-center text-lg font-semibold">
