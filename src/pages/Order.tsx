@@ -34,81 +34,59 @@ export default function Order() {
       <Header centerTitle="Замовлення" hideNav={false} showMenu={true} />
       
       <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] to-white/20 py-8 pt-24">
-        <div className="container mx-auto px-4 max-w-2xl">
-          <div className="mb-6">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="mb-8">
             <div className="text-center">
-              <p className="text-base md:text-lg mb-6 text-[#6A5ACD]/80 max-w-lg mx-auto">
+              <p className="text-lg md:text-xl mb-8 text-[#6A5ACD]/80 max-w-2xl mx-auto font-light">
                 З Листосиком створіть особисту пісню після оплати, отримайте готову листівку за 1-2 дні
               </p>
             </div>
           </div>
 
           {/* Процесс создания */}
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
             {/* Как это работает */}
-            <Card className="border-[#6A5ACD]/20 bg-white/80 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-[#6A5ACD]">
-                  <Sparkles className="h-5 w-5" />
+            <Card className="bg-white/70 backdrop-blur-xl ring-1 ring-white/20 shadow-sm border-0">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-medium text-[#6A5ACD]">
                   Як це працює
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-start gap-3">
-                  <div className="bg-[#6A5ACD]/10 rounded-full p-1 mt-0.5">
-                    <CheckCircle className="h-4 w-4 text-[#6A5ACD]" />
+              <CardContent className="space-y-4">
+                {[
+                  { step: "1", title: "Оплачуєте замовлення", desc: "Безпечна оплата через LiqPay" },
+                  { step: "2", title: "Отримуєте посилання", desc: "На студію створення з ШІ" },
+                  { step: "3", title: "Створюєте листівку", desc: "З допомогою ШІ за вашими побажаннями" },
+                  { step: "4", title: "Отримуєте готову листівку", desc: "Доставка Новою Поштою безкоштовно" }
+                ].map((item, index) => (
+                  <div key={index} className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-[#6A5ACD]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-xs font-medium text-[#6A5ACD]">{item.step}</span>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="font-medium text-[#6A5ACD] text-sm">{item.title}</p>
+                      <p className="text-xs text-[#6A5ACD]/70 leading-relaxed">{item.desc}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-medium text-[#6A5ACD]">1. Оплачуєте замовлення</p>
-                    <p className="text-sm text-[#6A5ACD]/70">Безпечна оплата через LiqPay</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="bg-[#6A5ACD]/10 rounded-full p-1 mt-0.5">
-                    <CheckCircle className="h-4 w-4 text-[#6A5ACD]" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-[#6A5ACD]">2. Отримуєте посилання</p>
-                    <p className="text-sm text-[#6A5ACD]/70">На студію створення з ШІ</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="bg-[#6A5ACD]/10 rounded-full p-1 mt-0.5">
-                    <CheckCircle className="h-4 w-4 text-[#6A5ACD]" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-[#6A5ACD]">3. Створюєте листівку</p>
-                    <p className="text-sm text-[#6A5ACD]/70">З допомогою ШІ за вашими побажаннями</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="bg-[#6A5ACD]/10 rounded-full p-1 mt-0.5">
-                    <CheckCircle className="h-4 w-4 text-[#6A5ACD]" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-[#6A5ACD]">4. Отримуєте готову листівку</p>
-                    <p className="text-sm text-[#6A5ACD]/70">Доставка Новою Поштою безкоштовно</p>
-                  </div>
-                </div>
+                ))}
               </CardContent>
             </Card>
 
             {/* Видео-демонстрация */}
-            <Card className="border-[#6A5ACD]/20 bg-white/80 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-[#6A5ACD]">
-                  <Play className="h-5 w-5" />
+            <Card className="bg-white/70 backdrop-blur-xl ring-1 ring-white/20 shadow-sm border-0">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-medium text-[#6A5ACD]">
                   Демонстрація процесу
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="relative bg-gradient-to-br from-[#6A5ACD]/5 to-[#6A5ACD]/10 rounded-lg aspect-video flex items-center justify-center border-2 border-dashed border-[#6A5ACD]/20">
-                  <div className="text-center">
-                    <Play className="h-12 w-12 text-[#6A5ACD]/60 mx-auto mb-2" />
-                    <p className="text-sm text-[#6A5ACD]/70">
+                <div className="relative bg-gradient-to-br from-[#6A5ACD]/5 to-[#6A5ACD]/10 rounded-xl aspect-video flex items-center justify-center ring-1 ring-[#6A5ACD]/10">
+                  <div className="text-center space-y-2">
+                    <Play className="h-8 w-8 text-[#6A5ACD]/60 mx-auto" />
+                    <p className="text-sm text-[#6A5ACD]/70 font-medium">
                       Відео буде додано найближчим часом
                     </p>
-                    <p className="text-xs text-[#6A5ACD]/60 mt-1">
+                    <p className="text-xs text-[#6A5ACD]/60">
                       Тут ви побачите весь процес створення
                     </p>
                   </div>
