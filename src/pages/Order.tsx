@@ -143,8 +143,10 @@ export default function Order() {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
+                {/* Одним гридом керуємо позиціями полів. На мобільному порядок: Ім'я, Спосіб зв'язку, Місто, Відділення. На десктопі: зліва Ім'я/Місто/Відділення, справа Спосіб зв'язку */}
+                <div className="grid grid-cols-1 md:grid-cols-2 md:auto-rows-min gap-4">
+                  {/* Ім'я */}
+                  <div className="space-y-2 md:col-start-1 md:row-start-1">
                     <Label htmlFor="name">Ваше ім'я *</Label>
                     <Input
                       id="name"
@@ -154,37 +156,40 @@ export default function Order() {
                       required
                     />
                   </div>
-                  
-                  <div className="space-y-2">
+
+                  {/* Спосіб зв'язку (праворуч на десктопі, розтягується по висоті трьох рядків) */}
+                  <div className="space-y-2 md:col-start-2 md:row-start-1 md:row-span-3 md:self-start">
                     <Label>Спосіб зв'язку *</Label>
                     <div className="space-y-3">
                       <div className="flex gap-2 p-1 bg-gray-100 rounded-lg">
-                        <button
-                          type="button"
-                          onClick={() => handleInputChange("contactType", "phone")}
-                          className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-md transition-all duration-200 ${
-                            formData.contactType === "phone" 
-                              ? "bg-[#6A5ACD] text-white shadow-sm" 
-                              : "text-[#6A5ACD] hover:bg-white/50"
-                          }`}
-                        >
-                          <Phone className="h-4 w-4" />
-                          <span className="text-sm font-medium">Телефон</span>
-                        </button>
+                        {/* Спочатку Telegram */}
                         <button
                           type="button"
                           onClick={() => handleInputChange("contactType", "telegram")}
                           className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-md transition-all duration-200 ${
-                            formData.contactType === "telegram" 
-                              ? "bg-[#6A5ACD] text-white shadow-sm" 
+                            formData.contactType === "telegram"
+                              ? "bg-[#6A5ACD] text-white shadow-sm"
                               : "text-[#6A5ACD] hover:bg-white/50"
                           }`}
                         >
                           <MessageCircle className="h-4 w-4" />
                           <span className="text-sm font-medium">Telegram</span>
                         </button>
+                        {/* Потім Телефон */}
+                        <button
+                          type="button"
+                          onClick={() => handleInputChange("contactType", "phone")}
+                          className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-md transition-all duration-200 ${
+                            formData.contactType === "phone"
+                              ? "bg-[#6A5ACD] text-white shadow-sm"
+                              : "text-[#6A5ACD] hover:bg-white/50"
+                          }`}
+                        >
+                          <Phone className="h-4 w-4" />
+                          <span className="text-sm font-medium">Телефон</span>
+                        </button>
                       </div>
-                      
+
                       {formData.contactType === "phone" ? (
                         <div className="space-y-1">
                           <Input
@@ -214,10 +219,9 @@ export default function Order() {
                       )}
                     </div>
                   </div>
-                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
+                  {/* Місто */}
+                  <div className="space-y-2 md:col-start-1 md:row-start-2">
                     <Label htmlFor="city">Місто *</Label>
                     <Input
                       id="city"
@@ -227,8 +231,9 @@ export default function Order() {
                       required
                     />
                   </div>
-                  
-                  <div className="space-y-2">
+
+                  {/* Відділення Нової Пошти */}
+                  <div className="space-y-2 md:col-start-1 md:row-start-3">
                     <Label htmlFor="novaPoshta">Відділення Нової Пошти *</Label>
                     <Input
                       id="novaPoshta"
