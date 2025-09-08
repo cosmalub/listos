@@ -37,8 +37,8 @@ export default function Order() {
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="mb-8">
             <div className="text-center">
-              <p className="text-lg md:text-xl mb-8 text-[#6A5ACD]/80 max-w-2xl mx-auto font-light">
-                З Листосиком створіть особисту пісню після оплати, отримайте готову листівку за 1-2 дні
+              <p className="font-baloo font-semibold text-xl md:text-2xl lg:text-3xl leading-tight tracking-tight text-foreground/90 max-w-4xl mx-auto text-balance mb-8">
+                З Листосиком створіть особисту пісню після оплати, отримайте готову листівку за <span className="whitespace-nowrap">1–2 дні</span>
               </p>
             </div>
           </div>

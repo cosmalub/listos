@@ -189,3 +189,7 @@ All colors MUST be HSL.
 .animate-subtle-move-slow-reverse {
   animation: float 9s ease-in-out infinite reverse;
 }
+
+.text-balance {
+  text-wrap: balance;
+}
