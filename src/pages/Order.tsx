@@ -117,23 +117,6 @@ export default function Order() {
             </Card>
           </div>
 
-          {/* Гарантия возврата */}
-          <Card className="mb-8 border-green-200 bg-green-50/50">
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-3">
-                <div className="bg-green-100 rounded-full p-2">
-                  <Shield className="h-6 w-6 text-green-600" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-green-800">Гарантія 100% повернення коштів</h3>
-                  <p className="text-sm text-green-700">
-                    Якщо результат вас не влаштує, ми повернемо всі кошти без питань протягом 7 днів
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
           <Card className="bg-white/80 backdrop-blur-sm border-[#6A5ACD]/20">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-[#6A5ACD]">
@@ -263,6 +246,23 @@ export default function Order() {
                   Оформити замовлення
                 </Button>
               </form>
+            </CardContent>
+          </Card>
+
+          {/* Гарантия возврата */}
+          <Card className="mt-8 border-green-200 bg-green-50/50">
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-3">
+                <div className="bg-green-100 rounded-full p-2">
+                  <Shield className="h-6 w-6 text-green-600" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-green-800">Гарантія 100% повернення коштів</h3>
+                  <p className="text-sm text-green-700">
+                    Якщо результат вас не влаштує, ми повернемо всі кошти без питань протягом 7 днів
+                  </p>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
