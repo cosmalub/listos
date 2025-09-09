@@ -5,6 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { supabase } from '@/integrations/supabase/client';
 import listosMascot from '@/assets/listosyk-mascot.png';
 
 interface Message {
@@ -80,92 +81,59 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
     if (!customMessage) setNewMessage('');
     setIsTyping(true);
 
-    // Simulate assistant response
-    setTimeout(() => {
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-lyrics', {
+        body: {
+          message: messageText,
+          conversationHistory: messages
+        }
+      });
+
+      if (error) {
+        console.error('Error calling generate-lyrics function:', error);
+        throw new Error(error.message || 'Failed to generate response');
+      }
+
+      const aiResponse = data.reply || 'Вибачте, не вдалося згенерувати відповідь.';
+
       const assistantResponse: Message = {
         id: (Date.now() + 1).toString(),
-        content: generateAssistantResponse(messageText, isRefining),
+        content: aiResponse,
         sender: 'assistant',
         timestamp: new Date(),
       };
+
       setMessages(prev => [...prev, assistantResponse]);
+
+      // Check if we have lyrics to extract
+      const lyricsMatch = aiResponse.match(/```LYRICS\n([\s\S]*?)\n```/);
+      if (lyricsMatch) {
+        // Extract lyrics from the marked section
+        const lyrics = lyricsMatch[1].trim();
+        onLyricsGenerated(lyrics);
+        setLastLyricsMessage(lyrics);
+      } else if (aiResponse.includes('Куплет') && aiResponse.includes('Припев')) {
+        // Fallback: if response contains verse/chorus structure
+        onLyricsGenerated(aiResponse);
+        setLastLyricsMessage(aiResponse);
+      }
+
+    } catch (error) {
+      console.error('Error generating AI response:', error);
+      
+      // Fallback response
+      const fallbackResponse: Message = {
+        id: (Date.now() + 1).toString(),
+        content: 'Вибачте, сталася помилка. Давайте спробуємо ще раз! Розкажіть мені про пісню, яку хочете створити.',
+        sender: 'assistant',
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, fallbackResponse]);
+    } finally {
       setIsTyping(false);
-
-      // If response contains lyrics, update the draft
-      if (assistantResponse.content.includes('Ось текст пісні') || assistantResponse.content.includes('Ось оновлений варіант')) {
-        const lyricsMatch = assistantResponse.content.match(/```([\s\S]*?)```/);
-        if (lyricsMatch) {
-          const lyrics = lyricsMatch[1].trim();
-          onLyricsGenerated(lyrics);
-          setLastLyricsMessage(lyrics);
-        }
-      }
-    }, 1500);
-  };
-
-  const generateAssistantResponse = (userInput: string, isRefining = false): string => {
-    if (isRefining && lastLyricsMessage) {
-      // Simulate refinement based on user feedback
-      let refinedLyrics = lastLyricsMessage;
-      
-      if (userInput.includes('веселіше') || userInput.includes('веселі')) {
-        refinedLyrics = refinedLyrics.replace('тепло', 'радість').replace('темній ночі', 'яскравий день');
-      } else if (userInput.includes('рим') || userInput.includes('римув')) {
-        refinedLyrics = refinedLyrics.replace('золота', 'срібла').replace('щастя', 'радості');
-      } else if (userInput.includes('емоцій') || userInput.includes('почуття')) {
-        refinedLyrics = refinedLyrics.replace('серці', 'душі палкій').replace('любов', 'пристрасть');
-      } else if (userInput.includes('простіше')) {
-        refinedLyrics = 'Ти мій друг найкращий,\nЗ тобою все прекрасно,\nБудь завжди щасливим,\nІ посміхайся ясно!';
-      } else if (userInput.includes('не так') || userInput.includes('переробити')) {
-        refinedLyrics = `Дружба наша міцна,
-Як весняна квітка,
-Разом ми сильніші,
-Це не просто мітка!
-
-Приспів:
-Друже мій вірний,
-Поруч завжди,
-Щастя нам світить,
-Мрії здійсни!
-
-Кожен день разом -
-То велика сила,
-Наша дружба вічна,
-Світла і красива!`;
-      }
-      
-      return `Ось оновлений варіант:\n\n\`\`\`\n${refinedLyrics}\n\`\`\`\n\nТак краще? Можемо ще щось змінити!`;
     }
-
-    const responses = [
-      'Чудово! Розкажи мені більше про отримувача. Які у вас стосунки?',
-      'Відмінно! Який настрій повинен бути у пісні - веселий, романтичний, зворушливий?',
-      'Зрозуміло! А чи є якісь особливі спогади або моменти, які хочеться відобразити в пісні?',
-      `Дякую за подробиці! Ось текст пісні, який я створив спеціально для вас:
-
-\`\`\`
-У серці моєму живе тепло,
-Що дарує мені твоя любов,
-Нехай цей день буде світло,
-І щастя ллється знов і знов.
-
-Приспів:
-Ти моє світло в темній ночі,
-Ти мій друг назавжди,
-Нехай здійсняться мрії,
-Будь щасливим завжди!
-
-Кожен день з тобою як свято,
-Кожна мить дорожча золота,
-Нехай посмішка не згасне,
-І душа співає від щастя!
-\`\`\`
-
-Як вам такий варіант? Якщо щось потрібно змінити, просто скажіть!`,
-    ];
-
-    return responses[Math.min(messages.length - 1, responses.length - 1)];
   };
+
 
   const handleHintClick = (hint: string) => {
     setNewMessage(hint);
