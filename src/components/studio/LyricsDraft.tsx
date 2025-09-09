@@ -22,13 +22,10 @@ export const LyricsDraft: React.FC<LyricsDraftProps> = ({ lyrics, onConfirm, onR
 
   const handleSaveEdit = () => {
     setIsEditing(false);
-    // Save to localStorage for persistence
-    localStorage.setItem('studio-lyrics-draft', editableLyrics);
   };
 
   const handleClearDraft = () => {
     setEditableLyrics('');
-    localStorage.removeItem('studio-lyrics-draft');
   };
 
   const handleConfirmLyrics = () => {
@@ -63,14 +60,6 @@ export const LyricsDraft: React.FC<LyricsDraftProps> = ({ lyrics, onConfirm, onR
     setEditableLyrics(lyrics);
     setIsEditing(false);
   };
-
-  // Load draft from localStorage on component mount
-  useEffect(() => {
-    const savedDraft = localStorage.getItem('studio-lyrics-draft');
-    if (savedDraft && !editableLyrics) {
-      setEditableLyrics(savedDraft);
-    }
-  }, []);
 
   return (
     <div className="flex flex-col h-full">

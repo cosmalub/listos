@@ -116,7 +116,7 @@ const Studio = () => {
                     )}
                   </TabsTrigger>
                 </TabsList>
-                <TabsContent value="chat" className="flex-1" forceMount>
+                <TabsContent value="chat" className="flex-1">
                   <Card className="p-4 h-full">
                     <ChatInterface 
                       ref={chatRef}
@@ -128,7 +128,7 @@ const Studio = () => {
                     />
                   </Card>
                 </TabsContent>
-                <TabsContent value="draft" className="flex-1" forceMount>
+                <TabsContent value="draft" className="flex-1">
                   <Card className="p-4 h-full">
                     <LyricsDraft 
                       lyrics={lyrics} 
