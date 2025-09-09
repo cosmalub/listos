@@ -36,7 +36,13 @@ const Studio = () => {
   useEffect(() => {
     const savedMessages = localStorage.getItem('studio-chat-messages');
     if (savedMessages) {
-      setChatMessages(JSON.parse(savedMessages));
+      const parsedMessages = JSON.parse(savedMessages);
+      // Convert timestamps back to Date objects
+      const messagesWithDates = parsedMessages.map((msg: any) => ({
+        ...msg,
+        timestamp: new Date(msg.timestamp)
+      }));
+      setChatMessages(messagesWithDates);
     }
   }, []);
 

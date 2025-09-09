@@ -51,7 +51,11 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
 }, ref) => {
   const [messages, setMessages] = useState<Message[]>(() => {
     if (initialMessages && initialMessages.length > 0) {
-      return initialMessages;
+      // Convert timestamps back to Date objects if they're numbers/strings
+      return initialMessages.map(msg => ({
+        ...msg,
+        timestamp: msg.timestamp instanceof Date ? msg.timestamp : new Date(msg.timestamp)
+      }));
     }
     return [{
       id: '1',
