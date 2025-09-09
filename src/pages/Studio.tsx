@@ -29,7 +29,23 @@ const Studio = () => {
   const [hasUnconfirmedLyrics, setHasUnconfirmedLyrics] = useState(false);
   const [selectedMusicVariant, setSelectedMusicVariant] = useState<any>(null);
   const [pageData, setPageData] = useState<any>(null);
+  const [chatMessages, setChatMessages] = useState<any[]>([]);
   const chatRef = useRef<ChatInterfaceRef>(null);
+
+  // Load chat history from localStorage
+  useEffect(() => {
+    const savedMessages = localStorage.getItem('studio-chat-messages');
+    if (savedMessages) {
+      setChatMessages(JSON.parse(savedMessages));
+    }
+  }, []);
+
+  // Save chat history to localStorage
+  useEffect(() => {
+    if (chatMessages.length > 0) {
+      localStorage.setItem('studio-chat-messages', JSON.stringify(chatMessages));
+    }
+  }, [chatMessages]);
 
   // Sync current step with URL parameter
   useEffect(() => {
@@ -56,9 +72,15 @@ const Studio = () => {
   };
 
   const handleRequestEdit = (editText: string) => {
+    // Compose full message with current lyrics context
+    const currentLyrics = lyrics.trim();
+    const composedMessage = currentLyrics ? 
+      `${editText}\n\nПоточний текст пісні:\n\`\`\`LYRICS\n${currentLyrics}\n\`\`\`` : 
+      editText;
+    
     setActiveTab('chat');
     setTimeout(() => {
-      chatRef.current?.prefillAndFocus(editText);
+      chatRef.current?.prefillAndSend(composedMessage);
     }, 100);
   };
 
@@ -94,17 +116,19 @@ const Studio = () => {
                     )}
                   </TabsTrigger>
                 </TabsList>
-                <TabsContent value="chat" className="flex-1">
+                <TabsContent value="chat" className="flex-1" forceMount>
                   <Card className="p-4 h-full">
                     <ChatInterface 
                       ref={chatRef}
+                      initialMessages={chatMessages}
+                      onMessagesChange={setChatMessages}
                       onLyricsGenerated={handleLyricsGenerated}
                       onConfirmLyrics={handleLyricsConfirmed}
                       onEditLyrics={() => setActiveTab('draft')}
                     />
                   </Card>
                 </TabsContent>
-                <TabsContent value="draft" className="flex-1">
+                <TabsContent value="draft" className="flex-1" forceMount>
                   <Card className="p-4 h-full">
                     <LyricsDraft 
                       lyrics={lyrics} 

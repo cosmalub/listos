@@ -17,9 +17,12 @@ interface Message {
 
 export interface ChatInterfaceRef {
   prefillAndFocus: (text: string) => void;
+  prefillAndSend: (text: string) => void;
 }
 
 interface ChatInterfaceProps {
+  initialMessages?: Message[];
+  onMessagesChange?: (messages: Message[]) => void;
   onLyricsGenerated: (lyrics: string) => void;
   onConfirmLyrics?: (lyrics: string) => void;
   onEditLyrics?: () => void;
@@ -40,18 +43,23 @@ const refineChips = [
 ];
 
 export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({ 
+  initialMessages,
+  onMessagesChange,
   onLyricsGenerated, 
   onConfirmLyrics,
   onEditLyrics 
 }, ref) => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
+  const [messages, setMessages] = useState<Message[]>(() => {
+    if (initialMessages && initialMessages.length > 0) {
+      return initialMessages;
+    }
+    return [{
       id: '1',
       content: 'Привіт! Я Лістосик, і я допоможу тобі створити прекрасні слова для пісні на листівку. Розкажи мені, кому призначена ця листівка і які почуття ти хочеш передати?',
       sender: 'assistant',
       timestamp: new Date(),
-    },
-  ]);
+    }];
+  });
   const [newMessage, setNewMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
@@ -59,6 +67,11 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
   const [lastLyricsMessage, setLastLyricsMessage] = useState<string | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Update parent when messages change
+  useEffect(() => {
+    onMessagesChange?.(messages);
+  }, [messages, onMessagesChange]);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -82,10 +95,13 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
     setIsTyping(true);
 
     try {
+      // Trim conversation history to last 15 messages for API efficiency
+      const trimmedHistory = messages.slice(-15);
+      
       const { data, error } = await supabase.functions.invoke('generate-lyrics', {
         body: {
           message: messageText,
-          conversationHistory: messages
+          conversationHistory: trimmedHistory
         }
       });
 
@@ -188,6 +204,12 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
         if (textareaRef.current) {
           textareaRef.current.setSelectionRange(text.length, text.length);
         }
+      }, 100);
+    },
+    prefillAndSend: (text: string) => {
+      setNewMessage(text);
+      setTimeout(() => {
+        handleSendMessage(text);
       }, 100);
     }
   }));
