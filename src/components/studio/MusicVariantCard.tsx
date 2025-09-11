@@ -10,7 +10,7 @@ interface MusicVariant {
   title: string;
   description: string;
   audioUrl?: string;
-  duration?: string;
+  duration?: number;
   style: string;
 }
 
@@ -26,10 +26,31 @@ export const MusicVariantCard: React.FC<MusicVariantCardProps> = ({
   onSelect
 }) => {
   const [isPlaying, setIsPlaying] = React.useState(false);
+  const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
+
+  React.useEffect(() => {
+    if (variant.audioUrl) {
+      const audioElement = new Audio(variant.audioUrl);
+      audioElement.addEventListener('ended', () => setIsPlaying(false));
+      setAudio(audioElement);
+      
+      return () => {
+        audioElement.pause();
+        audioElement.removeEventListener('ended', () => setIsPlaying(false));
+      };
+    }
+  }, [variant.audioUrl]);
 
   const handlePlayPause = () => {
-    setIsPlaying(!isPlaying);
-    // In real implementation, this would control audio playback
+    if (!audio) return;
+    
+    if (isPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+    } else {
+      audio.play();
+      setIsPlaying(true);
+    }
   };
 
   return (
@@ -53,7 +74,7 @@ export const MusicVariantCard: React.FC<MusicVariantCardProps> = ({
           {variant.duration && (
             <div className="flex items-center text-xs text-muted-foreground">
               <Clock className="h-3 w-3 mr-1" />
-              {variant.duration}
+              {variant.duration}с
             </div>
           )}
         </div>

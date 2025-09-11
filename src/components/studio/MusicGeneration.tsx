@@ -6,13 +6,14 @@ import { Textarea } from '@/components/ui/textarea';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Music, Sparkles, RefreshCw, HeadphonesIcon, UserCheck, Info } from 'lucide-react';
 import { MusicVariantCard } from './MusicVariantCard';
+import { supabase } from '@/integrations/supabase/client';
 
 interface MusicVariant {
   id: string;
   title: string;
   description: string;
   audioUrl?: string;
-  duration?: string;
+  duration?: number;
   style: string;
 }
 
@@ -45,30 +46,55 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
     setIsGenerating(true);
     setVariants([]);
     
-    // Simulate generation delay
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    
-    // Mock variants - in real implementation, this would call the backend
-    const mockVariants: MusicVariant[] = [
-      {
-        id: '1',
-        title: 'Енергійний поп',
-        description: 'Сучасний поп-трек з яскравим ритмом та запоминающимся припевом',
-        duration: '3:24',
-        style: 'Upbeat Pop'
-      },
-      {
-        id: '2',
-        title: 'Мелодійна балада',
-        description: 'Ніжна акустична версія з глибоким емоційним звучанням',
-        duration: '3:45',
-        style: 'Acoustic Ballad'
+    try {
+      console.log('Starting music generation with lyrics:', lyrics.substring(0, 100) + '...');
+      
+      const { data, error } = await supabase.functions.invoke('generate-music', {
+        body: { 
+          lyrics: lyrics,
+          style: undefined // Auto-detect style for now
+        }
+      });
+
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw new Error(error.message || 'Failed to generate music');
       }
-    ];
-    
-    setVariants(mockVariants);
-    setIsGenerating(false);
-    setGenerationAttempt(prev => prev + 1);
+
+      if (!data.success) {
+        console.error('Music generation failed:', data.error);
+        throw new Error(data.error || 'Failed to generate music');
+      }
+
+      console.log('Music generation successful:', data.variants?.length || 0, 'variants');
+      setVariants(data.variants || []);
+      
+    } catch (error) {
+      console.error('Music generation error:', error);
+      
+      // Fallback to mock data on error
+      const mockVariants: MusicVariant[] = [
+        {
+          id: 'mock-1',
+          title: 'Енергійний поп (демо)',
+          description: 'Демо-версія. Спробуйте ще раз або зв\'яжіться зі спеціалістом',
+          duration: 30,
+          style: 'Upbeat Pop'
+        },
+        {
+          id: 'mock-2', 
+          title: 'Мелодійна балада (демо)',
+          description: 'Демо-версія. Спробуйте ще раз або зв\'яжіться зі спеціалістом',
+          duration: 30,
+          style: 'Acoustic Ballad'
+        }
+      ];
+      
+      setVariants(mockVariants);
+    } finally {
+      setIsGenerating(false);
+      setGenerationAttempt(prev => prev + 1);
+    }
   };
 
   const handleRegenerateWithFeedback = async () => {
