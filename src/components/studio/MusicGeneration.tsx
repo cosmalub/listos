@@ -52,7 +52,8 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
       const { data, error } = await supabase.functions.invoke('generate-music', {
         body: { 
           lyrics: lyrics,
-          style: undefined // Auto-detect style for now
+          style: undefined, // Auto-detect style for now
+          userFeedback: generationAttempt > 0 ? feedback : undefined
         }
       });
 

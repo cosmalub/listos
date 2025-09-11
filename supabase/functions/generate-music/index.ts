@@ -1,5 +1,6 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.57.2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -9,6 +10,7 @@ const corsHeaders = {
 interface MusicGenerationRequest {
   lyrics: string;
   style?: string;
+  userFeedback?: string;
 }
 
 interface MusicVariant {
@@ -26,7 +28,7 @@ serve(async (req) => {
   }
 
   try {
-    const { lyrics, style }: MusicGenerationRequest = await req.json();
+    const { lyrics, style, userFeedback }: MusicGenerationRequest = await req.json();
     
     console.log('Generating music for lyrics:', lyrics.substring(0, 100) + '...');
     
@@ -35,11 +37,17 @@ serve(async (req) => {
       throw new Error('ElevenLabs API key not configured');
     }
 
+    // Initialize Supabase client for storing requests
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    );
+
     // Analyze lyrics to determine mood, tempo, and style
     const moodAnalysis = analyzeLyrics(lyrics);
     
     // Generate two different prompts for variety
-    const prompts = generateMusicPrompts(lyrics, moodAnalysis, style);
+    const prompts = generateMusicPrompts(lyrics, moodAnalysis, style, userFeedback);
     
     const variants: MusicVariant[] = [];
     
@@ -49,16 +57,15 @@ serve(async (req) => {
       console.log(`Generating variant ${i + 1} with prompt:`, prompt.text);
       
       try {
-        const response = await fetch('https://api.elevenlabs.io/v1/music/compose', {
+        const response = await fetch('https://api.elevenlabs.io/v1/music/compose?output_format=mp3_44100_128', {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${elevenlabsApiKey}`,
+            'xi-api-key': elevenlabsApiKey,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             prompt: prompt.text,
-            duration: 30, // 30 seconds for preview
-            format: 'mp3'
+            duration_seconds: 30
           }),
         });
 
@@ -90,6 +97,16 @@ serve(async (req) => {
     if (variants.length === 0) {
       throw new Error('Failed to generate any music variants');
     }
+
+    // Store request in database
+    await supabase
+      .from('music_requests')
+      .insert({
+        lyrics,
+        style,
+        user_feedback: userFeedback,
+        generated_variants: variants
+      });
 
     console.log(`Successfully generated ${variants.length} music variants`);
     
@@ -146,7 +163,7 @@ function analyzeLyrics(lyrics: string) {
   return { mood, energy, lyricsLength: lyrics.length };
 }
 
-function generateMusicPrompts(lyrics: string, analysis: any, userStyle?: string) {
+function generateMusicPrompts(lyrics: string, analysis: any, userStyle?: string, userFeedback?: string) {
   const { mood, energy } = analysis;
   
   // Base style determination
@@ -164,11 +181,28 @@ function generateMusicPrompts(lyrics: string, analysis: any, userStyle?: string)
     }
   }
 
+  // Enhance prompts based on user feedback
+  let promptEnhancement = '';
+  if (userFeedback) {
+    if (userFeedback.includes('faster') || userFeedback.includes('энергичнее') || userFeedback.includes('швидш')) {
+      promptEnhancement += ', upbeat and energetic';
+    }
+    if (userFeedback.includes('slower') || userFeedback.includes('медленнее') || userFeedback.includes('повільн')) {
+      promptEnhancement += ', slow and contemplative';
+    }
+    if (userFeedback.includes('rock') || userFeedback.includes('рок')) {
+      promptEnhancement += ', rock style with electric guitars';
+    }
+    if (userFeedback.includes('classical') || userFeedback.includes('классическ') || userFeedback.includes('класичн')) {
+      promptEnhancement += ', orchestral arrangement';
+    }
+  }
+
   const prompts = [];
 
   // Variant 1: Instrumental version
   const instrumentalPrompt = {
-    text: `${baseGenre} instrumental track, ${energy} energy, ${mood} mood, catchy melody with modern production`,
+    text: `${baseGenre} instrumental track, ${energy} energy, ${mood} mood, catchy melody with modern production${promptEnhancement}`,
     title: `${capitalizeFirst(baseGenre)} Instrumental`,
     description: `Инструментальная версия в стиле ${baseGenre}`,
     style: `${baseGenre} instrumental`
@@ -176,7 +210,7 @@ function generateMusicPrompts(lyrics: string, analysis: any, userStyle?: string)
 
   // Variant 2: Vocal version
   const vocalPrompt = {
-    text: `${baseGenre} song with vocals, ${energy} energy, ${mood} emotional tone, radio-ready production with memorable hook`,
+    text: `${baseGenre} song with vocals, ${energy} energy, ${mood} emotional tone, radio-ready production with memorable hook${promptEnhancement}`,
     title: `${capitalizeFirst(baseGenre)} с вокалом`,
     description: `Версия с вокалом в стиле ${baseGenre}`,
     style: `${baseGenre} vocal`
