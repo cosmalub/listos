@@ -57,7 +57,7 @@ serve(async (req) => {
       console.log(`Generating variant ${i + 1} with prompt:`, prompt.text);
       
       try {
-        const response = await fetch('https://api.elevenlabs.io/v1/music/compose?output_format=mp3_44100_128', {
+        const response = await fetch('https://api.elevenlabs.io/v1/music', {
           method: 'POST',
           headers: {
             'xi-api-key': elevenlabsApiKey,
