@@ -1,6 +1,6 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.57.2';
+import { base64Encode } from "https://deno.land/std@0.168.0/encoding/base64.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -37,12 +37,6 @@ serve(async (req) => {
       throw new Error('ElevenLabs API key not configured');
     }
 
-    // Initialize Supabase client for storing requests
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
-
     // Analyze lyrics to determine mood, tempo, and style
     const moodAnalysis = analyzeLyrics(lyrics);
     
@@ -71,14 +65,14 @@ serve(async (req) => {
 
         if (!response.ok) {
           const errorText = await response.text();
-          console.error(`ElevenLabs API error for variant ${i + 1}:`, errorText);
+          console.error(`ElevenLabs API error for variant ${i + 1}:`, response.status, errorText);
           continue; // Skip this variant if it fails
         }
 
         const audioBuffer = await response.arrayBuffer();
         // Use proper base64 encoding for large audio files
         const uint8Array = new Uint8Array(audioBuffer);
-        const base64Audio = btoa(String.fromCodePoint(...uint8Array));
+        const base64Audio = base64Encode(uint8Array);
         const audioUrl = `data:audio/mpeg;base64,${base64Audio}`;
 
         variants.push({
@@ -99,16 +93,6 @@ serve(async (req) => {
     if (variants.length === 0) {
       throw new Error('Failed to generate any music variants');
     }
-
-    // Store request in database
-    await supabase
-      .from('music_requests')
-      .insert({
-        lyrics,
-        style,
-        user_feedback: userFeedback,
-        generated_variants: variants
-      });
 
     console.log(`Successfully generated ${variants.length} music variants`);
     

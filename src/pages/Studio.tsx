@@ -12,6 +12,8 @@ import { Header } from '@/components/sections/header';
 import { Footer } from '@/components/sections/footer';
 import { StepsHeader } from '@/components/studio/StepsHeader';
 import { StepExplanation } from '@/components/studio/StepExplanation';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 const steps = [
   { id: 1, title: 'Створення слів', description: 'Створюємо слова для пісні' },
@@ -90,9 +92,29 @@ const Studio = () => {
     }, 100);
   };
 
-  const handleMusicVariantSelected = (variant: any) => {
+  const handleMusicVariantSelected = async (variant: any) => {
     setSelectedMusicVariant(variant);
     setCurrentStep(3); // Move to postcard design step
+    
+    // Save selection to database
+    try {
+      const { data, error } = await supabase.functions.invoke('save-music-selection', {
+        body: { 
+          lyrics, 
+          selectedVariant: variant
+        }
+      });
+      
+      if (error) {
+        console.error('Failed to save music selection:', error);
+        toast.error('Не вдалося зберегти вибір музики');
+      } else {
+        console.log('Music selection saved successfully:', data);
+      }
+    } catch (error) {
+      console.error('Error saving music selection:', error);
+      toast.error('Помилка при збереженні вибору музики');
+    }
   };
 
   const handlePageCaptionComplete = (data: any) => {

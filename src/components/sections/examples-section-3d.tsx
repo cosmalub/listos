@@ -285,7 +285,7 @@ const postcardExamples = [
     backImage: "/images/postcards/example-back.jpg", 
     songTitle: "З днем народження, мамо", 
     artist: "Від Ані", 
-    audioSrc: "/audio/example-song.mp3" 
+    audioSrc: "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//OEAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAEAAABIADAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV6urq6urq6urq6urq6urq6urq6urq6urq6v////////////////////////////////8AAAAATGF2YzU4LjU0AAAAAAAAAAAAAAAAJAAAAAAAAAAAASDs90hvAAAAAAAAAAAAAAAAAAAA//OCEAAADwAABHiAAATgsAAhXiAAEaQhEIRAQYgcEKIoDAgCA" 
   },
   { 
     id: 2, 
@@ -295,7 +295,7 @@ const postcardExamples = [
     backImage: "/images/postcards/example-back.jpg", 
     songTitle: "Ти - моє все", 
     artist: "Від Максима", 
-    audioSrc: "/audio/example-song.mp3" 
+    audioSrc: "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//OEAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAEAAABIADAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV6urq6urq6urq6urq6urq6urq6urq6urq6v////////////////////////////////8AAAAATGF2YzU4LjU0AAAAAAAAAAAAAAAAJAAAAAAAAAAAASDs90hvAAAAAAAAAAAAAAAAAAAA//OCEAAADwAABHiAAATgsAAhXiAAEaQhEIRAQYgcEKIoDAgCA" 
   },
   { 
     id: 3, 
@@ -305,7 +305,7 @@ const postcardExamples = [
     backImage: "/images/postcards/example-back.jpg", 
     songTitle: "Дякую за все", 
     artist: "Від Олега", 
-    audioSrc: "/audio/example-song.mp3" 
+    audioSrc: "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//OEAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAEAAABIADAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV6urq6urq6urq6urq6urq6urq6urq6urq6v////////////////////////////////8AAAAATGF2YzU4LjU0AAAAAAAAAAAAAAAAJAAAAAAAAAAAASDs90hvAAAAAAAAAAAAAAAAAAAA//OCEAAADwAABHiAAATgsAAhXiAAEaQhEIRAQYgcEKIoDAgCA"
   },
 ]
 
