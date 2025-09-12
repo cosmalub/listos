@@ -71,8 +71,14 @@ serve(async (req) => {
         }
 
         const audioBuffer = await response.arrayBuffer();
+        const bufferSizeKB = audioBuffer.byteLength / 1024;
+        console.log(`🎵 Received audio buffer for variant ${i + 1}: ${bufferSizeKB.toFixed(2)} KB`);
+        
         // Convert to base64 safely (chunked)
         const base64Audio = arrayBufferToBase64(audioBuffer);
+        const base64SizeKB = base64Audio.length / 1024;
+        console.log(`🎵 Base64 encoded size for variant ${i + 1}: ${base64SizeKB.toFixed(2)} KB`);
+        
         const audioUrl = `data:audio/mpeg;base64,${base64Audio}`;
 
         variants.push({

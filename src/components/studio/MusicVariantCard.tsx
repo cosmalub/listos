@@ -27,40 +27,91 @@ export const MusicVariantCard: React.FC<MusicVariantCardProps> = ({
 }) => {
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
+  const [currentTime, setCurrentTime] = React.useState(0);
+  const [realDuration, setRealDuration] = React.useState(0);
+  const [progress, setProgress] = React.useState(0);
 
   React.useEffect(() => {
     if (variant.audioUrl && variant.audioUrl.startsWith('data:audio/')) {
+      console.log('🎵 Setting up audio for variant:', variant.title);
+      console.log('🎵 Audio URL length:', variant.audioUrl.length);
+      
       const audioElement = new Audio(variant.audioUrl);
-      audioElement.addEventListener('ended', () => setIsPlaying(false));
-      audioElement.addEventListener('error', (e) => {
-        console.error('Audio playback error:', e);
+      
+      const handleEnded = () => {
+        console.log('🎵 Audio ended');
         setIsPlaying(false);
-      });
+        setProgress(0);
+        setCurrentTime(0);
+      };
+      
+      const handleError = (e: any) => {
+        console.error('🎵 Audio playback error:', e);
+        console.error('🎵 Audio error details:', audioElement.error);
+        setIsPlaying(false);
+      };
+      
+      const handleLoadedMetadata = () => {
+        console.log('🎵 Audio metadata loaded - Duration:', audioElement.duration);
+        setRealDuration(audioElement.duration);
+      };
+      
+      const handleTimeUpdate = () => {
+        const current = audioElement.currentTime;
+        const duration = audioElement.duration;
+        setCurrentTime(current);
+        if (duration > 0) {
+          setProgress((current / duration) * 100);
+        }
+      };
+      
+      const handleCanPlay = () => {
+        console.log('🎵 Audio can play - Duration:', audioElement.duration);
+      };
+      
+      audioElement.addEventListener('ended', handleEnded);
+      audioElement.addEventListener('error', handleError);
+      audioElement.addEventListener('loadedmetadata', handleLoadedMetadata);
+      audioElement.addEventListener('timeupdate', handleTimeUpdate);
+      audioElement.addEventListener('canplay', handleCanPlay);
+      
       setAudio(audioElement);
       
       return () => {
         audioElement.pause();
-        audioElement.removeEventListener('ended', () => setIsPlaying(false));
+        audioElement.removeEventListener('ended', handleEnded);
+        audioElement.removeEventListener('error', handleError);
+        audioElement.removeEventListener('loadedmetadata', handleLoadedMetadata);
+        audioElement.removeEventListener('timeupdate', handleTimeUpdate);
+        audioElement.removeEventListener('canplay', handleCanPlay);
       };
     }
   }, [variant.audioUrl]);
 
   const handlePlayPause = () => {
     if (!audio || !variant.audioUrl?.startsWith('data:audio/')) {
-      console.log('Audio not available for playback');
+      console.log('🎵 Audio not available for playback');
       return;
     }
     
     if (isPlaying) {
+      console.log('🎵 Pausing audio at:', audio.currentTime);
       audio.pause();
       setIsPlaying(false);
     } else {
+      console.log('🎵 Starting audio playback');
       audio.play().catch(error => {
-        console.error('Failed to play audio:', error);
+        console.error('🎵 Failed to play audio:', error);
         setIsPlaying(false);
       });
       setIsPlaying(true);
     }
+  };
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
   return (
@@ -81,12 +132,10 @@ export const MusicVariantCard: React.FC<MusicVariantCardProps> = ({
               {variant.style}
             </Badge>
           </div>
-          {variant.duration && (
-            <div className="flex items-center text-xs text-muted-foreground">
-              <Clock className="h-3 w-3 mr-1" />
-              {variant.duration}с
-            </div>
-          )}
+          <div className="flex items-center text-xs text-muted-foreground">
+            <Clock className="h-3 w-3 mr-1" />
+            {realDuration > 0 ? formatTime(realDuration) : (variant.duration ? `${variant.duration}с` : 'N/A')}
+          </div>
         </div>
       </CardHeader>
       
@@ -145,14 +194,18 @@ export const MusicVariantCard: React.FC<MusicVariantCardProps> = ({
             ))}
           </div>
 
-          {/* Progress Bar */}
-          <div className="w-full bg-secondary/40 rounded-full h-1">
-            <div 
-              className={cn(
-                "bg-primary h-1 rounded-full transition-all duration-1000",
-                isPlaying ? "w-1/3" : "w-0"
-              )}
-            />
+          {/* Time Display and Progress Bar */}
+          <div className="space-y-2">
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>{formatTime(currentTime)}</span>
+              <span>{realDuration > 0 ? formatTime(realDuration) : '--:--'}</span>
+            </div>
+            <div className="w-full bg-secondary/40 rounded-full h-1">
+              <div 
+                className="bg-primary h-1 rounded-full transition-all duration-300"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
           </div>
         </div>
 
