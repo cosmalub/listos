@@ -72,26 +72,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
       
     } catch (error) {
       console.error('Music generation error:', error);
-      
-      // Fallback to mock data on error
-      const mockVariants: MusicVariant[] = [
-        {
-          id: 'mock-1',
-          title: 'Енергійний поп (демо)',
-          description: 'Демо-версія. Спробуйте ще раз або зв\'яжіться зі спеціалістом',
-          duration: 30,
-          style: 'Upbeat Pop'
-        },
-        {
-          id: 'mock-2', 
-          title: 'Мелодійна балада (демо)',
-          description: 'Демо-версія. Спробуйте ще раз або зв\'яжіться зі спеціалістом',
-          duration: 30,
-          style: 'Acoustic Ballad'
-        }
-      ];
-      
-      setVariants(mockVariants);
+      setVariants([]);
     } finally {
       setIsGenerating(false);
       setGenerationAttempt(prev => prev + 1);

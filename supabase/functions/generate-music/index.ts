@@ -76,8 +76,10 @@ serve(async (req) => {
         }
 
         const audioBuffer = await response.arrayBuffer();
-        const base64Audio = btoa(String.fromCharCode(...new Uint8Array(audioBuffer)));
-        const audioUrl = `data:audio/mp3;base64,${base64Audio}`;
+        // Use proper base64 encoding for large audio files
+        const uint8Array = new Uint8Array(audioBuffer);
+        const base64Audio = btoa(String.fromCodePoint(...uint8Array));
+        const audioUrl = `data:audio/mpeg;base64,${base64Audio}`;
 
         variants.push({
           id: `variant-${i + 1}`,
