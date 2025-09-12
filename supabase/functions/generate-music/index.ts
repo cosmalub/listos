@@ -60,7 +60,7 @@ serve(async (req) => {
           },
           body: JSON.stringify({
             prompt: prompt.text,
-            duration_seconds: 30
+            duration_seconds: 90
           }),
         });
 
@@ -80,7 +80,7 @@ serve(async (req) => {
           title: prompt.title,
           description: prompt.description,
           audioUrl: audioUrl,
-          duration: 30,
+          duration: 90,
           style: prompt.style
         });
         
@@ -128,14 +128,68 @@ function arrayBufferToBase64(buffer: ArrayBuffer): string {
   return btoa(binary);
 }
 
-function analyzeLyrics(lyrics: string) {
+function detectLanguage(lyrics: string): string {
+  const ukrainianMarkers = ['і', 'ї', 'є', 'ґ', 'тобі', 'мій', 'твій', 'щастя', 'доля', 'хай'];
+  const russianMarkers = ['ы', 'ъ', 'тебе', 'мой', 'твой', 'что', 'это', 'счастье', 'судьба'];
+  
+  let ukrainianScore = 0;
+  let russianScore = 0;
+  
   const lowerLyrics = lyrics.toLowerCase();
   
-  // Simple mood analysis based on keywords
-  const positiveWords = ['love', 'happy', 'joy', 'beautiful', 'amazing', 'wonderful', 'bright', 'sunshine', 'smile', 'laugh'];
-  const negativeWords = ['sad', 'cry', 'pain', 'hurt', 'broken', 'lonely', 'dark', 'shadow', 'tears', 'goodbye'];
-  const energeticWords = ['dance', 'party', 'rock', 'wild', 'crazy', 'fast', 'run', 'jump', 'exciting', 'energy'];
-  const calmWords = ['quiet', 'peace', 'calm', 'soft', 'gentle', 'whisper', 'silent', 'still', 'breathe', 'slow'];
+  ukrainianMarkers.forEach(marker => {
+    if (lowerLyrics.includes(marker)) ukrainianScore++;
+  });
+  
+  russianMarkers.forEach(marker => {
+    if (lowerLyrics.includes(marker)) russianScore++;
+  });
+  
+  if (ukrainianScore > russianScore) return 'Ukrainian';
+  if (russianScore > ukrainianScore) return 'Russian';
+  return 'English'; // fallback
+}
+
+function analyzeLyrics(lyrics: string) {
+  const lowerLyrics = lyrics.toLowerCase();
+  const detectedLanguage = detectLanguage(lyrics);
+  
+  // Multi-language mood analysis
+  const positiveWords = [
+    // English
+    'love', 'happy', 'joy', 'beautiful', 'amazing', 'wonderful', 'bright', 'sunshine', 'smile', 'laugh',
+    // Ukrainian
+    'радість', 'щастя', 'любов', 'красиво', 'дивовижно', 'чудово', 'яскраво', 'сонце', 'посмішка', 'сміх',
+    // Russian
+    'радость', 'счастье', 'любовь', 'красиво', 'удивительно', 'чудесно', 'ярко', 'солнце', 'улыбка', 'смех'
+  ];
+  
+  const negativeWords = [
+    // English
+    'sad', 'cry', 'pain', 'hurt', 'broken', 'lonely', 'dark', 'shadow', 'tears', 'goodbye',
+    // Ukrainian
+    'сумний', 'плач', 'біль', 'боляче', 'зламаний', 'самотній', 'темний', 'тінь', 'сльози', 'прощавай',
+    // Russian
+    'грустный', 'плач', 'боль', 'больно', 'сломанный', 'одинокий', 'тёмный', 'тень', 'слёзы', 'прощай'
+  ];
+  
+  const energeticWords = [
+    // English
+    'dance', 'party', 'rock', 'wild', 'crazy', 'fast', 'run', 'jump', 'exciting', 'energy',
+    // Ukrainian
+    'танець', 'вечірка', 'рок', 'дикий', 'божевільний', 'швидко', 'біг', 'стрибок', 'захоплюючий', 'енергія',
+    // Russian
+    'танец', 'вечеринка', 'рок', 'дикий', 'безумный', 'быстро', 'бег', 'прыжок', 'захватывающий', 'энергия'
+  ];
+  
+  const calmWords = [
+    // English
+    'quiet', 'peace', 'calm', 'soft', 'gentle', 'whisper', 'silent', 'still', 'breathe', 'slow',
+    // Ukrainian
+    'тихий', 'мир', 'спокій', 'м\'який', 'ніжний', 'шепіт', 'мовчазний', 'нерухомий', 'дихати', 'повільно',
+    // Russian
+    'тихий', 'мир', 'спокойствие', 'мягкий', 'нежный', 'шёпот', 'молчаливый', 'неподвижный', 'дышать', 'медленно'
+  ];
 
   const positiveScore = positiveWords.filter(word => lowerLyrics.includes(word)).length;
   const negativeScore = negativeWords.filter(word => lowerLyrics.includes(word)).length;
@@ -157,11 +211,16 @@ function analyzeLyrics(lyrics: string) {
     energy = 'low';
   }
 
-  return { mood, energy, lyricsLength: lyrics.length };
+  return { mood, energy, language: detectedLanguage, lyricsLength: lyrics.length };
 }
 
 function generateMusicPrompts(lyrics: string, analysis: any, userStyle?: string, userFeedback?: string) {
-  const { mood, energy } = analysis;
+  const { mood, energy, language } = analysis;
+  
+  // Get first few lines of lyrics for inclusion in prompts
+  const lyricsLines = lyrics.split('\n').filter(line => line.trim().length > 0);
+  const firstLines = lyricsLines.slice(0, 2).join(' ').substring(0, 100);
+  const languageLabel = language === 'Ukrainian' ? 'Ukrainian' : language === 'Russian' ? 'Russian' : 'English';
   
   // Base style determination
   let baseGenre = 'pop';
@@ -199,17 +258,17 @@ function generateMusicPrompts(lyrics: string, analysis: any, userStyle?: string,
 
   // Variant 1: Instrumental version
   const instrumentalPrompt = {
-    text: `${baseGenre} instrumental track, ${energy} energy, ${mood} mood, catchy melody with modern production${promptEnhancement}`,
+    text: `${baseGenre} instrumental track in ${languageLabel} style, ${energy} energy, ${mood} mood, catchy melody with modern production, duration 90 seconds${promptEnhancement}`,
     title: `${capitalizeFirst(baseGenre)} Instrumental`,
     description: `Инструментальная версия в стиле ${baseGenre}`,
     style: `${baseGenre} instrumental`
   };
 
-  // Variant 2: Vocal version
+  // Variant 2: Vocal version with actual lyrics
   const vocalPrompt = {
-    text: `${baseGenre} song with vocals, ${energy} energy, ${mood} emotional tone, radio-ready production with memorable hook${promptEnhancement}`,
+    text: `${baseGenre} song in ${languageLabel} language, lyrics: "${firstLines}", ${energy} energy, ${mood} emotional tone, radio-ready production with memorable hook, duration 90 seconds${promptEnhancement}`,
     title: `${capitalizeFirst(baseGenre)} с вокалом`,
-    description: `Версия с вокалом в стиле ${baseGenre}`,
+    description: `Версия с вокалом в стиле ${baseGenre} на ${languageLabel.toLowerCase()} языке`,
     style: `${baseGenre} vocal`
   };
 
