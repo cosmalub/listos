@@ -96,29 +96,29 @@ const Studio = () => {
     setSelectedMusicVariant(variant);
     setCurrentStep(3); // Move to postcard design step
     
-    // Save selection to database
+    // Do not save yet; saving will occur after final confirmation (step 4)
+  };
+
+  const handlePageCaptionComplete = async (data: any) => {
+    setPageData(data);
+    // Save selection after final confirmation
     try {
-      const { data, error } = await supabase.functions.invoke('save-music-selection', {
-        body: { 
-          lyrics, 
-          selectedVariant: variant
+      const { data: saveData, error } = await supabase.functions.invoke('save-music-selection', {
+        body: {
+          lyrics,
+          selectedVariant: selectedMusicVariant
         }
       });
-      
       if (error) {
         console.error('Failed to save music selection:', error);
         toast.error('Не вдалося зберегти вибір музики');
       } else {
-        console.log('Music selection saved successfully:', data);
+        console.log('Music selection saved successfully:', saveData);
       }
     } catch (error) {
       console.error('Error saving music selection:', error);
       toast.error('Помилка при збереженні вибору музики');
     }
-  };
-
-  const handlePageCaptionComplete = (data: any) => {
-    setPageData(data);
     setCurrentStep(4);
   };
 

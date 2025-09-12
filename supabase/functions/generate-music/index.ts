@@ -1,10 +1,11 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { base64Encode } from "https://deno.land/std@0.168.0/encoding/base64.ts";
+
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
 interface MusicGenerationRequest {
@@ -70,9 +71,8 @@ serve(async (req) => {
         }
 
         const audioBuffer = await response.arrayBuffer();
-        // Use proper base64 encoding for large audio files
-        const uint8Array = new Uint8Array(audioBuffer);
-        const base64Audio = base64Encode(uint8Array);
+        // Convert to base64 safely (chunked)
+        const base64Audio = arrayBufferToBase64(audioBuffer);
         const audioUrl = `data:audio/mpeg;base64,${base64Audio}`;
 
         variants.push({
@@ -116,6 +116,17 @@ serve(async (req) => {
     });
   }
 });
+
+function arrayBufferToBase64(buffer: ArrayBuffer): string {
+  let binary = '';
+  const bytes = new Uint8Array(buffer);
+  const chunkSize = 0x8000; // 32KB chunks to avoid stack overflow
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    const chunk = bytes.subarray(i, i + chunkSize);
+    binary += String.fromCharCode(...chunk);
+  }
+  return btoa(binary);
+}
 
 function analyzeLyrics(lyrics: string) {
   const lowerLyrics = lyrics.toLowerCase();
