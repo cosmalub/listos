@@ -379,7 +379,7 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
 
 
       {/* Message composer */}
-      <div className="flex gap-2 pt-10">
+      <div className="flex gap-2 pt-20">
         <Textarea
           ref={textareaRef}
           placeholder={lastLyricsMessage ? "Скажіть що хочете змінити у пісні..." : "Введіть ваше повідомлення..."}
