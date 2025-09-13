@@ -223,9 +223,10 @@ function analyzeLyrics(lyrics: string) {
 function generateMusicPrompts(lyrics: string, analysis: any, userStyle?: string, userFeedback?: string) {
   const { mood, energy, language } = analysis;
   
-  // Get first few lines of lyrics for inclusion in prompts
+  // Get lyrics for inclusion in prompts - use more content for better results
   const lyricsLines = lyrics.split('\n').filter(line => line.trim().length > 0);
-  const firstLines = lyricsLines.slice(0, 2).join(' ').substring(0, 100);
+  const firstLines = lyricsLines.slice(0, 4).join(' ').substring(0, 200);
+  const fullLyricsForPrompt = lyrics.substring(0, 300); // More context for better generation
   const languageLabel = language === 'Ukrainian' ? 'Ukrainian' : language === 'Russian' ? 'Russian' : 'English';
   
   // Base style determination
@@ -270,9 +271,9 @@ function generateMusicPrompts(lyrics: string, analysis: any, userStyle?: string,
     style: `${baseGenre} instrumental`
   };
 
-  // Variant 2: Vocal version with actual lyrics
+  // Variant 2: Vocal version with actual lyrics - IMPROVED
   const vocalPrompt = {
-    text: `${baseGenre} song in ${languageLabel} language, lyrics: "${firstLines}", ${energy} energy, ${mood} emotional tone, radio-ready production with memorable hook, duration 90 seconds${promptEnhancement}`,
+    text: `${baseGenre} song in ${languageLabel} language. Vocals must sing exactly these lyrics verbatim: "${fullLyricsForPrompt}". ${energy} energy, ${mood} emotional tone. Structure: Intro (instrumental 5 seconds), Verse (vocals singing the provided lyrics clearly), Chorus (vocals repeating key phrases from lyrics), Bridge (instrumental), Outro. Clear vocal delivery with perfect pronunciation, radio-ready production, duration 90 seconds${promptEnhancement}`,
     title: `${capitalizeFirst(baseGenre)} с вокалом`,
     description: `Версия с вокалом в стиле ${baseGenre} на ${languageLabel.toLowerCase()} языке`,
     style: `${baseGenre} vocal`
