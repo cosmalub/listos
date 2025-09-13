@@ -237,7 +237,7 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
       </div>
 
       <ScrollArea className="flex-1 pr-4" ref={scrollAreaRef}>
-        <div className="space-y-8">
+        <div className="space-y-12">
           {messages.map((message) => {
             const hasLyrics = message.sender === 'assistant' && extractLyricsFromMessage(message.content);
             const isEditing = editingMessageId === message.id;
