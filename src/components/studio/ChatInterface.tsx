@@ -377,28 +377,6 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
         </div>
       </ScrollArea>
 
-      {/* Hint chips */}
-      {messages.length === 1 && (
-        <div className="my-4">
-          <p className="text-sm text-muted-foreground mb-2">Не знаєте з чого почати? Оберіть один з варіантів:</p>
-          <p className="text-sm text-muted-foreground mb-3">Швидкий старт - оберіть готову відповідь:</p>
-          <div className="flex flex-wrap gap-2">
-            {hintChips.map((hint) => (
-              <Badge
-                key={hint}
-                variant="outline"
-                className="cursor-pointer hover:bg-accent"
-                onClick={() => handleHintClick(hint)}
-              >
-                {hint}
-              </Badge>
-            ))}
-          </div>
-          <p className="text-xs text-muted-foreground mt-2">
-            💡 Або просто напишіть своїми словами про листівку - я все зрозумію і створю ідеальну пісню!
-          </p>
-        </div>
-      )}
 
       {/* Message composer */}
       <div className="flex gap-2 pt-4 border-t border-border">
