@@ -225,10 +225,6 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
 
   return (
     <div className="flex flex-col h-full">
-      <div className="mb-4 pb-4 border-b border-border">
-        <h3 className="font-semibold text-lg">Створення слів для пісні</h3>
-        <p className="text-sm text-muted-foreground">Розкажіть Лістосику про вашу листівку, і він допоможе створити унікальний текст</p>
-      </div>
 
       <ScrollArea className="flex-1 pr-4" ref={scrollAreaRef}>
         <div className="space-y-8">
