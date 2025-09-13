@@ -228,7 +228,18 @@ function generateMusicPrompts(lyrics: string, analysis: any, userStyle?: string,
   const lyricsLines = lyrics.split('\n').filter(line => line.trim().length > 0);
   const firstLines = lyricsLines.slice(0, 4).join(' ').substring(0, 200);
   const fullLyricsForPrompt = lyrics; // КРИТИЧНО: передаем весь текст песни без обрезки
-  const languageLabel = language === 'Ukrainian' ? 'Ukrainian' : language === 'Russian' ? 'Russian' : 'English';
+  
+  // Улучшенная поддержка языков для четкого произношения
+  let languageLabel = 'English';
+  let pronunciationInstructions = '';
+  
+  if (language === 'Ukrainian') {
+    languageLabel = 'Ukrainian';
+    pronunciationInstructions = 'Use proper Ukrainian phonetics and stress patterns. Pronounce Ukrainian letters і, ї, є, ґ correctly.';
+  } else if (language === 'Russian') {
+    languageLabel = 'Russian';
+    pronunciationInstructions = 'Use proper Russian phonetics and stress patterns. Pronounce Russian soft and hard consonants correctly.';
+  }
   
   // Base style determination
   let baseGenre = 'pop';
@@ -272,9 +283,9 @@ function generateMusicPrompts(lyrics: string, analysis: any, userStyle?: string,
     style: `${baseGenre} instrumental`
   };
 
-  // Variant 2: Vocal version with actual lyrics - IMPROVED
+  // Variant 2: Vocal version with actual lyrics - МАКСИМАЛЬНО ЧЕТКОЕ ПРОИЗНОШЕНИЕ
   const vocalPrompt = {
-    text: `${baseGenre} song in ${languageLabel} language. Vocals must sing exactly these lyrics verbatim: "${fullLyricsForPrompt}". ${energy} energy, ${mood} emotional tone. Structure: Intro (instrumental 5 seconds), Verse (vocals singing the provided lyrics clearly), Chorus (vocals repeating key phrases from lyrics), Bridge (instrumental), Outro. Clear vocal delivery with perfect pronunciation, radio-ready production, duration 90 seconds${promptEnhancement}`,
+    text: `${baseGenre} song in ${languageLabel} language. CRITICAL: Vocals must sing exactly these lyrics word-for-word with NO improvisation, NO ad-libs, NO omissions: "${fullLyricsForPrompt}". Sing every single word clearly and precisely with perfect ${languageLabel} pronunciation and articulation. Do not change, skip, or mumble any words. Each syllable must be pronounced distinctly. ${pronunciationInstructions} Use slower tempo for better articulation if needed. ${energy} energy, ${mood} emotional tone. Structure: Intro (instrumental 5 seconds), Verse (vocals singing the provided lyrics with crystal-clear diction), Chorus (vocals repeating key phrases from lyrics with emphasis and perfect pronunciation), Bridge (instrumental), Outro. Professional vocal delivery with flawless pronunciation, radio-ready production, duration 90 seconds${promptEnhancement}`,
     title: `${capitalizeFirst(baseGenre)} с вокалом`,
     description: `Версия с вокалом в стиле ${baseGenre} на ${languageLabel.toLowerCase()} языке`,
     style: `${baseGenre} vocal`
