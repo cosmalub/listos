@@ -225,15 +225,9 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center gap-3 mb-4 pb-4 border-b border-border">
-        <Avatar>
-          <AvatarImage src={listosMascot} alt="Листосик" />
-          <AvatarFallback>Л</AvatarFallback>
-        </Avatar>
-        <div>
-          <h3 className="font-semibold">Лістосик</h3>
-          <p className="text-sm text-muted-foreground">Помічник зі створення пісень</p>
-        </div>
+      <div className="mb-4 pb-4 border-b border-border">
+        <h3 className="font-semibold text-lg">Створення слів для пісні</h3>
+        <p className="text-sm text-muted-foreground">Розкажіть Лістосику про вашу листівку, і він допоможе створити унікальний текст</p>
       </div>
 
       <ScrollArea className="flex-1 pr-4" ref={scrollAreaRef}>
