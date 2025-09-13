@@ -278,7 +278,7 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
                   
                    {/* Lyrics action buttons */}
                    {hasLyrics && !isEditing && (
-                     <div className="space-y-3 mt-4 pt-4 border-t border-border">
+                     <div className="space-y-3 mt-4 pt-4">
                       {/* Quick refine options */}
                       <div className="space-y-2">
                         <p className="text-xs text-muted-foreground">Швидко покращити:</p>
