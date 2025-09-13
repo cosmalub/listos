@@ -29,10 +29,10 @@ interface ChatInterfaceProps {
 }
 
 const hintChips = [
-  'Кому призначена листівка?',
-  'Який стиль пісні ви віддаєте перевагу?',
-  'Який настрій повинен бути?',
-  'Чи є особливі побажання?',
+  'Романтична листівка для коханої на День народження',
+  'Весела пісня для дитини на випускний',
+  'Подяка другу за підтримку',
+  'Листівка мамі на 8 березня',
 ];
 
 const refineChips = [
@@ -59,7 +59,7 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
     }
     return [{
       id: '1',
-      content: 'Привіт! Я Лістосик, і я допоможу тобі створити прекрасні слова для пісні на листівку. Розкажи мені, кому призначена ця листівка і які почуття ти хочеш передати?',
+      content: 'Привіт! Я Лістосик 🍃 Я допоможу створити унікальну пісню для твоєї листівки! Розкажи мені про листівку - кому вона призначена, з якого приводу, та які емоції ти хочеш передати?',
       sender: 'assistant',
       timestamp: new Date(),
     }];
@@ -380,7 +380,8 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
       {/* Hint chips */}
       {messages.length === 1 && (
         <div className="my-4">
-          <p className="text-sm text-muted-foreground mb-2">Приклади запитань:</p>
+          <p className="text-sm text-muted-foreground mb-2">Не знаєте з чого почати? Оберіть один з варіантів:</p>
+          <p className="text-sm text-muted-foreground mb-3">Швидкий старт - оберіть готову відповідь:</p>
           <div className="flex flex-wrap gap-2">
             {hintChips.map((hint) => (
               <Badge
@@ -394,7 +395,7 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
             ))}
           </div>
           <p className="text-xs text-muted-foreground mt-2">
-            💡 Після створення слів ви зможете їх відредагувати прямо в чаті або у чернетці
+            💡 Або просто напишіть своїми словами про листівку - я все зрозумію і створю ідеальну пісню!
           </p>
         </div>
       )}
