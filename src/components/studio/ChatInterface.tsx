@@ -225,7 +225,7 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center gap-3 mb-4 pb-4 border-b border-border">
+      <div className="flex items-center gap-3 mb-4 pb-4">
         <Avatar>
           <AvatarImage src={listosMascot} alt="Листосик" />
           <AvatarFallback>Л</AvatarFallback>
