@@ -31,7 +31,8 @@ serve(async (req) => {
   try {
     const { lyrics, style, userFeedback }: MusicGenerationRequest = await req.json();
     
-    console.log('Generating music for lyrics:', lyrics.substring(0, 100) + '...');
+    console.log('Generating music for lyrics (full length):', lyrics.length, 'characters');
+    console.log('Full lyrics text:', lyrics);
     
     const elevenlabsApiKey = Deno.env.get('ELEVENLABS_API_KEY');
     if (!elevenlabsApiKey) {
@@ -223,10 +224,10 @@ function analyzeLyrics(lyrics: string) {
 function generateMusicPrompts(lyrics: string, analysis: any, userStyle?: string, userFeedback?: string) {
   const { mood, energy, language } = analysis;
   
-  // Get lyrics for inclusion in prompts - use more content for better results
+  // Get lyrics for inclusion in prompts - ПЕРЕДАВАТЬ ВЕСЬ ТЕКСТ ПОЛНОСТЬЮ
   const lyricsLines = lyrics.split('\n').filter(line => line.trim().length > 0);
   const firstLines = lyricsLines.slice(0, 4).join(' ').substring(0, 200);
-  const fullLyricsForPrompt = lyrics.substring(0, 300); // More context for better generation
+  const fullLyricsForPrompt = lyrics; // КРИТИЧНО: передаем весь текст песни без обрезки
   const languageLabel = language === 'Ukrainian' ? 'Ukrainian' : language === 'Russian' ? 'Russian' : 'English';
   
   // Base style determination
