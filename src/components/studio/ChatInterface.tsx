@@ -237,7 +237,7 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
       </div>
 
       <ScrollArea className="flex-1 pr-4" ref={scrollAreaRef}>
-        <div className="space-y-4">
+        <div className="space-y-6">
           {messages.map((message) => {
             const hasLyrics = message.sender === 'assistant' && extractLyricsFromMessage(message.content);
             const isEditing = editingMessageId === message.id;
@@ -253,7 +253,7 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
                     <AvatarFallback>Л</AvatarFallback>
                   </Avatar>
                 )}
-                <div className="max-w-[80%] flex flex-col gap-2">
+                <div className="max-w-[80%] flex flex-col gap-3">
                   <div
                     className={`rounded-lg px-4 py-2 ${
                       message.sender === 'user'
@@ -276,9 +276,9 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
                     </p>
                   </div>
                   
-                  {/* Lyrics action buttons */}
-                  {hasLyrics && !isEditing && (
-                    <div className="space-y-3 mt-3 pt-3 border-t border-border">
+                   {/* Lyrics action buttons */}
+                   {hasLyrics && !isEditing && (
+                     <div className="space-y-3 mt-4 pt-4 border-t border-border">
                       {/* Quick refine options */}
                       <div className="space-y-2">
                         <p className="text-xs text-muted-foreground">Швидко покращити:</p>
@@ -379,7 +379,7 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
 
 
       {/* Message composer */}
-      <div className="flex gap-2 pt-4 border-t border-border">
+      <div className="flex gap-2 pt-6 border-t border-border">
         <Textarea
           ref={textareaRef}
           placeholder={lastLyricsMessage ? "Скажіть що хочете змінити у пісні..." : "Введіть ваше повідомлення..."}
