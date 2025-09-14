@@ -8,6 +8,7 @@ import { ChatInterface, ChatInterfaceRef } from '@/components/studio/ChatInterfa
 import { LyricsDraft } from '@/components/studio/LyricsDraft';
 import { MusicGeneration } from '@/components/studio/MusicGeneration';
 import { PageCaptionStep } from '@/components/studio/PageCaptionStep';
+import { PostcardDesign } from '@/components/studio/PostcardDesign';
 import { Header } from '@/components/sections/header';
 import { Footer } from '@/components/sections/footer';
 import { StepsHeader } from '@/components/studio/StepsHeader';
@@ -200,14 +201,15 @@ const Studio = () => {
         );
       case 3:
         return (
-          <div className="text-center space-y-6 max-w-4xl mx-auto">
-            <Card className="p-6">
-              <p className="text-muted-foreground mb-4">Тут буде вибір дизайну та стилю листівки</p>
-              <Button onClick={() => setCurrentStep(4)} size="lg">
-                Створити сторінку з піснею
-              </Button>
-            </Card>
-          </div>
+          <PostcardDesign
+            lyrics={lyrics}
+            onComplete={(designData) => {
+              // Save design data and move to next step
+              console.log('Postcard design completed:', designData);
+              setCurrentStep(4);
+            }}
+            onBack={() => setCurrentStep(2)}
+          />
         );
       case 4:
         return (
