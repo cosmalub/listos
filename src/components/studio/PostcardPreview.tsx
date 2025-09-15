@@ -7,8 +7,8 @@ import { cn } from '@/lib/utils';
 import type { StyleKey } from '@/lib/postcard-styles';
 
 interface FrontDesignData {
+  mode: 'photo' | 'ai-generation';
   style: StyleKey | null;
-  colors: string[];
   imageUrl: string | null;
   caption: string;
   prompt: string;

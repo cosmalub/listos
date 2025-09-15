@@ -10,8 +10,8 @@ import type { StyleKey } from '@/lib/postcard-styles';
 
 interface PostcardDesignData {
   front: {
+    mode: 'photo' | 'ai-generation';
     style: StyleKey | null;
-    colors: string[];
     imageUrl: string | null;
     caption: string;
     prompt: string;
@@ -34,8 +34,8 @@ export function PostcardDesign({ lyrics, onComplete, onBack }: PostcardDesignPro
   const [currentSubStep, setCurrentSubStep] = useState<'front' | 'back'>('front');
   const [designData, setDesignData] = useState<PostcardDesignData>({
     front: {
+      mode: 'ai-generation',
       style: null,
-      colors: [],
       imageUrl: null,
       caption: '',
       prompt: ''
@@ -63,7 +63,7 @@ export function PostcardDesign({ lyrics, onComplete, onBack }: PostcardDesignPro
     setCurrentSubStep('front');
   };
 
-  const isReadyForBack = designData.front.style && designData.front.imageUrl;
+  const isReadyForBack = designData.front.imageUrl && designData.front.caption;
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
