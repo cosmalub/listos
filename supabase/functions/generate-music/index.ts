@@ -31,6 +31,10 @@ serve(async (req) => {
   try {
     const { lyrics, style, userFeedback }: MusicGenerationRequest = await req.json();
     
+    // Check if we're in test mode
+    const testMode = Deno.env.get('TEST_MODE') === 'true';
+    console.log('Test mode:', testMode);
+    
     console.log('Generating music for lyrics (full length):', lyrics.length, 'characters');
     console.log('Full lyrics text:', lyrics);
     
@@ -42,8 +46,8 @@ serve(async (req) => {
     // Analyze lyrics to determine mood, tempo, and style
     const moodAnalysis = analyzeLyrics(lyrics);
     
-    // Generate two different prompts for variety
-    const prompts = generateMusicPrompts(lyrics, moodAnalysis, style, userFeedback);
+    // Generate prompts based on test mode
+    const prompts = generateMusicPrompts(lyrics, moodAnalysis, style, userFeedback, testMode);
     
     const variants: MusicVariant[] = [];
     
@@ -61,7 +65,7 @@ serve(async (req) => {
           },
           body: JSON.stringify({
             prompt: prompt.text,
-            duration_seconds: 90
+            duration_seconds: testMode ? 60 : 90
           }),
         });
 
@@ -87,7 +91,7 @@ serve(async (req) => {
           title: prompt.title,
           description: prompt.description,
           audioUrl: audioUrl,
-          duration: 90,
+          duration: testMode ? 60 : 90,
           style: prompt.style
         });
         
@@ -221,7 +225,7 @@ function analyzeLyrics(lyrics: string) {
   return { mood, energy, language: detectedLanguage, lyricsLength: lyrics.length };
 }
 
-function generateMusicPrompts(lyrics: string, analysis: any, userStyle?: string, userFeedback?: string) {
+function generateMusicPrompts(lyrics: string, analysis: any, userStyle?: string, userFeedback?: string, testMode = false) {
   const { mood, energy, language } = analysis;
   
   // Get lyrics for inclusion in prompts - ПЕРЕДАВАТЬ ВЕСЬ ТЕКСТ ПОЛНОСТЬЮ
@@ -273,25 +277,31 @@ function generateMusicPrompts(lyrics: string, analysis: any, userStyle?: string,
     }
   }
 
+  const duration = testMode ? 60 : 90;
   const prompts = [];
 
   // Variant 1: Instrumental version
   const instrumentalPrompt = {
-    text: `${baseGenre} instrumental track in ${languageLabel} style, ${energy} energy, ${mood} mood, catchy melody with modern production, duration 90 seconds${promptEnhancement}`,
-    title: `${capitalizeFirst(baseGenre)} Instrumental`,
-    description: `Инструментальная версия в стиле ${baseGenre}`,
+    text: `${baseGenre} instrumental track in ${languageLabel} style, ${energy} energy, ${mood} mood, catchy melody with modern production, duration ${duration} seconds${promptEnhancement}`,
+    title: `${capitalizeFirst(baseGenre)} Instrumental${testMode ? ' (Test)' : ''}`,
+    description: `Инструментальная версия в стиле ${baseGenre}${testMode ? ' - тестовый режим' : ''}`,
     style: `${baseGenre} instrumental`
   };
 
-  // Variant 2: Vocal version with actual lyrics - МАКСИМАЛЬНО ЧЕТКОЕ ПРОИЗНОШЕНИЕ
-  const vocalPrompt = {
-    text: `${baseGenre} song in ${languageLabel} language. CRITICAL: Vocals must sing exactly these lyrics word-for-word with NO improvisation, NO ad-libs, NO omissions: "${fullLyricsForPrompt}". Sing every single word clearly and precisely with perfect ${languageLabel} pronunciation and articulation. Do not change, skip, or mumble any words. Each syllable must be pronounced distinctly. ${pronunciationInstructions} Use slower tempo for better articulation if needed. ${energy} energy, ${mood} emotional tone. Structure: Intro (instrumental 5 seconds), Verse (vocals singing the provided lyrics with crystal-clear diction), Chorus (vocals repeating key phrases from lyrics with emphasis and perfect pronunciation), Bridge (instrumental), Outro. Professional vocal delivery with flawless pronunciation, radio-ready production, duration 90 seconds${promptEnhancement}`,
-    title: `${capitalizeFirst(baseGenre)} с вокалом`,
-    description: `Версия с вокалом в стиле ${baseGenre} на ${languageLabel.toLowerCase()} языке`,
-    style: `${baseGenre} vocal`
-  };
+  // In test mode, only generate instrumental version
+  prompts.push(instrumentalPrompt);
 
-  prompts.push(instrumentalPrompt, vocalPrompt);
+  // Only add vocal version if not in test mode
+  if (!testMode) {
+    // Variant 2: Vocal version with actual lyrics - МАКСИМАЛЬНО ЧЕТКОЕ ПРОИЗНОШЕНИЕ
+    const vocalPrompt = {
+      text: `${baseGenre} song in ${languageLabel} language. CRITICAL: Vocals must sing exactly these lyrics word-for-word with NO improvisation, NO ad-libs, NO omissions: "${fullLyricsForPrompt}". Sing every single word clearly and precisely with perfect ${languageLabel} pronunciation and articulation. Do not change, skip, or mumble any words. Each syllable must be pronounced distinctly. ${pronunciationInstructions} Use slower tempo for better articulation if needed. ${energy} energy, ${mood} emotional tone. Structure: Intro (instrumental 5 seconds), Verse (vocals singing the provided lyrics with crystal-clear diction), Chorus (vocals repeating key phrases from lyrics with emphasis and perfect pronunciation), Bridge (instrumental), Outro. Professional vocal delivery with flawless pronunciation, radio-ready production, duration ${duration} seconds${promptEnhancement}`,
+      title: `${capitalizeFirst(baseGenre)} с вокалом`,
+      description: `Версия с вокалом в стиле ${baseGenre} на ${languageLabel.toLowerCase()} языке`,
+      style: `${baseGenre} vocal`
+    };
+    prompts.push(vocalPrompt);
+  }
 
   return prompts;
 }

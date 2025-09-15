@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2, Music, Sparkles, RefreshCw, HeadphonesIcon, UserCheck, Info } from 'lucide-react';
+import { Loader2, Music, Sparkles, RefreshCw, HeadphonesIcon, UserCheck, Info, TestTube } from 'lucide-react';
 import { MusicVariantCard } from './MusicVariantCard';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -35,6 +35,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
   const [showFeedbackDialog, setShowFeedbackDialog] = useState(false);
   const [feedback, setFeedback] = useState('');
   const [showSpecialistDialog, setShowSpecialistDialog] = useState(false);
+  const [isTestMode, setIsTestMode] = useState(false);
 
   useEffect(() => {
     if (lyrics) {
@@ -69,6 +70,9 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
 
       console.log('Music generation successful:', data.variants?.length || 0, 'variants');
       setVariants(data.variants || []);
+      
+      // Check if any variant has "Test" in title to detect test mode
+      setIsTestMode(data.variants?.some((v: MusicVariant) => v.title?.includes('(Test)')) || false);
       
     } catch (error) {
       console.error('Music generation error:', error);
@@ -132,10 +136,18 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
       {/* Variants Display */}
       {variants.length > 0 && !isGenerating && (
         <div className="space-y-4 animate-fade-in">
+          {isTestMode && (
+            <Alert className="border-orange-200 bg-orange-50 dark:bg-orange-950/20">
+              <TestTube className="h-4 w-4" />
+              <AlertDescription>
+                <strong>Тестовий режим:</strong> Генерується 1 варіант тривалістю 60 секунд для економії кредитів під час тестування.
+              </AlertDescription>
+            </Alert>
+          )}
           <div className="text-center">
             <p className="text-lg font-semibold mb-2">Оберіть один варіант, щоб продовжити:</p>
             <p className="text-sm text-muted-foreground">
-              Спроба {generationAttempt} з 2
+              Спроба {generationAttempt} з 2 {isTestMode ? '• Тестовий режим' : ''}
             </p>
           </div>
           
