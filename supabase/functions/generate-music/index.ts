@@ -313,18 +313,23 @@ function generateMusicPrompts(lyrics: string, analysis: any, userStyle?: string,
     pronunciationInstructions = 'Use proper Russian phonetics and stress patterns. Pronounce Russian soft and hard consonants correctly with clear articulation.';
   }
   
-  // Base style determination
-  let baseGenre = 'pop';
+  // Simplified style determination - focus on POP with tempo variations
+  let popStyle = 'pop';
+  let tempoDescription = '';
+  
   if (userStyle) {
-    baseGenre = userStyle;
+    popStyle = userStyle; // Allow override if provided
   } else {
-    // Auto-detect genre based on analysis
-    if (mood === 'melancholic' && energy === 'low') {
-      baseGenre = 'ballad';
+    // Auto-detect only tempo based on mood and energy for better vocal quality
+    if (mood === 'melancholic' || energy === 'low') {
+      popStyle = 'slow pop';
+      tempoDescription = 'ballad-like slow tempo';
     } else if (mood === 'positive' && energy === 'high') {
-      baseGenre = 'upbeat pop';
-    } else if (energy === 'high') {
-      baseGenre = 'rock';
+      popStyle = 'energetic pop';
+      tempoDescription = 'upbeat and energetic tempo';
+    } else {
+      popStyle = 'pop';
+      tempoDescription = 'medium tempo';
     }
   }
 
@@ -355,10 +360,10 @@ function generateMusicPrompts(lyrics: string, analysis: any, userStyle?: string,
     const genderLabel = preferredGender === 'male' ? 'мужской вокал' : 'женский вокал';
     
     const vocalPrompt = {
-      text: `${baseGenre} song in ${languageLabel} language with ${preferredGender} vocals. CRITICAL: The ${preferredGender} vocalist must sing exactly these lyrics word-for-word with NO improvisation, NO ad-libs, NO omissions: "${fullLyricsForPrompt}". Every single word must be sung clearly and precisely with perfect ${languageLabel} pronunciation and articulation. Do not change, skip, or mumble any words. Each syllable must be pronounced distinctly by the ${preferredGender} voice. ${pronunciationInstructions} Use slower tempo for better articulation if needed. ${energy} energy, ${mood} emotional tone. Structure: Intro (instrumental 5 seconds), Verse (${preferredGender} vocals singing the provided lyrics with crystal-clear diction), Chorus (${preferredGender} vocals repeating key phrases from lyrics with emphasis and perfect pronunciation), Bridge (instrumental), Outro. Professional ${preferredGender} vocal delivery with flawless pronunciation, radio-ready production, duration ${duration} seconds${promptEnhancement}`,
-      title: `${capitalizeFirst(baseGenre)} (${genderLabel}) (Test)`,
-      description: `Версия с ${genderLabel} в стиле ${baseGenre} - тестовый режим`,
-      style: `${baseGenre} vocal ${preferredGender}`
+      text: `${popStyle} song in ${languageLabel} language with ${preferredGender} vocals, ${tempoDescription}. CRITICAL: The ${preferredGender} vocalist must sing exactly these lyrics word-for-word with NO improvisation, NO ad-libs, NO omissions: "${fullLyricsForPrompt}". Every single word must be sung clearly and precisely with perfect ${languageLabel} pronunciation and articulation. Do not change, skip, or mumble any words. Each syllable must be pronounced distinctly by the ${preferredGender} voice. ${pronunciationInstructions} Focus on vocal clarity and emotional delivery over complex instrumentation. ${mood} emotional tone. Structure: Intro (instrumental 3-5 seconds), Verse (${preferredGender} vocals singing the provided lyrics with crystal-clear diction), Chorus (${preferredGender} vocals repeating key phrases from lyrics with emphasis and perfect pronunciation), Bridge (vocal harmonies), Outro. Professional ${preferredGender} vocal delivery with flawless pronunciation, radio-ready production, duration ${duration} seconds${promptEnhancement}`,
+      title: `${capitalizeFirst(popStyle)} (${genderLabel}) (Test)`,
+      description: `Версия с ${genderLabel} в поп-стиле - тестовый режим`,
+      style: `${popStyle} vocal ${preferredGender}`
     };
     prompts.push(vocalPrompt);
   } else {
@@ -372,27 +377,28 @@ function generateMusicPrompts(lyrics: string, analysis: any, userStyle?: string,
       
       variants.forEach((variant, index) => {
         const vocalPrompt = {
-          text: `${baseGenre} song in ${languageLabel} language with ${variant.gender} vocals. CRITICAL: The ${variant.gender} vocalist must sing exactly these lyrics word-for-word with NO improvisation, NO ad-libs, NO omissions: "${fullLyricsForPrompt}". Every single word must be sung clearly and precisely with perfect ${languageLabel} pronunciation and articulation. Do not change, skip, or mumble any words. Each syllable must be pronounced distinctly by the ${variant.gender} voice. ${pronunciationInstructions} Use slower tempo for better articulation if needed. ${energy} energy, ${mood} emotional tone. Structure: Intro (instrumental 5 seconds), Verse (${variant.gender} vocals singing the provided lyrics with crystal-clear diction), Chorus (${variant.gender} vocals repeating key phrases from lyrics with emphasis and perfect pronunciation), Bridge (instrumental), Outro. Professional ${variant.gender} vocal delivery with flawless pronunciation, radio-ready production, duration ${duration} seconds${promptEnhancement}`,
-          title: `${capitalizeFirst(baseGenre)} (${variant.label})`,
-          description: `Версия с ${variant.label} в стиле ${baseGenre}`,
-          style: `${baseGenre} vocal ${variant.gender}`
+          text: `${popStyle} song in ${languageLabel} language with ${variant.gender} vocals, ${tempoDescription}. CRITICAL: The ${variant.gender} vocalist must sing exactly these lyrics word-for-word with NO improvisation, NO ad-libs, NO omissions: "${fullLyricsForPrompt}". Every single word must be sung clearly and precisely with perfect ${languageLabel} pronunciation and articulation. Do not change, skip, or mumble any words. Each syllable must be pronounced distinctly by the ${variant.gender} voice. ${pronunciationInstructions} Focus on vocal clarity and emotional delivery over complex instrumentation. ${mood} emotional tone. Structure: Intro (instrumental 3-5 seconds), Verse (${variant.gender} vocals singing the provided lyrics with crystal-clear diction), Chorus (${variant.gender} vocals repeating key phrases from lyrics with emphasis and perfect pronunciation), Bridge (vocal harmonies), Outro. Professional ${variant.gender} vocal delivery with flawless pronunciation, radio-ready production, duration ${duration} seconds${promptEnhancement}`,
+          title: `${capitalizeFirst(popStyle)} (${variant.label})`,
+          description: `Версия с ${variant.label} в поп-стиле`,
+          style: `${popStyle} vocal ${variant.gender}`
         };
         prompts.push(vocalPrompt);
       });
     } else {
       // Generate two versions with the detected gender in different styles
       const genderLabel = vocalGender === 'male' ? 'мужской вокал' : 'женский вокал';
-      const styles = [
-        { style: baseGenre, label: 'классический' },
-        { style: `${baseGenre} alternative`, label: 'альтернативный' }
+      // Generate two pop variations with the detected gender
+      const variations = [
+        { variation: 'classic', label: 'классическая версия' },
+        { variation: 'modern', label: 'современная версия' }
       ];
       
-      styles.forEach((styleVariant, index) => {
+      variations.forEach((styleVariant, index) => {
         const vocalPrompt = {
-          text: `${styleVariant.style} song in ${languageLabel} language with ${vocalGender} vocals. CRITICAL: The ${vocalGender} vocalist must sing exactly these lyrics word-for-word with NO improvisation, NO ad-libs, NO omissions: "${fullLyricsForPrompt}". Every single word must be sung clearly and precisely with perfect ${languageLabel} pronunciation and articulation. Do not change, skip, or mumble any words. Each syllable must be pronounced distinctly by the ${vocalGender} voice. ${pronunciationInstructions} Use slower tempo for better articulation if needed. ${energy} energy, ${mood} emotional tone. Structure: Intro (instrumental 5 seconds), Verse (${vocalGender} vocals singing the provided lyrics with crystal-clear diction), Chorus (${vocalGender} vocals repeating key phrases from lyrics with emphasis and perfect pronunciation), Bridge (instrumental), Outro. Professional ${vocalGender} vocal delivery with flawless pronunciation, radio-ready production, duration ${duration} seconds${promptEnhancement}`,
-          title: `${capitalizeFirst(baseGenre)} (${genderLabel}, ${styleVariant.label})`,
-          description: `${styleVariant.label} версия с ${genderLabel} в стиле ${baseGenre}`,
-          style: `${styleVariant.style} vocal ${vocalGender}`
+          text: `${popStyle} song in ${languageLabel} language with ${vocalGender} vocals, ${tempoDescription}. ${styleVariant.variation === 'modern' ? 'Modern pop arrangement with subtle electronic elements.' : 'Classic pop arrangement with traditional instruments.'} CRITICAL: The ${vocalGender} vocalist must sing exactly these lyrics word-for-word with NO improvisation, NO ad-libs, NO omissions: "${fullLyricsForPrompt}". Every single word must be sung clearly and precisely with perfect ${languageLabel} pronunciation and articulation. Do not change, skip, or mumble any words. Each syllable must be pronounced distinctly by the ${vocalGender} voice. ${pronunciationInstructions} Focus on vocal clarity and emotional delivery over complex instrumentation. ${mood} emotional tone. Structure: Intro (instrumental 3-5 seconds), Verse (${vocalGender} vocals singing the provided lyrics with crystal-clear diction), Chorus (${vocalGender} vocals repeating key phrases from lyrics with emphasis and perfect pronunciation), Bridge (vocal harmonies), Outro. Professional ${vocalGender} vocal delivery with flawless pronunciation, radio-ready production, duration ${duration} seconds${promptEnhancement}`,
+          title: `${capitalizeFirst(popStyle)} (${genderLabel}, ${styleVariant.label})`,
+          description: `${styleVariant.label} версия с ${genderLabel} в поп-стиле`,
+          style: `${popStyle} vocal ${vocalGender}`
         };
         prompts.push(vocalPrompt);
       });
