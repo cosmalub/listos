@@ -161,9 +161,77 @@ function detectLanguage(lyrics: string): string {
   return 'English'; // fallback
 }
 
+function detectVocalGender(lyrics: string): 'male' | 'female' | 'unspecified' {
+  const lowerLyrics = lyrics.toLowerCase();
+  
+  // Direct indicators
+  const maleIndicators = [
+    // English
+    'i\'m a man', 'i\'m a guy', 'i\'m a boy', 'from a man', 'guy to',
+    // Ukrainian
+    'я чоловік', 'я хлопець', 'я парубок', 'від хлопця', 'від чоловіка', 'я пішов', 'я сказав', 'я зробив',
+    // Russian
+    'я мужчина', 'я парень', 'я мальчик', 'от парня', 'от мужчины', 'я пошёл', 'я сказал', 'я сделал'
+  ];
+  
+  const femaleIndicators = [
+    // English
+    'i\'m a woman', 'i\'m a girl', 'from a woman', 'girl to',
+    // Ukrainian
+    'я жінка', 'я дівчина', 'я дівчинка', 'від дівчини', 'від жінки', 'я пішла', 'я сказала', 'я зробила',
+    // Russian
+    'я женщина', 'я девушка', 'я девочка', 'от девушки', 'от женщины', 'я пошла', 'я сказала', 'я сделала'
+  ];
+  
+  // Context indicators
+  const maleContextWords = [
+    // English
+    'my girlfriend', 'my wife', 'she is', 'her eyes', 'her smile',
+    // Ukrainian
+    'моя дівчина', 'моя дружина', 'вона є', 'її очі', 'її посмішка', 'твоя дівчина',
+    // Russian
+    'моя девушка', 'моя жена', 'она есть', 'её глаза', 'её улыбка', 'твоя девушка'
+  ];
+  
+  const femaleContextWords = [
+    // English
+    'my boyfriend', 'my husband', 'he is', 'his eyes', 'his smile',
+    // Ukrainian
+    'мій хлопець', 'мій чоловік', 'він є', 'його очі', 'його посмішка', 'твій хлопець',
+    // Russian
+    'мой парень', 'мой муж', 'он есть', 'его глаза', 'его улыбка', 'твой парень'
+  ];
+  
+  let maleScore = 0;
+  let femaleScore = 0;
+  
+  // Check direct indicators (higher weight)
+  maleIndicators.forEach(indicator => {
+    if (lowerLyrics.includes(indicator)) maleScore += 3;
+  });
+  
+  femaleIndicators.forEach(indicator => {
+    if (lowerLyrics.includes(indicator)) femaleScore += 3;
+  });
+  
+  // Check context indicators (lower weight)
+  maleContextWords.forEach(word => {
+    if (lowerLyrics.includes(word)) maleScore += 1;
+  });
+  
+  femaleContextWords.forEach(word => {
+    if (lowerLyrics.includes(word)) femaleScore += 1;
+  });
+  
+  if (maleScore > femaleScore) return 'male';
+  if (femaleScore > maleScore) return 'female';
+  return 'unspecified';
+}
+
 function analyzeLyrics(lyrics: string) {
   const lowerLyrics = lyrics.toLowerCase();
   const detectedLanguage = detectLanguage(lyrics);
+  const vocalGender = detectVocalGender(lyrics);
   
   // Multi-language mood analysis
   const positiveWords = [
@@ -222,27 +290,27 @@ function analyzeLyrics(lyrics: string) {
     energy = 'low';
   }
 
-  return { mood, energy, language: detectedLanguage, lyricsLength: lyrics.length };
+  return { mood, energy, language: detectedLanguage, vocalGender, lyricsLength: lyrics.length };
 }
 
 function generateMusicPrompts(lyrics: string, analysis: any, userStyle?: string, userFeedback?: string, testMode = false) {
-  const { mood, energy, language } = analysis;
+  const { mood, energy, language, vocalGender } = analysis;
   
-  // Get lyrics for inclusion in prompts - ПЕРЕДАВАТЬ ВЕСЬ ТЕКСТ ПОЛНОСТЬЮ
-  const lyricsLines = lyrics.split('\n').filter(line => line.trim().length > 0);
-  const firstLines = lyricsLines.slice(0, 4).join(' ').substring(0, 200);
-  const fullLyricsForPrompt = lyrics; // КРИТИЧНО: передаем весь текст песни без обрезки
+  // Full lyrics for prompt - NO TRUNCATION
+  const fullLyricsForPrompt = lyrics;
   
-  // Улучшенная поддержка языков для четкого произношения
+  console.log(`Detected vocal gender: ${vocalGender}, Language: ${language}`);
+  
+  // Enhanced language support for clear pronunciation
   let languageLabel = 'English';
   let pronunciationInstructions = '';
   
   if (language === 'Ukrainian') {
     languageLabel = 'Ukrainian';
-    pronunciationInstructions = 'Use proper Ukrainian phonetics and stress patterns. Pronounce Ukrainian letters і, ї, є, ґ correctly.';
+    pronunciationInstructions = 'Use proper Ukrainian phonetics and stress patterns. Pronounce Ukrainian letters і, ї, є, ґ correctly with clear articulation.';
   } else if (language === 'Russian') {
     languageLabel = 'Russian';
-    pronunciationInstructions = 'Use proper Russian phonetics and stress patterns. Pronounce Russian soft and hard consonants correctly.';
+    pronunciationInstructions = 'Use proper Russian phonetics and stress patterns. Pronounce Russian soft and hard consonants correctly with clear articulation.';
   }
   
   // Base style determination
@@ -280,27 +348,55 @@ function generateMusicPrompts(lyrics: string, analysis: any, userStyle?: string,
   const duration = testMode ? 60 : 90;
   const prompts = [];
 
-  // Variant 1: Instrumental version
-  const instrumentalPrompt = {
-    text: `${baseGenre} instrumental track in ${languageLabel} style, ${energy} energy, ${mood} mood, catchy melody with modern production, duration ${duration} seconds${promptEnhancement}`,
-    title: `${capitalizeFirst(baseGenre)} Instrumental${testMode ? ' (Test)' : ''}`,
-    description: `Инструментальная версия в стиле ${baseGenre}${testMode ? ' - тестовый режим' : ''}`,
-    style: `${baseGenre} instrumental`
-  };
-
-  // In test mode, only generate instrumental version
-  prompts.push(instrumentalPrompt);
-
-  // Only add vocal version if not in test mode
-  if (!testMode) {
-    // Variant 2: Vocal version with actual lyrics - МАКСИМАЛЬНО ЧЕТКОЕ ПРОИЗНОШЕНИЕ
+  // Vocal generation logic based on gender detection and mode
+  if (testMode) {
+    // Test mode: Generate ONE vocal variant with detected gender (or male default)
+    const preferredGender = vocalGender === 'unspecified' ? 'male' : vocalGender;
+    const genderLabel = preferredGender === 'male' ? 'мужской вокал' : 'женский вокал';
+    
     const vocalPrompt = {
-      text: `${baseGenre} song in ${languageLabel} language. CRITICAL: Vocals must sing exactly these lyrics word-for-word with NO improvisation, NO ad-libs, NO omissions: "${fullLyricsForPrompt}". Sing every single word clearly and precisely with perfect ${languageLabel} pronunciation and articulation. Do not change, skip, or mumble any words. Each syllable must be pronounced distinctly. ${pronunciationInstructions} Use slower tempo for better articulation if needed. ${energy} energy, ${mood} emotional tone. Structure: Intro (instrumental 5 seconds), Verse (vocals singing the provided lyrics with crystal-clear diction), Chorus (vocals repeating key phrases from lyrics with emphasis and perfect pronunciation), Bridge (instrumental), Outro. Professional vocal delivery with flawless pronunciation, radio-ready production, duration ${duration} seconds${promptEnhancement}`,
-      title: `${capitalizeFirst(baseGenre)} с вокалом`,
-      description: `Версия с вокалом в стиле ${baseGenre} на ${languageLabel.toLowerCase()} языке`,
-      style: `${baseGenre} vocal`
+      text: `${baseGenre} song in ${languageLabel} language with ${preferredGender} vocals. CRITICAL: The ${preferredGender} vocalist must sing exactly these lyrics word-for-word with NO improvisation, NO ad-libs, NO omissions: "${fullLyricsForPrompt}". Every single word must be sung clearly and precisely with perfect ${languageLabel} pronunciation and articulation. Do not change, skip, or mumble any words. Each syllable must be pronounced distinctly by the ${preferredGender} voice. ${pronunciationInstructions} Use slower tempo for better articulation if needed. ${energy} energy, ${mood} emotional tone. Structure: Intro (instrumental 5 seconds), Verse (${preferredGender} vocals singing the provided lyrics with crystal-clear diction), Chorus (${preferredGender} vocals repeating key phrases from lyrics with emphasis and perfect pronunciation), Bridge (instrumental), Outro. Professional ${preferredGender} vocal delivery with flawless pronunciation, radio-ready production, duration ${duration} seconds${promptEnhancement}`,
+      title: `${capitalizeFirst(baseGenre)} (${genderLabel}) (Test)`,
+      description: `Версия с ${genderLabel} в стиле ${baseGenre} - тестовый режим`,
+      style: `${baseGenre} vocal ${preferredGender}`
     };
     prompts.push(vocalPrompt);
+  } else {
+    // Normal mode: Generate TWO vocal variants based on gender detection
+    if (vocalGender === 'unspecified') {
+      // Generate both male and female versions
+      const variants = [
+        { gender: 'male', label: 'мужской вокал' },
+        { gender: 'female', label: 'женский вокал' }
+      ];
+      
+      variants.forEach((variant, index) => {
+        const vocalPrompt = {
+          text: `${baseGenre} song in ${languageLabel} language with ${variant.gender} vocals. CRITICAL: The ${variant.gender} vocalist must sing exactly these lyrics word-for-word with NO improvisation, NO ad-libs, NO omissions: "${fullLyricsForPrompt}". Every single word must be sung clearly and precisely with perfect ${languageLabel} pronunciation and articulation. Do not change, skip, or mumble any words. Each syllable must be pronounced distinctly by the ${variant.gender} voice. ${pronunciationInstructions} Use slower tempo for better articulation if needed. ${energy} energy, ${mood} emotional tone. Structure: Intro (instrumental 5 seconds), Verse (${variant.gender} vocals singing the provided lyrics with crystal-clear diction), Chorus (${variant.gender} vocals repeating key phrases from lyrics with emphasis and perfect pronunciation), Bridge (instrumental), Outro. Professional ${variant.gender} vocal delivery with flawless pronunciation, radio-ready production, duration ${duration} seconds${promptEnhancement}`,
+          title: `${capitalizeFirst(baseGenre)} (${variant.label})`,
+          description: `Версия с ${variant.label} в стиле ${baseGenre}`,
+          style: `${baseGenre} vocal ${variant.gender}`
+        };
+        prompts.push(vocalPrompt);
+      });
+    } else {
+      // Generate two versions with the detected gender in different styles
+      const genderLabel = vocalGender === 'male' ? 'мужской вокал' : 'женский вокал';
+      const styles = [
+        { style: baseGenre, label: 'классический' },
+        { style: `${baseGenre} alternative`, label: 'альтернативный' }
+      ];
+      
+      styles.forEach((styleVariant, index) => {
+        const vocalPrompt = {
+          text: `${styleVariant.style} song in ${languageLabel} language with ${vocalGender} vocals. CRITICAL: The ${vocalGender} vocalist must sing exactly these lyrics word-for-word with NO improvisation, NO ad-libs, NO omissions: "${fullLyricsForPrompt}". Every single word must be sung clearly and precisely with perfect ${languageLabel} pronunciation and articulation. Do not change, skip, or mumble any words. Each syllable must be pronounced distinctly by the ${vocalGender} voice. ${pronunciationInstructions} Use slower tempo for better articulation if needed. ${energy} energy, ${mood} emotional tone. Structure: Intro (instrumental 5 seconds), Verse (${vocalGender} vocals singing the provided lyrics with crystal-clear diction), Chorus (${vocalGender} vocals repeating key phrases from lyrics with emphasis and perfect pronunciation), Bridge (instrumental), Outro. Professional ${vocalGender} vocal delivery with flawless pronunciation, radio-ready production, duration ${duration} seconds${promptEnhancement}`,
+          title: `${capitalizeFirst(baseGenre)} (${genderLabel}, ${styleVariant.label})`,
+          description: `${styleVariant.label} версия с ${genderLabel} в стиле ${baseGenre}`,
+          style: `${styleVariant.style} vocal ${vocalGender}`
+        };
+        prompts.push(vocalPrompt);
+      });
+    }
   }
 
   return prompts;

@@ -117,7 +117,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
               <div className="space-y-2">
                 <p className="text-lg font-semibold">Аналізуємо ваші слова...</p>
                 <p className="text-sm text-muted-foreground max-w-md">
-                  Наша ШІ створює унікальні музичні промпти та генерує для вас два варіанти композиції
+                  Наша ШІ аналізує текст, визначає стать вокаліста та генерує варіанти з вокалом
                 </p>
               </div>
               <div className="flex items-center space-x-2 text-xs text-muted-foreground">
@@ -126,7 +126,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
                   <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
                   <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
                 </div>
-                <span>Спроба {generationAttempt + 1} з 2</span>
+                <span>Генерація варіантів з вокалом • Спроба {generationAttempt + 1} з 2</span>
               </div>
             </div>
           </CardContent>
@@ -140,7 +140,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
             <Alert className="border-orange-200 bg-orange-50 dark:bg-orange-950/20">
               <TestTube className="h-4 w-4" />
               <AlertDescription>
-                <strong>Тестовий режим:</strong> Генерується 1 варіант тривалістю 60 секунд для економії кредитів під час тестування.
+                <strong>Тестовий режим:</strong> Генерується 1 варіант з вокалом тривалістю 60 секунд для економії кредитів під час тестування.
               </AlertDescription>
             </Alert>
           )}
