@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, CheckCircle, Circle } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Circle, Settings } from 'lucide-react';
+
+// DEV MODE - Set to false for production
+const DEV_MODE = true;
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -22,6 +25,32 @@ const steps = [
   { id: 3, title: 'Дизайн листівки', description: 'Обираємо дизайн та стиль листівки' },
   { id: 4, title: 'Сторінка з піснею', description: 'Створюємо персональну сторінку' },
 ];
+
+// Test data for dev mode
+const TEST_DATA = {
+  lyrics: `З днем народження, мій дорогий друже!
+Хай цей день буде яскравим як сонце,
+Хай щастя твоє ніколи не згасне,
+І мрії всі здійсняться до кінця!
+
+Припев:
+Святкуймо разом цей особливий день,
+Хай музика лунає у серці,
+З роками стаєш ти ще мудрішим,
+Залишайся завжди таким щирим!
+
+Хай доля дарує тобі лише радість,
+А друзі завжди будуть поруч,
+Живи довго, сміється і кохай,
+Бо ти - найкращий у цьому світі!`,
+  musicVariant: {
+    id: 'test-variant-1',
+    title: 'Happy Birthday Song',
+    url: 'https://example.com/test-music.mp3',
+    style: 'Pop',
+    duration: '3:45'
+  }
+};
 
 const Studio = () => {
   const [searchParams] = useSearchParams();
@@ -126,6 +155,30 @@ const Studio = () => {
   const handleRequestSpecialist = () => {
     // Handle specialist request - could show a contact form or similar
     console.log("Specialist requested for music generation");
+  };
+
+  // Dev mode functions
+  const fillTestData = () => {
+    setLyrics(TEST_DATA.lyrics);
+    setSelectedMusicVariant(TEST_DATA.musicVariant);
+    setHasUnconfirmedLyrics(false);
+    toast.success('Тестові дані заповнені');
+  };
+
+  const goToStep = (step: number) => {
+    // In dev mode, allow jumping to any step
+    if (DEV_MODE) {
+      // Auto-fill missing data for higher steps
+      if (step >= 2 && !lyrics) {
+        setLyrics(TEST_DATA.lyrics);
+        setHasUnconfirmedLyrics(false);
+      }
+      if (step >= 3 && !selectedMusicVariant) {
+        setSelectedMusicVariant(TEST_DATA.musicVariant);
+      }
+      setCurrentStep(step);
+      navigate(`/studio?step=${step}`);
+    }
   };
 
   const renderStepContent = () => {
@@ -234,6 +287,40 @@ const Studio = () => {
 
       {/* Step explanation */}
       <StepExplanation currentStep={currentStep} />
+
+      {/* Dev Mode Panel */}
+      {DEV_MODE && (
+        <div className="fixed top-20 right-4 z-50 bg-background border border-border rounded-lg p-4 shadow-lg min-w-[200px]">
+          <div className="flex items-center gap-2 mb-3">
+            <Settings className="w-4 h-4" />
+            <span className="text-sm font-medium">Dev Mode</span>
+          </div>
+          <div className="space-y-2">
+            <div className="text-xs text-muted-foreground mb-2">Quick Navigation:</div>
+            <div className="grid grid-cols-4 gap-1">
+              {steps.map((step) => (
+                <Button
+                  key={step.id}
+                  variant={currentStep === step.id ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => goToStep(step.id)}
+                  className="h-8 w-8 p-0 text-xs"
+                >
+                  {step.id}
+                </Button>
+              ))}
+            </div>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={fillTestData}
+              className="w-full text-xs"
+            >
+              Fill Test Data
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Main content */}
       <main className="container mx-auto px-4 py-8 min-h-[calc(100vh-200px)] max-w-3xl">
