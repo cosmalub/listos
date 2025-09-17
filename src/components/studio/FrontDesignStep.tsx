@@ -9,6 +9,7 @@ import { StyleSelector } from './StyleSelector';
 import { ImageUploader } from './ImageUploader';
 import { getStylePrompt, type StyleKey } from '@/lib/postcard-styles';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 interface FrontDesignData {
   mode: 'photo' | 'ai-generation';
@@ -36,6 +37,7 @@ export function FrontDesignStep({ lyrics, initialData, onComplete, onBack }: Fro
   });
   const [isGenerating, setIsGenerating] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [isGeneratingCaption, setIsGeneratingCaption] = useState(false);
 
   const generatePromptFromLyrics = (lyrics: string, style: StyleKey): string => {
     const stylePrompt = getStylePrompt(style, lyrics);
@@ -45,13 +47,36 @@ export function FrontDesignStep({ lyrics, initialData, onComplete, onBack }: Fro
     return `${stylePrompt}. Зміст пісні: "${firstLines}". Створи красиву листівку в стилі ${style} що відображає настрій та тематику цієї пісні.`;
   };
 
-  const generateAutomaticCaption = async (lyrics: string): Promise<string> => {
+  const generateAutomaticCaption = async (lyrics: string, length: 'short' | 'medium' | 'long' = 'medium'): Promise<string> => {
     try {
-      // Analyze lyrics to extract key themes and emotions
+      console.log('Generating AI caption...');
+      
+      const { data, error } = await supabase.functions.invoke('generate-caption', {
+        body: {
+          lyrics,
+          style: designData.style,
+          length
+        }
+      });
+
+      if (error) {
+        console.error('Caption generation error:', error);
+        throw error;
+      }
+
+      return data.caption || generateFallbackCaption(lyrics);
+    } catch (error) {
+      console.error('Error generating AI caption, using fallback:', error);
+      return generateFallbackCaption(lyrics);
+    }
+  };
+
+  const generateFallbackCaption = (lyrics: string): string => {
+    try {
+      // Fallback keyword-based caption generation
       const cleanedLyrics = lyrics.replace(/\[.*?\]/g, '').trim();
       const words = cleanedLyrics.toLowerCase().split(/\s+/);
       
-      // Simple keyword-based caption generation
       const loveWords = ['любов', 'кохання', 'серце', 'душа', 'милий', 'мила'];
       const sadWords = ['сумно', 'біль', 'сльози', 'жаль', 'самота'];
       const joyWords = ['радість', 'щастя', 'сміх', 'веселий', 'святкую'];
@@ -69,7 +94,7 @@ export function FrontDesignStep({ lyrics, initialData, onComplete, onBack }: Fro
         return 'Спеціально для тебе 🎵';
       }
     } catch (error) {
-      console.error('Error generating caption:', error);
+      console.error('Error generating fallback caption:', error);
       return 'З музикою в серці 🎵';
     }
   };
@@ -243,17 +268,80 @@ export function FrontDesignStep({ lyrics, initialData, onComplete, onBack }: Fro
                       className="min-h-[80px]"
                     />
                     
-                    <Button
-                      variant="outline"
-                      onClick={async () => {
-                        const caption = await generateAutomaticCaption(lyrics);
-                        setDesignData(prev => ({ ...prev, caption }));
-                      }}
-                      className="w-full"
-                    >
-                      <Wand2 className="w-4 h-4 mr-2" />
-                      Згенерувати підпис автоматично
-                    </Button>
+                     <div className="flex flex-col gap-2">
+                       <Button
+                         variant="outline"
+                         onClick={async () => {
+                           setIsGeneratingCaption(true);
+                           try {
+                             const caption = await generateAutomaticCaption(lyrics, 'medium');
+                             setDesignData(prev => ({ ...prev, caption }));
+                             toast.success('Підпис згенеровано!');
+                           } catch (error) {
+                             toast.error('Помилка при генерації підпису');
+                           } finally {
+                             setIsGeneratingCaption(false);
+                           }
+                         }}
+                         disabled={isGeneratingCaption}
+                         className="w-full"
+                       >
+                         {isGeneratingCaption ? (
+                           <>
+                             <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                             Генерую підпис...
+                           </>
+                         ) : (
+                           <>
+                             <Wand2 className="w-4 h-4 mr-2" />
+                             Згенерувати підпис (AI)
+                           </>
+                         )}
+                       </Button>
+                       
+                       <div className="flex gap-2">
+                         <Button
+                           variant="outline"
+                           size="sm"
+                           onClick={async () => {
+                             setIsGeneratingCaption(true);
+                             try {
+                               const caption = await generateAutomaticCaption(lyrics, 'short');
+                               setDesignData(prev => ({ ...prev, caption }));
+                               toast.success('Короткий підпис згенеровано!');
+                             } catch (error) {
+                               toast.error('Помилка при генерації підпису');
+                             } finally {
+                               setIsGeneratingCaption(false);
+                             }
+                           }}
+                           disabled={isGeneratingCaption}
+                           className="flex-1"
+                         >
+                           Короткий
+                         </Button>
+                         <Button
+                           variant="outline"
+                           size="sm"
+                           onClick={async () => {
+                             setIsGeneratingCaption(true);
+                             try {
+                               const caption = await generateAutomaticCaption(lyrics, 'long');
+                               setDesignData(prev => ({ ...prev, caption }));
+                               toast.success('Довгий підпис згенеровано!');
+                             } catch (error) {
+                               toast.error('Помилка при генерації підпису');
+                             } finally {
+                               setIsGeneratingCaption(false);
+                             }
+                           }}
+                           disabled={isGeneratingCaption}
+                           className="flex-1"
+                         >
+                           Довгий
+                         </Button>
+                       </div>
+                     </div>
                   </div>
                 </div>
               )}
@@ -281,17 +369,80 @@ export function FrontDesignStep({ lyrics, initialData, onComplete, onBack }: Fro
                       className="min-h-[80px]"
                     />
                     
-                    <Button
-                      variant="outline"
-                      onClick={async () => {
-                        const caption = await generateAutomaticCaption(lyrics);
-                        setDesignData(prev => ({ ...prev, caption }));
-                      }}
-                      className="w-full"
-                    >
-                      <Wand2 className="w-4 h-4 mr-2" />
-                      Згенерувати підпис автоматично
-                    </Button>
+                     <div className="flex flex-col gap-2">
+                       <Button
+                         variant="outline"
+                         onClick={async () => {
+                           setIsGeneratingCaption(true);
+                           try {
+                             const caption = await generateAutomaticCaption(lyrics, 'medium');
+                             setDesignData(prev => ({ ...prev, caption }));
+                             toast.success('Підпис згенеровано!');
+                           } catch (error) {
+                             toast.error('Помилка при генерації підпису');
+                           } finally {
+                             setIsGeneratingCaption(false);
+                           }
+                         }}
+                         disabled={isGeneratingCaption}
+                         className="w-full"
+                       >
+                         {isGeneratingCaption ? (
+                           <>
+                             <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                             Генерую підпис...
+                           </>
+                         ) : (
+                           <>
+                             <Wand2 className="w-4 h-4 mr-2" />
+                             Згенерувати підпис (AI)
+                           </>
+                         )}
+                       </Button>
+                       
+                       <div className="flex gap-2">
+                         <Button
+                           variant="outline"
+                           size="sm"
+                           onClick={async () => {
+                             setIsGeneratingCaption(true);
+                             try {
+                               const caption = await generateAutomaticCaption(lyrics, 'short');
+                               setDesignData(prev => ({ ...prev, caption }));
+                               toast.success('Короткий підпис згенеровано!');
+                             } catch (error) {
+                               toast.error('Помилка при генерації підпису');
+                             } finally {
+                               setIsGeneratingCaption(false);
+                             }
+                           }}
+                           disabled={isGeneratingCaption}
+                           className="flex-1"
+                         >
+                           Короткий
+                         </Button>
+                         <Button
+                           variant="outline"
+                           size="sm"
+                           onClick={async () => {
+                             setIsGeneratingCaption(true);
+                             try {
+                               const caption = await generateAutomaticCaption(lyrics, 'long');
+                               setDesignData(prev => ({ ...prev, caption }));
+                               toast.success('Довгий підпис згенеровано!');
+                             } catch (error) {
+                               toast.error('Помилка при генерації підпису');
+                             } finally {
+                               setIsGeneratingCaption(false);
+                             }
+                           }}
+                           disabled={isGeneratingCaption}
+                           className="flex-1"
+                         >
+                           Довгий
+                         </Button>
+                       </div>
+                     </div>
                   </div>
                 </div>
               )}
