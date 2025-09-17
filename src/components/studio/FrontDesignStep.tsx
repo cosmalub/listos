@@ -155,19 +155,8 @@ export function FrontDesignStep({ lyrics, initialData, onComplete, onBack }: Fro
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <Button variant="outline" onClick={onBack} className="flex items-center gap-2">
-          <ArrowLeft className="w-4 h-4" />
-          Назад
-        </Button>
-        <h2 className="text-xl font-semibold">Лицьова частина листівки</h2>
-        <div></div>
-      </div>
-
       <div className="space-y-8">
         <div>
-          <h2 className="text-2xl font-bold mb-6">Дизайн лицьової частини</h2>
           
           {/* Mode Selection */}
           <Card className="p-4 mb-6">

@@ -87,7 +87,7 @@ export function PostcardDesign({ lyrics, onComplete, onBack }: PostcardDesignPro
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Design workspace */}
-        <div className="lg:col-span-2">
+        <div className={`${(designData.front.imageUrl || currentSubStep === 'back') ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
           <Card>
             <CardContent className="p-6">
               {currentSubStep === 'front' ? (
@@ -109,14 +109,16 @@ export function PostcardDesign({ lyrics, onComplete, onBack }: PostcardDesignPro
           </Card>
         </div>
 
-        {/* Live Preview */}
-        <div className="lg:col-span-1">
-          <PostcardPreview
-            frontData={designData.front}
-            backData={designData.back}
-            showFront={currentSubStep === 'front'}
-          />
-        </div>
+        {/* Live Preview - only show when there's content */}
+        {(designData.front.imageUrl || currentSubStep === 'back') && (
+          <div className="lg:col-span-1">
+            <PostcardPreview
+              frontData={designData.front}
+              backData={designData.back}
+              showFront={currentSubStep === 'front'}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
