@@ -202,7 +202,7 @@ export function FrontDesignStep({ lyrics, initialData, onComplete, onBack }: Fro
                 Підпис для листівки
               </CardTitle>
               <p className="text-sm text-muted-foreground">
-                Цей підпис з'явиться на лицьовій частині листівки
+                Ця підпис згенерована автоматично на основі вашої пісні, але ви можете її відредагувати за бажанням. Підпис з'явиться на лицьовій частині листівки.
               </p>
             </CardHeader>
             <CardContent>
@@ -253,7 +253,7 @@ export function FrontDesignStep({ lyrics, initialData, onComplete, onBack }: Fro
             <CardHeader>
               <CardTitle className="text-base font-medium">Режим створення</CardTitle>
               <p className="text-sm text-muted-foreground">
-                Оберіть спосіб створення зображення для лицьової частини листівки
+                Оберіть як створити зображення для лицьової частини листівки:
               </p>
             </CardHeader>
             <CardContent>
@@ -267,11 +267,12 @@ export function FrontDesignStep({ lyrics, initialData, onComplete, onBack }: Fro
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
-              <div className="mt-3 text-xs text-muted-foreground">
-                {designData.mode === 'ai-generation' 
-                  ? 'Створити унікальне зображення за допомогою штучного інтелекту'
-                  : 'Використати власну фотографію'
-                }
+              <div className="mt-3 text-xs text-muted-foreground space-y-1">
+                {designData.mode === 'ai-generation' ? (
+                  <p>Штучний інтелект створить унікальне зображення на основі вашої пісні. Ви зможете обрати стиль, а потім ШІ згенерує красиву листівку що відповідає настрою пісні.</p>
+                ) : (
+                  <p>Завантажте власну фотографію з вашого пристрою. Це може бути будь-яке зображення, яке ви хочете використати як основу для листівки.</p>
+                )}
               </div>
             </CardContent>
           </Card>
