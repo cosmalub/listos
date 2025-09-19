@@ -4,7 +4,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, ArrowRight, Wand2, Loader2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Wand2, Loader2, PlayCircle, Edit3 } from 'lucide-react';
 import { StyleSelector } from './StyleSelector';
 import { ImageUploader } from './ImageUploader';
 import { getStylePrompt, type StyleKey } from '@/lib/postcard-styles';
@@ -191,6 +191,43 @@ export function FrontDesignStep({ lyrics, initialData, onComplete, onBack }: Fro
 
   return (
     <div className="space-y-6">
+      {/* Video explanation block */}
+      <Card className="border-primary/20 bg-primary/5">
+        <CardHeader>
+          <CardTitle className="text-lg font-medium flex items-center gap-2">
+            <PlayCircle className="h-5 w-5 text-primary" />
+            Як створити листівку
+          </CardTitle>
+          <p className="text-sm text-muted-foreground">
+            Дізнайтеся як працює процес створення вашої персональної листівки
+          </p>
+        </CardHeader>
+        <CardContent>
+          <div className="aspect-video bg-muted rounded-lg flex items-center justify-center mb-4">
+            <div className="text-center space-y-2">
+              <PlayCircle className="h-12 w-12 text-primary mx-auto" />
+              <p className="text-sm text-muted-foreground">Відео пояснення буде тут</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div className="space-y-2">
+              <h4 className="font-medium text-primary">🎨 Лицьова частина</h4>
+              <p className="text-muted-foreground">
+                Головне зображення та підпис, які створюють настрій вашої листівки. 
+                Тут буде красива картинка що відповідає вашій пісні.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <h4 className="font-medium text-primary">📝 Зворотна частина</h4>
+              <p className="text-muted-foreground">
+                Текст пісні та QR-код для прослуховування. Сюди потрапить весь 
+                текст вашої створеної пісні.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       <div className="space-y-8">
         <div>
           
@@ -279,9 +316,37 @@ export function FrontDesignStep({ lyrics, initialData, onComplete, onBack }: Fro
 
           {designData.mode === 'ai-generation' ? (
             <>
-              {/* Style Selection */}
+              {/* Style Selection with explanation */}
               <div className="mb-8">
                 <Label className="text-lg font-semibold mb-4 block">1. Оберіть стиль</Label>
+                
+                {/* Style explanation card */}
+                <Card className="mb-6 border-accent/20 bg-accent/5">
+                  <CardContent className="pt-6">
+                    <div className="space-y-3">
+                      <h4 className="font-medium text-accent-foreground flex items-center gap-2">
+                        <Wand2 className="h-4 w-4" />
+                        Як стиль впливає на дизайн листівки
+                      </h4>
+                      <p className="text-sm text-muted-foreground">
+                        Кожен стиль створює унікальну атмосферу та настрій для вашої листівки. 
+                        Штучний інтелект враховує обраний стиль при створенні зображення, щоб воно 
+                        ідеально відповідало характеру вашої пісні.
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-muted-foreground mt-4">
+                        <div className="space-y-1">
+                          <span className="font-medium">🎨 Художні стилі:</span>
+                          <p>Акварель для романтики, мультяшний для веселощів</p>
+                        </div>
+                        <div className="space-y-1">
+                          <span className="font-medium">🌟 Особливі ефекти:</span>
+                          <p>Космічний для мрій, пікселі для ностальгії</p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
                 <StyleSelector
                   selectedStyle={designData.style}
                   onStyleSelect={handleStyleSelect}
