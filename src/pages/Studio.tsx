@@ -12,6 +12,7 @@ import { LyricsDraft } from '@/components/studio/LyricsDraft';
 import { MusicGeneration } from '@/components/studio/MusicGeneration';
 import { PageCaptionStep } from '@/components/studio/PageCaptionStep';
 import { PostcardDesign } from '@/components/studio/PostcardDesign';
+import { PostcardTutorial } from '@/components/studio/PostcardTutorial';
 import { Header } from '@/components/sections/header';
 import { Footer } from '@/components/sections/footer';
 import { StepsHeader } from '@/components/studio/StepsHeader';
@@ -62,6 +63,7 @@ const Studio = () => {
   const [selectedMusicVariant, setSelectedMusicVariant] = useState<any>(null);
   const [pageData, setPageData] = useState<any>(null);
   const [chatMessages, setChatMessages] = useState<any[]>([]);
+  const [showTutorial, setShowTutorial] = useState(false);
   const chatRef = useRef<ChatInterfaceRef>(null);
 
   // Load chat history from localStorage
@@ -88,10 +90,17 @@ const Studio = () => {
   // Sync current step with URL parameter
   useEffect(() => {
     const stepParam = searchParams.get('step');
+    const tutorialParam = searchParams.get('tutorial');
     if (stepParam) {
       const step = parseInt(stepParam, 10);
       if (step >= 1 && step <= 4) {
         setCurrentStep(step);
+        // Show tutorial if we're on step 3 and tutorial param is true
+        if (step === 3 && tutorialParam === 'true') {
+          setShowTutorial(true);
+        } else {
+          setShowTutorial(false);
+        }
       }
     }
   }, [searchParams]);
@@ -124,7 +133,10 @@ const Studio = () => {
 
   const handleMusicVariantSelected = async (variant: any) => {
     setSelectedMusicVariant(variant);
-    setCurrentStep(3); // Move to postcard design step
+    // Go to tutorial first, then to postcard design
+    setCurrentStep(3);
+    setShowTutorial(true);
+    navigate('/studio?step=3&tutorial=true');
     
     // Do not save yet; saving will occur after final confirmation (step 4)
   };
@@ -155,6 +167,16 @@ const Studio = () => {
   const handleRequestSpecialist = () => {
     // Handle specialist request - could show a contact form or similar
     console.log("Specialist requested for music generation");
+  };
+
+  const handleTutorialContinue = () => {
+    setShowTutorial(false);
+    navigate('/studio?step=3');
+  };
+
+  const handleTutorialSkip = () => {
+    setShowTutorial(false);
+    navigate('/studio?step=3');
   };
 
   // Dev mode functions
@@ -253,6 +275,15 @@ const Studio = () => {
           />
         );
       case 3:
+        // Show tutorial first if flag is set
+        if (showTutorial) {
+          return (
+            <PostcardTutorial
+              onContinue={handleTutorialContinue}
+              onSkip={handleTutorialSkip}
+            />
+          );
+        }
         return (
           <PostcardDesign
             lyrics={lyrics}
@@ -286,7 +317,7 @@ const Studio = () => {
       <StepsHeader currentStep={currentStep} />
 
       {/* Step explanation */}
-      <StepExplanation currentStep={currentStep} />
+      <StepExplanation currentStep={currentStep} showTutorial={showTutorial} />
 
       {/* Dev Mode Panel */}
       {DEV_MODE && (
