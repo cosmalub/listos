@@ -195,15 +195,18 @@ export function FrontDesignStep({ lyrics, initialData, onComplete, onBack }: Fro
         <div>
           
           {/* Caption Section - Always visible */}
-          <Card className="p-6 mb-6">
-            <CardHeader className="p-0 mb-4">
+          <Card className="mb-6">
+            <CardHeader>
               <CardTitle className="text-lg font-semibold flex items-center gap-2">
                 <Wand2 className="w-5 h-5 text-primary" />
                 Підпис для листівки
               </CardTitle>
+              <p className="text-sm text-muted-foreground">
+                Цей підпис з'явиться на лицьовій частині листівки
+              </p>
             </CardHeader>
-            <CardContent className="p-0">
-              <div className="space-y-4">
+            <CardContent>
+              <div className="space-y-3">
                 <Textarea
                   value={designData.caption}
                   onChange={(e) => setDesignData(prev => ({ ...prev, caption: e.target.value }))}
@@ -212,95 +215,65 @@ export function FrontDesignStep({ lyrics, initialData, onComplete, onBack }: Fro
                   disabled={isGeneratingCaption}
                 />
                 
-                <div className="flex flex-col gap-2">
-                  <Button
-                    variant="outline"
-                    onClick={async () => {
-                      setIsGeneratingCaption(true);
-                      try {
-                        const caption = await generateAutomaticCaption(lyrics, 'medium');
-                        setDesignData(prev => ({ ...prev, caption }));
-                        toast.success('Підпис згенеровано!');
-                      } catch (error) {
-                        toast.error('Помилка при генерації підпису');
-                      } finally {
-                        setIsGeneratingCaption(false);
-                      }
-                    }}
-                    disabled={isGeneratingCaption}
-                    className="w-full"
-                  >
-                    {isGeneratingCaption ? (
-                      <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Генерую підпис...
-                      </>
-                    ) : (
-                      <>
-                        <Wand2 className="w-4 h-4 mr-2" />
-                        Згенерувати заново
-                      </>
-                    )}
-                  </Button>
-                  
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={async () => {
-                        setIsGeneratingCaption(true);
-                        try {
-                          const caption = await generateAutomaticCaption(lyrics, 'short');
-                          setDesignData(prev => ({ ...prev, caption }));
-                          toast.success('Короткий підпис згенеровано!');
-                        } catch (error) {
-                          toast.error('Помилка при генерації підпису');
-                        } finally {
-                          setIsGeneratingCaption(false);
-                        }
-                      }}
-                      disabled={isGeneratingCaption}
-                      className="flex-1"
-                    >
-                      Короткий
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={async () => {
-                        setIsGeneratingCaption(true);
-                        try {
-                          const caption = await generateAutomaticCaption(lyrics, 'long');
-                          setDesignData(prev => ({ ...prev, caption }));
-                          toast.success('Довгий підпис згенеровано!');
-                        } catch (error) {
-                          toast.error('Помилка при генерації підпису');
-                        } finally {
-                          setIsGeneratingCaption(false);
-                        }
-                      }}
-                      disabled={isGeneratingCaption}
-                      className="flex-1"
-                    >
-                      Довгий
-                    </Button>
-                  </div>
-                </div>
+                <Button
+                  variant="outline"
+                  onClick={async () => {
+                    setIsGeneratingCaption(true);
+                    try {
+                      const caption = await generateAutomaticCaption(lyrics, 'medium');
+                      setDesignData(prev => ({ ...prev, caption }));
+                      toast.success('Підпис згенеровано!');
+                    } catch (error) {
+                      toast.error('Помилка при генерації підпису');
+                    } finally {
+                      setIsGeneratingCaption(false);
+                    }
+                  }}
+                  disabled={isGeneratingCaption}
+                  size="sm"
+                >
+                  {isGeneratingCaption ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Генерую підпис...
+                    </>
+                  ) : (
+                    <>
+                      <Wand2 className="w-4 h-4 mr-2" />
+                      Згенерувати заново
+                    </>
+                  )}
+                </Button>
               </div>
             </CardContent>
           </Card>
 
           {/* Mode Selection */}
-          <Card className="p-4 mb-6">
-            <div className="flex items-center justify-between">
-              <Label className="text-base font-medium">Режим створення</Label>
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle className="text-base font-medium">Режим створення</CardTitle>
+              <p className="text-sm text-muted-foreground">
+                Оберіть спосіб створення зображення для лицьової частини листівки
+              </p>
+            </CardHeader>
+            <CardContent>
               <Tabs value={designData.mode} onValueChange={(value) => handleModeChange(value as 'photo' | 'ai-generation')}>
-                <TabsList>
-                  <TabsTrigger value="ai-generation">AI Генерація</TabsTrigger>
-                  <TabsTrigger value="photo">Завантажити фото</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="ai-generation" className="text-sm">
+                    AI Генерація
+                  </TabsTrigger>
+                  <TabsTrigger value="photo" className="text-sm">
+                    Завантажити фото
+                  </TabsTrigger>
                 </TabsList>
               </Tabs>
-            </div>
+              <div className="mt-3 text-xs text-muted-foreground">
+                {designData.mode === 'ai-generation' 
+                  ? 'Створити унікальне зображення за допомогою штучного інтелекту'
+                  : 'Використати власну фотографію'
+                }
+              </div>
+            </CardContent>
           </Card>
 
           {designData.mode === 'ai-generation' ? (
