@@ -197,43 +197,6 @@ export function FrontDesignStep({
   };
   const isComplete = designData.imageUrl && designData.caption;
   return <div className="space-y-6">
-      {/* Video explanation block */}
-      <Card className="border-primary/20 bg-primary/5">
-        <CardHeader>
-          <CardTitle className="text-lg font-medium flex items-center gap-2">
-            <PlayCircle className="h-5 w-5 text-primary" />
-            Як створити листівку
-          </CardTitle>
-          <p className="text-sm text-muted-foreground">
-            Дізнайтеся як працює процес створення вашої персональної листівки
-          </p>
-        </CardHeader>
-        <CardContent>
-          <div className="aspect-video bg-muted rounded-lg flex items-center justify-center mb-4">
-            <div className="text-center space-y-2">
-              <PlayCircle className="h-12 w-12 text-primary mx-auto" />
-              <p className="text-sm text-muted-foreground">Відео пояснення буде тут</p>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-            <div className="space-y-2">
-              <h4 className="font-medium text-primary">🎨 Лицьова частина</h4>
-              <p className="text-muted-foreground">
-                Головне зображення та підпис, які створюють настрій вашої листівки. 
-                Тут буде красива картинка що відповідає вашій пісні.
-              </p>
-            </div>
-            <div className="space-y-2">
-              <h4 className="font-medium text-primary">📝 Зворотна частина</h4>
-              <p className="text-muted-foreground">
-                Текст пісні та QR-код для прослуховування. Сюди потрапить весь 
-                текст вашої створеної пісні.
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
       <div className="space-y-8">
         <div>
           

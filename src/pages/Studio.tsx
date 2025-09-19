@@ -341,14 +341,35 @@ const Studio = () => {
                 </Button>
               ))}
             </div>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={fillTestData}
-              className="w-full text-xs"
-            >
-              Fill Test Data
-            </Button>
+            <div className="grid grid-cols-2 gap-1 mt-2">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={fillTestData}
+                className="text-xs"
+              >
+                Fill Test Data
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  const data = {
+                    currentStep,
+                    lyrics,
+                    selectedMusicVariant,
+                    pageData,
+                    showTutorial
+                  };
+                  navigator.clipboard.writeText(JSON.stringify(data, null, 2));
+                  console.log('Current Data:', data);
+                  alert('Data copied to clipboard and logged to console');
+                }}
+                className="text-xs"
+              >
+                View Data
+              </Button>
+            </div>
           </div>
         </div>
       )}
