@@ -12,7 +12,7 @@ import { LyricsDraft } from '@/components/studio/LyricsDraft';
 import { MusicGeneration } from '@/components/studio/MusicGeneration';
 import { PageCaptionStep } from '@/components/studio/PageCaptionStep';
 import { PostcardDesign } from '@/components/studio/PostcardDesign';
-import { PostcardTutorial } from '@/components/studio/PostcardTutorial';
+import { WelcomeTutorial } from '@/components/studio/WelcomeTutorial';
 import { Header } from '@/components/sections/header';
 import { Footer } from '@/components/sections/footer';
 import { StepsHeader } from '@/components/studio/StepsHeader';
@@ -56,14 +56,14 @@ const TEST_DATA = {
 const Studio = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0); // Start with welcome tutorial
   const [lyrics, setLyrics] = useState('');
   const [activeTab, setActiveTab] = useState('chat');
   const [hasUnconfirmedLyrics, setHasUnconfirmedLyrics] = useState(false);
   const [selectedMusicVariant, setSelectedMusicVariant] = useState<any>(null);
   const [pageData, setPageData] = useState<any>(null);
   const [chatMessages, setChatMessages] = useState<any[]>([]);
-  const [showTutorial, setShowTutorial] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
   const chatRef = useRef<ChatInterfaceRef>(null);
 
   // Load chat history from localStorage
@@ -90,18 +90,16 @@ const Studio = () => {
   // Sync current step with URL parameter
   useEffect(() => {
     const stepParam = searchParams.get('step');
-    const tutorialParam = searchParams.get('tutorial');
     if (stepParam) {
       const step = parseInt(stepParam, 10);
       if (step >= 1 && step <= 4) {
         setCurrentStep(step);
-        // Show tutorial if we're on step 3 and tutorial param is true
-        if (step === 3 && tutorialParam === 'true') {
-          setShowTutorial(true);
-        } else {
-          setShowTutorial(false);
-        }
+        setShowWelcome(false);
       }
+    } else {
+      // No step parameter means we're on welcome
+      setCurrentStep(0);
+      setShowWelcome(true);
     }
   }, [searchParams]);
 
@@ -133,10 +131,9 @@ const Studio = () => {
 
   const handleMusicVariantSelected = async (variant: any) => {
     setSelectedMusicVariant(variant);
-    // Go to tutorial first, then to postcard design
+    // Go directly to postcard design (step 3)
     setCurrentStep(3);
-    setShowTutorial(true);
-    navigate('/studio?step=3&tutorial=true');
+    navigate('/studio?step=3');
     
     // Do not save yet; saving will occur after final confirmation (step 4)
   };
@@ -169,14 +166,10 @@ const Studio = () => {
     console.log("Specialist requested for music generation");
   };
 
-  const handleTutorialContinue = () => {
-    setShowTutorial(false);
-    navigate('/studio?step=3');
-  };
-
-  const handleTutorialSkip = () => {
-    setShowTutorial(false);
-    navigate('/studio?step=3');
+  const handleWelcomeStart = () => {
+    setShowWelcome(false);
+    setCurrentStep(1);
+    navigate('/studio?step=1');
   };
 
   // Dev mode functions
@@ -199,12 +192,22 @@ const Studio = () => {
         setSelectedMusicVariant(TEST_DATA.musicVariant);
       }
       setCurrentStep(step);
-      navigate(`/studio?step=${step}`);
+      setShowWelcome(false);
+      if (step === 0) {
+        setShowWelcome(true);
+        navigate('/studio');
+      } else {
+        navigate(`/studio?step=${step}`);
+      }
     }
   };
 
   const renderStepContent = () => {
     switch (currentStep) {
+      case 0:
+        return (
+          <WelcomeTutorial onStart={handleWelcomeStart} />
+        );
       case 1:
         return (
           <div className="h-full">
@@ -275,15 +278,6 @@ const Studio = () => {
           />
         );
       case 3:
-        // Show tutorial first if flag is set
-        if (showTutorial) {
-          return (
-            <PostcardTutorial
-              onContinue={handleTutorialContinue}
-              onSkip={handleTutorialSkip}
-            />
-          );
-        }
         return (
           <PostcardDesign
             lyrics={lyrics}
@@ -317,7 +311,7 @@ const Studio = () => {
       <StepsHeader currentStep={currentStep} />
 
       {/* Step explanation */}
-      <StepExplanation currentStep={currentStep} showTutorial={showTutorial} />
+      <StepExplanation currentStep={currentStep} showTutorial={showWelcome} />
 
       {/* Dev Mode Panel */}
       {DEV_MODE && (
@@ -329,20 +323,17 @@ const Studio = () => {
           <div className="space-y-2">
             <div className="text-xs text-muted-foreground mb-2">Quick Navigation:</div>
             
-            {/* Tutorial Button */}
+            {/* Welcome Button */}
             <div className="mb-2">
               <Button
-                variant={showTutorial && currentStep === 3 ? "default" : "outline"}
+                variant={showWelcome && currentStep === 0 ? "default" : "outline"}
                 size="sm"
-                onClick={() => {
-                  setShowTutorial(true);
-                  setCurrentStep(3);
-                }}
-                className="h-8 px-2 text-xs bg-purple-500/10 border-purple-500/30 text-purple-700 hover:bg-purple-500/20 dark:text-purple-300 dark:hover:bg-purple-500/30"
+                onClick={() => goToStep(0)}
+                className="h-8 px-2 text-xs bg-green-500/10 border-green-500/30 text-green-700 hover:bg-green-500/20 dark:text-green-300 dark:hover:bg-green-500/30"
               >
-                T
+                W
               </Button>
-              <span className="ml-2 text-xs text-muted-foreground">Tutorial</span>
+              <span className="ml-2 text-xs text-muted-foreground">Welcome</span>
             </div>
 
             {/* Step Buttons */}
@@ -350,12 +341,9 @@ const Studio = () => {
               {steps.map((step) => (
                 <Button
                   key={step.id}
-                  variant={currentStep === step.id && !showTutorial ? "default" : "outline"}
+                  variant={currentStep === step.id && !showWelcome ? "default" : "outline"}
                   size="sm"
-                  onClick={() => {
-                    setShowTutorial(false);
-                    goToStep(step.id);
-                  }}
+                  onClick={() => goToStep(step.id)}
                   className="h-8 w-8 p-0 text-xs"
                 >
                   {step.id}
@@ -380,7 +368,7 @@ const Studio = () => {
                     lyrics,
                     selectedMusicVariant,
                     pageData,
-                    showTutorial
+                    showWelcome
                   };
                   navigator.clipboard.writeText(JSON.stringify(data, null, 2));
                   console.log('Current Data:', data);
