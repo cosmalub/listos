@@ -328,13 +328,34 @@ const Studio = () => {
           </div>
           <div className="space-y-2">
             <div className="text-xs text-muted-foreground mb-2">Quick Navigation:</div>
+            
+            {/* Tutorial Button */}
+            <div className="mb-2">
+              <Button
+                variant={showTutorial && currentStep === 3 ? "default" : "outline"}
+                size="sm"
+                onClick={() => {
+                  setShowTutorial(true);
+                  setCurrentStep(3);
+                }}
+                className="h-8 px-2 text-xs bg-purple-500/10 border-purple-500/30 text-purple-700 hover:bg-purple-500/20 dark:text-purple-300 dark:hover:bg-purple-500/30"
+              >
+                T
+              </Button>
+              <span className="ml-2 text-xs text-muted-foreground">Tutorial</span>
+            </div>
+
+            {/* Step Buttons */}
             <div className="grid grid-cols-4 gap-1">
               {steps.map((step) => (
                 <Button
                   key={step.id}
-                  variant={currentStep === step.id ? "default" : "outline"}
+                  variant={currentStep === step.id && !showTutorial ? "default" : "outline"}
                   size="sm"
-                  onClick={() => goToStep(step.id)}
+                  onClick={() => {
+                    setShowTutorial(false);
+                    goToStep(step.id);
+                  }}
                   className="h-8 w-8 p-0 text-xs"
                 >
                   {step.id}
