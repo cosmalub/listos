@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { PlayCircle, ArrowRight, Music, Heart, Palette, Send, Sparkles, Star } from 'lucide-react';
+import { Play, ArrowRight, Music, Heart, Palette, Send, Sparkles, Star } from 'lucide-react';
 
 interface WelcomeTutorialProps {
   onStart: () => void;
@@ -76,10 +76,10 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
 
         {/* Video Section - integrated into page flow */}
         <div className="mb-16 text-center">
-          <div className="relative aspect-video max-w-3xl mx-auto bg-muted rounded-2xl overflow-hidden group cursor-pointer">
+          <div className="relative aspect-video max-w-2xl mx-auto bg-muted rounded-2xl overflow-hidden group cursor-pointer">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
               <div className="bg-white/90 backdrop-blur-sm rounded-full p-6 group-hover:scale-110 transition-transform duration-300 shadow-soft">
-                <PlayCircle className="h-12 w-12 text-primary fill-primary" />
+                <Play className="h-12 w-12 text-primary fill-primary" />
               </div>
             </div>
           </div>
