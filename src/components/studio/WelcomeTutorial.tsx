@@ -76,7 +76,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
 
         {/* Video Section - integrated into page flow */}
         <div className="mb-16 text-center">
-          <div className="relative aspect-video max-w-4xl mx-auto group cursor-pointer">
+          <div className="relative aspect-video max-w-3xl mx-auto group cursor-pointer">
             <div className="absolute inset-0 bg-gradient-to-br from-[#6A5ACD]/10 to-[#B8B3FF]/10 rounded-3xl flex items-center justify-center">
               <div className="text-center">
                 <div className="relative mb-4">
@@ -84,7 +84,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
                     <PlayCircle className="w-10 h-10 text-white" />
                   </div>
                 </div>
-                <p className="text-base text-[#6A5ACD] font-medium">
+                <p className="text-base text-[#6A5ACD] font-medium text-center">
                   Натисніть для перегляду
                 </p>
               </div>
