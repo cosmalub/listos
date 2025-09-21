@@ -75,16 +75,17 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
         </div>
 
         {/* Demo Video Placeholder */}
-        <Card className="bg-white dark:bg-slate-800 shadow-lg border-0 overflow-hidden mb-12 max-w-3xl mx-auto">
-          <div className="relative aspect-video group cursor-pointer hover:shadow-xl transition-shadow">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#6A5ACD]/10 to-[#B8B3FF]/10 flex items-center justify-center">
+        <Card className="bg-white dark:bg-slate-800 shadow-lg border border-slate-200/50 dark:border-slate-700/50 overflow-hidden mb-16 max-w-4xl mx-auto rounded-2xl">
+          <div className="relative aspect-video group cursor-pointer hover:shadow-xl transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#6A5ACD]/5 to-[#B8B3FF]/5 flex items-center justify-center">
               <div className="text-center">
-                <div className="relative mb-4">
-                  <div className="w-16 h-16 bg-[#6A5ACD] rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                    <PlayCircle className="w-8 h-8 text-white" />
+                <div className="relative mb-6">
+                  <div className="w-24 h-24 bg-[#6A5ACD] rounded-full flex items-center justify-center shadow-xl group-hover:scale-105 transition-transform duration-300">
+                    <PlayCircle className="w-12 h-12 text-white" />
                   </div>
+                  <div className="absolute -inset-1 bg-[#6A5ACD]/20 rounded-full animate-pulse"></div>
                 </div>
-                <p className="text-sm text-[#6A5ACD] font-medium">
+                <p className="text-lg text-[#6A5ACD] font-semibold">
                   Натисніть для перегляду
                 </p>
               </div>
@@ -94,7 +95,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
 
 
         {/* Collaboration Section */}
-        <Card className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 border-0 shadow-lg mb-12">
+        <Card className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 border-0 shadow-lg mb-16 rounded-2xl">
           <div className="p-8 text-center">
             <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-3">
               Разом створимо шедевр
