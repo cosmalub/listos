@@ -44,8 +44,8 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-purple-950">
-      <div className="relative z-10 px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] to-white/20">
+      <div className="container mx-auto px-4 py-8 relative z-10">
         {/* Lystosyk with Speech Bubble */}
         <div className="max-w-5xl mx-auto mt-0 mb-8 px-4">
           <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
