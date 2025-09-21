@@ -74,37 +74,33 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
           </div>
         </div>
 
-        {/* Demo Video Placeholder */}
-        <Card className="bg-white dark:bg-slate-800 shadow-lg border border-slate-200/50 dark:border-slate-700/50 overflow-hidden mb-16 max-w-4xl mx-auto rounded-2xl">
-          <div className="relative aspect-video group cursor-pointer hover:shadow-xl transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#6A5ACD]/5 to-[#B8B3FF]/5 flex items-center justify-center">
+        {/* Video Section - integrated into page flow */}
+        <div className="mb-16 text-center">
+          <div className="relative aspect-video max-w-4xl mx-auto group cursor-pointer">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#6A5ACD]/10 to-[#B8B3FF]/10 rounded-3xl flex items-center justify-center">
               <div className="text-center">
-                <div className="relative mb-6">
-                  <div className="w-24 h-24 bg-[#6A5ACD] rounded-full flex items-center justify-center shadow-xl group-hover:scale-105 transition-transform duration-300">
-                    <PlayCircle className="w-12 h-12 text-white" />
+                <div className="relative mb-4">
+                  <div className="w-20 h-20 bg-[#6A5ACD] rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <PlayCircle className="w-10 h-10 text-white" />
                   </div>
-                  <div className="absolute -inset-1 bg-[#6A5ACD]/20 rounded-full animate-pulse"></div>
                 </div>
-                <p className="text-lg text-[#6A5ACD] font-semibold">
+                <p className="text-base text-[#6A5ACD] font-medium">
                   Натисніть для перегляду
                 </p>
               </div>
             </div>
           </div>
-        </Card>
+        </div>
 
-
-        {/* Collaboration Section */}
-        <Card className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 border-0 shadow-lg mb-16 rounded-2xl">
-          <div className="p-8 text-center">
-            <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-3">
-              Разом створимо шедевр
-            </h3>
-            <p className="text-slate-600 dark:text-slate-400 max-w-md mx-auto">
-              Ви створите неймовірну музичну листівку, яка точно вразить отримувача. Листосик допоможе на кожному кроці!
-            </p>
-          </div>
-        </Card>
+        {/* Promise text - integrated into page flow */}
+        <div className="text-center mb-16">
+          <h3 className="text-3xl font-bold text-[#6A5ACD] mb-4">
+            Разом створимо шедевр
+          </h3>
+          <p className="text-xl text-[#6A5ACD]/80 max-w-2xl mx-auto">
+            Ви створите неймовірну музичну листівку, яка точно вразить отримувача. Листосик допоможе на кожному кроці!
+          </p>
+        </div>
 
         {/* Start Button */}
         <div className="flex justify-center">
