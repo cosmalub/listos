@@ -99,9 +99,10 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
           <Button
             onClick={onStart}
             size="lg"
-            className="bg-[#6A5ACD] hover:bg-[#5A4ABD] text-white px-8 py-4 text-lg font-semibold rounded-lg"
+            className="min-w-[200px]"
           >
             Почати створення
+            <ArrowRight className="h-5 w-5" />
           </Button>
         </div>
     </div>
