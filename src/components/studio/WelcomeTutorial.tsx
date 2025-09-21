@@ -75,10 +75,10 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
 
         {/* Demo Video Section */}
         <div className="mb-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">
-            Як це <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">працює?</span>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-[#6A5ACD]">
+            Як це працює?
           </h1>
-          <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl mb-8 text-[#6A5ACD]/80">
             Подивіться демонстрацію процесу створення
           </p>
         </div>
@@ -111,13 +111,6 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
         {/* Collaboration Section */}
         <Card className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 border-0 shadow-lg mb-12">
           <div className="p-8 text-center">
-            <div className="flex justify-center mb-4">
-              <div className="flex items-center space-x-2">
-                <Heart className="w-6 h-6 text-purple-600" />
-                <Sparkles className="w-5 h-5 text-yellow-500" />
-                <Heart className="w-6 h-6 text-purple-600" />
-              </div>
-            </div>
             <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-3">
               Разом створимо шедевр
             </h3>
@@ -132,10 +125,9 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
           <Button
             onClick={onStart}
             size="lg"
-            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-xl hover:shadow-2xl transition-all duration-300 px-8 py-4 text-lg font-semibold rounded-xl gap-3 group"
+            className="bg-[#6A5ACD] hover:bg-[#5A4ABD] text-white px-8 py-4 text-lg font-semibold rounded-lg"
           >
-            <span>🎵 Почати створення</span>
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            Почати створення
           </Button>
         </div>
       </div>

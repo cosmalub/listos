@@ -10,7 +10,7 @@ const stepHints = [
   'На цьому кроці ви створите персональну сторінку з піснею і побажаннями, на яку людина потрапить по QR-коду з листівки. Вкажіть дані отримувача і відправника'
 ];
 
-const tutorialHint = 'Спочатку давайте ознайомимося з процесом створення листівки та дізнаємося, що буде на лицьовій та зворотній частині';
+const tutorialHint = '';
 export const StepExplanation: React.FC<StepExplanationProps> = ({
   currentStep,
   showTutorial = false
