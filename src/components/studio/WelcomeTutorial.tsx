@@ -64,6 +64,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
                 {/* Speech bubble pointer */}
                 <div className="hidden md:block absolute top-1/2 -left-3 transform -translate-y-1/2 w-6 h-6 rotate-45 border-l-2 border-b-2 border-[#B8B3FF]/60 group-hover:border-[#B8B3FF] transition-colors bg-card"></div>
 
+                <h3 className="text-xl font-bold text-[#6A5ACD] mb-3 text-left">Як це працює?</h3>
                 <p className="text-muted-foreground text-left">
                   Подивіться на відео нижче, щоб зрозуміти, як працює процес створення музичної листівки.
                   Я крок за кроком покажу, як створити унікальний подарунок з піснею!
@@ -73,35 +74,19 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
           </div>
         </div>
 
-        {/* Demo Video Section */}
-        <div className="mb-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-[#6A5ACD]">
-            Як це працює?
-          </h1>
-          <p className="text-lg md:text-xl mb-8 text-[#6A5ACD]/80">
-            Подивіться демонстрацію процесу створення
-          </p>
-        </div>
-
         {/* Demo Video Placeholder */}
-        <Card className="bg-white dark:bg-slate-800 shadow-xl border-0 overflow-hidden mb-12">
-          <div className="relative aspect-video group cursor-pointer">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
-              <div className="text-center space-y-4">
-                <div className="relative">
-                  <div className="w-20 h-20 bg-white dark:bg-slate-700 rounded-full flex items-center justify-center shadow-lg">
-                    <PlayCircle className="w-10 h-10 text-purple-600" />
+        <Card className="bg-white dark:bg-slate-800 shadow-lg border-0 overflow-hidden mb-12 max-w-3xl mx-auto">
+          <div className="relative aspect-video group cursor-pointer hover:shadow-xl transition-shadow">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#6A5ACD]/10 to-[#B8B3FF]/10 flex items-center justify-center">
+              <div className="text-center">
+                <div className="relative mb-4">
+                  <div className="w-16 h-16 bg-[#6A5ACD] rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                    <PlayCircle className="w-8 h-8 text-white" />
                   </div>
-                  <div className="absolute -inset-2 bg-purple-400/30 rounded-full animate-pulse"></div>
                 </div>
-                <div className="space-y-2">
-                  <p className="text-lg font-semibold text-slate-800 dark:text-slate-200">
-                    Як це працює?
-                  </p>
-                  <p className="text-sm text-slate-600 dark:text-slate-400">
-                    Натисніть, щоб переглянути процес
-                  </p>
-                </div>
+                <p className="text-sm text-[#6A5ACD] font-medium">
+                  Натисніть для перегляду
+                </p>
               </div>
             </div>
           </div>
