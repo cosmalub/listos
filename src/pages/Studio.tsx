@@ -384,7 +384,7 @@ const Studio = () => {
       )}
 
       {/* Main content */}
-      <main className="container mx-auto px-4 py-8 min-h-[calc(100vh-200px)] max-w-3xl">
+      <main className={currentStep === 0 ? "px-0 py-0 min-h-[calc(100vh-200px)]" : "container mx-auto px-4 py-8 min-h-[calc(100vh-200px)] max-w-3xl"}>
         {renderStepContent()}
       </main>
 
