@@ -76,17 +76,10 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
 
         {/* Video Section - integrated into page flow */}
         <div className="mb-16 text-center">
-          <div className="relative aspect-video max-w-3xl mx-auto group cursor-pointer">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#6A5ACD]/10 to-[#B8B3FF]/10 rounded-3xl flex items-center justify-center">
-              <div className="text-center">
-                <div className="relative mb-4">
-                  <div className="w-20 h-20 bg-[#6A5ACD] rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    <PlayCircle className="w-10 h-10 text-white" />
-                  </div>
-                </div>
-                <p className="text-base text-[#6A5ACD] font-medium text-center">
-                  Натисніть для перегляду
-                </p>
+          <div className="relative aspect-video max-w-3xl mx-auto bg-muted rounded-2xl overflow-hidden group cursor-pointer">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
+              <div className="bg-white/90 backdrop-blur-sm rounded-full p-6 group-hover:scale-110 transition-transform duration-300 shadow-soft">
+                <PlayCircle className="h-12 w-12 text-primary fill-primary" />
               </div>
             </div>
           </div>
@@ -94,10 +87,10 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
 
         {/* Promise text - integrated into page flow */}
         <div className="text-center mb-16">
-          <h3 className="text-3xl font-bold text-[#6A5ACD] mb-4">
+          <h3 className="text-2xl md:text-3xl font-bold text-[#6A5ACD] mb-4">
             Разом створимо шедевр
           </h3>
-          <p className="text-xl text-[#6A5ACD]/80 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-slate-900 dark:text-white max-w-2xl mx-auto">
             Ви створите неймовірну музичну листівку, яка точно вразить отримувача. Листосик допоможе на кожному кроці!
           </p>
         </div>
