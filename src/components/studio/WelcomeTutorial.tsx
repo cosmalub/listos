@@ -44,8 +44,8 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] to-white/20">
-      <div className="container mx-auto px-4 py-8 relative z-10">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-purple-950">
+      <div className="relative z-10 px-4 py-8">
         {/* Lystosyk with Speech Bubble */}
         <div className="max-w-5xl mx-auto mt-0 mb-8 px-4">
           <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
@@ -61,6 +61,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
             {/* Speech Bubble */}
             <div className="w-full md:w-2/3 relative group">
               <div className="bg-card p-6 rounded-3xl border-2 border-[#B8B3FF]/60 group-hover:border-[#B8B3FF] transition-colors group-hover:shadow-md relative">
+                {/* Speech bubble pointer */}
                 <div className="hidden md:block absolute top-1/2 -left-3 transform -translate-y-1/2 w-6 h-6 rotate-45 border-l-2 border-b-2 border-[#B8B3FF]/60 group-hover:border-[#B8B3FF] transition-colors bg-card"></div>
 
                 <h3 className="text-xl font-bold text-[#6A5ACD] mb-3 text-left">Як це працює?</h3>
