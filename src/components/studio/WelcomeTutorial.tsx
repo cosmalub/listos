@@ -9,70 +9,40 @@ interface WelcomeTutorialProps {
 
 export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => {
   return (
-    <div className="min-h-screen bg-gradient-soft overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-accent/20 rounded-full blur-xl animate-subtle-move"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-primary/20 rounded-full blur-xl animate-subtle-move-slow"></div>
-        <div className="absolute bottom-20 left-20 w-40 h-40 bg-secondary/30 rounded-full blur-xl animate-subtle-move-reverse"></div>
-      </div>
+    <div className="min-h-screen bg-background">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 py-16 space-y-12">
+        {/* Mascot with speech bubble */}
+        <div className="flex justify-center mb-16">
+          <div className="relative flex flex-col items-center">
+            <div className="w-24 h-24 mb-4">
+              <img
+                src="/lovable-uploads/26b60a97-63b1-4ff3-93d6-e0607581e4b0.png"
+                alt="Листосик - кіт-помічник для створення музичних листівок"
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <div className="relative bg-card backdrop-blur-sm rounded-2xl px-6 py-4 shadow-lg border max-w-md">
+              <p className="text-base font-medium text-foreground text-center">
+                Привіт, я Листосик! 👋 Допоможу тобі створити незабутню музичну листівку
+              </p>
+              {/* Speech bubble arrow */}
+              <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[8px] border-r-[8px] border-b-[8px] border-l-transparent border-r-transparent border-b-card"></div>
+            </div>
+          </div>
+        </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4 py-8 space-y-12">
-        {/* Welcome Header with Mascot */}
-        <Card className="relative overflow-hidden bg-gradient-primary shadow-soft border-0">
-          <div className="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
-          <div className="relative p-8 lg:p-12 text-center">
-            <div className="space-y-8">
-              {/* Mascot Section */}
-              <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
-                <div className="w-48 h-48 lg:w-64 lg:h-64 flex-shrink-0">
-                  <img
-                    src="/lovable-uploads/26b60a97-63b1-4ff3-93d6-e0607581e4b0.png"
-                    alt="Листосик - кіт-помічник для створення музичних листівок"
-                    className="w-full h-full object-contain drop-shadow-2xl animate-subtle-move"
-                  />
+        {/* Video Section */}
+        <Card className="bg-card/80 backdrop-blur-sm shadow-lg border">
+          <div className="relative overflow-hidden aspect-video group">
+            <div className="absolute inset-0 bg-muted/20 flex items-center justify-center">
+              <div className="text-center space-y-4">
+                <PlayCircle className="w-16 h-16 text-primary mx-auto group-hover:scale-110 transition-transform duration-300" />
+                <div className="space-y-2">
+                  <p className="text-lg font-semibold text-foreground">Повний огляд процесу створення</p>
+                  <p className="text-muted-foreground">
+                    Подивіться, як легко створити персональну музичну листівку
+                  </p>
                 </div>
-                
-                <div className="flex-1 space-y-6 text-left lg:text-left">
-                  <div className="space-y-4">
-                    <h1 className="text-3xl lg:text-5xl font-bold text-white leading-tight">
-                      Ласкаво просимо до студії створення листівок! 🎉
-                    </h1>
-                    <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6 border border-white/30">
-                      <h2 className="text-xl lg:text-2xl font-bold text-white mb-3">Привіт, я Листосик!</h2>
-                      <p className="text-lg text-white/90 leading-relaxed">
-                        Дякуємо, що обрали наш сервіс! Я допоможу вам створити неймовірну музичну листівку, 
-                        яка підкорить серце будь-кого. Разом ми пройдемо весь процес від створення унікальної 
-                        пісні до красивого дизайну листівки.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Video Section */}
-              <div className="relative bg-white/20 backdrop-blur-sm rounded-2xl overflow-hidden aspect-video max-w-4xl mx-auto group hover:shadow-xl transition-all duration-500 border border-white/30">
-                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center">
-                  <div className="text-center space-y-6">
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-white/20 rounded-full blur-xl"></div>
-                      <PlayCircle className="relative w-24 h-24 text-white mx-auto group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg" />
-                    </div>
-                    <div className="space-y-3">
-                      <p className="text-xl font-bold text-white">Повний огляд процесу створення</p>
-                      <p className="text-white/80 text-lg">
-                        Подивіться, як легко створити персональну музичну листівку
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                {/* Uncomment when video is ready */}
-                {/* <iframe 
-                  src="YOUR_OVERVIEW_VIDEO_URL" 
-                  className="w-full h-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                /> */}
               </div>
             </div>
           </div>
@@ -174,27 +144,14 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
         </Card>
 
         {/* Promise Section */}
-        <Card className="relative overflow-hidden bg-gradient-to-r from-accent/20 to-primary/20 border-0 shadow-soft">
-          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
-          <div className="relative p-8 text-center space-y-6">
-            <div className="flex justify-center mb-4">
-              <div className="flex space-x-1">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className="w-8 h-8 text-yellow-400 fill-current animate-twinkle"
-                    style={{ animationDelay: `${i * 0.2}s` }}
-                  />
-                ))}
-              </div>
-            </div>
-            <h3 className="text-2xl font-bold text-foreground">
+        <Card className="bg-muted/30 border">
+          <div className="p-6 text-center space-y-4">
+            <h3 className="text-xl font-semibold text-foreground">
               Наша обіцянка ✨
             </h3>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            <p className="text-muted-foreground max-w-2xl mx-auto">
               Ми створимо для вас не просто листівку, а справжній витвір мистецтва. 
-              Кожна пісня буде унікальною, кожен дизайн - особливим. 
-              Ваш подарунок стане незабутнім та торкнеться самого серця!
+              Кожна пісня буде унікальною, кожен дизайн - особливим.
             </p>
           </div>
         </Card>
@@ -204,10 +161,10 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
           <Button
             onClick={onStart}
             size="lg"
-            className="bg-gradient-primary hover:opacity-90 text-white shadow-soft hover:shadow-xl transition-all duration-300 transform hover:scale-105 px-12 py-6 text-xl font-bold rounded-full min-w-80 gap-4"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 px-8 py-3 text-lg font-semibold rounded-lg gap-3"
           >
             🎵 Почати створення листівки
-            <ArrowRight className="w-6 h-6" />
+            <ArrowRight className="w-5 h-5" />
           </Button>
         </div>
       </div>
