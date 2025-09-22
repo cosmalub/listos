@@ -289,7 +289,12 @@ export function FrontDesignStep({
           {designData.mode === 'ai-generation' ? <>
               {/* Style Selection with explanation */}
               <div className="mb-6 sm:mb-8">
-                <Label className="text-base sm:text-lg font-semibold mb-4 block">1. Оберіть стиль</Label>
+                <div className="mb-4 space-y-2">
+                  <Label className="text-base sm:text-lg font-semibold block">1. Оберіть стиль</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Кожен стиль створений для певних випадків та настроїв
+                  </p>
+                </div>
                 
                 <StyleSelector selectedStyle={designData.style} onStyleSelect={handleStyleSelect} />
               </div>

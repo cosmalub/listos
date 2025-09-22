@@ -29,14 +29,6 @@ export function StyleSelector({ selectedStyle, onStyleSelect }: StyleSelectorPro
 
   return (
     <div className="space-y-4">
-      <div className="text-center space-y-2 mb-6">
-        <h3 className="text-lg font-semibold text-foreground">
-          Оберіть стиль для вашої листівки
-        </h3>
-        <p className="text-sm text-muted-foreground">
-          Кожен стиль створений для певних випадків та настроїв
-        </p>
-      </div>
 
       <RadioGroup
         value={selectedStyle || ''}
@@ -98,31 +90,6 @@ export function StyleSelector({ selectedStyle, onStyleSelect }: StyleSelectorPro
                         <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                           {style.occasionsText}
                         </p>
-                        <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                          {style.occasions.map((occasion, index) => (
-                            <Badge 
-                              key={index} 
-                              variant="secondary"
-                              className="text-xs px-2 py-1 bg-background/50 border-0"
-                            >
-                              {occasion}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Color palette preview */}
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs text-muted-foreground">Кольори:</span>
-                        <div className="flex gap-1">
-                          {style.colors.slice(0, 4).map((color, index) => (
-                            <div
-                              key={index}
-                              className="w-4 h-4 rounded-full border border-border/50"
-                              style={{ backgroundColor: color }}
-                            />
-                          ))}
-                        </div>
                       </div>
                     </div>
 

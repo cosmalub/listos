@@ -5,10 +5,8 @@ export interface PostcardStyle {
   id: StyleKey;
   name: string;
   description: string;
-  occasions: string[];
   occasionsText: string;
   previewImage: string;
-  colors: string[];
   systemPrompt: string;
 }
 
@@ -17,10 +15,8 @@ export const POSTCARD_STYLES: Record<StyleKey, PostcardStyle> = {
     id: 'joyful',
     name: 'Радісний',
     description: 'Яскравий та життєрадісний стиль для особливих моментів і урочистостей',
-    occasions: ['День народження', 'Свята', 'Поздоровлення', 'Досягнення'],
-    occasionsText: 'Ідеально для: днів народження, свят, поздоровлень та радісних подій',
+    occasionsText: 'Ідеально для: днів народження, свят, поздоровлень',
     previewImage: '/api/placeholder/joyful-preview',
-    colors: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A'],
     systemPrompt: `Створи яскраву святкову листівку на основі: {basePrompt}.
 
 ВІЗУАЛЬНІ ХАРАКТЕРИСТИКИ:
@@ -47,10 +43,8 @@ export const POSTCARD_STYLES: Record<StyleKey, PostcardStyle> = {
     id: 'gentle',
     name: 'Ніжний',
     description: 'Делікатний та теплий стиль для щирих почуттів та особистих моментів',
-    occasions: ['Вибачення', 'Подяка', 'Підтримка', 'Співчуття'],
-    occasionsText: 'Ідеально для: вибачень, подяки, підтримки та теплих слів',
+    occasionsText: 'Ідеально для: вибачень, подяки, підтримки',
     previewImage: '/api/placeholder/gentle-preview',
-    colors: ['#E8D5C4', '#C8A882', '#F4E4BC', '#D4B996'],
     systemPrompt: `Створи ніжну акварельну листівку на основі: {basePrompt}.
 
 ВІЗУАЛЬНІ ХАРАКТЕРИСТИКИ:
@@ -75,11 +69,9 @@ export const POSTCARD_STYLES: Record<StyleKey, PostcardStyle> = {
   universal: {
     id: 'universal',
     name: 'Універсальний',
-    description: 'Стильний та гармонійний дизайн на всі випадки життя',
-    occasions: ['Прохання', 'Спілкування', 'Запрошення', 'Будь-які інші випадки'],
-    occasionsText: 'Ідеально для: прохань, загального спілкування та будь-яких інших випадків',
+    description: 'Стільний та гармонійний дизайн на всі випадки життя',
+    occasionsText: 'Ідеально для: прохань, спілкування, запрошень',
     previewImage: '/api/placeholder/universal-preview',
-    colors: ['#8B7355', '#A8C090', '#F5E6B8', '#E8C4A0'],
     systemPrompt: `Створи стильну листівку в стилі Studio Ghibli на основі: {basePrompt}.
 
 ВІЗУАЛЬНІ ХАРАКТЕРИСТИКИ:
@@ -122,9 +114,6 @@ export function getStylePrompt(style: StyleKey, basePrompt: string, caption?: st
   return enhancedPrompt;
 }
 
-export function getStyleColors(style: StyleKey): string[] {
-  return POSTCARD_STYLES[style]?.colors || [];
-}
 
 export function getAllStyles(): PostcardStyle[] {
   return Object.values(POSTCARD_STYLES);
