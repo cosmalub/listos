@@ -149,8 +149,19 @@ export function BackDesignStep({ frontDesign, initialData, onComplete, onBack }:
         <CardContent>
           <div className="space-y-4">
             <div>
-              <div className="flex items-center justify-between mb-2">
-                <Label htmlFor="personalMessage">Ваше повідомлення</Label>
+              <Label htmlFor="personalMessage">Ваше повідомлення</Label>
+              <Textarea
+                id="personalMessage"
+                value={backData.personalMessage}
+                onChange={(e) => setBackData(prev => ({ ...prev, personalMessage: e.target.value }))}
+                placeholder="Напишіть особливе повідомлення для отримувача..."
+                rows={4}
+                maxLength={500}
+              />
+              <div className="flex items-center justify-between mt-1">
+                <p className="text-sm text-muted-foreground">
+                  {backData.personalMessage.length}/500 символів
+                </p>
                 <Button
                   variant="outline"
                   size="sm"
@@ -162,17 +173,6 @@ export function BackDesignStep({ frontDesign, initialData, onComplete, onBack }:
                   Згенерувати заново
                 </Button>
               </div>
-              <Textarea
-                id="personalMessage"
-                value={backData.personalMessage}
-                onChange={(e) => setBackData(prev => ({ ...prev, personalMessage: e.target.value }))}
-                placeholder="Напишіть особливе повідомлення для отримувача..."
-                rows={4}
-                maxLength={500}
-              />
-              <p className="text-sm text-muted-foreground mt-1">
-                {backData.personalMessage.length}/500 символів
-              </p>
             </div>
           </div>
         </CardContent>
