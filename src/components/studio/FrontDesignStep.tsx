@@ -4,7 +4,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, ArrowRight, Wand2, Loader2, PlayCircle, Edit3 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Wand2, Loader2, PlayCircle, Edit3, RotateCcw } from 'lucide-react';
 import { StyleSelector } from './StyleSelector';
 import { ImageUploader } from './ImageUploader';
 import { getStylePrompt, type StyleKey } from '@/lib/postcard-styles';
@@ -225,35 +225,39 @@ export function FrontDesignStep({
                   disabled={isGeneratingCaption} 
                 />
                 
-                <Button 
-                  variant="outline" 
-                  onClick={async () => {
-                    setIsGeneratingCaption(true);
-                    try {
-                      const caption = await generateAutomaticCaption(lyrics, 'medium');
-                      setDesignData(prev => ({
-                        ...prev,
-                        caption
-                      }));
-                      toast.success('Підпис згенеровано!');
-                    } catch (error) {
-                      toast.error('Помилка при генерації підпису');
-                    } finally {
-                      setIsGeneratingCaption(false);
-                    }
-                  }} 
-                  disabled={isGeneratingCaption} 
-                  size="sm"
-                  className="w-full sm:w-auto"
-                >
-                  {isGeneratingCaption ? <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Генерую підпис...
-                    </> : <>
-                      <Wand2 className="w-4 h-4 mr-2" />
-                      Згенерувати заново
-                    </>}
-                </Button>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-muted-foreground">
+                    {designData.caption ? `${designData.caption.length}/80 символів` : '0/80 символів'}
+                  </span>
+                  <Button 
+                    variant="ghost" 
+                    onClick={async () => {
+                      setIsGeneratingCaption(true);
+                      try {
+                        const caption = await generateAutomaticCaption(lyrics, 'short');
+                        setDesignData(prev => ({
+                          ...prev,
+                          caption
+                        }));
+                        toast.success('Підпис згенеровано!');
+                      } catch (error) {
+                        toast.error('Помилка при генерації підпису');
+                      } finally {
+                        setIsGeneratingCaption(false);
+                      }
+                    }} 
+                    disabled={isGeneratingCaption} 
+                    size="sm"
+                    className="h-8 px-3"
+                  >
+                    {isGeneratingCaption ? (
+                      <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                    ) : (
+                      <RotateCcw className="w-3 h-3 mr-1" />
+                    )}
+                    Згенерувати заново
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -295,8 +299,8 @@ export function FrontDesignStep({
                   {/* Style Selection */}
                   <div className="border-t pt-6">
                     <div className="mb-4 space-y-2">
-                      <Label className="text-sm font-medium text-muted-foreground block">1. Оберіть стиль</Label>
-                      <p className="text-xs text-muted-foreground">
+                      <h3 className="text-lg font-semibold">1. Оберіть стиль</h3>
+                      <p className="text-sm text-muted-foreground">
                         Кожен стиль створений для певних випадків та настроїв
                       </p>
                     </div>
@@ -307,7 +311,7 @@ export function FrontDesignStep({
                   {/* Image Generation */}
                   {designData.style && (
                     <div className="border-t pt-6">
-                      <Label className="text-sm font-medium text-muted-foreground mb-4 block">2. Генерація зображення</Label>
+                      <h3 className="text-lg font-semibold mb-4">2. Генерація зображення</h3>
                       <div className="space-y-4">
                         <Button 
                           onClick={handleGenerateImage} 
@@ -344,7 +348,7 @@ export function FrontDesignStep({
               ) : (
                 /* Photo Upload Mode Content */
                 <div className="border-t pt-6">
-                  <Label className="text-sm font-medium text-muted-foreground mb-4 block">Завантажити фотографію</Label>
+                  <h3 className="text-lg font-semibold mb-4">Завантажити фотографію</h3>
                   <ImageUploader onImageUpload={handleImageUpload} isUploading={isUploading} />
                   
                   {designData.imageUrl && (
