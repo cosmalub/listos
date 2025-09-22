@@ -1,171 +1,123 @@
-// Конфигурация стилей для дизайна листівок
-export type StyleKey = 'gilby' | 'watercolor' | 'cartoon' | 'pixel' | 'cosmic';
+// Конфігурація стилів для дизайну листівок
+export type StyleKey = 'joyful' | 'gentle' | 'universal';
 
 export interface PostcardStyle {
   id: StyleKey;
   name: string;
   description: string;
+  occasions: string[];
+  occasionsText: string;
   previewImage: string;
   colors: string[];
   systemPrompt: string;
 }
 
 export const POSTCARD_STYLES: Record<StyleKey, PostcardStyle> = {
-  gilby: {
-    id: 'gilby',
-    name: 'Гілбі',
-    description: 'Стилізований під Studio Ghibli з м\'якими кольорами та чіткими контурами',
-    previewImage: '/api/placeholder/gilby-preview',
-    colors: ['#8B7355', '#A8C090', '#F5E6B8', '#E8C4A0'],
-    systemPrompt: `Create a stylized postcard illustration in Studio Ghibli style based on: {basePrompt}.
-
-VISUAL CHARACTERISTICS:
-- Use soft, muted color palette with pastels and earth tones
-- Clean, clear outlines with moderate line weight
-- Flat color areas with minimal gradients
-- Simple, elegant shapes and forms
-- Gentle lighting with soft shadows
-- Nature-inspired elements (clouds, trees, flowers, landscapes)
-- Whimsical and dreamy atmosphere
-- Slightly stylized but recognizable forms
-
-ART STYLE:
-- 2D illustration style similar to Studio Ghibli films
-- Hand-drawn aesthetic with digital polish
-- Balanced composition with clear focal points
-- Organic, flowing lines and shapes
-- Subtle texture in backgrounds
-- Warm, inviting mood
-- Clean, professional finish suitable for greeting cards
-
-The image should evoke feelings of warmth, nostalgia, and gentle beauty.`
-  },
-
-  watercolor: {
-    id: 'watercolor',
-    name: 'Акварель',
-    description: 'Ніжні акварельні переходи з м\'якими кольорами',
-    previewImage: '/api/placeholder/watercolor-preview',
-    colors: ['#E8D5C4', '#C8A882', '#F4E4BC', '#D4B996'],
-    systemPrompt: `Create a beautiful watercolor postcard illustration based on: {basePrompt}.
-
-VISUAL CHARACTERISTICS:
-- Soft, flowing watercolor technique with natural color bleeding
-- Delicate brush strokes and organic textures
-- Transparent color layers with subtle gradients
-- Gentle color transitions and blending
-- Light, airy composition with plenty of white space
-- Pastel and muted color palette
-
-WATERCOLOR TECHNIQUES:
-- Wet-on-wet effects for backgrounds
-- Controlled color bleeding and blooming
-- Varied opacity and transparency
-- Natural paper texture showing through
-- Loose, expressive brushwork
-- Organic shapes and soft edges
-
-The result should feel delicate, dreamy, and artistic with the authentic look of traditional watercolor painting.`
-  },
-
-  cartoon: {
-    id: 'cartoon',
-    name: 'Мультяшний',
-    description: 'Яскраві кольори та прості форми в мультяшному стилі',
-    previewImage: '/api/placeholder/cartoon-preview',
+  joyful: {
+    id: 'joyful',
+    name: 'Радісний',
+    description: 'Яскравий та життєрадісний стиль для особливих моментів і урочистостей',
+    occasions: ['День народження', 'Свята', 'Поздоровлення', 'Досягнення'],
+    occasionsText: 'Ідеально для: днів народження, свят, поздоровлень та радісних подій',
+    previewImage: '/api/placeholder/joyful-preview',
     colors: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A'],
-    systemPrompt: `Create a vibrant cartoon-style postcard illustration based on: {basePrompt}.
+    systemPrompt: `Створи яскраву святкову листівку на основі: {basePrompt}.
 
-VISUAL CHARACTERISTICS:
-- Bold, bright colors with high saturation
-- Simple, clean shapes and forms
-- Thick, clear outlines
-- Flat color areas without complex shading
-- Playful and cheerful atmosphere
-- Exaggerated proportions and features
+ВІЗУАЛЬНІ ХАРАКТЕРИСТИКИ:
+- Яскраві, насичені кольори з високою контрастністю
+- Прості, чіткі форми та силуети
+- Товсті, виразні контури
+- Плоскі кольорові області без складного затінення
+- Веселий та радісний настрій
+- Святковий та урочистий характер
 
-CARTOON STYLE:
-- 2D flat illustration style
-- Vector-like appearance with crisp edges
-- Minimal but effective shading
-- Bold color contrasts
-- Fun and approachable aesthetic
-- Child-friendly visual language
-- Clear, readable composition
+СТИЛЬ МУЛЬТЯШНОЇ ГРАФІКИ:
+- 2D плоска ілюстрація
+- Векторний вигляд з чіткими краями
+- Мінімальне але ефективне затінення
+- Яскраві кольорові контрасти
+- Веселий та привабливий естетичний вигляд
+- Зрозуміла композиція
+- Святкові елементи (конфеті, зірочки, серця)
 
-The result should be joyful, energetic, and instantly appealing with a modern cartoon aesthetic.`
+Результат має бути радісним, енергійним та миттєво привабливим з сучасним святковим естетичним виглядом.`
   },
 
-  pixel: {
-    id: 'pixel',
-    name: 'Піксельний',
-    description: 'Ретро 8-bit стиль з піксельною графікою',
-    previewImage: '/api/placeholder/pixel-preview',
-    colors: ['#2D5016', '#A4AC86', '#656D4A', '#414833'],
-    systemPrompt: `Create a pixel art postcard illustration based on: {basePrompt}.
+  gentle: {
+    id: 'gentle',
+    name: 'Ніжний',
+    description: 'Делікатний та теплий стиль для щирих почуттів та особистих моментів',
+    occasions: ['Вибачення', 'Подяка', 'Підтримка', 'Співчуття'],
+    occasionsText: 'Ідеально для: вибачень, подяки, підтримки та теплих слів',
+    previewImage: '/api/placeholder/gentle-preview',
+    colors: ['#E8D5C4', '#C8A882', '#F4E4BC', '#D4B996'],
+    systemPrompt: `Створи ніжну акварельну листівку на основі: {basePrompt}.
 
-VISUAL CHARACTERISTICS:
-- 8-bit/16-bit retro pixel art style
-- Limited color palette (8-16 colors max)
-- Visible pixel grid structure
-- Blocky, geometric forms
-- Low resolution aesthetic
-- Nostalgic gaming feel
+ВІЗУАЛЬНІ ХАРАКТЕРИСТИКИ:
+- М'які, плинні акварельні техніки з природним розтіканням кольорів
+- Делікатні мазки пензля та органічні текстури
+- Прозорі кольорові шари з тонкими градієнтами
+- Ніжні кольорові переходи та змішування
+- Легка, повітряна композиція з великою кількістю білого простору
+- Пастельна та приглушена колірна палітра
 
-PIXEL ART TECHNIQUES:
-- Sharp, crisp edges with no anti-aliasing
-- Dithering for gradients and texture
-- Tile-based composition
-- Consistent pixel size throughout
-- Limited color gradients
-- Retro gaming color schemes
-- Simple but effective details
+АКВАРЕЛЬНІ ТЕХНІКИ:
+- Ефекти "мокре по мокрому" для фону
+- Контрольоване розтікання та розквітання кольору
+- Різна непрозорість та прозорість
+- Природна текстура паперу, що проглядає
+- Вільні, експресивні мазки пензлем
+- Органічні форми та м'які краї
 
-The result should evoke nostalgia for classic video games with a charming, minimalist aesthetic.`
+Результат має бути делікатним, мрійливим та художнім з автентичним виглядом традиційного акварельного живопису.`
   },
 
-  cosmic: {
-    id: 'cosmic',
-    name: 'Космічний',
-    description: 'Градієнти, зірки та космічна атмосфера',
-    previewImage: '/api/placeholder/cosmic-preview',
-    colors: ['#1a1a2e', '#16213e', '#0f3460', '#533483'],
-    systemPrompt: `Create a cosmic-themed postcard illustration based on: {basePrompt}.
+  universal: {
+    id: 'universal',
+    name: 'Універсальний',
+    description: 'Стильний та гармонійний дизайн на всі випадки життя',
+    occasions: ['Прохання', 'Спілкування', 'Запрошення', 'Будь-які інші випадки'],
+    occasionsText: 'Ідеально для: прохань, загального спілкування та будь-яких інших випадків',
+    previewImage: '/api/placeholder/universal-preview',
+    colors: ['#8B7355', '#A8C090', '#F5E6B8', '#E8C4A0'],
+    systemPrompt: `Створи стильну листівку в стилі Studio Ghibli на основі: {basePrompt}.
 
-VISUAL CHARACTERISTICS:
-- Deep space color palette with purples, blues, and magentas
-- Gradient backgrounds suggesting nebulae and cosmic phenomena
-- Starfields and celestial bodies
-- Glowing and luminous effects
-- Ethereal, dreamy atmosphere
-- Sense of vastness and wonder
+ВІЗУАЛЬНІ ХАРАКТЕРИСТИКИ:
+- М'яка, приглушена колірна палітра з пастельними та земляними тонами
+- Чисті, чіткі контури з помірною товщиною ліній
+- Плоскі кольорові області з мінімальними градієнтами
+- Прості, елегантні форми
+- Ніжне освітлення з м'якими тінями
+- Природні елементи (хмари, дерева, квіти, краєвиди)
+- Химерна та мрійлива атмосфера
+- Злегка стилізовані але впізнавані форми
 
-COSMIC ELEMENTS:
-- Rich gradients from dark to bright
-- Particle effects and light rays
-- Astronomical objects (stars, planets, galaxies)
-- Aurora-like color flows
-- Mysterious and mystical mood
-- High contrast lighting
-- Iridescent and holographic effects
+ХУДОЖНІЙ СТИЛЬ:
+- 2D ілюстрація в стилі фільмів Studio Ghibli
+- Рукотворна естетика з цифровою полірованістю
+- Збалансована композиція з чіткими фокусними точками
+- Органічні, плинні лінії та форми
+- Тонка текстура у фоні
+- Теплий, привітний настрій
+- Чистий, професійний вигляд, підходящий для вітальних листівок
 
-The result should feel magical, infinite, and otherworldly with a sense of cosmic beauty and mystery.`
+Зображення має викликати відчуття тепла, ностальгії та лагідної краси.`
   }
 };
 
 export function getStylePrompt(style: StyleKey, basePrompt: string, caption?: string): string {
   const styleConfig = POSTCARD_STYLES[style];
   if (!styleConfig) {
-    throw new Error(`Unknown style: ${style}`);
+    throw new Error(`Невідомий стиль: ${style}`);
   }
   
   let enhancedPrompt = styleConfig.systemPrompt.replace('{basePrompt}', basePrompt);
   
   if (caption) {
-    enhancedPrompt += `\n\nIncorporate this caption naturally into the design: "${caption}"`;
+    enhancedPrompt += `\n\nПриродно включи цей підпис у дизайн: "${caption}"`;
   }
   
-  enhancedPrompt += '\n\nFormat: Vertical postcard format (portrait orientation), high quality, suitable for print.';
+  enhancedPrompt += '\n\nФормат: Вертикальний формат листівки (портретна орієнтація), висока якість, придатна для друку.';
   
   return enhancedPrompt;
 }

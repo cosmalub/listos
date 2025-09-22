@@ -85,13 +85,14 @@ export function FrontDesignStep({
   };
   const generateFallbackCaption = (lyrics: string): string => {
     try {
-      // Fallback keyword-based caption generation
+      // Резервна генерація підпису на основі ключових слів
       const cleanedLyrics = lyrics.replace(/\[.*?\]/g, '').trim();
       const words = cleanedLyrics.toLowerCase().split(/\s+/);
       const loveWords = ['любов', 'кохання', 'серце', 'душа', 'милий', 'мила'];
       const sadWords = ['сумно', 'біль', 'сльози', 'жаль', 'самота'];
       const joyWords = ['радість', 'щастя', 'сміх', 'веселий', 'святкую'];
       const springWords = ['весна', 'квіти', 'зелень', 'природа'];
+
       if (words.some(word => loveWords.includes(word))) {
         return 'З любов\'ю та теплими почуттями 💕';
       } else if (words.some(word => sadWords.includes(word))) {
@@ -104,7 +105,7 @@ export function FrontDesignStep({
         return 'Спеціально для тебе 🎵';
       }
     } catch (error) {
-      console.error('Error generating fallback caption:', error);
+      console.error('Помилка генерації резервного підпису:', error);
       return 'З музикою в серці 🎵';
     }
   };
@@ -122,7 +123,7 @@ export function FrontDesignStep({
       style
     }));
 
-    // Auto-generate prompt and caption when style is selected
+    // Автоматично генеруємо промпт та підпис при виборі стилю
     if (lyrics) {
       const prompt = generatePromptFromLyrics(lyrics, style);
       setDesignData(prev => ({
@@ -130,7 +131,7 @@ export function FrontDesignStep({
         prompt
       }));
 
-      // Generate caption
+      // Генеруємо підпис
       generateAutomaticCaption(lyrics).then(caption => {
         setDesignData(prev => ({
           ...prev,
@@ -196,43 +197,55 @@ export function FrontDesignStep({
     onComplete(designData);
   };
   const isComplete = designData.imageUrl && designData.caption;
-  return <div className="space-y-6">
-      <div className="space-y-8">
+  return <div className="space-y-4 sm:space-y-6">
+      <div className="space-y-6 sm:space-y-8">
         <div>
           
           {/* Caption Section - Always visible */}
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                <Wand2 className="w-5 h-5 text-primary" />
+          <Card className="mb-4 sm:mb-6">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-base sm:text-lg font-semibold flex items-center gap-2">
+                <Wand2 className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                 Підпис для листівки
               </CardTitle>
-              <p className="text-sm text-muted-foreground">
-                Ця підпис згенерована автоматично на основі вашої пісні, але ви можете її відредагувати за бажанням. Підпис з'явиться на лицьовій частині листівки.
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                Цей підпис згенерований автоматично на основі вашої пісні, але ви можете його відредагувати за бажанням. Підпис з'явиться на лицьовій частині листівки.
               </p>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-0">
               <div className="space-y-3">
-                <Textarea value={designData.caption} onChange={e => setDesignData(prev => ({
-                ...prev,
-                caption: e.target.value
-              }))} placeholder={isGeneratingCaption ? "Генерую підпис..." : "Введіть підпис для листівки..."} className="min-h-[80px]" disabled={isGeneratingCaption} />
-                
-                <Button variant="outline" onClick={async () => {
-                setIsGeneratingCaption(true);
-                try {
-                  const caption = await generateAutomaticCaption(lyrics, 'medium');
-                  setDesignData(prev => ({
+                <Textarea 
+                  value={designData.caption} 
+                  onChange={e => setDesignData(prev => ({
                     ...prev,
-                    caption
-                  }));
-                  toast.success('Підпис згенеровано!');
-                } catch (error) {
-                  toast.error('Помилка при генерації підпису');
-                } finally {
-                  setIsGeneratingCaption(false);
-                }
-              }} disabled={isGeneratingCaption} size="sm">
+                    caption: e.target.value
+                  }))} 
+                  placeholder={isGeneratingCaption ? "Генерую підпис..." : "Введіть підпис для листівки..."} 
+                  className="min-h-[80px] text-sm resize-none" 
+                  disabled={isGeneratingCaption} 
+                />
+                
+                <Button 
+                  variant="outline" 
+                  onClick={async () => {
+                    setIsGeneratingCaption(true);
+                    try {
+                      const caption = await generateAutomaticCaption(lyrics, 'medium');
+                      setDesignData(prev => ({
+                        ...prev,
+                        caption
+                      }));
+                      toast.success('Підпис згенеровано!');
+                    } catch (error) {
+                      toast.error('Помилка при генерації підпису');
+                    } finally {
+                      setIsGeneratingCaption(false);
+                    }
+                  }} 
+                  disabled={isGeneratingCaption} 
+                  size="sm"
+                  className="w-full sm:w-auto"
+                >
                   {isGeneratingCaption ? <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                       Генерую підпис...
@@ -246,71 +259,67 @@ export function FrontDesignStep({
           </Card>
 
           {/* Mode Selection */}
-          <Card className="mb-6">
-            <CardHeader>
+          <Card className="mb-4 sm:mb-6">
+            <CardHeader className="pb-4">
               <CardTitle className="text-base font-medium">Режим створення</CardTitle>
-              <p className="text-sm text-muted-foreground">
-                Оберіть як створити зображення для лицьової частини листівки:
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                Оберіть, як створити зображення для лицьової частини листівки:
               </p>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-0">
               <Tabs value={designData.mode} onValueChange={value => handleModeChange(value as 'photo' | 'ai-generation')}>
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="ai-generation" className="text-sm">
-                    AI Генерація
+                <TabsList className="grid w-full grid-cols-2 h-10 sm:h-11">
+                  <TabsTrigger value="ai-generation" className="text-xs sm:text-sm px-2">
+                    ШІ Генерація
                   </TabsTrigger>
-                  <TabsTrigger value="photo" className="text-sm">
+                  <TabsTrigger value="photo" className="text-xs sm:text-sm px-2">
                     Завантажити фото
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
               <div className="mt-3 text-xs text-muted-foreground space-y-1">
-                {designData.mode === 'ai-generation' ? <p>Штучний інтелект створить унікальне зображення на основі вашої пісні. Ви зможете обрати стиль, а потім ШІ згенерує красиву листівку що відповідає настрою пісні.</p> : <p>Завантажте власну фотографію з вашого пристрою. Це може бути будь-яке зображення, яке ви хочете використати як основу для листівки.</p>}
+                {designData.mode === 'ai-generation' ? 
+                  <p className="leading-relaxed">Штучний інтелект створить унікальне зображення на основі вашої пісні. Ви зможете обрати стиль, а потім ШІ згенерує красиву листівку, що відповідає настрою пісні.</p> : 
+                  <p className="leading-relaxed">Завантажте власну фотографію з вашого пристрою. Це може бути будь-яке зображення, яке ви хочете використати як основу для листівки.</p>
+                }
               </div>
             </CardContent>
           </Card>
 
           {designData.mode === 'ai-generation' ? <>
               {/* Style Selection with explanation */}
-              <div className="mb-8">
-                <Label className="text-lg font-semibold mb-4 block">1. Оберіть стиль</Label>
+              <div className="mb-6 sm:mb-8">
+                <Label className="text-base sm:text-lg font-semibold mb-4 block">1. Оберіть стиль</Label>
                 
-                {/* Style explanation card */}
-                <Card className="mb-6 border-accent/20 bg-accent/5">
-                  <CardContent className="pt-6">
-                    <div className="space-y-3">
-                      <h4 className="font-medium text-accent-foreground flex items-center gap-2">
-                        <Wand2 className="h-4 w-4" />
-                        Як стиль впливає на дизайн листівки
-                      </h4>
-                      <p className="text-sm text-muted-foreground">
-                        Кожен стиль створює унікальну атмосферу та настрій для вашої листівки. 
-                        Штучний інтелект враховує обраний стиль при створенні зображення, щоб воно 
-                        ідеально відповідало характеру вашої пісні.
-                      </p>
-                      
-                    </div>
-                  </CardContent>
-                </Card>
-
                 <StyleSelector selectedStyle={designData.style} onStyleSelect={handleStyleSelect} />
               </div>
 
               {/* Image Generation */}
-              {designData.style && <div className="mb-8">
-                  <Label className="text-lg font-semibold mb-4 block">2. Генерація зображення</Label>
+              {designData.style && <div className="mb-6 sm:mb-8">
+                  <Label className="text-base sm:text-lg font-semibold mb-4 block">2. Генерація зображення</Label>
                   <div className="space-y-4">
                     <div>
                       <Label htmlFor="prompt" className="text-sm font-medium mb-2 block">
                         Опис для генерації (автоматично створений на основі пісні)
                       </Label>
-                      <Textarea id="prompt" value={designData.prompt} onChange={e => setDesignData(prev => ({
-                  ...prev,
-                  prompt: e.target.value
-                }))} placeholder="Опишіть, що ви хочете бачити на листівці..." className="min-h-[100px]" />
+                      <Textarea 
+                        id="prompt" 
+                        value={designData.prompt} 
+                        onChange={e => setDesignData(prev => ({
+                          ...prev,
+                          prompt: e.target.value
+                        }))} 
+                        placeholder="Опишіть, що ви хочете бачити на листівці..." 
+                        className="min-h-[100px] text-sm resize-none" 
+                      />
                     </div>
                     
-                    <Button onClick={handleGenerateImage} disabled={!designData.style || !designData.prompt || isGenerating} className="w-full">
+                    <Button 
+                      onClick={handleGenerateImage} 
+                      disabled={!designData.style || !designData.prompt || isGenerating} 
+                      className="w-full"
+                      size="lg"
+                    >
                       {isGenerating ? <>
                           <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                           Генерую зображення...
@@ -320,16 +329,20 @@ export function FrontDesignStep({
                         </>}
                     </Button>
                     
-                    {designData.imageUrl && <div className="mt-4 p-4 border rounded-lg">
-                        <img src={designData.imageUrl} alt="Generated postcard" className="w-full max-w-md mx-auto rounded-lg" />
+                    {designData.imageUrl && <div className="mt-4 p-3 sm:p-4 border rounded-lg bg-muted/30">
+                        <img 
+                          src={designData.imageUrl} 
+                          alt="Згенерована листівка" 
+                          className="w-full max-w-sm mx-auto rounded-lg shadow-sm" 
+                        />
                       </div>}
                   </div>
                 </div>}
 
             </> : <>
               {/* Photo Upload */}
-              <div className="mb-8">
-                <Label className="text-lg font-semibold mb-4 block">Завантажити фотографію</Label>
+              <div className="mb-6 sm:mb-8">
+                <Label className="text-base sm:text-lg font-semibold mb-4 block">Завантажити фотографію</Label>
                 <ImageUploader onImageUpload={handleImageUpload} isUploading={isUploading} />
               </div>
 
@@ -337,8 +350,13 @@ export function FrontDesignStep({
         </div>
 
         {/* Continue Button */}
-        <div className="flex justify-end">
-          <Button onClick={handleComplete} disabled={!isComplete} size="lg" className="flex items-center gap-2">
+        <div className="flex justify-end pt-4 border-t">
+          <Button 
+            onClick={handleComplete} 
+            disabled={!isComplete} 
+            size="lg" 
+            className="flex items-center gap-2 w-full sm:w-auto"
+          >
             Далі до зворотної сторони
             <ArrowRight className="w-4 h-4" />
           </Button>
