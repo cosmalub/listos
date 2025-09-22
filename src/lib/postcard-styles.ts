@@ -8,6 +8,7 @@ export interface PostcardStyle {
   occasionsText: string;
   previewImage: string;
   systemPrompt: string;
+  colors: string[];
 }
 
 export const POSTCARD_STYLES: Record<StyleKey, PostcardStyle> = {
@@ -17,6 +18,7 @@ export const POSTCARD_STYLES: Record<StyleKey, PostcardStyle> = {
     description: 'Яскравий та життєрадісний стиль для особливих моментів і урочистостей',
     occasionsText: 'Ідеально для: днів народження, свят, поздоровлень',
     previewImage: '/api/placeholder/joyful-preview',
+    colors: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD'],
     systemPrompt: `Створи яскраву святкову листівку на основі: {basePrompt}.
 
 ВІЗУАЛЬНІ ХАРАКТЕРИСТИКИ:
@@ -45,6 +47,7 @@ export const POSTCARD_STYLES: Record<StyleKey, PostcardStyle> = {
     description: 'Делікатний та теплий стиль для щирих почуттів та особистих моментів',
     occasionsText: 'Ідеально для: вибачень, подяки, підтримки',
     previewImage: '/api/placeholder/gentle-preview',
+    colors: ['#F8BBD9', '#E4C1F9', '#A8E6CF', '#FFD3A5', '#FD99A5', '#C7CEEA'],
     systemPrompt: `Створи ніжну акварельну листівку на основі: {basePrompt}.
 
 ВІЗУАЛЬНІ ХАРАКТЕРИСТИКИ:
@@ -72,6 +75,7 @@ export const POSTCARD_STYLES: Record<StyleKey, PostcardStyle> = {
     description: 'Стільний та гармонійний дизайн на всі випадки життя',
     occasionsText: 'Ідеально для: прохань, спілкування, запрошень',
     previewImage: '/api/placeholder/universal-preview',
+    colors: ['#8B7355', '#A0937D', '#B5A58A', '#D4C5A0', '#E8DCC6', '#6A5ACD'],
     systemPrompt: `Створи стильну листівку в стилі Studio Ghibli на основі: {basePrompt}.
 
 ВІЗУАЛЬНІ ХАРАКТЕРИСТИКИ:
@@ -114,6 +118,14 @@ export function getStylePrompt(style: StyleKey, basePrompt: string, caption?: st
   return enhancedPrompt;
 }
 
+
+export function getStyleColors(style: StyleKey): string[] {
+  const styleConfig = POSTCARD_STYLES[style];
+  if (!styleConfig) {
+    return ['#6A5ACD', '#E6E6FA', '#DDA0DD']; // fallback colors
+  }
+  return styleConfig.colors;
+}
 
 export function getAllStyles(): PostcardStyle[] {
   return Object.values(POSTCARD_STYLES);

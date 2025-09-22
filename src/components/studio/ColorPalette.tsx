@@ -15,30 +15,20 @@ interface ColorPaletteProps {
 
 // Additional color variations for each style
 const STYLE_COLOR_VARIATIONS: Record<StyleKey, string[][]> = {
-  gilby: [
-    ['#8B7355', '#A8C090', '#F5E6B8', '#E8C4A0'],
-    ['#6B5B73', '#7F9F65', '#F2E8C6', '#D4B896'],
-    ['#9A8478', '#B5C99A', '#F7E7A5', '#F0C49A'],
-  ],
-  watercolor: [
-    ['#E8D5C4', '#C8A882', '#F4E4BC', '#D4B996'],
-    ['#F0E6D2', '#D4B896', '#F8E8C0', '#E0C4A0'],
-    ['#E4D1C0', '#C4A478', '#F0E0B8', '#D0B492'],
-  ],
-  cartoon: [
-    ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A'],
+  joyful: [
+    ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4'],
     ['#FF8E53', '#6C5CE7', '#A29BFE', '#FD79A8'],
     ['#00B894', '#FDCB6E', '#E17055', '#74B9FF'],
   ],
-  pixel: [
-    ['#2D5016', '#A4AC86', '#656D4A', '#414833'],
-    ['#1A1A2E', '#16213E', '#0F3460', '#533483'],
-    ['#5D4E75', '#B38BA8', '#EDD9D7', '#F4EAE0'],
+  gentle: [
+    ['#F8BBD9', '#E4C1F9', '#A8E6CF', '#FFD3A5'],
+    ['#FD99A5', '#C7CEEA', '#F0E6D2', '#D4B896'],
+    ['#E4D1C0', '#C4A478', '#F0E0B8', '#D0B492'],
   ],
-  cosmic: [
-    ['#1a1a2e', '#16213e', '#0f3460', '#533483'],
-    ['#240046', '#3c096c', '#5a189a', '#7b2cbf'],
-    ['#10002b', '#240046', '#3c096c', '#5a189a'],
+  universal: [
+    ['#8B7355', '#A0937D', '#B5A58A', '#D4C5A0'],
+    ['#6B5B73', '#7F9F65', '#F2E8C6', '#D4B896'],
+    ['#9A8478', '#B5C99A', '#F7E7A5', '#F0C49A'],
   ]
 };
 
