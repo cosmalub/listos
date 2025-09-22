@@ -258,100 +258,106 @@ export function FrontDesignStep({
             </CardContent>
           </Card>
 
-          {/* Mode Selection */}
+          {/* Design Creation - Unified Card */}
           <Card className="mb-4 sm:mb-6">
             <CardHeader className="pb-4">
-              <CardTitle className="text-base font-medium">Режим створення</CardTitle>
+              <CardTitle className="text-base font-medium">Створення дизайну лицьової частини</CardTitle>
               <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                 Оберіть, як створити зображення для лицьової частини листівки:
               </p>
             </CardHeader>
-            <CardContent className="pt-0">
-              <Tabs value={designData.mode} onValueChange={value => handleModeChange(value as 'photo' | 'ai-generation')}>
-                <TabsList className="grid w-full grid-cols-2 h-10 sm:h-11">
-                  <TabsTrigger value="ai-generation" className="text-xs sm:text-sm px-2">
-                    ШІ Генерація
-                  </TabsTrigger>
-                  <TabsTrigger value="photo" className="text-xs sm:text-sm px-2">
-                    Завантажити фото
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-              <div className="mt-3 text-xs text-muted-foreground space-y-1">
-                {designData.mode === 'ai-generation' ? 
-                  <p className="leading-relaxed">Штучний інтелект створить унікальне зображення на основі вашої пісні. Ви зможете обрати стиль, а потім ШІ згенерує красиву листівку, що відповідає настрою пісні.</p> : 
-                  <p className="leading-relaxed">Завантажте власну фотографію з вашого пристрою. Це може бути будь-яке зображення, яке ви хочете використати як основу для листівки.</p>
-                }
-              </div>
-            </CardContent>
-          </Card>
-
-          {designData.mode === 'ai-generation' ? <>
-              {/* Style Selection with explanation */}
-              <div className="mb-6 sm:mb-8">
-                <div className="mb-4 space-y-2">
-                  <Label className="text-base sm:text-lg font-semibold block">1. Оберіть стиль</Label>
-                  <p className="text-sm text-muted-foreground">
-                    Кожен стиль створений для певних випадків та настроїв
-                  </p>
+            <CardContent className="pt-0 space-y-6">
+              {/* Mode Selection */}
+              <div>
+                <Tabs value={designData.mode} onValueChange={value => handleModeChange(value as 'photo' | 'ai-generation')}>
+                  <TabsList className="grid w-full grid-cols-2 h-10 sm:h-11">
+                    <TabsTrigger value="ai-generation" className="text-xs sm:text-sm px-2">
+                      ШІ Генерація
+                    </TabsTrigger>
+                    <TabsTrigger value="photo" className="text-xs sm:text-sm px-2">
+                      Завантажити фото
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+                <div className="mt-3 text-xs text-muted-foreground space-y-1">
+                  {designData.mode === 'ai-generation' ? 
+                    <p className="leading-relaxed">Штучний інтелект створить унікальне зображення на основі вашої пісні. Ви зможете обрати стиль, а потім ШІ згенерує красиву листівку, що відповідає настрою пісні.</p> : 
+                    <p className="leading-relaxed">Завантажте власну фотографію з вашого пристрою. Це може бути будь-яке зображення, яке ви хочете використати як основу для листівки.</p>
+                  }
                 </div>
-                
-                <StyleSelector selectedStyle={designData.style} onStyleSelect={handleStyleSelect} />
               </div>
 
-              {/* Image Generation */}
-              {designData.style && <div className="mb-6 sm:mb-8">
-                  <Label className="text-base sm:text-lg font-semibold mb-4 block">2. Генерація зображення</Label>
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="prompt" className="text-sm font-medium mb-2 block">
-                        Опис для генерації (автоматично створений на основі пісні)
-                      </Label>
-                      <Textarea 
-                        id="prompt" 
-                        value={designData.prompt} 
-                        onChange={e => setDesignData(prev => ({
-                          ...prev,
-                          prompt: e.target.value
-                        }))} 
-                        placeholder="Опишіть, що ви хочете бачити на листівці..." 
-                        className="min-h-[100px] text-sm resize-none" 
-                      />
+              {/* AI Generation Mode Content */}
+              {designData.mode === 'ai-generation' ? (
+                <>
+                  {/* Style Selection */}
+                  <div className="border-t pt-6">
+                    <div className="mb-4 space-y-2">
+                      <Label className="text-sm font-medium text-muted-foreground block">1. Оберіть стиль</Label>
+                      <p className="text-xs text-muted-foreground">
+                        Кожен стиль створений для певних випадків та настроїв
+                      </p>
                     </div>
                     
-                    <Button 
-                      onClick={handleGenerateImage} 
-                      disabled={!designData.style || !designData.prompt || isGenerating} 
-                      className="w-full"
-                      size="lg"
-                    >
-                      {isGenerating ? <>
-                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                          Генерую зображення...
-                        </> : <>
-                          <Wand2 className="w-4 h-4 mr-2" />
-                          Згенерувати зображення
-                        </>}
-                    </Button>
-                    
-                    {designData.imageUrl && <div className="mt-4 p-3 sm:p-4 border rounded-lg bg-muted/30">
-                        <img 
-                          src={designData.imageUrl} 
-                          alt="Згенерована листівка" 
-                          className="w-full max-w-sm mx-auto rounded-lg shadow-sm" 
-                        />
-                      </div>}
+                    <StyleSelector selectedStyle={designData.style} onStyleSelect={handleStyleSelect} />
                   </div>
-                </div>}
 
-            </> : <>
-              {/* Photo Upload */}
-              <div className="mb-6 sm:mb-8">
-                <Label className="text-base sm:text-lg font-semibold mb-4 block">Завантажити фотографію</Label>
-                <ImageUploader onImageUpload={handleImageUpload} isUploading={isUploading} />
-              </div>
-
-            </>}
+                  {/* Image Generation */}
+                  {designData.style && (
+                    <div className="border-t pt-6">
+                      <Label className="text-sm font-medium text-muted-foreground mb-4 block">2. Генерація зображення</Label>
+                      <div className="space-y-4">
+                        <Button 
+                          onClick={handleGenerateImage} 
+                          disabled={!designData.style || !designData.prompt || isGenerating} 
+                          className="w-full"
+                          size="lg"
+                        >
+                          {isGenerating ? (
+                            <>
+                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                              Створюю лицьову частину...
+                            </>
+                          ) : (
+                            <>
+                              <Wand2 className="w-4 h-4 mr-2" />
+                              Створити лицьову частину
+                            </>
+                          )}
+                        </Button>
+                        
+                        {designData.imageUrl && (
+                          <div className="mt-4 p-3 sm:p-4 border rounded-lg bg-muted/30">
+                            <img 
+                              src={designData.imageUrl} 
+                              alt="Згенерована листівка" 
+                              className="w-full max-w-sm mx-auto rounded-lg shadow-sm" 
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </>
+              ) : (
+                /* Photo Upload Mode Content */
+                <div className="border-t pt-6">
+                  <Label className="text-sm font-medium text-muted-foreground mb-4 block">Завантажити фотографію</Label>
+                  <ImageUploader onImageUpload={handleImageUpload} isUploading={isUploading} />
+                  
+                  {designData.imageUrl && (
+                    <div className="mt-4 p-3 sm:p-4 border rounded-lg bg-muted/30">
+                      <img 
+                        src={designData.imageUrl} 
+                        alt="Завантажене фото" 
+                        className="w-full max-w-sm mx-auto rounded-lg shadow-sm" 
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
 
         {/* Continue Button */}

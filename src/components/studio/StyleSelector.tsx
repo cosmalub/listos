@@ -93,12 +93,6 @@ export function StyleSelector({ selectedStyle, onStyleSelect }: StyleSelectorPro
                       </div>
                     </div>
 
-                    {/* Selection indicator */}
-                    {isSelected && (
-                      <div className="absolute top-3 right-3 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 bg-primary-foreground rounded-full" />
-                      </div>
-                    )}
                   </Card>
                 </Label>
               </div>
