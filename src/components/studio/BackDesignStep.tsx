@@ -85,19 +85,21 @@ export function BackDesignStep({ frontDesign, initialData, onComplete, onBack }:
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-6">
         <Button variant="outline" onClick={onBack} className="flex items-center gap-2">
           <ArrowLeft className="w-4 h-4" />
           До лицьової сторони
         </Button>
-        <h2 className="text-xl font-semibold">Зворотна частина листівки</h2>
-        <div></div>
+        <div /> {/* For spacing */}
       </div>
 
       {/* Color Selection */}
       <Card>
         <CardHeader>
           <CardTitle>1. Оберіть колір для дизайну</CardTitle>
+          <p className="text-sm text-muted-foreground">
+            Ми автоматично визначили домінуючі кольори з лицьової частини. Оберіть колір для оформлення зворотної частини листівки.
+          </p>
         </CardHeader>
         <CardContent>
           <RadioGroup
@@ -140,7 +142,12 @@ export function BackDesignStep({ frontDesign, initialData, onComplete, onBack }:
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle>2. Персональне повідомлення</CardTitle>
+            <div>
+              <CardTitle>2. Персональне повідомлення</CardTitle>
+              <p className="text-sm text-muted-foreground mt-1">
+                Ми створили персональне повідомлення на основі вашої листівки. Ви можете відредагувати його або згенерувати нове.
+              </p>
+            </div>
             <Button
               variant="outline"
               size="sm"
