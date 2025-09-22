@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { ArrowLeft, ArrowRight, QrCode } from 'lucide-react';
+import { ArrowLeft, ArrowRight, RefreshCw } from 'lucide-react';
 import type { StyleKey } from '@/lib/postcard-styles';
+import { getStyleColors } from '@/lib/postcard-styles';
 
 interface FrontDesignData {
   mode: 'photo' | 'ai-generation';
@@ -17,10 +17,8 @@ interface FrontDesignData {
 }
 
 interface BackDesignData {
-  template: string;
-  qrPosition: 'top-right' | 'bottom-right' | 'bottom-left';
+  selectedColor: string;
   personalMessage: string;
-  fontStyle: 'elegant' | 'playful' | 'classic';
 }
 
 interface BackDesignStepProps {
@@ -30,71 +28,59 @@ interface BackDesignStepProps {
   onBack: () => void;
 }
 
-const BACK_TEMPLATES = [
-  {
-    id: 'classic',
-    name: 'Класичний',
-    description: 'Традиційний дизайн листівки з елегантним оформленням'
-  },
-  {
-    id: 'modern',
-    name: 'Сучасний',
-    description: 'Мінімалістичний дизайн з чистими лініями'
-  },
-  {
-    id: 'decorative',
-    name: 'Декоративний',
-    description: 'Багато прикрас та візерунків'
+// Helper function to extract dominant colors from front design
+function extractDominantColors(frontDesign: FrontDesignData): string[] {
+  if (frontDesign.style) {
+    // Get colors from style definition and take first 3
+    const styleColors = getStyleColors(frontDesign.style);
+    return styleColors.slice(0, 3);
   }
-];
+  
+  // Fallback colors for photo upload mode
+  return ['#6A5ACD', '#E6E6FA', '#DDA0DD'];
+}
 
-const FONT_STYLES = [
-  {
-    id: 'elegant',
-    name: 'Елегантний',
-    description: 'Витончений серифний шрифт',
-    className: 'font-serif'
-  },
-  {
-    id: 'playful',
-    name: 'Ігривий',
-    description: 'Веселий округлий шрифт',
-    className: 'font-sans rounded'
-  },
-  {
-    id: 'classic',
-    name: 'Класичний',
-    description: 'Стандартний читабельний шрифт',
-    className: 'font-sans'
-  }
-];
-
-const QR_POSITIONS = [
-  {
-    id: 'top-right',
-    name: 'Вгорі справа',
-    description: 'QR-код у верхньому правому куті'
-  },
-  {
-    id: 'bottom-right',
-    name: 'Внизу справа',
-    description: 'QR-код у нижньому правому куті'
-  },
-  {
-    id: 'bottom-left',
-    name: 'Внизу зліва',
-    description: 'QR-код у нижньому лівому куті'
-  }
-];
+// Helper function to generate personal message based on front design
+function generatePersonalMessage(frontDesign: FrontDesignData): string {
+  const baseMessages = [
+    'Дорогий друже! Ця особлива пісня нагадала мені про тебе. Сподіваюся, вона принесе тобі стільки ж радості, скільки принесла мені.',
+    'Привіт! Створив для тебе цю унікальну музичну листівку. Послухай цю мелодію та подумай про наші прекрасні спогади.',
+    'Привіт! Ця пісня особлива для мене, і я хотів поділитися нею з тобою. Насолоджуйся музикою!',
+    'Дорогий! Знайшов цю чудову мелодію і одразу подумав про тебе. Сподіваюся, вона тобі сподобається так само, як і мені.'
+  ];
+  
+  // Select a random message
+  return baseMessages[Math.floor(Math.random() * baseMessages.length)];
+}
 
 export function BackDesignStep({ frontDesign, initialData, onComplete, onBack }: BackDesignStepProps) {
   const [backData, setBackData] = useState<BackDesignData>(initialData);
+  const [isGeneratingMessage, setIsGeneratingMessage] = useState(false);
+  
+  const dominantColors = extractDominantColors(frontDesign);
+
+  // Auto-generate personal message on mount if not already set
+  useEffect(() => {
+    if (!backData.personalMessage.trim()) {
+      const generatedMessage = generatePersonalMessage(frontDesign);
+      setBackData(prev => ({ ...prev, personalMessage: generatedMessage }));
+    }
+  }, [frontDesign, backData.personalMessage]);
 
   const handleComplete = () => {
     onComplete(backData);
   };
 
-  const isComplete = backData.template && backData.personalMessage.trim().length > 0;
+  const handleRegenerateMessage = () => {
+    setIsGeneratingMessage(true);
+    setTimeout(() => {
+      const newMessage = generatePersonalMessage(frontDesign);
+      setBackData(prev => ({ ...prev, personalMessage: newMessage }));
+      setIsGeneratingMessage(false);
+    }, 1000); // Simulate generation delay
+  };
+
+  const isComplete = backData.selectedColor && backData.personalMessage.trim().length > 0;
 
   return (
     <div className="space-y-6">
@@ -108,36 +94,39 @@ export function BackDesignStep({ frontDesign, initialData, onComplete, onBack }:
         <div></div>
       </div>
 
-      {/* Template Selection */}
+      {/* Color Selection */}
       <Card>
         <CardHeader>
-          <CardTitle>1. Оберіть шаблон</CardTitle>
+          <CardTitle>1. Оберіть колір для дизайну</CardTitle>
         </CardHeader>
         <CardContent>
           <RadioGroup
-            value={backData.template}
-            onValueChange={(value) => setBackData(prev => ({ ...prev, template: value }))}
+            value={backData.selectedColor}
+            onValueChange={(value) => setBackData(prev => ({ ...prev, selectedColor: value }))}
           >
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {BACK_TEMPLATES.map((template) => (
-                <div key={template.id} className="relative">
-                  <RadioGroupItem value={template.id} id={template.id} className="sr-only" />
+            <div className="grid grid-cols-3 gap-4">
+              {dominantColors.map((color, index) => (
+                <div key={color} className="relative">
+                  <RadioGroupItem value={color} id={color} className="sr-only" />
                   <Label
-                    htmlFor={template.id}
+                    htmlFor={color}
                     className={`
                       block p-4 border-2 rounded-lg cursor-pointer transition-all
-                      ${backData.template === template.id 
+                      ${backData.selectedColor === color 
                         ? 'border-primary bg-primary/5' 
                         : 'border-border hover:border-primary/50'
                       }
                     `}
                   >
-                    <div className="text-center space-y-2">
-                      <div className="h-20 bg-muted rounded flex items-center justify-center">
-                        <span className="text-muted-foreground">{template.name}</span>
+                    <div className="text-center space-y-3">
+                      <div 
+                        className="h-16 w-full rounded-lg border-2 border-border/20"
+                        style={{ backgroundColor: color }}
+                      />
+                      <div className="space-y-1">
+                        <h3 className="font-medium">Колір {index + 1}</h3>
+                        <p className="text-xs text-muted-foreground font-mono">{color}</p>
                       </div>
-                      <h3 className="font-medium">{template.name}</h3>
-                      <p className="text-sm text-muted-foreground">{template.description}</p>
                     </div>
                   </Label>
                 </div>
@@ -150,7 +139,19 @@ export function BackDesignStep({ frontDesign, initialData, onComplete, onBack }:
       {/* Personal Message */}
       <Card>
         <CardHeader>
-          <CardTitle>2. Персональне повідомлення</CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle>2. Персональне повідомлення</CardTitle>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRegenerateMessage}
+              disabled={isGeneratingMessage}
+              className="flex items-center gap-2"
+            >
+              <RefreshCw className={`h-4 w-4 ${isGeneratingMessage ? 'animate-spin' : ''}`} />
+              Згенерувати заново
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -172,71 +173,6 @@ export function BackDesignStep({ frontDesign, initialData, onComplete, onBack }:
         </CardContent>
       </Card>
 
-      {/* Font Style */}
-      <Card>
-        <CardHeader>
-          <CardTitle>3. Стиль шрифту</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <RadioGroup
-            value={backData.fontStyle}
-            onValueChange={(value: 'elegant' | 'playful' | 'classic') => 
-              setBackData(prev => ({ ...prev, fontStyle: value }))
-            }
-          >
-            <div className="space-y-3">
-              {FONT_STYLES.map((fontStyle) => (
-                <div key={fontStyle.id} className="flex items-center space-x-3">
-                  <RadioGroupItem value={fontStyle.id} id={fontStyle.id} />
-                  <Label htmlFor={fontStyle.id} className="flex-1 cursor-pointer">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className={`text-lg ${fontStyle.className}`}>{fontStyle.name}</span>
-                        <p className="text-sm text-muted-foreground">{fontStyle.description}</p>
-                      </div>
-                      <div className={`text-muted-foreground ${fontStyle.className}`}>
-                        Приклад тексту
-                      </div>
-                    </div>
-                  </Label>
-                </div>
-              ))}
-            </div>
-          </RadioGroup>
-        </CardContent>
-      </Card>
-
-      {/* QR Code Position */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <QrCode className="w-5 h-5" />
-            4. Розташування QR-коду
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <RadioGroup
-            value={backData.qrPosition}
-            onValueChange={(value: 'top-right' | 'bottom-right' | 'bottom-left') => 
-              setBackData(prev => ({ ...prev, qrPosition: value }))
-            }
-          >
-            <div className="space-y-3">
-              {QR_POSITIONS.map((position) => (
-                <div key={position.id} className="flex items-center space-x-3">
-                  <RadioGroupItem value={position.id} id={position.id} />
-                  <Label htmlFor={position.id} className="flex-1 cursor-pointer">
-                    <div>
-                      <span className="font-medium">{position.name}</span>
-                      <p className="text-sm text-muted-foreground">{position.description}</p>
-                    </div>
-                  </Label>
-                </div>
-              ))}
-            </div>
-          </RadioGroup>
-        </CardContent>
-      </Card>
 
       {/* Complete Button */}
       <div className="flex justify-end">

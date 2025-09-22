@@ -15,10 +15,8 @@ interface FrontDesignData {
 }
 
 interface BackDesignData {
-  template: string;
-  qrPosition: 'top-right' | 'bottom-right' | 'bottom-left';
+  selectedColor: string;
   personalMessage: string;
-  fontStyle: 'elegant' | 'playful' | 'classic';
 }
 
 interface PostcardPreviewProps {
@@ -27,17 +25,6 @@ interface PostcardPreviewProps {
   showFront?: boolean;
 }
 
-const QR_POSITION_CLASSES = {
-  'top-right': 'top-4 right-4',
-  'bottom-right': 'bottom-4 right-4',
-  'bottom-left': 'bottom-4 left-4'
-};
-
-const FONT_STYLE_CLASSES = {
-  elegant: 'font-serif',
-  playful: 'font-sans font-medium',
-  classic: 'font-sans'
-};
 
 export function PostcardPreview({ frontData, backData, showFront = true }: PostcardPreviewProps) {
   // Front side content
@@ -92,24 +79,30 @@ export function PostcardPreview({ frontData, backData, showFront = true }: Postc
   // Back side content
   const backSide = (
     <div className="relative w-full h-full bg-background border rounded-xl overflow-hidden">
-      {backData.template ? (
-        <div className="p-6 h-full flex flex-col">
+      {backData.selectedColor ? (
+        <div 
+          className="p-6 h-full flex flex-col"
+          style={{ backgroundColor: `${backData.selectedColor}10` }}
+        >
           {/* Header */}
           <div className="text-center mb-6">
-            <h3 className="text-lg font-semibold text-primary mb-2">
+            <h3 
+              className="text-lg font-semibold mb-2"
+              style={{ color: backData.selectedColor }}
+            >
               Персональна листівка
             </h3>
-            <div className="w-12 h-0.5 bg-primary mx-auto"></div>
+            <div 
+              className="w-12 h-0.5 mx-auto"
+              style={{ backgroundColor: backData.selectedColor }}
+            ></div>
           </div>
 
           {/* Personal message */}
           <div className="flex-1 flex items-center justify-center">
             {backData.personalMessage ? (
-              <div className={cn(
-                "text-center max-w-xs",
-                FONT_STYLE_CLASSES[backData.fontStyle]
-              )}>
-                <p className="text-sm leading-relaxed text-foreground">
+              <div className="text-center max-w-xs">
+                <p className="text-sm leading-relaxed text-foreground font-sans">
                   {backData.personalMessage}
                 </p>
               </div>
@@ -120,30 +113,28 @@ export function PostcardPreview({ frontData, backData, showFront = true }: Postc
             )}
           </div>
 
-          {/* QR Code */}
-          <div className={cn(
-            "absolute w-12 h-12 bg-muted rounded flex items-center justify-center",
-            QR_POSITION_CLASSES[backData.qrPosition]
-          )}>
-            <QrCode className="w-6 h-6 text-muted-foreground" />
-          </div>
-
-          {/* Footer */}
-          <div className="text-center mt-6">
-            <p className="text-xs text-muted-foreground">
+          {/* QR Code - always at bottom */}
+          <div className="flex flex-col items-center space-y-2">
+            <div 
+              className="w-12 h-12 rounded flex items-center justify-center"
+              style={{ backgroundColor: backData.selectedColor }}
+            >
+              <QrCode className="w-6 h-6 text-white" />
+            </div>
+            <p className="text-xs text-muted-foreground text-center">
               Скануйте QR-код для прослуховування пісні
             </p>
           </div>
         </div>
       ) : (
-        /* Placeholder when no template selected */
+        /* Placeholder when no color selected */
         <div className="flex flex-col items-center justify-center h-full p-6 text-center space-y-4">
           <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center">
             <QrCode className="w-8 h-8 text-muted-foreground" />
           </div>
           <div className="space-y-2">
             <p className="text-muted-foreground font-medium">Зворотна сторона</p>
-            <p className="text-xs text-muted-foreground">Оберіть шаблон</p>
+            <p className="text-xs text-muted-foreground">Оберіть колір</p>
           </div>
         </div>
       )}

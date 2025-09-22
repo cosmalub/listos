@@ -17,10 +17,8 @@ interface PostcardDesignData {
     prompt: string;
   };
   back: {
-    template: string;
-    qrPosition: 'top-right' | 'bottom-right' | 'bottom-left';
+    selectedColor: string;
     personalMessage: string;
-    fontStyle: 'elegant' | 'playful' | 'classic';
   };
 }
 
@@ -41,10 +39,8 @@ export function PostcardDesign({ lyrics, onComplete, onBack }: PostcardDesignPro
       prompt: ''
     },
     back: {
-      template: 'classic',
-      qrPosition: 'bottom-right',
-      personalMessage: '',
-      fontStyle: 'elegant'
+      selectedColor: '',
+      personalMessage: ''
     }
   });
 
