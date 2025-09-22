@@ -52,42 +52,42 @@ export function StyleSelector({ selectedStyle, onStyleSelect }: StyleSelectorPro
                   )}
                 >
                   <Card className={cn(
-                    "p-4 sm:p-6 transition-all duration-200 overflow-hidden relative",
+                    "p-3 sm:p-4 transition-all duration-200 overflow-hidden relative",
                     isSelected 
-                      ? 'border-primary bg-primary/5 shadow-lg' 
-                      : 'hover:border-primary/50 hover:shadow-md'
+                      ? 'border-primary bg-primary/5 shadow-md' 
+                      : 'hover:border-primary/50 hover:shadow-sm'
                   )}>
                     {/* Background gradient */}
                     <div className={cn(
-                      "absolute inset-0 bg-gradient-to-br opacity-30",
+                      "absolute inset-0 bg-gradient-to-br opacity-20",
                       styleGradients[style.id]
                     )} />
                     
-                    <div className="relative space-y-4">
+                    <div className="relative space-y-3">
                       {/* Header with icon and title */}
-                      <div className="flex items-start gap-3 sm:gap-4">
+                      <div className="flex items-start gap-3">
                         <div className={cn(
-                          "flex-shrink-0 p-2 sm:p-3 rounded-full",
+                          "flex-shrink-0 p-1.5 sm:p-2 rounded-full",
                           isSelected 
                             ? 'bg-primary text-primary-foreground' 
                             : 'bg-muted text-muted-foreground'
                         )}>
-                          <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
+                          <Icon className="w-3 h-3 sm:w-4 sm:h-4" />
                         </div>
                         
                         <div className="flex-1 space-y-1">
-                          <h3 className="font-bold text-base sm:text-lg text-foreground">
+                          <h3 className="font-medium text-sm sm:text-base text-foreground">
                             {style.name}
                           </h3>
-                          <p className="text-sm text-muted-foreground leading-relaxed">
+                          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                             {style.description}
                           </p>
                         </div>
                       </div>
 
                       {/* Occasions */}
-                      <div className="space-y-2">
-                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                      <div className="space-y-1">
+                        <p className="text-xs text-muted-foreground uppercase tracking-wide">
                           {style.occasionsText}
                         </p>
                       </div>

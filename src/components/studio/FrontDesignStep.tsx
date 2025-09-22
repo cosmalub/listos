@@ -271,11 +271,13 @@ export function FrontDesignStep({
               <div>
                 <Tabs value={designData.mode} onValueChange={value => handleModeChange(value as 'photo' | 'ai-generation')}>
                   <TabsList className="grid w-full grid-cols-2 h-10 sm:h-11">
-                    <TabsTrigger value="ai-generation" className="text-xs sm:text-sm px-2">
-                      ШІ Генерація
+                    <TabsTrigger value="ai-generation" className="text-xs sm:text-sm px-1 sm:px-2">
+                      <span className="hidden sm:inline">Згенерований дизайн</span>
+                      <span className="sm:hidden">ШІ дизайн</span>
                     </TabsTrigger>
-                    <TabsTrigger value="photo" className="text-xs sm:text-sm px-2">
-                      Завантажити фото
+                    <TabsTrigger value="photo" className="text-xs sm:text-sm px-1 sm:px-2">
+                      <span className="hidden sm:inline">Власне фото</span>
+                      <span className="sm:hidden">Ваше фото</span>
                     </TabsTrigger>
                   </TabsList>
                 </Tabs>
