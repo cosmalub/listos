@@ -141,29 +141,27 @@ export function BackDesignStep({ frontDesign, initialData, onComplete, onBack }:
       {/* Personal Message */}
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle>2. Персональне повідомлення</CardTitle>
-              <p className="text-sm text-muted-foreground mt-1">
-                Ми створили персональне повідомлення на основі вашої листівки. Ви можете відредагувати його або згенерувати нове.
-              </p>
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleRegenerateMessage}
-              disabled={isGeneratingMessage}
-              className="flex items-center gap-2"
-            >
-              <RefreshCw className={`h-4 w-4 ${isGeneratingMessage ? 'animate-spin' : ''}`} />
-              Згенерувати заново
-            </Button>
-          </div>
+          <CardTitle>2. Персональне повідомлення</CardTitle>
+          <p className="text-sm text-muted-foreground mt-1">
+            Ми створили персональне повідомлення на основі вашої листівки. Ви можете відредагувати його або згенерувати нове.
+          </p>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div>
-              <Label htmlFor="personalMessage">Ваше повідомлення</Label>
+              <div className="flex items-center justify-between mb-2">
+                <Label htmlFor="personalMessage">Ваше повідомлення</Label>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleRegenerateMessage}
+                  disabled={isGeneratingMessage}
+                  className="flex items-center gap-2"
+                >
+                  <RefreshCw className={`h-4 w-4 ${isGeneratingMessage ? 'animate-spin' : ''}`} />
+                  Згенерувати заново
+                </Button>
+              </div>
               <Textarea
                 id="personalMessage"
                 value={backData.personalMessage}
