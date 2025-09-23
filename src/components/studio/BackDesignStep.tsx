@@ -106,28 +106,28 @@ export function BackDesignStep({ frontDesign, initialData, onComplete, onBack }:
             value={backData.selectedColor}
             onValueChange={(value) => setBackData(prev => ({ ...prev, selectedColor: value }))}
           >
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4">
               {dominantColors.map((color, index) => (
                 <div key={color} className="relative">
                   <RadioGroupItem value={color} id={color} className="sr-only" />
                   <Label
                     htmlFor={color}
                     className={`
-                      block p-4 border-2 rounded-lg cursor-pointer transition-all
+                      block p-2 sm:p-4 border-2 rounded-lg cursor-pointer transition-all
                       ${backData.selectedColor === color 
                         ? 'border-primary bg-primary/5' 
                         : 'border-border hover:border-primary/50'
                       }
                     `}
                   >
-                    <div className="text-center space-y-3">
+                    <div className="text-center space-y-2 sm:space-y-3">
                       <div 
-                        className="h-16 w-full rounded-lg border-2 border-border/20"
+                        className="h-10 w-full sm:h-16 rounded-lg border-2 border-border/20"
                         style={{ backgroundColor: color }}
                       />
                       <div className="space-y-1">
-                        <h3 className="font-medium">Колір {index + 1}</h3>
-                        <p className="text-xs text-muted-foreground font-mono">{color}</p>
+                        <h3 className="font-medium text-xs sm:text-base">Колір {index + 1}</h3>
+                        <p className="text-[10px] sm:text-xs text-muted-foreground font-mono">{color}</p>
                       </div>
                     </div>
                   </Label>
