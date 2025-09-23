@@ -338,7 +338,12 @@ export function FrontDesignStep({
                 <>
                   {/* Image Description */}
                   <div className="border-t pt-6">
-                    <h3 className="text-base font-medium mb-4">1. Опис для генерації зображення</h3>
+                    <div className="mb-4 space-y-2">
+                      <h3 className="text-base font-medium mb-2">1. Опис для генерації зображення</h3>
+                      <p className="text-sm text-muted-foreground mt-3">
+                        На основі вашої пісні та підпису створимо детальний опис для генерації ідеального зображення
+                      </p>
+                    </div>
                     <div className="space-y-3">
                       <Textarea 
                         placeholder="Опис для генерації зображення буде створено автоматично..."
