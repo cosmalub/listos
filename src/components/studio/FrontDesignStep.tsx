@@ -301,53 +301,6 @@ export function FrontDesignStep({
             </CardContent>
           </Card>
 
-          {/* Image Description Generation */}
-          <Card className="mb-4 sm:mb-6">
-            <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-2">
-                <Edit3 className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
-                Опис для генерації зображення
-              </CardTitle>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mt-3">
-                На основі вашої пісні та підпису створимо опис для генерації ідеального зображення
-              </p>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <div className="space-y-3">
-                <Textarea 
-                  placeholder="Опис для генерації зображення буде створено автоматично..."
-                  value={designData.imageDescription}
-                  onChange={(e) => setDesignData(prev => ({ ...prev, imageDescription: e.target.value }))}
-                  className="min-h-[100px] text-sm resize-none"
-                  disabled={isGeneratingDescription}
-                />
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground">
-                    {designData.imageDescription.split(' ').filter(word => word.length > 0).length}/80 слів
-                  </span>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={generateImageDescription}
-                    disabled={isGeneratingDescription || !lyrics || !designData.caption}
-                    className="h-8 px-3"
-                  >
-                    {isGeneratingDescription ? (
-                      <>
-                        <Loader2 className="w-3 h-3 mr-1 animate-spin" />
-                        Генерую...
-                      </>
-                    ) : (
-                      <>
-                        <RotateCcw className="w-3 h-3 mr-1" />
-                        Згенерувати опис
-                      </>
-                    )}
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
 
           {/* Design Creation - Unified Card */}
           <Card className="mb-4 sm:mb-6">
@@ -383,10 +336,48 @@ export function FrontDesignStep({
               {/* AI Generation Mode Content */}
               {designData.mode === 'ai-generation' ? (
                 <>
+                  {/* Image Description */}
+                  <div className="border-t pt-6">
+                    <h3 className="text-base font-medium mb-4">1. Опис для генерації зображення</h3>
+                    <div className="space-y-3">
+                      <Textarea 
+                        placeholder="Опис для генерації зображення буде створено автоматично..."
+                        value={designData.imageDescription}
+                        onChange={(e) => setDesignData(prev => ({ ...prev, imageDescription: e.target.value }))}
+                        className="min-h-[100px] text-sm resize-none"
+                        disabled={isGeneratingDescription}
+                      />
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-muted-foreground">
+                          {designData.imageDescription.split(' ').filter(word => word.length > 0).length}/80 слів
+                        </span>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={generateImageDescription}
+                          disabled={isGeneratingDescription || !lyrics || !designData.caption}
+                          className="h-8 px-3"
+                        >
+                          {isGeneratingDescription ? (
+                            <>
+                              <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                              Генерую...
+                            </>
+                          ) : (
+                            <>
+                              <RotateCcw className="w-3 h-3 mr-1" />
+                              Згенерувати опис
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Style Selection */}
                   <div className="border-t pt-6">
                     <div className="mb-4 space-y-2">
-                      <h3 className="text-base font-medium mb-2">1. Оберіть стиль</h3>
+                      <h3 className="text-base font-medium mb-2">2. Оберіть стиль</h3>
                       <p className="text-sm text-muted-foreground mt-3">
                         Кожен стиль створений для певних випадків та настроїв
                       </p>
@@ -398,7 +389,7 @@ export function FrontDesignStep({
                   {/* Image Generation */}
                   {designData.style && (
                     <div className="border-t pt-6">
-                      <h3 className="text-base font-medium mb-4">2. Генерація зображення</h3>
+                      <h3 className="text-base font-medium mb-4">3. Генерація зображення</h3>
                       <div className="space-y-4">
                         <Button 
                           onClick={handleGenerateImage} 
