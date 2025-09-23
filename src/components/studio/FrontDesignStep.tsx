@@ -16,6 +16,7 @@ interface FrontDesignData {
   imageUrl: string | null;
   caption: string;
   prompt: string; // only for AI generation
+  imageDescription: string;
 }
 interface FrontDesignStepProps {
   lyrics: string;
@@ -35,13 +36,15 @@ export function FrontDesignStep({
     imageUrl: null,
     caption: '',
     prompt: '',
+    imageDescription: '',
     ...initialData
   });
   const [isGenerating, setIsGenerating] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [isGeneratingCaption, setIsGeneratingCaption] = useState(false);
+  const [isGeneratingDescription, setIsGeneratingDescription] = useState(false);
 
-  // Auto-generate caption on component load
+  // Auto-generate caption and description on component load
   useEffect(() => {
     if (lyrics && !designData.caption) {
       setIsGeneratingCaption(true);
@@ -54,6 +57,42 @@ export function FrontDesignStep({
       });
     }
   }, [lyrics]);
+
+  useEffect(() => {
+    if (lyrics && designData.caption && !designData.imageDescription) {
+      generateImageDescription();
+    }
+  }, [lyrics, designData.caption]);
+
+  const generateImageDescription = async () => {
+    if (!lyrics || !designData.caption) return;
+    
+    setIsGeneratingDescription(true);
+    try {
+      console.log('Generating image description for lyrics and caption');
+      
+      const { data, error } = await supabase.functions.invoke('generate-image-description', {
+        body: { 
+          lyrics: lyrics,
+          caption: designData.caption
+        }
+      });
+
+      if (error) {
+        console.error('Error generating image description:', error);
+        return;
+      }
+
+      if (data?.imageDescription) {
+        console.log('Generated image description:', data.imageDescription);
+        setDesignData(prev => ({ ...prev, imageDescription: data.imageDescription }));
+      }
+    } catch (error) {
+      console.error('Failed to generate image description:', error);
+    } finally {
+      setIsGeneratingDescription(false);
+    }
+  };
   const generatePromptFromLyrics = (lyrics: string, style: StyleKey): string => {
     const stylePrompt = getStylePrompt(style, lyrics);
     const cleanedLyrics = lyrics.replace(/\[.*?\]/g, '').trim();
@@ -256,6 +295,54 @@ export function FrontDesignStep({
                       <RotateCcw className="w-3 h-3 mr-1" />
                     )}
                     Згенерувати заново
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Image Description Generation */}
+          <Card className="mb-4 sm:mb-6">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-2">
+                <Edit3 className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                Опис для генерації зображення
+              </CardTitle>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mt-3">
+                На основі вашої пісні та підпису створимо опис для генерації ідеального зображення
+              </p>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="space-y-3">
+                <Textarea 
+                  placeholder="Опис для генерації зображення буде створено автоматично..."
+                  value={designData.imageDescription}
+                  onChange={(e) => setDesignData(prev => ({ ...prev, imageDescription: e.target.value }))}
+                  className="min-h-[100px] text-sm resize-none"
+                  disabled={isGeneratingDescription}
+                />
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-muted-foreground">
+                    {designData.imageDescription.split(' ').filter(word => word.length > 0).length}/80 слів
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={generateImageDescription}
+                    disabled={isGeneratingDescription || !lyrics || !designData.caption}
+                    className="h-8 px-3"
+                  >
+                    {isGeneratingDescription ? (
+                      <>
+                        <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                        Генерую...
+                      </>
+                    ) : (
+                      <>
+                        <RotateCcw className="w-3 h-3 mr-1" />
+                        Згенерувати опис
+                      </>
+                    )}
                   </Button>
                 </div>
               </div>

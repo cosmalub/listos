@@ -15,6 +15,7 @@ interface PostcardDesignData {
     imageUrl: string | null;
     caption: string;
     prompt: string;
+    imageDescription: string;
   };
   back: {
     selectedColor: string;
@@ -36,7 +37,8 @@ export function PostcardDesign({ lyrics, onComplete, onBack }: PostcardDesignPro
       style: null,
       imageUrl: null,
       caption: '',
-      prompt: ''
+      prompt: '',
+      imageDescription: ''
     },
     back: {
       selectedColor: '',
