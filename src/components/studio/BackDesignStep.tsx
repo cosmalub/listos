@@ -97,7 +97,7 @@ export function BackDesignStep({ frontDesign, initialData, onComplete, onBack }:
       <Card>
         <CardHeader>
           <CardTitle>1. Оберіть колір для дизайну</CardTitle>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground mt-3">
             Ми автоматично визначили домінуючі кольори з лицьової частини. Оберіть колір для оформлення зворотної частини листівки.
           </p>
         </CardHeader>
@@ -142,7 +142,7 @@ export function BackDesignStep({ frontDesign, initialData, onComplete, onBack }:
       <Card>
         <CardHeader>
           <CardTitle>2. Персональне повідомлення</CardTitle>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-sm text-muted-foreground mt-3">
             Ми створили персональне повідомлення на основі вашої листівки. Ви можете відредагувати його або згенерувати нове.
           </p>
         </CardHeader>

@@ -208,7 +208,7 @@ export function FrontDesignStep({
                 <Wand2 className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                 Підпис для листівки
               </CardTitle>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mt-3">
                 Цей підпис згенерований автоматично на основі вашої пісні, але ви можете його відредагувати за бажанням. Підпис з'явиться на лицьовій частині листівки.
               </p>
             </CardHeader>
@@ -266,7 +266,7 @@ export function FrontDesignStep({
           <Card className="mb-4 sm:mb-6">
             <CardHeader className="pb-4">
               <CardTitle>Створення дизайну лицьової частини</CardTitle>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mt-3">
                 Оберіть, як створити зображення для лицьової частини листівки:
               </p>
             </CardHeader>
@@ -300,7 +300,7 @@ export function FrontDesignStep({
                   <div className="border-t pt-6">
                     <div className="mb-4 space-y-2">
                       <h3 className="text-base font-medium mb-2">1. Оберіть стиль</h3>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm text-muted-foreground mt-3">
                         Кожен стиль створений для певних випадків та настроїв
                       </p>
                     </div>
