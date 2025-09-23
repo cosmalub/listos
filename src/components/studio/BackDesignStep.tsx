@@ -143,7 +143,10 @@ export function BackDesignStep({ frontDesign, initialData, onComplete, onBack }:
         <CardHeader>
           <CardTitle>2. Персональне повідомлення</CardTitle>
           <p className="text-sm text-muted-foreground mt-3">
-            Ми створили персональне повідомлення на основі вашої листівки. Ви можете відредагувати його або згенерувати нове.
+            {isGeneratingMessage ? 
+              "Створюємо музичну магію на основі ваших слів..." : 
+              "Ми створили персональне повідомлення на основі вашої листівки. Ви можете відредагувати його або згенерувати нове."
+            }
           </p>
         </CardHeader>
         <CardContent>

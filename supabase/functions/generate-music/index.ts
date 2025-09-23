@@ -357,12 +357,12 @@ function generateMusicPrompts(lyrics: string, analysis: any, userStyle?: string,
   if (testMode) {
     // Test mode: Generate ONE vocal variant with detected gender (or male default)
     const preferredGender = vocalGender === 'unspecified' ? 'male' : vocalGender;
-    const genderLabel = preferredGender === 'male' ? 'мужской вокал' : 'женский вокал';
+    const genderLabel = preferredGender === 'male' ? 'чоловічий вокал' : 'жіночий вокал';
     
     const vocalPrompt = {
       text: `${popStyle} song in ${languageLabel} language with ${preferredGender} vocals, ${tempoDescription}. CRITICAL: The ${preferredGender} vocalist must sing exactly these lyrics word-for-word with NO improvisation, NO ad-libs, NO omissions: "${fullLyricsForPrompt}". Every single word must be sung clearly and precisely with perfect ${languageLabel} pronunciation and articulation. Do not change, skip, or mumble any words. Each syllable must be pronounced distinctly by the ${preferredGender} voice. ${pronunciationInstructions} Focus on vocal clarity and emotional delivery over complex instrumentation. ${mood} emotional tone. Structure: Intro (instrumental 3-5 seconds), Verse (${preferredGender} vocals singing the provided lyrics with crystal-clear diction), Chorus (${preferredGender} vocals repeating key phrases from lyrics with emphasis and perfect pronunciation), Bridge (vocal harmonies), Outro. Professional ${preferredGender} vocal delivery with flawless pronunciation, radio-ready production, duration ${duration} seconds${promptEnhancement}`,
       title: `${capitalizeFirst(popStyle)} (${genderLabel}) (Test)`,
-      description: `Версия с ${genderLabel} в поп-стиле - тестовый режим`,
+      description: `Версія з ${genderLabel} у поп-стилі - тестовий режим`,
       style: `${popStyle} vocal ${preferredGender}`
     };
     prompts.push(vocalPrompt);
@@ -371,33 +371,33 @@ function generateMusicPrompts(lyrics: string, analysis: any, userStyle?: string,
     if (vocalGender === 'unspecified') {
       // Generate both male and female versions
       const variants = [
-        { gender: 'male', label: 'мужской вокал' },
-        { gender: 'female', label: 'женский вокал' }
+        { gender: 'male', label: 'чоловічий вокал' },
+        { gender: 'female', label: 'жіночий вокал' }
       ];
       
       variants.forEach((variant, index) => {
         const vocalPrompt = {
           text: `${popStyle} song in ${languageLabel} language with ${variant.gender} vocals, ${tempoDescription}. CRITICAL: The ${variant.gender} vocalist must sing exactly these lyrics word-for-word with NO improvisation, NO ad-libs, NO omissions: "${fullLyricsForPrompt}". Every single word must be sung clearly and precisely with perfect ${languageLabel} pronunciation and articulation. Do not change, skip, or mumble any words. Each syllable must be pronounced distinctly by the ${variant.gender} voice. ${pronunciationInstructions} Focus on vocal clarity and emotional delivery over complex instrumentation. ${mood} emotional tone. Structure: Intro (instrumental 3-5 seconds), Verse (${variant.gender} vocals singing the provided lyrics with crystal-clear diction), Chorus (${variant.gender} vocals repeating key phrases from lyrics with emphasis and perfect pronunciation), Bridge (vocal harmonies), Outro. Professional ${variant.gender} vocal delivery with flawless pronunciation, radio-ready production, duration ${duration} seconds${promptEnhancement}`,
           title: `${capitalizeFirst(popStyle)} (${variant.label})`,
-          description: `Версия с ${variant.label} в поп-стиле`,
+          description: `Версія з ${variant.label} у поп-стилі`,
           style: `${popStyle} vocal ${variant.gender}`
         };
         prompts.push(vocalPrompt);
       });
     } else {
       // Generate two versions with the detected gender in different styles
-      const genderLabel = vocalGender === 'male' ? 'мужской вокал' : 'женский вокал';
+      const genderLabel = vocalGender === 'male' ? 'чоловічий вокал' : 'жіночий вокал';
       // Generate two pop variations with the detected gender
       const variations = [
-        { variation: 'classic', label: 'классическая версия' },
-        { variation: 'modern', label: 'современная версия' }
+        { variation: 'classic', label: 'класична версія' },
+        { variation: 'modern', label: 'сучасна версія' }
       ];
       
       variations.forEach((styleVariant, index) => {
         const vocalPrompt = {
           text: `${popStyle} song in ${languageLabel} language with ${vocalGender} vocals, ${tempoDescription}. ${styleVariant.variation === 'modern' ? 'Modern pop arrangement with subtle electronic elements.' : 'Classic pop arrangement with traditional instruments.'} CRITICAL: The ${vocalGender} vocalist must sing exactly these lyrics word-for-word with NO improvisation, NO ad-libs, NO omissions: "${fullLyricsForPrompt}". Every single word must be sung clearly and precisely with perfect ${languageLabel} pronunciation and articulation. Do not change, skip, or mumble any words. Each syllable must be pronounced distinctly by the ${vocalGender} voice. ${pronunciationInstructions} Focus on vocal clarity and emotional delivery over complex instrumentation. ${mood} emotional tone. Structure: Intro (instrumental 3-5 seconds), Verse (${vocalGender} vocals singing the provided lyrics with crystal-clear diction), Chorus (${vocalGender} vocals repeating key phrases from lyrics with emphasis and perfect pronunciation), Bridge (vocal harmonies), Outro. Professional ${vocalGender} vocal delivery with flawless pronunciation, radio-ready production, duration ${duration} seconds${promptEnhancement}`,
           title: `${capitalizeFirst(popStyle)} (${genderLabel}, ${styleVariant.label})`,
-          description: `${styleVariant.label} версия с ${genderLabel} в поп-стиле`,
+          description: `${styleVariant.label} з ${genderLabel} у поп-стилі`,
           style: `${popStyle} vocal ${vocalGender}`
         };
         prompts.push(vocalPrompt);

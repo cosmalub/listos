@@ -125,28 +125,19 @@ export const MusicVariantCard: React.FC<MusicVariantCardProps> = ({
       onClick={onSelect}
     >
       <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <div className="space-y-1">
-            <CardTitle className="text-lg">{variant.title}</CardTitle>
-            <Badge variant="secondary" className="text-xs">
-              {variant.style}
-            </Badge>
-          </div>
-          <div className="flex items-center text-xs text-muted-foreground">
-            <Clock className="h-3 w-3 mr-1" />
-            {realDuration > 0 ? formatTime(realDuration) : (variant.duration ? `${variant.duration}с` : 'N/A')}
-          </div>
+        <div className="text-center space-y-1">
+          <CardTitle className="text-lg">{variant.title}</CardTitle>
         </div>
       </CardHeader>
       
       <CardContent className="space-y-4">
-        <p className="text-sm text-muted-foreground leading-relaxed">
+        <p className="text-sm text-muted-foreground leading-relaxed text-center">
           {variant.description}
         </p>
 
         {/* Audio Player Simulation */}
         <div className="bg-secondary/20 rounded-lg p-3 space-y-3">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-center">
             <Button
               size="sm"
               variant="outline"
@@ -161,15 +152,6 @@ export const MusicVariantCard: React.FC<MusicVariantCardProps> = ({
               ) : (
                 <Play className="h-3 w-3" />
               )}
-            </Button>
-            
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={(e) => e.stopPropagation()}
-              className="h-8 w-8 p-0"
-            >
-              <Download className="h-3 w-3" />
             </Button>
           </div>
 

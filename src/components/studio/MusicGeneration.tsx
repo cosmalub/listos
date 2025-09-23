@@ -120,13 +120,12 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
                   Наша ШІ аналізує текст, визначає стать вокаліста та генерує варіанти з вокалом
                 </p>
               </div>
-              <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+              <div className="flex items-center justify-center">
                 <div className="flex space-x-1">
                   <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
                   <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
                   <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
                 </div>
-                <span>Генерація варіантів з вокалом • Спроба {generationAttempt + 1} з 2</span>
               </div>
             </div>
           </CardContent>
@@ -184,6 +183,36 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
                 Зв'язатися зі спеціалістом
               </Button>
             )}
+          </div>
+
+          {/* Beta Feature Notice */}
+          <div className="mt-6">
+            <Alert className="border-blue-200 bg-blue-50 dark:bg-blue-950/20">
+              <Info className="h-4 w-4" />
+              <AlertDescription>
+                <div className="space-y-2">
+                  <p className="text-sm">
+                    <strong>Автоматичне створення пісень:</strong> У вас є 2 спроби для створення пісні. Іноді автоматичне створення може дати не той результат, який ви очікували. Це нормально!
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Якщо після 2 спроб результат вас не влаштовує, напишіть у чат - наш менеджер допоможе створити пісню вручну спеціально для вас.
+                  </p>
+                  <div className="pt-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="text-xs h-7"
+                      onClick={() => {
+                        // TODO: Implement support chat
+                        console.log('Opening support chat...');
+                      }}
+                    >
+                      💬 Чат підтримки
+                    </Button>
+                  </div>
+                </div>
+              </AlertDescription>
+            </Alert>
           </div>
 
         </div>
