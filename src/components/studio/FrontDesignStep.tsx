@@ -204,7 +204,7 @@ export function FrontDesignStep({
           {/* Caption Section - Always visible */}
           <Card className="mb-4 sm:mb-6">
             <CardHeader className="pb-4">
-              <CardTitle className="text-base sm:text-lg font-semibold flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2">
                 <Wand2 className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                 Підпис для листівки
               </CardTitle>
@@ -265,7 +265,7 @@ export function FrontDesignStep({
           {/* Design Creation - Unified Card */}
           <Card className="mb-4 sm:mb-6">
             <CardHeader className="pb-4">
-              <CardTitle className="text-base font-medium">Створення дизайну лицьової частини</CardTitle>
+              <CardTitle>Створення дизайну лицьової частини</CardTitle>
               <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                 Оберіть, як створити зображення для лицьової частини листівки:
               </p>
@@ -299,7 +299,7 @@ export function FrontDesignStep({
                   {/* Style Selection */}
                   <div className="border-t pt-6">
                     <div className="mb-4 space-y-2">
-                      <h3 className="text-lg font-semibold">1. Оберіть стиль</h3>
+                      <h3 className="text-base font-medium mb-2">1. Оберіть стиль</h3>
                       <p className="text-sm text-muted-foreground">
                         Кожен стиль створений для певних випадків та настроїв
                       </p>
@@ -311,7 +311,7 @@ export function FrontDesignStep({
                   {/* Image Generation */}
                   {designData.style && (
                     <div className="border-t pt-6">
-                      <h3 className="text-lg font-semibold mb-4">2. Генерація зображення</h3>
+                      <h3 className="text-base font-medium mb-4">2. Генерація зображення</h3>
                       <div className="space-y-4">
                         <Button 
                           onClick={handleGenerateImage} 
@@ -348,7 +348,7 @@ export function FrontDesignStep({
               ) : (
                 /* Photo Upload Mode Content */
                 <div className="border-t pt-6">
-                  <h3 className="text-lg font-semibold mb-4">Завантажити фотографію</h3>
+                  <h3 className="text-base font-medium mb-4">Завантажити фотографію</h3>
                   <ImageUploader onImageUpload={handleImageUpload} isUploading={isUploading} />
                   
                   {designData.imageUrl && (
