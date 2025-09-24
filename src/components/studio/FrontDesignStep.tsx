@@ -1,23 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, ArrowRight, Wand2, Loader2, PlayCircle, Edit3, RotateCcw } from 'lucide-react';
-import { StyleSelector } from './StyleSelector';
+import { ArrowLeft, Wand2, Loader2, RotateCcw, Edit3 } from 'lucide-react';
 import { ImageUploader } from './ImageUploader';
+import { PostcardPreview } from './PostcardPreview';
 import { getStylePrompt, type StyleKey } from '@/lib/postcard-styles';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
 interface FrontDesignData {
   mode: 'photo' | 'ai-generation';
-  style: StyleKey | null; // only for AI generation
+  style: StyleKey | null;
   imageUrl: string | null;
   caption: string;
-  prompt: string; // only for AI generation
-  imageDescription: string;
+  prompt: string;
 }
 
 interface FrontDesignStepProps {
@@ -26,6 +22,8 @@ interface FrontDesignStepProps {
   onComplete: (data: FrontDesignData) => void;
   onBack: () => void;
 }
+
+type ComponentState = 'editing' | 'preview';
 
 // Auto-select style based on description content
 const selectStyleFromDescription = (description: string): StyleKey => {
@@ -54,16 +52,17 @@ export function FrontDesignStep({
     imageUrl: null,
     caption: '',
     prompt: '',
-    imageDescription: '',
     ...initialData
   });
   const [isGenerating, setIsGenerating] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [isGeneratingCaption, setIsGeneratingCaption] = useState(false);
   const [isGeneratingDescription, setIsGeneratingDescription] = useState(false);
-  const [selectedSource, setSelectedSource] = useState<'generate' | 'upload'>('generate');
+  const [currentState, setCurrentState] = useState<ComponentState>('editing');
+  const [selectedSource, setSelectedSource] = useState<'ai-generation' | 'photo'>('ai-generation');
+  const [imageDescription, setImageDescription] = useState('');
 
-  // Auto-generate caption and description on component load
+  // Auto-generate caption on component load
   useEffect(() => {
     if (lyrics && !designData.caption) {
       setIsGeneratingCaption(true);
@@ -77,11 +76,21 @@ export function FrontDesignStep({
     }
   }, [lyrics]);
 
+  // Auto-generate image description after caption is ready
   useEffect(() => {
-    if (lyrics && designData.caption && !designData.imageDescription) {
+    if (lyrics && designData.caption && !imageDescription && selectedSource === 'ai-generation') {
       generateImageDescription();
     }
-  }, [lyrics, designData.caption]);
+  }, [lyrics, designData.caption, selectedSource]);
+
+  // Switch to preview when image and caption are available
+  useEffect(() => {
+    if (designData.imageUrl && designData.caption) {
+      setCurrentState('preview');
+    } else {
+      setCurrentState('editing');
+    }
+  }, [designData.imageUrl, designData.caption]);
 
   const generateImageDescription = async () => {
     if (!lyrics || !designData.caption) return;
@@ -105,9 +114,9 @@ export function FrontDesignStep({
       if (data?.imageDescription) {
         console.log('Generated image description:', data.imageDescription);
         const autoStyle = selectStyleFromDescription(data.imageDescription);
+        setImageDescription(data.imageDescription);
         setDesignData(prev => ({ 
           ...prev, 
-          imageDescription: data.imageDescription,
           style: autoStyle,
           prompt: generatePromptFromLyrics(lyrics, autoStyle)
         }));
@@ -176,37 +185,6 @@ export function FrontDesignStep({
     }
   };
 
-  const handleModeChange = (mode: 'photo' | 'ai-generation') => {
-    setDesignData(prev => ({
-      ...prev,
-      mode,
-      style: mode === 'photo' ? null : prev.style,
-      prompt: mode === 'photo' ? '' : prev.prompt
-    }));
-  };
-
-  const handleStyleSelect = (style: StyleKey) => {
-    setDesignData(prev => ({
-      ...prev,
-      style
-    }));
-
-    if (lyrics) {
-      const prompt = generatePromptFromLyrics(lyrics, style);
-      setDesignData(prev => ({
-        ...prev,
-        prompt
-      }));
-
-      generateAutomaticCaption(lyrics).then(caption => {
-        setDesignData(prev => ({
-          ...prev,
-          caption
-        }));
-      });
-    }
-  };
-
   const handleGenerateImage = async () => {
     if (!designData.style || !designData.prompt) {
       toast.error('Оберіть стиль та введіть опис для генерації');
@@ -218,7 +196,8 @@ export function FrontDesignStep({
       const mockImageUrl = `https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=600&fit=crop&crop=center`;
       setDesignData(prev => ({
         ...prev,
-        imageUrl: mockImageUrl
+        imageUrl: mockImageUrl,
+        mode: 'ai-generation'
       }));
       toast.success('Зображення успішно згенеровано!');
     } catch (error) {
@@ -235,13 +214,8 @@ export function FrontDesignStep({
       const imageUrl = URL.createObjectURL(file);
       setDesignData(prev => ({
         ...prev,
-        imageUrl
-      }));
-
-      const caption = await generateAutomaticCaption(lyrics);
-      setDesignData(prev => ({
-        ...prev,
-        caption
+        imageUrl,
+        mode: 'photo'
       }));
       toast.success('Зображення успішно завантажено!');
     } catch (error) {
@@ -249,6 +223,21 @@ export function FrontDesignStep({
     } finally {
       setIsUploading(false);
     }
+  };
+
+  const handleRegenerate = () => {
+    setDesignData(prev => ({
+      ...prev,
+      imageUrl: null
+    }));
+    setCurrentState('editing');
+    if (selectedSource === 'ai-generation') {
+      setTimeout(() => handleGenerateImage(), 100);
+    }
+  };
+
+  const handleEdit = () => {
+    setCurrentState('editing');
   };
 
   const handleComplete = () => {
@@ -259,8 +248,87 @@ export function FrontDesignStep({
     onComplete(designData);
   };
 
-  const isComplete = designData.imageUrl && designData.caption;
+  // Preview mode - show large postcard with action buttons
+  if (currentState === 'preview') {
+    return (
+      <div className="space-y-6">
+        <div className="text-center space-y-4">
+          <h2 className="text-2xl font-semibold">Ваша листівка готова!</h2>
+          <p className="text-muted-foreground">
+            Переглядайте вашу листівку та оберіть подальші дії
+          </p>
+        </div>
 
+        {/* Large Postcard Preview */}
+        <div className="flex justify-center">
+          <div className="w-full max-w-md">
+            <PostcardPreview 
+              frontData={designData} 
+              backData={{
+                selectedColor: 'red',
+                personalMessage: ''
+              }}
+              showFront={true}
+            />
+          </div>
+        </div>
+
+        {/* Action buttons */}
+        <div className="space-y-3">
+          <Button 
+            onClick={handleComplete}
+            className="w-full"
+            size="lg"
+          >
+            Створити листівку
+          </Button>
+          
+          <div className="flex gap-3">
+            {designData.mode === 'ai-generation' && (
+              <Button 
+                variant="outline"
+                onClick={handleRegenerate}
+                disabled={isGenerating}
+                className="flex-1"
+              >
+                {isGenerating ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Генерую...
+                  </>
+                ) : (
+                  <>
+                    <RotateCcw className="w-4 h-4 mr-2" />
+                    Перегенерувати
+                  </>
+                )}
+              </Button>
+            )}
+            
+            <Button 
+              variant="outline"
+              onClick={handleEdit}
+              className="flex-1"
+            >
+              <Edit3 className="w-4 h-4 mr-2" />
+              Редагувати
+            </Button>
+          </div>
+
+          <Button 
+            variant="ghost"
+            onClick={onBack}
+            className="w-full"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Назад до створення музики
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Editing mode - simplified interface
   return (
     <div className="space-y-6">
       {/* 1. Source Selection */}
@@ -272,28 +340,28 @@ export function FrontDesignStep({
         
         <div className="flex gap-3">
           <Button 
-            variant={selectedSource === 'upload' ? 'default' : 'outline'}
-            onClick={() => setSelectedSource('upload')}
+            variant={selectedSource === 'photo' ? 'default' : 'outline'}
+            onClick={() => setSelectedSource('photo')}
             className="flex-1"
           >
             Завантажити фото
           </Button>
           <span className="self-center text-muted-foreground">або</span>
           <Button 
-            variant={selectedSource === 'generate' ? 'default' : 'outline'}
-            onClick={() => setSelectedSource('generate')}
+            variant={selectedSource === 'ai-generation' ? 'default' : 'outline'}
+            onClick={() => setSelectedSource('ai-generation')}
             className="flex-1"
           >
             Згенерувати опис
           </Button>
         </div>
 
-        {selectedSource === 'generate' && (
+        {selectedSource === 'ai-generation' && (
           <div className="space-y-4 mt-6">
             <Textarea 
               placeholder="Опис для генерації зображення буде створено автоматично..."
-              value={designData.imageDescription}
-              onChange={(e) => setDesignData(prev => ({ ...prev, imageDescription: e.target.value }))}
+              value={imageDescription}
+              onChange={(e) => setImageDescription(e.target.value)}
               className="min-h-[120px] text-sm resize-none"
               disabled={isGeneratingDescription}
             />
@@ -301,7 +369,7 @@ export function FrontDesignStep({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <span className="text-xs text-muted-foreground">
-                  {designData.imageDescription.split(' ').filter(word => word.length > 0).length}/80 слів
+                  {imageDescription?.split(' ').filter(word => word.length > 0).length || 0}/80 слів
                 </span>
                 {designData.style && (
                   <span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded">
@@ -330,7 +398,7 @@ export function FrontDesignStep({
               </Button>
             </div>
 
-            {designData.imageDescription && !isGeneratingDescription && (
+            {imageDescription && !isGeneratingDescription && (
               <Button 
                 onClick={handleGenerateImage} 
                 disabled={!designData.style || !designData.prompt || isGenerating} 
@@ -353,7 +421,7 @@ export function FrontDesignStep({
           </div>
         )}
 
-        {selectedSource === 'upload' && (
+        {selectedSource === 'photo' && (
           <div className="mt-6">
             <ImageUploader 
               onImageUpload={handleImageUpload} 
@@ -361,30 +429,11 @@ export function FrontDesignStep({
             />
           </div>
         )}
-
-        {/* Generated/Uploaded Image Display */}
-        {designData.imageUrl && (
-          <div className="mt-6 pt-6 border-t border-dashed border-muted-foreground/20">
-            <h3 className="text-base font-medium mb-4">Попередній перегляд</h3>
-            <div className="relative aspect-[3/4] w-full max-w-md mx-auto bg-muted rounded-lg overflow-hidden">
-              <img 
-                src={designData.imageUrl} 
-                alt="Зображення листівки" 
-                className="w-full h-full object-cover" 
-              />
-              {designData.caption && (
-                <div className="absolute bottom-4 left-4 right-4 bg-black/70 text-white p-3 rounded-lg text-sm">
-                  {designData.caption}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
       </div>
 
-      {/* 2. Caption Variants */}
+      {/* 2. Caption for Postcard (simplified) */}
       <div className="space-y-4 border-2 border-dashed border-muted-foreground/20 rounded-lg p-6">
-        <h2 className="text-lg font-semibold">2. Варіанти підпису</h2>
+        <h2 className="text-lg font-semibold">2. Підпис для листівки</h2>
         <p className="text-sm text-muted-foreground">
           Підпис буде розміщено на лицьовій частині листівки
         </p>
@@ -395,7 +444,7 @@ export function FrontDesignStep({
             ...prev,
             caption: e.target.value
           }))} 
-          placeholder="Або введіть свій підпис..."
+          placeholder="Введіть підпис для листівки..."
           className="min-h-[80px] text-sm resize-none" 
           disabled={isGeneratingCaption} 
         />
@@ -435,26 +484,8 @@ export function FrontDesignStep({
         </div>
       </div>
 
-      {/* 3. Your Caption */}
-      <div className="space-y-4 border-2 border-dashed border-muted-foreground/20 rounded-lg p-6">
-        <h2 className="text-lg font-semibold">3. Ваш підпис</h2>
-        <p className="text-sm text-muted-foreground">
-          Підпис буде розміщено в дизайні згенерованої листівки
-        </p>
-        
-        <Textarea 
-          value={designData.caption} 
-          onChange={e => setDesignData(prev => ({
-            ...prev,
-            caption: e.target.value
-          }))} 
-          placeholder="Наприклад: З любов'ю, Марія"
-          className="min-h-[60px] text-sm resize-none" 
-        />
-      </div>
-
-      {/* Navigation buttons */}
-      <div className="flex items-center justify-between pt-4 border-t">
+      {/* Navigation */}
+      <div className="flex justify-start pt-4 border-t">
         <Button 
           variant="outline" 
           onClick={onBack} 
@@ -462,16 +493,6 @@ export function FrontDesignStep({
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Назад
-        </Button>
-        
-        <Button 
-          onClick={handleComplete} 
-          disabled={!isComplete} 
-          className="w-auto px-8"
-          size="lg"
-        >
-          Далі
-          <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
       </div>
     </div>
