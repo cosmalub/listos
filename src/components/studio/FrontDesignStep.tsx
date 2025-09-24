@@ -252,13 +252,6 @@ export function FrontDesignStep({
   if (currentState === 'preview') {
     return (
       <div className="space-y-6">
-        <div className="text-center space-y-4">
-          <h2 className="text-2xl font-semibold">Ваша листівка готова!</h2>
-          <p className="text-muted-foreground">
-            Переглядайте вашу листівку та оберіть подальші дії
-          </p>
-        </div>
-
         {/* Large Postcard Preview */}
         <div className="flex justify-center">
           <div className="w-full max-w-md">
@@ -280,7 +273,7 @@ export function FrontDesignStep({
             className="w-full"
             size="lg"
           >
-            Створити листівку
+            Перейти на створення зворотної сторони
           </Button>
           
           <div className="flex gap-3">
@@ -314,15 +307,6 @@ export function FrontDesignStep({
               Редагувати
             </Button>
           </div>
-
-          <Button 
-            variant="ghost"
-            onClick={onBack}
-            className="w-full"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Назад до створення музики
-          </Button>
         </div>
       </div>
     );
