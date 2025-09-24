@@ -83,40 +83,26 @@ export function PostcardDesign({ lyrics, onComplete, onBack }: PostcardDesignPro
         </CardHeader>
       </Card>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Design workspace */}
-        <div className={`${(designData.front.imageUrl || currentSubStep === 'back') ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
-          <Card>
-            <CardContent className="p-6">
-              {currentSubStep === 'front' ? (
-                <FrontDesignStep
-                  lyrics={lyrics}
-                  initialData={designData.front}
-                  onComplete={handleFrontComplete}
-                  onBack={onBack}
-                />
-              ) : (
-                <BackDesignStep
-                  frontDesign={designData.front}
-                  initialData={designData.back}
-                  onComplete={handleBackComplete}
-                  onBack={handleBackToFront}
-                />
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Live Preview - only show when there's content */}
-        {(designData.front.imageUrl || currentSubStep === 'back') && (
-          <div className="lg:col-span-1">
-            <PostcardPreview
-              frontData={designData.front}
-              backData={designData.back}
-              showFront={currentSubStep === 'front'}
-            />
-          </div>
-        )}
+      <div className="w-full">
+        <Card>
+          <CardContent className="p-6">
+            {currentSubStep === 'front' ? (
+              <FrontDesignStep
+                lyrics={lyrics}
+                initialData={designData.front}
+                onComplete={handleFrontComplete}
+                onBack={onBack}
+              />
+            ) : (
+              <BackDesignStep
+                frontDesign={designData.front}
+                initialData={designData.back}
+                onComplete={handleBackComplete}
+                onBack={handleBackToFront}
+              />
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
