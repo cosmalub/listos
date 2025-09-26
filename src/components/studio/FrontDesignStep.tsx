@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { ArrowLeft, Wand2, Loader2, RotateCcw, Edit3 } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { ArrowLeft, Wand2, Loader2, RotateCcw, Edit3, Heart, Gift, MessageCircle } from 'lucide-react';
 import { ImageUploader } from './ImageUploader';
 import { PostcardPreview } from './PostcardPreview';
-import { getStylePrompt, type StyleKey } from '@/lib/postcard-styles';
+import { getStylePrompt, type StyleKey, POSTCARD_STYLES } from '@/lib/postcard-styles';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+import { cn } from '@/lib/utils';
 
 interface FrontDesignData {
   mode: 'photo' | 'ai-generation';
@@ -24,6 +26,51 @@ interface FrontDesignStepProps {
 }
 
 type ComponentState = 'editing' | 'preview';
+
+const styleIcons = {
+  joyful: Gift,
+  gentle: Heart,
+  universal: MessageCircle
+};
+
+const styleGradients = {
+  joyful: 'from-orange-100 to-pink-100',
+  gentle: 'from-blue-50 to-purple-50',
+  universal: 'from-green-50 to-blue-50'
+};
+
+const StyleTooltip = ({ style }: { style: StyleKey }) => {
+  const styleData = POSTCARD_STYLES[style];
+  const Icon = styleIcons[style];
+  
+  return (
+    <div className={cn(
+      "w-64 p-4 rounded-lg bg-gradient-to-br relative overflow-hidden",
+      styleGradients[style]
+    )}>
+      <div className="relative space-y-3">
+        <div className="flex items-start gap-3">
+          <div className="flex-shrink-0 p-2 rounded-full bg-primary text-primary-foreground">
+            <Icon className="w-4 h-4" />
+          </div>
+          <div className="flex-1 space-y-1">
+            <h3 className="font-medium text-foreground">
+              {styleData.name}
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {styleData.description}
+            </p>
+          </div>
+        </div>
+        <div className="space-y-1">
+          <p className="text-xs text-muted-foreground uppercase tracking-wide">
+            {styleData.occasionsText}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // Auto-select style based on description content
 const selectStyleFromDescription = (description: string): StyleKey => {
@@ -356,9 +403,18 @@ export function FrontDesignStep({
                   {imageDescription?.split(' ').filter(word => word.length > 0).length || 0}/80 слів
                 </span>
                 {designData.style && (
-                  <span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded">
-                    Стиль: {designData.style === 'joyful' ? 'Радісний' : designData.style === 'gentle' ? 'Ніжний' : 'Універсальний'}
-                  </span>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded cursor-help hover:bg-primary/20 transition-colors">
+                          Стиль: {designData.style === 'joyful' ? 'Радісний' : designData.style === 'gentle' ? 'Ніжний' : 'Універсальний'}
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" className="p-0">
+                        <StyleTooltip style={designData.style} />
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 )}
               </div>
               <Button
