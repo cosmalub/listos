@@ -363,9 +363,9 @@ export function FrontDesignStep({
     <div className="space-y-6">
       {/* 1. Source Selection */}
       <div className="space-y-4 border-2 border-dashed border-muted-foreground/20 rounded-lg p-6">
-        <h2 className="text-lg font-semibold">1. Джерело</h2>
+        <h2 className="text-lg font-semibold">1. Вибір основи</h2>
         <p className="text-sm text-muted-foreground">
-          Можна завантажити фото, додати підпис або просто описати ідею — ми створимо дизайн листівки автоматично
+          Оберіть спосіб створення лицьової частини листівки
         </p>
         
         <div className="flex gap-3">
@@ -382,7 +382,7 @@ export function FrontDesignStep({
             onClick={() => setSelectedSource('ai-generation')}
             className="flex-1"
           >
-            Згенерувати опис
+            Згенерувати дизайн
           </Button>
         </div>
 
@@ -509,7 +509,7 @@ export function FrontDesignStep({
         <div className="space-y-4 border-2 border-dashed border-muted-foreground/20 rounded-lg p-6">
           <h2 className="text-lg font-semibold">3. Створення дизайну</h2>
           <p className="text-sm text-muted-foreground">
-            Згенеруйте зображення на основі опису та підпису
+            Створіть дизайн на основі опису та підпису
           </p>
           
           <Button 
@@ -521,12 +521,12 @@ export function FrontDesignStep({
             {isGenerating ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Генерую зображення...
+                Створюю дизайн...
               </>
             ) : (
               <>
                 <Wand2 className="w-4 h-4 mr-2" />
-                Згенерувати зображення
+                Створити дизайн
               </>
             )}
           </Button>
