@@ -379,7 +379,7 @@ export function FrontDesignStep({
             <span className="sm:hidden">Фото</span>
             <span className="hidden sm:inline">Завантажити фото</span>
           </Button>
-          <span className="self-center text-muted-foreground text-sm hidden sm:block">або</span>
+          <span className="self-center text-muted-foreground text-sm">або</span>
           <Button 
             variant={selectedSource === 'ai-generation' ? 'default' : 'outline'}
             onClick={() => setSelectedSource('ai-generation')}
