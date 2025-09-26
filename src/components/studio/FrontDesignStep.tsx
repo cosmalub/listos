@@ -130,14 +130,13 @@ export function FrontDesignStep({
     }
   }, [lyrics, designData.caption, selectedSource]);
 
-  // Switch to preview when image and caption are available
+  // Switch to preview only when explicitly triggered
   useEffect(() => {
-    if (designData.imageUrl && designData.caption) {
+    if (designData.imageUrl && designData.caption && selectedSource === 'ai-generation' && isGenerating === false) {
+      // Auto-switch to preview after AI generation completes
       setCurrentState('preview');
-    } else {
-      setCurrentState('editing');
     }
-  }, [designData.imageUrl, designData.caption]);
+  }, [designData.imageUrl, designData.caption, selectedSource, isGenerating]);
 
   const generateImageDescription = async () => {
     if (!lyrics || !designData.caption) return;
@@ -439,26 +438,6 @@ export function FrontDesignStep({
               </Button>
             </div>
 
-            {imageDescription && !isGeneratingDescription && (
-              <Button 
-                onClick={handleGenerateImage} 
-                disabled={!designData.style || !designData.prompt || isGenerating} 
-                className="w-full"
-                size="lg"
-              >
-                {isGenerating ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Генерую зображення...
-                  </>
-                ) : (
-                  <>
-                    <Wand2 className="w-4 h-4 mr-2" />
-                    Згенерувати зображення
-                  </>
-                )}
-              </Button>
-            )}
           </div>
         )}
 
@@ -525,17 +504,54 @@ export function FrontDesignStep({
         </div>
       </div>
 
-      {/* Navigation */}
-      <div className="flex justify-start pt-4 border-t">
-        <Button 
-          variant="outline" 
-          onClick={onBack} 
-          className="w-auto px-8"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Назад
-        </Button>
-      </div>
+      {/* 3. Action Button */}
+      {(designData.caption && selectedSource === 'ai-generation' && imageDescription) && (
+        <div className="space-y-4 border-2 border-dashed border-muted-foreground/20 rounded-lg p-6">
+          <h2 className="text-lg font-semibold">3. Створення дизайну</h2>
+          <p className="text-sm text-muted-foreground">
+            Згенеруйте зображення на основі опису та підпису
+          </p>
+          
+          <Button 
+            onClick={handleGenerateImage} 
+            disabled={!designData.style || !designData.prompt || isGenerating} 
+            className="w-full"
+            size="lg"
+          >
+            {isGenerating ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Генерую зображення...
+              </>
+            ) : (
+              <>
+                <Wand2 className="w-4 h-4 mr-2" />
+                Згенерувати зображення
+              </>
+            )}
+          </Button>
+        </div>
+      )}
+
+      {(designData.imageUrl && designData.caption && selectedSource === 'photo') && (
+        <div className="space-y-4 border-2 border-dashed border-muted-foreground/20 rounded-lg p-6">
+          <h2 className="text-lg font-semibold">3. Створення дизайну</h2>
+          <p className="text-sm text-muted-foreground">
+            Створіть лицьову частину листівки з вашим фото та підписом
+          </p>
+          
+          <Button 
+            onClick={() => {
+              setCurrentState('preview');
+            }}
+            className="w-full"
+            size="lg"
+          >
+            <Wand2 className="w-4 h-4 mr-2" />
+            Створити лицьову частину листівки
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
