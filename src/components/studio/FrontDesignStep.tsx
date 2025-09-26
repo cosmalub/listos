@@ -365,7 +365,7 @@ export function FrontDesignStep({
       <div className="space-y-4 border-2 border-dashed border-muted-foreground/20 rounded-lg p-6">
         <h2 className="text-lg font-semibold">1. Вибір основи</h2>
         <p className="text-sm text-muted-foreground">
-          Оберіть спосіб створення лицьової частини листівки
+          Лицьова частина листівки може бути створена на основі вашого фото або згенерованого дизайну під вашу пісню
         </p>
         
         <div className="flex gap-3">
