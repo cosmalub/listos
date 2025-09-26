@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { ArrowLeft, Wand2, Loader2, RotateCcw, Edit3, Heart, Gift, MessageCircle } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { ArrowLeft, Wand2, Loader2, RotateCcw, Edit3, Heart, Gift, MessageCircle, Info } from 'lucide-react';
 import { ImageUploader } from './ImageUploader';
 import { PostcardPreview } from './PostcardPreview';
 import { getStylePrompt, type StyleKey, POSTCARD_STYLES } from '@/lib/postcard-styles';
@@ -45,7 +45,7 @@ const StyleTooltip = ({ style }: { style: StyleKey }) => {
   
   return (
     <div className={cn(
-      "w-64 p-4 rounded-lg bg-gradient-to-br relative overflow-hidden",
+      "w-72 sm:w-80 p-4 rounded-lg bg-gradient-to-br relative overflow-hidden border shadow-lg",
       styleGradients[style]
     )}>
       <div className="relative space-y-3">
@@ -403,18 +403,19 @@ export function FrontDesignStep({
                   {imageDescription?.split(' ').filter(word => word.length > 0).length || 0}/80 слів
                 </span>
                 {designData.style && (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded cursor-help hover:bg-primary/20 transition-colors">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <button className="flex items-center gap-1 text-xs px-2 py-1 bg-primary/10 text-primary rounded cursor-pointer hover:bg-primary/20 transition-colors">
+                        <span>
                           Стиль: {designData.style === 'joyful' ? 'Радісний' : designData.style === 'gentle' ? 'Ніжний' : 'Універсальний'}
                         </span>
-                      </TooltipTrigger>
-                      <TooltipContent side="top" className="p-0">
-                        <StyleTooltip style={designData.style} />
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                        <Info className="w-3 h-3" />
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent side="top" className="p-0 w-auto">
+                      <StyleTooltip style={designData.style} />
+                    </PopoverContent>
+                  </Popover>
                 )}
               </div>
               <Button
