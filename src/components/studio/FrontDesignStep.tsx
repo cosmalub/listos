@@ -322,23 +322,25 @@ export function FrontDesignStep({
             Перейти на створення зворотної сторони
           </Button>
           
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             {designData.mode === 'ai-generation' && (
               <Button 
                 variant="outline"
                 onClick={handleRegenerate}
                 disabled={isGenerating}
-                className="flex-1"
+                className="flex-1 min-h-[44px]"
               >
                 {isGenerating ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Генерую...
+                    <span className="sm:hidden">Генерую...</span>
+                    <span className="hidden sm:inline">Генерую...</span>
                   </>
                 ) : (
                   <>
                     <RotateCcw className="w-4 h-4 mr-2" />
-                    Перегенерувати
+                    <span className="sm:hidden">Нове</span>
+                    <span className="hidden sm:inline">Перегенерувати</span>
                   </>
                 )}
               </Button>
@@ -347,7 +349,7 @@ export function FrontDesignStep({
             <Button 
               variant="outline"
               onClick={handleEdit}
-              className="flex-1"
+              className="flex-1 min-h-[44px]"
             >
               <Edit3 className="w-4 h-4 mr-2" />
               Редагувати
@@ -368,21 +370,23 @@ export function FrontDesignStep({
           Лицьова частина листівки може бути створена на основі вашого фото або згенерованого дизайну під вашу пісню
         </p>
         
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <Button 
             variant={selectedSource === 'photo' ? 'default' : 'outline'}
             onClick={() => setSelectedSource('photo')}
-            className="flex-1"
+            className="flex-1 min-h-[44px]"
           >
-            Завантажити фото
+            <span className="sm:hidden">Фото</span>
+            <span className="hidden sm:inline">Завантажити фото</span>
           </Button>
-          <span className="self-center text-muted-foreground">або</span>
+          <span className="self-center text-muted-foreground text-sm hidden sm:block">або</span>
           <Button 
             variant={selectedSource === 'ai-generation' ? 'default' : 'outline'}
             onClick={() => setSelectedSource('ai-generation')}
-            className="flex-1"
+            className="flex-1 min-h-[44px]"
           >
-            Згенерувати дизайн
+            <span className="sm:hidden">Дизайн</span>
+            <span className="hidden sm:inline">Згенерувати дизайн</span>
           </Button>
         </div>
 
@@ -396,15 +400,15 @@ export function FrontDesignStep({
               disabled={isGeneratingDescription}
             />
             
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                 <span className="text-xs text-muted-foreground">
                   {imageDescription?.split(' ').filter(word => word.length > 0).length || 0}/80 слів
                 </span>
                 {designData.style && (
                   <Popover>
                     <PopoverTrigger asChild>
-                      <button className="flex items-center gap-1 text-xs px-2 py-1 bg-primary/10 text-primary rounded cursor-pointer hover:bg-primary/20 transition-colors">
+                      <button className="flex items-center gap-1 text-xs px-2 py-1 bg-primary/10 text-primary rounded cursor-pointer hover:bg-primary/20 transition-colors w-fit">
                         <span>
                           Стиль: {designData.style === 'joyful' ? 'Радісний' : designData.style === 'gentle' ? 'Ніжний' : 'Універсальний'}
                         </span>
@@ -422,17 +426,19 @@ export function FrontDesignStep({
                 size="sm"
                 onClick={generateImageDescription}
                 disabled={isGeneratingDescription || !lyrics || !designData.caption}
-                className="h-8 px-3"
+                className="h-8 px-3 w-full sm:w-auto"
               >
                 {isGeneratingDescription ? (
                   <>
                     <Loader2 className="w-3 h-3 mr-1 animate-spin" />
-                    Генерую...
+                    <span className="sm:hidden">Генерую...</span>
+                    <span className="hidden sm:inline">Генерую...</span>
                   </>
                 ) : (
                   <>
                     <RotateCcw className="w-3 h-3 mr-1" />
-                    Згенерувати інший опис
+                    <span className="sm:hidden">Інший опис</span>
+                    <span className="hidden sm:inline">Згенерувати інший опис</span>
                   </>
                 )}
               </Button>
@@ -469,7 +475,7 @@ export function FrontDesignStep({
           disabled={isGeneratingCaption} 
         />
         
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <span className="text-xs text-muted-foreground">
             {designData.caption ? `${designData.caption.length}/80 символів` : '0/80 символів'}
           </span>
@@ -490,16 +496,22 @@ export function FrontDesignStep({
                 setIsGeneratingCaption(false);
               }
             }} 
-            disabled={isGeneratingCaption} 
-            size="sm"
-            className="h-8 px-3"
+            disabled={isGeneratingCaption || !lyrics} 
+            className="h-8 px-3 w-full sm:w-auto"
           >
             {isGeneratingCaption ? (
-              <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+              <>
+                <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                <span className="sm:hidden">Генерую...</span>
+                <span className="hidden sm:inline">Генерую...</span>
+              </>
             ) : (
-              <RotateCcw className="w-3 h-3 mr-1" />
+              <>
+                <Wand2 className="w-3 h-3 mr-1" />
+                <span className="sm:hidden">Ще варіанти</span>
+                <span className="hidden sm:inline">Більше варіантів</span>
+              </>
             )}
-            Більше варіантів
           </Button>
         </div>
       </div>
