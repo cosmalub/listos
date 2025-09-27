@@ -232,22 +232,47 @@ export function FrontDesignStep({
   };
 
   const handleGenerateImage = async () => {
-    if (!designData.style || !designData.prompt) {
-      toast.error('Оберіть стиль та введіть опис для генерації');
+    if (!designData.caption || !imageDescription || !designData.style) {
+      toast.error('Потрібні підпис, опис дизайну та стиль для генерації');
       return;
     }
+    
     setIsGenerating(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      const mockImageUrl = `https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=600&fit=crop&crop=center`;
-      setDesignData(prev => ({
-        ...prev,
-        imageUrl: mockImageUrl,
-        mode: 'ai-generation'
-      }));
-      toast.success('Зображення успішно згенеровано!');
+      console.log('Generating postcard image with:', {
+        caption: designData.caption,
+        imageDescription: imageDescription.substring(0, 100),
+        style: designData.style
+      });
+
+      const { data, error } = await supabase.functions.invoke('generate-postcard-image', {
+        body: {
+          caption: designData.caption,
+          imageDescription: imageDescription,
+          style: designData.style
+        }
+      });
+
+      if (error) {
+        console.error('Error generating postcard image:', error);
+        throw new Error(error.message || 'Помилка генерації зображення');
+      }
+
+      if (data?.imageUrl) {
+        setDesignData(prev => ({
+          ...prev,
+          imageUrl: data.imageUrl,
+          prompt: data.prompt || prev.prompt,
+          mode: 'ai-generation'
+        }));
+        toast.success('Зображення успішно згенеровано!');
+        console.log('Generated image URL:', data.imageUrl);
+      } else {
+        throw new Error('Не отримано URL зображення');
+      }
     } catch (error) {
-      toast.error('Помилка при генерації зображення');
+      console.error('Failed to generate postcard image:', error);
+      toast.error('Помилка при генерації зображення: ' + error.message);
     } finally {
       setIsGenerating(false);
     }
