@@ -418,7 +418,7 @@ export function FrontDesignStep({
         {selectedSource === 'ai-generation' && (
           <div className="space-y-4 mt-6">
             <Textarea 
-              placeholder="Опис для генерації зображення буде створено автоматично..."
+              placeholder={isGeneratingDescription ? "⏳ Генерую опис дизайну..." : imageDescription ? "Опис для генерації зображення" : "Опис для генерації зображення буде створено автоматично..."}
               value={imageDescription}
               onChange={(e) => setImageDescription(e.target.value)}
               className="min-h-[120px] text-sm resize-none"
@@ -495,7 +495,7 @@ export function FrontDesignStep({
             ...prev,
             caption: e.target.value
           }))} 
-          placeholder="Введіть підпис для листівки..."
+          placeholder={isGeneratingCaption ? "⏳ Генерую підпис..." : designData.caption ? "Підпис для листівки" : "Введіть підпис для листівки..."}
           className="min-h-[80px] text-sm resize-none" 
           disabled={isGeneratingCaption} 
         />
