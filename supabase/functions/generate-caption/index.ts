@@ -15,13 +15,13 @@ serve(async (req) => {
   }
 
   try {
-    const { lyrics, style, length = 'medium' } = await req.json();
+    const { lyrics, style, length = 'medium' }: { lyrics: string; style?: string; length?: 'short' | 'medium' | 'long' } = await req.json();
 
     if (!lyrics) {
       throw new Error('Lyrics are required');
     }
 
-    const lengthPrompts = {
+    const lengthPrompts: Record<'short' | 'medium' | 'long', string> = {
       short: 'Создай очень короткую подпись (2-4 слова)',
       medium: 'Создай короткую подпись (2-8 слов)', 
       long: 'Создай подпись (максимум 12 слов для особых случаев)'
@@ -123,7 +123,8 @@ serve(async (req) => {
     });
   } catch (error) {
     console.error('Error in generate-caption function:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    return new Response(JSON.stringify({ error: errorMessage }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
