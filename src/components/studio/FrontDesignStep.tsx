@@ -109,9 +109,9 @@ export function FrontDesignStep({
   const [selectedSource, setSelectedSource] = useState<'ai-generation' | 'photo'>('ai-generation');
   const [imageDescription, setImageDescription] = useState('');
 
-  // Auto-generate caption on component load
+  // Auto-generate caption and description when AI generation is selected
   useEffect(() => {
-    if (lyrics && !designData.caption) {
+    if (lyrics && selectedSource === 'ai-generation' && !designData.caption && !isGeneratingCaption) {
       setIsGeneratingCaption(true);
       generateAutomaticCaption(lyrics, 'medium').then(caption => {
         setDesignData(prev => ({
@@ -121,11 +121,11 @@ export function FrontDesignStep({
         setIsGeneratingCaption(false);
       });
     }
-  }, [lyrics]);
+  }, [lyrics, selectedSource]);
 
   // Auto-generate image description after caption is ready
   useEffect(() => {
-    if (lyrics && designData.caption && !imageDescription && selectedSource === 'ai-generation') {
+    if (lyrics && designData.caption && !imageDescription && selectedSource === 'ai-generation' && !isGeneratingDescription) {
       generateImageDescription();
     }
   }, [lyrics, designData.caption, selectedSource]);
