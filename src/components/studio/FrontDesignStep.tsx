@@ -181,13 +181,12 @@ export function FrontDesignStep({
     return `${stylePrompt}. Зміст пісні: "${firstLines}". Створи красиву листівку в стилі ${style} що відображає настрій та тематику цієї пісні.`;
   };
 
+  const stripEmojis = (text: string) => text.replace(/[\p{Extended_Pictographic}\uFE0F\u200D]/gu, '').replace(/\s+/g, ' ').trim();
+
   const generateAutomaticCaption = async (lyrics: string, length: 'short' | 'medium' | 'long' = 'medium'): Promise<string> => {
     try {
       console.log('Generating AI caption...');
-      const {
-        data,
-        error
-      } = await supabase.functions.invoke('generate-caption', {
+      const { data, error } = await supabase.functions.invoke('generate-caption', {
         body: {
           lyrics,
           style: designData.style,
@@ -198,36 +197,49 @@ export function FrontDesignStep({
         console.error('Caption generation error:', error);
         throw error;
       }
-      return data.caption || generateFallbackCaption(lyrics);
+      const aiCaption = data?.caption ? stripEmojis(String(data.caption)) : '';
+      if (!aiCaption) {
+        const fb = generateFallbackCaption(lyrics, true);
+        return fb;
+      }
+      return aiCaption;
     } catch (error) {
       console.error('Error generating AI caption, using fallback:', error);
-      return generateFallbackCaption(lyrics);
+      return generateFallbackCaption(lyrics, true);
     }
   };
 
-  const generateFallbackCaption = (lyrics: string): string => {
+  const generateFallbackCaption = (lyrics: string, notify: boolean = false): string => {
     try {
-      const cleanedLyrics = lyrics.replace(/\[.*?\]/g, '').trim();
-      const words = cleanedLyrics.toLowerCase().split(/\s+/);
-      const loveWords = ['любов', 'кохання', 'серце', 'душа', 'милий', 'мила'];
-      const sadWords = ['сумно', 'біль', 'сльози', 'жаль', 'самота'];
-      const joyWords = ['радість', 'щастя', 'сміх', 'веселий', 'святкую'];
-      const springWords = ['весна', 'квіти', 'зелень', 'природа'];
+      const cleanedLyrics = lyrics.replace(/\[.*?\]/g, '').trim().toLowerCase();
+      const pick = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 
-      if (words.some(word => loveWords.includes(word))) {
-        return 'З любов\'ю та теплими почуттями 💕';
-      } else if (words.some(word => sadWords.includes(word))) {
-        return 'Думаю про тебе... 🤗';
-      } else if (words.some(word => joyWords.includes(word))) {
-        return 'Ділюся радістю з тобою! ✨';
-      } else if (words.some(word => springWords.includes(word))) {
-        return 'Весняний настрій для тебе 🌸';
+      const loveWords = ['любов', 'кохання', 'серце', 'душа', 'коханий', 'кохана'];
+      const sadWords = ['сум', 'біль', 'сльози', 'жаль', 'самота'];
+      const joyWords = ['радість', 'щастя', 'сміх', 'весел', 'святк'];
+      const springWords = ['весна', 'квіти', 'квіт', 'зелень', 'природа'];
+
+      let result: string;
+      if (joyWords.some(word => cleanedLyrics.includes(word))) {
+        result = pick(['Ділюся радістю з тобою', 'Щастя поруч з тобою', 'Святкуємо разом']);
+      } else if (loveWords.some(word => cleanedLyrics.includes(word))) {
+        result = pick(['З любов’ю і теплом', 'Від щирого серця для тебе', 'З любов’ю для тебе']);
+      } else if (springWords.some(word => cleanedLyrics.includes(word))) {
+        result = pick(['Весняний настрій для тебе', 'Ніжність весни для тебе', 'Квітучий настрій для тебе']);
+      } else if (sadWords.some(word => cleanedLyrics.includes(word))) {
+        result = pick(['Поруч у думках', 'Думаю про тебе', 'Світла підтримка для тебе']);
       } else {
-        return 'Спеціально для тебе 🎵';
+        result = pick(['З найкращими побажаннями', 'Від щирого серця', 'Для тебе з турботою', 'Нехай мрії збуваються']);
       }
+
+      if (notify) {
+        toast.info('Підпис згенеровано локально');
+      }
+      return result;
     } catch (error) {
       console.error('Помилка генерації резервного підпису:', error);
-      return 'З музикою в серці 🎵';
+      if (notify) toast.info('Підпис згенеровано локально');
+      return 'З найкращими побажаннями';
     }
   };
 

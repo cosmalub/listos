@@ -91,7 +91,53 @@ serve(async (req) => {
 
     console.log('Generating caption with OpenAI...');
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    // Helpers for sanitizing and fallback
+    const removeEmojis = (text: string) =>
+      text
+        // Remove emojis and variation selectors / zero-width joiners
+        .replace(/[\p{Extended_Pictographic}\uFE0F\u200D]/gu, '')
+        .replace(/["'“”‘’]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+    const limitByLength = (text: string) => {
+      const limits: Record<'short' | 'medium' | 'long', number> = { short: 4, medium: 8, long: 12 };
+      const maxWords = limits[length] ?? 8;
+      const words = text.split(/\s+/).filter(Boolean);
+      return words.length > maxWords ? words.slice(0, maxWords).join(' ') : text;
+    };
+
+    const sanitizeCaption = (text: string) => limitByLength(removeEmojis(text));
+
+    const pick = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
+    const serverFallback = (): string => {
+      try {
+        const lower = String(lyrics || '').toLowerCase();
+        const joyWords = ['радість','щастя','сміх','весел','святк'];
+        const loveWords = ['любов','кохан','серце','душа','коханий','кохана'];
+        const springWords = ['весна','квіти','квіт','зелень','природа'];
+        const sadWords = ['сум','біль','сльоз','жаль','самот'];
+
+        if (joyWords.some(w => lower.includes(w))) {
+          return pick(['Ділюся радістю з тобою', 'Щастя поруч з тобою', 'Святкуємо разом']);
+        }
+        if (loveWords.some(w => lower.includes(w))) {
+          return pick(['З любов’ю і теплом', 'Від щирого серця для тебе', 'З любов’ю для тебе']);
+        }
+        if (springWords.some(w => lower.includes(w))) {
+          return pick(['Весняний настрій для тебе', 'Ніжність весни для тебе', 'Квітучий настрій для тебе']);
+        }
+        if (sadWords.some(w => lower.includes(w))) {
+          return pick(['Поруч у думках', 'Думаю про тебе', 'Світла підтримка для тебе']);
+        }
+        return pick(['З найкращими побажаннями', 'Від щирого серця', 'Для тебе з турботою', 'Нехай мрії збуваються']);
+      } catch {
+        return 'З найкращими побажаннями';
+      }
+    };
+
+    // Attempt 1: GPT-5-mini (newer API)
+    const response1 = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${openAIApiKey}`,
@@ -107,18 +153,55 @@ serve(async (req) => {
       }),
     });
 
-    if (!response.ok) {
-      const error = await response.json();
-      console.error('OpenAI API error:', error);
-      throw new Error(error.error?.message || 'Failed to generate caption');
+    let rawCaption = '';
+    if (response1.ok) {
+      const data1 = await response1.json();
+      rawCaption = data1?.choices?.[0]?.message?.content?.trim?.() ?? '';
+      console.log('OpenAI raw (gpt-5-mini):', rawCaption);
+    } else {
+      const err1 = await response1.json().catch(() => ({}));
+      console.error('OpenAI API error (gpt-5-mini):', err1);
     }
 
-    const data = await response.json();
-    const caption = data.choices[0].message.content.trim();
+    let finalCaption = sanitizeCaption(rawCaption);
 
-    console.log('Generated caption:', caption);
+    // Attempt 2: fallback to gpt-4o-mini if needed
+    if (!finalCaption) {
+      const response2 = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${openAIApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt }
+          ],
+          max_tokens: 60,
+          temperature: 0.7,
+        }),
+      });
 
-    return new Response(JSON.stringify({ caption }), {
+      if (response2.ok) {
+        const data2 = await response2.json();
+        const raw2 = data2?.choices?.[0]?.message?.content?.trim?.() ?? '';
+        console.log('OpenAI raw (gpt-4o-mini):', raw2);
+        finalCaption = sanitizeCaption(raw2);
+      } else {
+        const err2 = await response2.json().catch(() => ({}));
+        console.error('OpenAI API error (gpt-4o-mini):', err2);
+      }
+    }
+
+    if (!finalCaption) {
+      finalCaption = serverFallback();
+    }
+
+    console.log('Generated caption (sanitized):', finalCaption);
+
+    return new Response(JSON.stringify({ caption: finalCaption }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {
