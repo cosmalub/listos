@@ -64,7 +64,7 @@ export function PostcardDesign({ lyrics, onComplete, onBack }: PostcardDesignPro
   const isReadyForBack = designData.front.imageUrl && designData.front.caption;
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
+    <div className="max-w-7xl mx-auto space-y-6">
       {/* Progress indicator */}
       <Card>
         <CardHeader className="pb-4">
@@ -83,26 +83,50 @@ export function PostcardDesign({ lyrics, onComplete, onBack }: PostcardDesignPro
         </CardHeader>
       </Card>
 
-      <div className="w-full">
-        <Card>
-          <CardContent className="p-6">
-            {currentSubStep === 'front' ? (
-              <FrontDesignStep
-                lyrics={lyrics}
-                initialData={designData.front}
-                onComplete={handleFrontComplete}
-                onBack={onBack}
-              />
-            ) : (
-              <BackDesignStep
-                frontDesign={designData.front}
-                initialData={designData.back}
-                onComplete={handleBackComplete}
-                onBack={handleBackToFront}
-              />
-            )}
-          </CardContent>
-        </Card>
+      {/* Main content with preview */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Design form */}
+        <div className="lg:col-span-2">
+          <Card>
+            <CardContent className="p-6">
+              {currentSubStep === 'front' ? (
+                <FrontDesignStep
+                  lyrics={lyrics}
+                  initialData={designData.front}
+                  onComplete={handleFrontComplete}
+                  onBack={onBack}
+                />
+              ) : (
+                <BackDesignStep
+                  frontDesign={designData.front}
+                  initialData={designData.back}
+                  onComplete={handleBackComplete}
+                  onBack={handleBackToFront}
+                />
+              )}
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Preview */}
+        <div className="lg:col-span-1">
+          <div className="sticky top-6">
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-medium">Превью</CardTitle>
+              </CardHeader>
+              <CardContent className="p-4">
+                <div className="aspect-[3/4] max-w-sm mx-auto">
+                  <PostcardPreview
+                    frontData={designData.front}
+                    backData={designData.back}
+                    showFront={currentSubStep === 'front'}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
     </div>
   );
