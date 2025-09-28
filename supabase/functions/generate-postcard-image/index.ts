@@ -37,7 +37,7 @@ serve(async (req) => {
     const postcardPrompt = createPostcardPrompt(caption, imageDescription, style);
     
     console.log('Generated postcard prompt:', postcardPrompt.substring(0, 200));
-    console.log('Calling OpenAI GPT-4o Image Generation API...');
+    console.log('Calling OpenAI gpt-image-1 API...');
 
     const response = await fetch('https://api.openai.com/v1/images/generations', {
       method: 'POST',
@@ -64,11 +64,21 @@ serve(async (req) => {
 
     const data = await response.json();
     console.log('OpenAI image generation response received');
+    console.log('Full response structure:', JSON.stringify(data, null, 2));
 
-    const imageUrl = data.data[0].url;
+    // gpt-image-1 returns base64 data, not URL
+    if (!data.data || !data.data[0] || !data.data[0].b64_json) {
+      console.error('Invalid response structure from OpenAI:', data);
+      throw new Error('Invalid response from OpenAI API - no base64 data found');
+    }
+
+    const base64Image = data.data[0].b64_json;
+    
+    // Convert base64 to data URL for the frontend
+    const dataUrl = `data:image/png;base64,${base64Image}`;
 
     return new Response(JSON.stringify({ 
-      imageUrl,
+      imageUrl: dataUrl,
       prompt: postcardPrompt 
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
