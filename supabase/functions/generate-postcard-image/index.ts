@@ -46,10 +46,12 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o',
+        model: 'gpt-image-1',
         prompt: postcardPrompt,
-        size: '1024x1792', // Вертикальный формат близкий к А6
-        quality: 'standard',
+        size: '1024x1536', // Portrait format for A6 postcard
+        quality: 'high',
+        output_format: 'png',
+        background: 'opaque',
         n: 1
       }),
     });
