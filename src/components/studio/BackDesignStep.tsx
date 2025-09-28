@@ -26,6 +26,7 @@ interface BackDesignStepProps {
   initialData: BackDesignData;
   onComplete: (data: BackDesignData) => void;
   onBack: () => void;
+  onDataChange?: (data: BackDesignData) => void;
 }
 
 // Helper function to extract dominant colors from front design
@@ -53,9 +54,15 @@ function generatePersonalMessage(frontDesign: FrontDesignData): string {
   return baseMessages[Math.floor(Math.random() * baseMessages.length)];
 }
 
-export function BackDesignStep({ frontDesign, initialData, onComplete, onBack }: BackDesignStepProps) {
+export function BackDesignStep({ frontDesign, initialData, onComplete, onBack, onDataChange }: BackDesignStepProps) {
   const [backData, setBackData] = useState<BackDesignData>(initialData);
   const [isGeneratingMessage, setIsGeneratingMessage] = useState(false);
+
+  // Update parent component with live changes
+  const updateBackData = (newData: BackDesignData) => {
+    setBackData(newData);
+    onDataChange?.(newData);
+  };
   
   const dominantColors = extractDominantColors(frontDesign);
 
@@ -63,7 +70,7 @@ export function BackDesignStep({ frontDesign, initialData, onComplete, onBack }:
   useEffect(() => {
     if (!backData.personalMessage.trim()) {
       const generatedMessage = generatePersonalMessage(frontDesign);
-      setBackData(prev => ({ ...prev, personalMessage: generatedMessage }));
+      updateBackData({ ...backData, personalMessage: generatedMessage });
     }
   }, [frontDesign, backData.personalMessage]);
 
@@ -75,7 +82,7 @@ export function BackDesignStep({ frontDesign, initialData, onComplete, onBack }:
     setIsGeneratingMessage(true);
     setTimeout(() => {
       const newMessage = generatePersonalMessage(frontDesign);
-      setBackData(prev => ({ ...prev, personalMessage: newMessage }));
+      updateBackData({ ...backData, personalMessage: newMessage });
       setIsGeneratingMessage(false);
     }, 1000); // Simulate generation delay
   };
@@ -104,7 +111,7 @@ export function BackDesignStep({ frontDesign, initialData, onComplete, onBack }:
         <CardContent>
           <RadioGroup
             value={backData.selectedColor}
-            onValueChange={(value) => setBackData(prev => ({ ...prev, selectedColor: value }))}
+            onValueChange={(value) => updateBackData({ ...backData, selectedColor: value })}
           >
             <div className="grid grid-cols-3 gap-2 sm:gap-4">
               {dominantColors.map((color, index) => (
@@ -156,7 +163,7 @@ export function BackDesignStep({ frontDesign, initialData, onComplete, onBack }:
               <Textarea
                 id="personalMessage"
                 value={backData.personalMessage}
-                onChange={(e) => setBackData(prev => ({ ...prev, personalMessage: e.target.value }))}
+                onChange={(e) => updateBackData({ ...backData, personalMessage: e.target.value })}
                 placeholder="Напишіть особливе повідомлення для отримувача..."
                 rows={4}
                 maxLength={500}
