@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { ArrowLeft, Wand2, Loader2, RotateCcw, Edit3, Heart, Gift, MessageCircle, Info } from 'lucide-react';
+import { ArrowLeft, Wand2, Loader2, RotateCcw, ArrowRight, Heart, Gift, MessageCircle, Info, RefreshCw } from 'lucide-react';
 import { ImageUploader } from './ImageUploader';
 import { PostcardPreview } from './PostcardPreview';
 import { getStylePrompt, type StyleKey, POSTCARD_STYLES } from '@/lib/postcard-styles';
@@ -108,6 +108,9 @@ export function FrontDesignStep({
   const [currentState, setCurrentState] = useState<ComponentState>('editing');
   const [selectedSource, setSelectedSource] = useState<'ai-generation' | 'photo'>('ai-generation');
   const [imageDescription, setImageDescription] = useState('');
+  const [isGeneratingNewVariant, setIsGeneratingNewVariant] = useState(false);
+  const [showVariantDescription, setShowVariantDescription] = useState(false);
+  const [newVariantDescription, setNewVariantDescription] = useState('');
 
   // Auto-generate caption and description when AI generation is selected
   useEffect(() => {
@@ -308,20 +311,57 @@ export function FrontDesignStep({
     }
   };
 
-  const handleRegenerate = () => {
-    setDesignData(prev => ({
-      ...prev,
-      imageUrl: null
-    }));
-    setCurrentState('editing');
-    if (selectedSource === 'ai-generation') {
-      setTimeout(() => handleGenerateImage(), 100);
+  const handleCreateVariant = async () => {
+    setIsGeneratingNewVariant(true);
+    try {
+      console.log('Generating new variant description for lyrics');
+      
+      const { data, error } = await supabase.functions.invoke('generate-image-description', {
+        body: { 
+          lyrics: lyrics,
+          caption: designData.caption
+        }
+      });
+
+      if (error) {
+        console.error('Error generating new variant description:', error);
+        toast.error('Помилка при генерації нового варіанту');
+        return;
+      }
+
+      if (data?.imageDescription) {
+        console.log('Generated new variant description:', data.imageDescription);
+        setNewVariantDescription(data.imageDescription);
+        setShowVariantDescription(true);
+        toast.success('Новий варіант опису готовий!');
+      }
+    } catch (error) {
+      console.error('Failed to generate new variant description:', error);
+      toast.error('Помилка при генерації нового варіанту');
+    } finally {
+      setIsGeneratingNewVariant(false);
     }
   };
 
-  const handleEdit = () => {
+  const handleAcceptVariant = () => {
+    const autoStyle = selectStyleFromDescription(newVariantDescription);
+    setImageDescription(newVariantDescription);
+    setDesignData(prev => ({ 
+      ...prev, 
+      style: autoStyle,
+      prompt: generatePromptFromLyrics(lyrics, autoStyle),
+      imageUrl: null
+    }));
+    setShowVariantDescription(false);
     setCurrentState('editing');
+    setTimeout(() => handleGenerateImage(), 100);
   };
+
+  const handleRejectVariant = () => {
+    setShowVariantDescription(false);
+    setNewVariantDescription('');
+  };
+
 
   const handleComplete = () => {
     if (!designData.imageUrl || !designData.caption) {
@@ -335,6 +375,34 @@ export function FrontDesignStep({
   if (currentState === 'preview') {
     return (
       <div className="space-y-6">
+        {/* Variant Description Modal */}
+        {showVariantDescription && (
+          <div className="space-y-4 p-4 border rounded-lg bg-muted/50">
+            <h3 className="font-medium">Новий варіант опису:</h3>
+            <div className="p-3 bg-background rounded border text-sm">
+              {newVariantDescription}
+            </div>
+            <div className="flex gap-3">
+              <Button onClick={handleAcceptVariant} size="sm">
+                Утвердити і згенерувати
+              </Button>
+              <Button variant="outline" onClick={handleRejectVariant} size="sm">
+                Відхилити
+              </Button>
+              <Button variant="outline" onClick={handleCreateVariant} size="sm" disabled={isGeneratingNewVariant}>
+                {isGeneratingNewVariant ? (
+                  <>
+                    <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                    Генерую...
+                  </>
+                ) : (
+                  'Ще варіант'
+                )}
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* Large Postcard Preview */}
         <div className="flex justify-center">
           <div className="w-full max-w-md">
@@ -357,41 +425,29 @@ export function FrontDesignStep({
             size="lg"
           >
             Перейти на створення зворотної сторони
+            <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
           
-          <div className="flex flex-col sm:flex-row gap-3">
-            {designData.mode === 'ai-generation' && (
-              <Button 
-                variant="outline"
-                onClick={handleRegenerate}
-                disabled={isGenerating}
-                className="flex-1 min-h-[44px]"
-              >
-                {isGenerating ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    <span className="sm:hidden">Генерую...</span>
-                    <span className="hidden sm:inline">Генерую...</span>
-                  </>
-                ) : (
-                  <>
-                    <RotateCcw className="w-4 h-4 mr-2" />
-                    <span className="sm:hidden">Нове</span>
-                    <span className="hidden sm:inline">Перегенерувати</span>
-                  </>
-                )}
-              </Button>
-            )}
-            
+          {designData.mode === 'ai-generation' && (
             <Button 
               variant="outline"
-              onClick={handleEdit}
-              className="flex-1 min-h-[44px]"
+              onClick={handleCreateVariant}
+              disabled={isGeneratingNewVariant}
+              className="w-full"
             >
-              <Edit3 className="w-4 h-4 mr-2" />
-              Редагувати
+              {isGeneratingNewVariant ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Генерую новий варіант...
+                </>
+              ) : (
+                <>
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Створити інший варіант
+                </>
+              )}
             </Button>
-          </div>
+          )}
         </div>
       </div>
     );
