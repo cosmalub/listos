@@ -18,7 +18,7 @@ export function Postcard3D({
   className,
   orientation = "landscape",
   initialTilt = { x: -2, y: 8 },
-  maxTilt = { x: 15, y: 20 },
+  maxTilt = { x: 10, y: 20 },
 }: Postcard3DProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [rot, setRot] = useState<{ x: number; y: number }>(initialTilt);
@@ -51,14 +51,6 @@ export function Postcard3D({
 
   const flip = () => setFlipped((f) => !f);
 
-  const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "f") flip();
-    if (e.key === "r") reset();
-    if (e.key === "ArrowLeft") setRot((r) => ({ ...r, y: clamp(r.y - 4, -maxTilt.y, maxTilt.y) }));
-    if (e.key === "ArrowRight") setRot((r) => ({ ...r, y: clamp(r.y + 4, -maxTilt.y, maxTilt.y) }));
-    if (e.key === "ArrowUp") setRot((r) => ({ ...r, x: clamp(r.x - 3, -maxTilt.x, maxTilt.x) }));
-    if (e.key === "ArrowDown") setRot((r) => ({ ...r, x: clamp(r.x + 3, -maxTilt.x, maxTilt.x) }));
-  };
 
   return (
     <div
@@ -76,9 +68,8 @@ export function Postcard3D({
       onPointerCancel={endDrag}
       onPointerLeave={endDrag}
       onDoubleClick={flip}
-      onKeyDown={onKeyDown}
       tabIndex={0}
-      aria-label="Інтерактивна листівка, перетягніть для обертання, 'f' — перевернути, 'r' — скинути"
+      aria-label="Інтерактивна листівка, перетягніть для обертання"
     >
       <div
         className={cn(
@@ -109,9 +100,6 @@ export function Postcard3D({
       <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
         <Button variant="ghost" size="icon" className="bg-white/80 hover:bg-white rounded-full" onClick={flip} aria-label="Перевернути">
           <RefreshCcw className="h-4 w-4 text-primary" />
-        </Button>
-        <Button variant="ghost" size="icon" className="bg-white/80 hover:bg-white rounded-full" onClick={reset} aria-label="Скинути">
-          <RotateCcw className="h-4 w-4 text-primary" />
         </Button>
       </div>
     </div>

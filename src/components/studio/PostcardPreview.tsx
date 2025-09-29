@@ -143,10 +143,7 @@ export function PostcardPreview({ frontData, backData, showFront = true }: Postc
 
   return (
     <Card className="sticky top-4">
-      <CardHeader>
-        <CardTitle className="text-center">Превью листівки</CardTitle>
-      </CardHeader>
-      <CardContent>
+      <CardContent className="pt-6">
         <div className="max-w-sm mx-auto">
           <Postcard3D
             front={frontSide}
@@ -155,16 +152,6 @@ export function PostcardPreview({ frontData, backData, showFront = true }: Postc
             className="w-full"
             initialTilt={{ x: showFront ? -5 : 175, y: 5 }}
           />
-        </div>
-        
-        {/* Instructions */}
-        <div className="mt-4 text-center space-y-1">
-          <p className="text-xs text-muted-foreground">
-            Двічі клікніть або натисніть 'f' щоб перевернути
-          </p>
-          <p className="text-xs text-muted-foreground">
-            Перетягуйте для обертання
-          </p>
         </div>
       </CardContent>
     </Card>

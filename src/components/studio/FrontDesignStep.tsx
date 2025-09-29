@@ -417,17 +417,8 @@ export function FrontDesignStep({
           </div>
         </div>
 
-        {/* Action buttons */}
+         {/* Action buttons */}
         <div className="space-y-3">
-          <Button 
-            onClick={handleComplete}
-            className="w-full"
-            size="lg"
-          >
-            Перейти на створення зворотної сторони
-            <ArrowRight className="w-4 h-4 ml-2" />
-          </Button>
-          
           {designData.mode === 'ai-generation' && (
             <Button 
               variant="outline"
@@ -448,6 +439,15 @@ export function FrontDesignStep({
               )}
             </Button>
           )}
+          
+          <Button 
+            onClick={handleComplete}
+            className="w-full"
+            size="lg"
+          >
+            Перейти на створення зворотної сторони
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
         </div>
       </div>
     );
