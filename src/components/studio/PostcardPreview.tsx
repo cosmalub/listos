@@ -38,24 +38,6 @@ export function PostcardPreview({ frontData, backData, showFront = true }: Postc
             alt="Postcard design"
             className="w-full h-full object-cover"
           />
-          
-          {/* Caption overlay */}
-          {frontData.caption && (
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4">
-              <p className="text-white text-sm md:text-base font-medium text-center">
-                {frontData.caption}
-              </p>
-            </div>
-          )}
-          
-          {/* Style indicator */}
-          {frontData.style && (
-            <div className="absolute top-2 left-2">
-              <Badge variant="secondary" className="text-xs">
-                {frontData.style}
-              </Badge>
-            </div>
-          )}
         </>
       ) : (
         /* Placeholder when no image */
@@ -65,11 +47,7 @@ export function PostcardPreview({ frontData, backData, showFront = true }: Postc
           </div>
           <div className="space-y-2">
             <p className="text-muted-foreground font-medium">Ваша листівка</p>
-            {frontData.style ? (
-              <Badge variant="outline">{frontData.style}</Badge>
-            ) : (
-              <p className="text-xs text-muted-foreground">Оберіть стиль</p>
-            )}
+            <p className="text-xs text-muted-foreground">Оберіть зображення</p>
           </div>
         </div>
       )}
