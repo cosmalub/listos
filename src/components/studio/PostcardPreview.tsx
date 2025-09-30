@@ -38,6 +38,14 @@ export function PostcardPreview({ frontData, backData, showFront = true }: Postc
             alt="Postcard design"
             className="w-full h-full object-cover"
           />
+          {/* Caption overlay - only for photo mode */}
+          {frontData.mode === 'photo' && frontData.caption && (
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent pt-8 pb-4 px-4">
+              <p className="text-white text-center font-bold uppercase text-sm sm:text-base leading-tight">
+                {frontData.caption}
+              </p>
+            </div>
+          )}
         </>
       ) : (
         /* Placeholder when no image */
