@@ -137,6 +137,7 @@ export function PostcardDesign({ lyrics, onComplete, onBack }: PostcardDesignPro
             <CardContent className="p-6">
               <BackDesignStep
                 frontDesign={designData.front}
+                lyrics={lyrics}
                 initialData={designData.back}
                 onComplete={handleBackComplete}
                 onBack={handleBackToFront}

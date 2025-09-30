@@ -23,6 +23,7 @@ interface BackDesignData {
 
 interface BackDesignStepProps {
   frontDesign: FrontDesignData;
+  lyrics: string;
   initialData: BackDesignData;
   onComplete: (data: BackDesignData) => void;
   onBack: () => void;
@@ -41,20 +42,39 @@ function extractDominantColors(frontDesign: FrontDesignData): string[] {
   return ['#6A5ACD', '#E6E6FA', '#DDA0DD'];
 }
 
-// Helper function to generate personal message based on front design
-function generatePersonalMessage(frontDesign: FrontDesignData): string {
-  const baseMessages = [
-    'Дорогий друже! Ця особлива пісня нагадала мені про тебе. Сподіваюся, вона принесе тобі стільки ж радості, скільки принесла мені.',
-    'Привіт! Створив для тебе цю унікальну музичну листівку. Послухай цю мелодію та подумай про наші прекрасні спогади.',
-    'Привіт! Ця пісня особлива для мене, і я хотів поділитися нею з тобою. Насолоджуйся музикою!',
-    'Дорогий! Знайшов цю чудову мелодію і одразу подумав про тебе. Сподіваюся, вона тобі сподобається так само, як і мені.'
-  ];
-  
-  // Select a random message
-  return baseMessages[Math.floor(Math.random() * baseMessages.length)];
+// Helper function to generate personal message using AI
+async function generatePersonalMessage(caption: string, lyrics: string): Promise<string> {
+  try {
+    const response = await fetch(
+      `https://fmucxrtpiqxnfgvamjlo.supabase.co/functions/v1/generate-personal-message`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ caption, lyrics }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to generate message: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.personalMessage;
+  } catch (error) {
+    console.error('Error generating personal message:', error);
+    // Fallback to predefined message on error
+    const fallbackMessages = [
+      'Дорогий друже! Ця особлива пісня нагадала мені про тебе. Скануй QR-код і послухай мелодію, створену спеціально для тебе. Хай вона принесе радість!',
+      'Привіт! Створив для тебе цю унікальну музичну листівку. Відскануй QR-код та послухай пісню, що розповідає про наші спогади. Насолоджуйся!',
+      'Дорогий! У цьому QR-коді чекає особлива мелодія. Вона нагадала мені про тебе і я хотів поділитися нею. Скануй і слухай з посмішкою!'
+    ];
+    return fallbackMessages[Math.floor(Math.random() * fallbackMessages.length)];
+  }
 }
 
-export function BackDesignStep({ frontDesign, initialData, onComplete, onBack, onDataChange }: BackDesignStepProps) {
+export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, onBack, onDataChange }: BackDesignStepProps) {
   const [backData, setBackData] = useState<BackDesignData>(initialData);
   const [isGeneratingMessage, setIsGeneratingMessage] = useState(false);
 
@@ -68,23 +88,32 @@ export function BackDesignStep({ frontDesign, initialData, onComplete, onBack, o
 
   // Auto-generate personal message on mount if not already set
   useEffect(() => {
-    if (!backData.personalMessage.trim()) {
-      const generatedMessage = generatePersonalMessage(frontDesign);
-      updateBackData({ ...backData, personalMessage: generatedMessage });
+    if (!backData.personalMessage.trim() && !isGeneratingMessage) {
+      setIsGeneratingMessage(true);
+      generatePersonalMessage(frontDesign.caption, lyrics)
+        .then((generatedMessage) => {
+          updateBackData({ ...backData, personalMessage: generatedMessage });
+        })
+        .finally(() => {
+          setIsGeneratingMessage(false);
+        });
     }
-  }, [frontDesign, backData.personalMessage]);
+  }, []);
 
   const handleComplete = () => {
     onComplete(backData);
   };
 
-  const handleRegenerateMessage = () => {
+  const handleRegenerateMessage = async () => {
     setIsGeneratingMessage(true);
-    setTimeout(() => {
-      const newMessage = generatePersonalMessage(frontDesign);
+    try {
+      const newMessage = await generatePersonalMessage(frontDesign.caption, lyrics);
       updateBackData({ ...backData, personalMessage: newMessage });
+    } catch (error) {
+      console.error('Failed to regenerate message:', error);
+    } finally {
       setIsGeneratingMessage(false);
-    }, 1000); // Simulate generation delay
+    }
   };
 
   const isComplete = backData.selectedColor && backData.personalMessage.trim().length > 0;
