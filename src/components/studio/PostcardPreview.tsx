@@ -41,7 +41,7 @@ export function PostcardPreview({ frontData, backData, showFront = true }: Postc
           {/* Caption overlay - only for photo mode */}
           {frontData.mode === 'photo' && frontData.caption && (
             <div className="absolute bottom-6 left-4 right-4">
-              <div className="bg-black/75 rounded-lg py-4 px-6">
+              <div className="bg-black/60 rounded-lg py-2 px-3">
                 <p className="text-white text-center font-bold uppercase text-base sm:text-lg md:text-xl leading-snug">
                   {frontData.caption}
                 </p>
