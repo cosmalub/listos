@@ -49,7 +49,7 @@ serve(async (req) => {
         model: 'gpt-image-1',
         prompt: postcardPrompt,
         size: '1024x1536', // Portrait format for A6 postcard
-        quality: 'high',
+        quality: 'medium',
         output_format: 'png',
         background: 'opaque',
         n: 1
