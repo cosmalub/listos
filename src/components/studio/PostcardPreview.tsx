@@ -1,5 +1,4 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Postcard3D } from '@/components/postcards/Postcard3D';
 import { QrCode, Heart } from 'lucide-react';
@@ -130,18 +129,14 @@ export function PostcardPreview({ frontData, backData, showFront = true }: Postc
   );
 
   return (
-    <Card className="sticky top-4">
-      <CardContent className="pt-6">
-        <div className="max-w-sm mx-auto">
-          <Postcard3D
-            front={frontSide}
-            back={backSide}
-            orientation="portrait"
-            className="w-full"
-            initialTilt={{ x: showFront ? -5 : 175, y: 5 }}
-          />
-        </div>
-      </CardContent>
-    </Card>
+    <div className="w-full h-full">
+      <Postcard3D
+        front={frontSide}
+        back={backSide}
+        orientation="portrait"
+        className="w-full h-full"
+        initialTilt={{ x: showFront ? -5 : 180, y: 5 }}
+      />
+    </div>
   );
 }
