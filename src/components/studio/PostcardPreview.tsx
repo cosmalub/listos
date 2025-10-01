@@ -39,9 +39,9 @@ export function PostcardPreview({ frontData, backData, showFront = true }: Postc
           />
           {/* Caption overlay - only for photo mode */}
           {frontData.mode === 'photo' && frontData.caption && (
-            <div className="absolute bottom-8 left-4 right-4">
-              <div className="bg-black/50 rounded-lg py-2 px-3">
-                <p className="text-white text-center font-bold uppercase text-base sm:text-lg md:text-xl leading-snug">
+            <div className="absolute bottom-10 left-0 right-0 px-4 flex justify-center">
+              <div className="inline-block max-w-[85%] bg-black/40 rounded-lg py-1.5 px-3">
+                <p className="text-white text-center font-bold uppercase leading-snug text-sm">
                   {frontData.caption}
                 </p>
               </div>
