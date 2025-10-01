@@ -413,6 +413,7 @@ export function FrontDesignStep({
                 personalMessage: ''
               }}
               showFront={true}
+              size="large"
             />
           </div>
         </div>

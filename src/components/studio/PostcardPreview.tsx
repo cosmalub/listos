@@ -22,10 +22,11 @@ interface PostcardPreviewProps {
   frontData: FrontDesignData;
   backData: BackDesignData;
   showFront?: boolean;
+  size?: 'large' | 'compact';
 }
 
 
-export function PostcardPreview({ frontData, backData, showFront = true }: PostcardPreviewProps) {
+export function PostcardPreview({ frontData, backData, showFront = true, size = 'large' }: PostcardPreviewProps) {
   // Front side content
   const frontSide = (
     <div className="relative w-full h-full bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl overflow-hidden">
@@ -39,9 +40,12 @@ export function PostcardPreview({ frontData, backData, showFront = true }: Postc
           />
           {/* Caption overlay - only for photo mode */}
           {frontData.mode === 'photo' && frontData.caption && (
-            <div className="absolute bottom-10 left-0 right-0 px-4 flex justify-center">
-              <div className="inline-block max-w-[85%] bg-black/40 rounded-lg py-1.5 px-3">
-                <p className="text-white text-center font-bold uppercase leading-snug text-sm">
+            <div className="absolute bottom-10 left-4 right-4">
+              <div className="bg-black/50 rounded-lg py-2 px-3">
+                <p className={cn(
+                  "text-white text-center font-bold uppercase leading-snug",
+                  size === 'large' ? "text-base sm:text-lg md:text-xl" : "text-xs md:text-sm"
+                )}>
                   {frontData.caption}
                 </p>
               </div>

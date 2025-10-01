@@ -112,6 +112,7 @@ export function PostcardDesign({ lyrics, onComplete, onBack }: PostcardDesignPro
                       frontData={designData.front}
                       backData={designData.back}
                       showFront={true}
+                      size="compact"
                     />
                   </div>
                   <p className="text-xs text-center text-muted-foreground">Лицьова сторона</p>
@@ -124,6 +125,7 @@ export function PostcardDesign({ lyrics, onComplete, onBack }: PostcardDesignPro
                       frontData={designData.front}
                       backData={designData.back}
                       showFront={false}
+                      size="compact"
                     />
                   </div>
                   <p className="text-xs text-center text-muted-foreground">Зворотна сторона</p>
