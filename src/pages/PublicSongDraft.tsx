@@ -20,7 +20,6 @@ const PublicSongDraft = () => {
   const occasion = searchParams.get('occasion') || 'congratulations';
   const recipient = searchParams.get('recipient') || 'Марії';
   const sender = searchParams.get('sender') || 'Олексія';
-  const tone = searchParams.get('tone') || 'friendly';
 
   // Load data from sessionStorage
   useEffect(() => {

@@ -12,7 +12,6 @@ interface PageCaptionData {
   occasion: string;
   recipient: string;
   sender: string;
-  tone: string;
 }
 
 interface PageCaptionStepProps {
@@ -33,14 +32,6 @@ const occasions = [
   { value: 'other', label: 'Інше' }
 ];
 
-const tones = [
-  { value: 'formal', label: 'Офіційний' },
-  { value: 'friendly', label: 'Дружній' },
-  { value: 'romantic', label: 'Романтичний' },
-  { value: 'playful', label: 'Грайливий' },
-  { value: 'heartfelt', label: 'Щирий' },
-  { value: 'humorous', label: 'Гумористичний' }
-];
 
 export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
   lyrics,
@@ -52,8 +43,7 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
   const [formData, setFormData] = useState<PageCaptionData>({
     occasion: '',
     recipient: '',
-    sender: '',
-    tone: ''
+    sender: ''
   });
 
   const handleInputChange = (field: keyof PageCaptionData, value: string) => {
@@ -79,7 +69,7 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
     sessionStorage.setItem('studio-draft-data', JSON.stringify(draftData));
     
     // Navigate to draft page for editing
-    navigate(`/s/draft?occasion=${formData.occasion}&recipient=${encodeURIComponent(formData.recipient)}&sender=${encodeURIComponent(formData.sender)}&tone=${formData.tone}`);
+    navigate(`/s/draft?occasion=${formData.occasion}&recipient=${encodeURIComponent(formData.recipient)}&sender=${encodeURIComponent(formData.sender)}`);
   };
 
   const isFormValid = formData.occasion && formData.recipient && formData.sender;
@@ -128,23 +118,6 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
                 placeholder="Наприклад: Олексія"
               />
             </div>
-          </div>
-
-          {/* Tone */}
-          <div className="space-y-2">
-            <Label htmlFor="tone">Тон повідомлення</Label>
-            <Select value={formData.tone} onValueChange={(value) => handleInputChange('tone', value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Оберіть тон" />
-              </SelectTrigger>
-              <SelectContent>
-                {tones.map((tone) => (
-                  <SelectItem key={tone.value} value={tone.value}>
-                    {tone.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
           </div>
 
         </CardContent>
