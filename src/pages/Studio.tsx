@@ -175,6 +175,16 @@ const Studio = () => {
       }
       if (step >= 3 && !selectedMusicVariant) {
         setSelectedMusicVariant(TEST_DATA.musicVariant);
+        sessionStorage.setItem('studio-selected-music', JSON.stringify(TEST_DATA.musicVariant));
+      }
+      if (step >= 4 && !pageData) {
+        // Auto-fill page data for step 4 (postcard design)
+        const testPageData = {
+          occasion: 'birthday',
+          recipient: 'Марії',
+          sender: 'Олексія'
+        };
+        setPageData(testPageData);
       }
       setCurrentStep(step);
       setShowWelcome(false);
