@@ -98,38 +98,22 @@ export function PostcardDesign({ lyrics, onComplete, onBack }: PostcardDesignPro
       ) : (
         /* Back design with dual preview at top */
         <div className="space-y-6">
-          {/* Dual preview at top */}
+          {/* Single interactive preview */}
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium">Превью листівки</CardTitle>
+              <p className="text-xs text-muted-foreground mt-2">
+                💡 Двічі клікніть на листівку, щоб перевернути і побачити лицьову сторону
+              </p>
             </CardHeader>
-            <CardContent className="p-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-lg mx-auto">
-                {/* Front preview */}
-                <div className="space-y-2">
-                  <div className="aspect-[3/4]">
-                    <PostcardPreview
-                      frontData={designData.front}
-                      backData={designData.back}
-                      showFront={true}
-                      size="compact"
-                    />
-                  </div>
-                  <p className="text-xs text-center text-muted-foreground">Лицьова сторона</p>
-                </div>
-                
-                {/* Back preview */}
-                <div className="space-y-2">
-                  <div className="aspect-[3/4]">
-                    <PostcardPreview
-                      frontData={designData.front}
-                      backData={designData.back}
-                      showFront={false}
-                      size="compact"
-                    />
-                  </div>
-                  <p className="text-xs text-center text-muted-foreground">Зворотна сторона</p>
-                </div>
+            <CardContent className="p-6">
+              <div className="max-w-md mx-auto">
+                <PostcardPreview
+                  frontData={designData.front}
+                  backData={designData.back}
+                  showFront={false}
+                  size="large"
+                />
               </div>
             </CardContent>
           </Card>
