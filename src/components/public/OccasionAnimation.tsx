@@ -168,7 +168,7 @@ const runBirthdayAnimation = (confetti: any) => {
 
 // Congratulations: Fireworks sequence
 const runCongratulationsAnimation = (confetti: any) => {
-  const duration = 3000;
+  const duration = 7000;
   const animationEnd = Date.now() + duration;
   const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
 
@@ -274,7 +274,7 @@ const runThanksAnimation = (confetti: any) => {
 const runFriendshipAnimation = (confetti: any) => {
   const colors = ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3'];
   
-  const end = Date.now() + (2 * 1000);
+  const end = Date.now() + (7 * 1000);
 
   (function frame() {
     confetti({
@@ -300,7 +300,7 @@ const runFriendshipAnimation = (confetti: any) => {
 
 // Holiday: Snow or fireworks
 const runHolidayAnimation = (confetti: any) => {
-  const duration = 3000;
+  const duration = 7000;
   const animationEnd = Date.now() + duration;
 
   (function frame() {

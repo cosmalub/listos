@@ -485,33 +485,33 @@ All colors MUST be HSL.
 
 /* Animation classes */
 .animate-birthday-flash {
-  animation: birthday-flash 3s ease-out forwards;
+  animation: birthday-flash 7s ease-out forwards;
 }
 
 .animate-congratulations-burst {
-  animation: congratulations-burst 3s ease-in-out forwards;
+  animation: congratulations-burst 7s ease-in-out forwards;
 }
 
 .animate-love-pulse {
-  animation: love-pulse 3s ease-in-out forwards;
+  animation: love-pulse 7s ease-in-out forwards;
 }
 
 .animate-apology-wave {
-  animation: apology-wave 3s ease-in-out forwards;
+  animation: apology-wave 7s ease-in-out forwards;
 }
 
 .animate-thanks-glow {
-  animation: thanks-glow 3s ease-out forwards;
+  animation: thanks-glow 7s ease-out forwards;
 }
 
 .animate-friendship-rainbow {
-  animation: friendship-rainbow 3s linear forwards;
+  animation: friendship-rainbow 7s linear forwards;
 }
 
 .animate-holiday-sparkle {
-  animation: holiday-sparkle 3s ease-in-out forwards;
+  animation: holiday-sparkle 7s ease-in-out forwards;
 }
 
 .animate-default-shimmer {
-  animation: default-shimmer 3s ease-in-out forwards;
+  animation: default-shimmer 7s ease-in-out forwards;
 }

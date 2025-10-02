@@ -83,7 +83,7 @@ const PublicSongDraft = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] via-white to-white">
       <OccasionBackground occasion={occasion} />
-      <OccasionAnimation occasion={occasion} duration={3000} />
+      <OccasionAnimation occasion={occasion} duration={7000} />
       
       {/* Header */}
       <Header centerTitle="Студія створення листівки" hideNav showMenu={false} />
