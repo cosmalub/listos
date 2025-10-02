@@ -4,6 +4,7 @@ import { Postcard3D } from '@/components/postcards/Postcard3D';
 import { QrCode, Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { StyleKey } from '@/lib/postcard-styles';
+import QRCode from 'react-qr-code';
 
 interface FrontDesignData {
   mode: 'photo' | 'ai-generation';
@@ -97,11 +98,16 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
           <div className="flex justify-center pb-4">
             <div 
               className={cn(
-                "bg-white rounded-lg flex items-center justify-center p-2",
+                "bg-white rounded-lg flex items-center justify-center p-3",
                 size === 'large' ? "w-32 h-32" : "w-24 h-24"
               )}
             >
-              <QrCode className="w-full h-full text-gray-900" />
+              <QRCode
+                value="https://listos.app/postcard/sample"
+                size={size === 'large' ? 104 : 72}
+                level="M"
+                className="w-full h-full"
+              />
             </div>
           </div>
         </div>
