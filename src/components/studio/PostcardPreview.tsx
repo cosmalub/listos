@@ -139,7 +139,7 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
         back={backSide}
         orientation="portrait"
         className="w-full h-full"
-        initialTilt={{ x: showFront ? -5 : 180, y: 5 }}
+        initialTilt={{ x: -5, y: showFront ? 5 : 185 }}
       />
     </div>
   );

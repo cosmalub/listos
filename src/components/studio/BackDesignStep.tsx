@@ -7,6 +7,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ArrowLeft, ArrowRight, RefreshCw } from 'lucide-react';
 import type { StyleKey } from '@/lib/postcard-styles';
 import { getStyleColors } from '@/lib/postcard-styles';
+import { extractDominantColors as extractColors, FALLBACK_COLORS } from '@/lib/color-extractor';
 
 interface FrontDesignData {
   mode: 'photo' | 'ai-generation';
@@ -31,15 +32,26 @@ interface BackDesignStepProps {
 }
 
 // Helper function to extract dominant colors from front design
-function extractDominantColors(frontDesign: FrontDesignData): string[] {
+async function extractDominantColorsFromImage(frontDesign: FrontDesignData): Promise<string[]> {
+  // Если есть изображение, извлекаем реальные цвета
+  if (frontDesign.imageUrl) {
+    try {
+      const colors = await extractColors(frontDesign.imageUrl, 3);
+      return colors;
+    } catch (error) {
+      console.error('Failed to extract colors from image:', error);
+      // Fallback на цвета стиля или дефолтные
+    }
+  }
+  
+  // Если выбран стиль AI-генерации, используем цвета стиля
   if (frontDesign.style) {
-    // Get colors from style definition and take first 3
     const styleColors = getStyleColors(frontDesign.style);
     return styleColors.slice(0, 3);
   }
   
-  // Fallback colors for photo upload mode
-  return ['#6A5ACD', '#E6E6FA', '#DDA0DD'];
+  // Fallback цвета
+  return FALLBACK_COLORS;
 }
 
 // Helper function to generate personal message using AI
@@ -77,14 +89,32 @@ async function generatePersonalMessage(caption: string, lyrics: string): Promise
 export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, onBack, onDataChange }: BackDesignStepProps) {
   const [backData, setBackData] = useState<BackDesignData>(initialData);
   const [isGeneratingMessage, setIsGeneratingMessage] = useState(false);
+  const [dominantColors, setDominantColors] = useState<string[]>(FALLBACK_COLORS);
+  const [isLoadingColors, setIsLoadingColors] = useState(true);
 
   // Update parent component with live changes
   const updateBackData = (newData: BackDesignData) => {
     setBackData(newData);
     onDataChange?.(newData);
   };
-  
-  const dominantColors = extractDominantColors(frontDesign);
+
+  // Extract colors from image on mount
+  useEffect(() => {
+    const loadColors = async () => {
+      setIsLoadingColors(true);
+      try {
+        const colors = await extractDominantColorsFromImage(frontDesign);
+        setDominantColors(colors);
+      } catch (error) {
+        console.error('Failed to load colors:', error);
+        setDominantColors(FALLBACK_COLORS);
+      } finally {
+        setIsLoadingColors(false);
+      }
+    };
+    
+    loadColors();
+  }, [frontDesign.imageUrl]);
 
   // Auto-generate personal message on mount if not already set
   useEffect(() => {
@@ -138,12 +168,20 @@ export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, o
           </p>
         </CardHeader>
         <CardContent>
-          <RadioGroup
-            value={backData.selectedColor}
-            onValueChange={(value) => updateBackData({ ...backData, selectedColor: value })}
-          >
-            <div className="grid grid-cols-3 gap-2 sm:gap-4">
-              {dominantColors.map((color, index) => (
+          {isLoadingColors ? (
+            <div className="flex items-center justify-center py-8">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <RefreshCw className="h-4 w-4 animate-spin" />
+                <span className="text-sm">Аналізуємо кольори зображення...</span>
+              </div>
+            </div>
+          ) : (
+            <RadioGroup
+              value={backData.selectedColor}
+              onValueChange={(value) => updateBackData({ ...backData, selectedColor: value })}
+            >
+              <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                {dominantColors.map((color, index) => (
                 <div key={color} className="relative">
                   <RadioGroupItem value={color} id={color} className="sr-only" />
                   <Label
@@ -171,6 +209,7 @@ export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, o
               ))}
             </div>
           </RadioGroup>
+          )}
         </CardContent>
       </Card>
 
