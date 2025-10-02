@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Play, Pause, CheckCircle, Music } from 'lucide-react';
 import { OccasionBackground } from '@/components/public/OccasionBackground';
+import { OccasionAnimation } from '@/components/public/OccasionAnimation';
 import { Header } from '@/components/sections/header';
 import { StepsHeader } from '@/components/studio/StepsHeader';
 import { Footer } from '@/components/sections/footer';
@@ -82,6 +83,7 @@ const PublicSongDraft = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] via-white to-white">
       <OccasionBackground occasion={occasion} />
+      <OccasionAnimation occasion={occasion} duration={3000} />
       
       {/* Header */}
       <Header centerTitle="Студія створення листівки" hideNav showMenu={false} />
