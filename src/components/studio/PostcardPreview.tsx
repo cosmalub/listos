@@ -72,49 +72,40 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
     <div className="relative w-full h-full bg-background border rounded-xl overflow-hidden">
       {backData.selectedColor ? (
         <div 
-          className="p-6 h-full flex flex-col"
-          style={{ backgroundColor: `${backData.selectedColor}10` }}
+          className="p-8 h-full flex flex-col justify-between"
+          style={{ backgroundColor: backData.selectedColor }}
         >
-          {/* Header */}
-          <div className="text-center mb-6">
-            <h3 
-              className="text-lg font-semibold mb-2"
-              style={{ color: backData.selectedColor }}
-            >
-              Персональна листівка
-            </h3>
-            <div 
-              className="w-12 h-0.5 mx-auto"
-              style={{ backgroundColor: backData.selectedColor }}
-            ></div>
-          </div>
-
-          {/* Personal message */}
-          <div className="flex-1 flex items-center justify-center">
+          {/* Personal message - centered in upper portion */}
+          <div className="flex-1 flex items-center justify-center px-4 pt-8">
             {backData.personalMessage ? (
-              <div className="text-center max-w-xs">
-                <p className="text-sm leading-relaxed text-foreground font-sans">
+              <div className="text-center max-w-md">
+                <p className={cn(
+                  "leading-relaxed text-white font-bold uppercase",
+                  size === 'large' ? "text-base sm:text-lg" : "text-sm"
+                )}>
                   {backData.personalMessage}
                 </p>
               </div>
             ) : (
-              <p className="text-muted-foreground text-sm italic">
+              <p className="text-white/70 text-base italic">
                 Ваше особисте повідомлення
               </p>
             )}
           </div>
 
-          {/* QR Code - always at bottom */}
-          <div className="flex flex-col items-center space-y-2">
+          {/* QR Code - large, at bottom */}
+          <div className="flex flex-col items-center space-y-3 pb-8">
             <div 
-              className="w-12 h-12 rounded flex items-center justify-center"
-              style={{ backgroundColor: backData.selectedColor }}
+              className={cn(
+                "bg-white rounded-lg flex items-center justify-center p-3",
+                size === 'large' ? "w-40 h-40 sm:w-48 sm:h-48" : "w-32 h-32"
+              )}
             >
-              <QrCode className="w-6 h-6 text-white" />
+              <QrCode className={cn(
+                "text-gray-800",
+                size === 'large' ? "w-full h-full" : "w-24 h-24"
+              )} />
             </div>
-            <p className="text-xs text-muted-foreground text-center">
-              Скануйте QR-код для прослуховування пісні
-            </p>
           </div>
         </div>
       ) : (
