@@ -233,12 +233,12 @@ export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, o
                 value={backData.personalMessage}
                 onChange={(e) => updateBackData({ ...backData, personalMessage: e.target.value })}
                 placeholder="Напишіть особливе повідомлення для отримувача..."
-                rows={4}
-                maxLength={500}
+                rows={3}
+                maxLength={250}
               />
               <div className="flex items-center justify-between mt-1">
                 <p className="text-sm text-muted-foreground">
-                  {backData.personalMessage.length}/500 символів
+                  {backData.personalMessage.length}/250 символів
                 </p>
                 <Button
                   variant="outline"
