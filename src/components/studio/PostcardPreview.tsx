@@ -55,10 +55,10 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
             alt="Postcard design"
             className="w-full h-full object-cover"
           />
-          {/* Caption overlay - only for photo mode */}
-          {frontData.mode === 'photo' && frontData.caption && (
-            <div className="absolute bottom-10 left-4 right-4">
-              <div className="bg-black/50 rounded-lg py-2 px-3">
+          {/* Caption overlay - for both modes */}
+          {frontData.caption && (
+            <div className="absolute top-6 left-4 right-4">
+              <div className="bg-black/60 backdrop-blur-sm rounded-lg py-3 px-4">
                 <p className={cn(
                   "text-white text-center font-bold uppercase leading-snug",
                   size === 'large' ? "text-base sm:text-lg md:text-xl" : "text-sm md:text-base"
