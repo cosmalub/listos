@@ -26,6 +26,22 @@ interface PostcardPreviewProps {
   size?: 'large' | 'compact';
 }
 
+// Helper function to determine if color is light or dark
+function isLightColor(color: string): boolean {
+  // Remove # if present
+  const hex = color.replace('#', '');
+  
+  // Convert to RGB
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+  
+  // Calculate relative luminance
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  
+  // Return true if light (> 0.5)
+  return luminance > 0.5;
+}
 
 export function PostcardPreview({ frontData, backData, showFront = true, size = 'large' }: PostcardPreviewProps) {
   // Front side content
@@ -81,14 +97,18 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
             {backData.personalMessage ? (
               <div className="text-center max-w-sm">
                 <p className={cn(
-                  "text-white leading-snug",
-                  size === 'large' ? "text-sm" : "text-xs"
+                  "leading-snug font-medium",
+                  isLightColor(backData.selectedColor) ? "text-gray-900" : "text-white",
+                  size === 'large' ? "text-base" : "text-sm"
                 )}>
                   {backData.personalMessage}
                 </p>
               </div>
             ) : (
-              <p className="text-white/70 text-sm italic">
+              <p className={cn(
+                "text-sm italic",
+                isLightColor(backData.selectedColor) ? "text-gray-900/70" : "text-white/70"
+              )}>
                 Ваше особисте повідомлення
               </p>
             )}
