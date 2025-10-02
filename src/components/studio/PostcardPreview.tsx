@@ -45,7 +45,7 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
               <div className="bg-black/50 rounded-lg py-2 px-3">
                 <p className={cn(
                   "text-white text-center font-bold uppercase leading-snug",
-                  size === 'large' ? "text-base sm:text-lg md:text-xl" : "text-xs md:text-sm"
+                  size === 'large' ? "text-base sm:text-lg md:text-xl" : "text-sm md:text-base"
                 )}>
                   {frontData.caption}
                 </p>
