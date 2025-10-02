@@ -2,19 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Play, Pause, CheckCircle, Sparkles, Music } from 'lucide-react';
+import { Play, Pause, CheckCircle, Music } from 'lucide-react';
 import { OccasionBackground } from '@/components/public/OccasionBackground';
 import { Header } from '@/components/sections/header';
 import { StepsHeader } from '@/components/studio/StepsHeader';
 import { Footer } from '@/components/sections/footer';
-import { cn } from '@/lib/utils';
 
 const PublicSongDraft = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [message, setMessage] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const [draftData, setDraftData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -61,31 +58,7 @@ const PublicSongDraft = () => {
     lyrics: lyrics
   };
 
-  useEffect(() => {
-    // Generate default message
-    const occasionMap: Record<string, string> = {
-      birthday: 'дня народження',
-      congratulations: 'вітання',
-      thanks: 'подяки',
-      apology: 'вибачення',
-      love: 'кохання',
-      friendship: 'дружби',
-      holiday: 'свята',
-      other: 'особливої нагоди'
-    };
-
-    const defaultMessage = `Дорог${recipient.endsWith('ї') || recipient.endsWith('і') ? 'а' : 'ий'} ${recipient}! 
-
-Ця пісня створена спеціально для тебе з нагоди ${occasionMap[occasion] || occasion}. Нехай вона принесе тобі радість та натхнення.
-
-З любов'ю, ${sender} 💫`;
-
-    setMessage(defaultMessage);
-  }, [occasion, recipient, sender]);
-
   const handleApprove = () => {
-    // Save the message and redirect to next step
-    console.log('Final message:', message);
     alert('Сторінка затверджена та опублікована! Переходимо до наступного кроку.');
     navigate('/studio?step=4');
   };
@@ -119,28 +92,6 @@ const PublicSongDraft = () => {
       {/* Main content */}
       <main className="container mx-auto px-4 py-6 sm:py-8 min-h-[calc(100vh-200px)] relative z-10">
         <div className="max-w-2xl mx-auto space-y-4 sm:space-y-6">
-          {/* Caption from front design - highlighted section */}
-          {caption && (
-            <Card className="bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 backdrop-blur-sm border-2 border-primary/20 shadow-lg">
-              <CardContent className="p-6 sm:p-8">
-                <div className="flex items-start gap-3 mb-4">
-                  <div className="p-2 bg-primary/20 rounded-full">
-                    <Sparkles className="w-5 h-5 text-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-sm font-medium text-muted-foreground mb-2">Підпис з листівки</h3>
-                    <p className={cn(
-                      "font-bold text-foreground leading-relaxed",
-                      "text-xl sm:text-2xl"
-                    )}>
-                      {caption}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
           {/* Song Card */}
           <Card className="bg-white/95 backdrop-blur-sm shadow-xl">
             <CardHeader className="text-center pb-4">
@@ -160,7 +111,7 @@ const PublicSongDraft = () => {
                 </div>
                 <div className="flex items-center justify-center gap-2">
                   <Music className="w-5 h-5 text-primary" />
-                  <CardTitle className="text-xl sm:text-2xl">{song.title}</CardTitle>
+                  <CardTitle className="text-xl sm:text-2xl">{caption || song.title}</CardTitle>
                 </div>
                 <p className="text-sm text-muted-foreground">Для {recipient} від {sender}</p>
               </div>
@@ -191,37 +142,12 @@ const PublicSongDraft = () => {
 
               {/* Song Lyrics */}
               <div className="space-y-3">
-                <h3 className="font-semibold text-base sm:text-lg flex items-center gap-2">
-                  <Music className="w-4 h-4 text-primary" />
-                  Текст пісні
-                </h3>
                 <div className="bg-gradient-to-br from-muted/40 to-muted/20 rounded-xl p-4 sm:p-6 border border-border/30">
                   <div className="text-sm sm:text-base whitespace-pre-line leading-relaxed text-foreground/90">
                     {song.lyrics}
                   </div>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Message Editor */}
-          <Card className="bg-white/95 backdrop-blur-sm shadow-xl">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg sm:text-xl">Особисте повідомлення</CardTitle>
-              <p className="text-sm text-muted-foreground">
-                Відредагуйте повідомлення, яке побачить {recipient}
-              </p>
-            </CardHeader>
-            <CardContent className="px-4 sm:px-6">
-              <Textarea
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                className="min-h-[120px] sm:min-h-[140px] resize-none text-sm sm:text-base"
-                maxLength={300}
-              />
-              <p className="text-xs text-muted-foreground mt-2">
-                {message.length}/300 символів
-              </p>
             </CardContent>
           </Card>
         </div>
