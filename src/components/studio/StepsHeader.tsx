@@ -4,8 +4,8 @@ import { CheckCircle } from 'lucide-react';
 const steps = [
   { id: 1, title: 'Створення слів', description: 'Створюємо слова для пісні' },
   { id: 2, title: 'Генерація музики', description: 'Генеруємо 2 варіанти на основі тексту' },
-  { id: 3, title: 'Дизайн листівки', description: 'Обираємо дизайн та стиль листівки' },
-  { id: 4, title: 'Сторінка з піснею', description: 'Створюємо персональну сторінку' },
+  { id: 3, title: 'Сторінка з піснею', description: 'Створюємо персональну сторінку' },
+  { id: 4, title: 'Дизайн листівки', description: 'Обираємо дизайн листівки з QR-кодом' },
 ];
 
 interface StepsHeaderProps {

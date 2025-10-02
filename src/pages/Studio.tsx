@@ -23,8 +23,8 @@ import { toast } from 'sonner';
 const steps = [
   { id: 1, title: 'Створення слів', description: 'Створюємо слова для пісні' },
   { id: 2, title: 'Генерація музики', description: 'Генеруємо 2 варіанти на основі тексту' },
-  { id: 3, title: 'Дизайн листівки', description: 'Обираємо дизайн та стиль листівки' },
-  { id: 4, title: 'Сторінка з піснею', description: 'Створюємо персональну сторінку' },
+  { id: 3, title: 'Сторінка з піснею', description: 'Створюємо персональну сторінку' },
+  { id: 4, title: 'Дизайн листівки', description: 'Обираємо дизайн листівки з QR-кодом' },
 ];
 
 // Test data for dev mode
@@ -134,34 +134,16 @@ const Studio = () => {
     setSelectedMusicVariant(variant);
     // Save selected music to sessionStorage for draft page
     sessionStorage.setItem('studio-selected-music', JSON.stringify(variant));
-    // Go directly to postcard design (step 3)
+    // Go to page creation (step 3)
     setCurrentStep(3);
     navigate('/studio?step=3');
-    
-    // Do not save yet; saving will occur after final confirmation (step 4)
   };
 
   const handlePageCaptionComplete = async (data: any) => {
     setPageData(data);
-    // Save selection after final confirmation
-    try {
-      const { data: saveData, error } = await supabase.functions.invoke('save-music-selection', {
-        body: {
-          lyrics,
-          selectedVariant: selectedMusicVariant
-        }
-      });
-      if (error) {
-        console.error('Failed to save music selection:', error);
-        toast.error('Не вдалося зберегти вибір музики');
-      } else {
-        console.log('Music selection saved successfully:', saveData);
-      }
-    } catch (error) {
-      console.error('Error saving music selection:', error);
-      toast.error('Помилка при збереженні вибору музики');
-    }
+    // Page created, now go to postcard design (step 4)
     setCurrentStep(4);
+    navigate('/studio?step=4');
   };
 
   const handleRequestSpecialist = () => {
@@ -282,25 +264,24 @@ const Studio = () => {
         );
       case 3:
         return (
-          <PostcardDesign
-            lyrics={lyrics}
-            onComplete={(postcardDesignData) => {
-              // Save design data and move to next step
-              console.log('Postcard design completed:', postcardDesignData);
-              setDesignData(postcardDesignData);
-              setCurrentStep(4);
-              navigate('/studio?step=4');
-            }}
-            onBack={() => setCurrentStep(2)}
-          />
-        );
-      case 4:
-        return (
           <PageCaptionStep
             lyrics={lyrics}
             musicVariant={selectedMusicVariant}
             designData={designData}
             onComplete={handlePageCaptionComplete}
+          />
+        );
+      case 4:
+        return (
+          <PostcardDesign
+            lyrics={lyrics}
+            onComplete={(postcardDesignData) => {
+              // Save design data - final step
+              console.log('Postcard design completed:', postcardDesignData);
+              setDesignData(postcardDesignData);
+              toast.success('Листівка створена успішно!');
+            }}
+            onBack={() => setCurrentStep(3)}
           />
         );
       default:
