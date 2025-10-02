@@ -105,6 +105,7 @@ export function FrontDesignStep({
   const [isUploading, setIsUploading] = useState(false);
   const [isGeneratingCaption, setIsGeneratingCaption] = useState(false);
   const [isGeneratingDescription, setIsGeneratingDescription] = useState(false);
+  const [currentStep, setCurrentStep] = useState<'caption' | 'source' | 'design'>('caption');
   const [currentState, setCurrentState] = useState<ComponentState>('editing');
   const [selectedSource, setSelectedSource] = useState<'ai-generation' | 'photo'>('ai-generation');
   const [imageDescription, setImageDescription] = useState('');
@@ -112,9 +113,9 @@ export function FrontDesignStep({
   const [showVariantDescription, setShowVariantDescription] = useState(false);
   const [newVariantDescription, setNewVariantDescription] = useState('');
 
-  // Auto-generate caption and description when AI generation is selected
+  // Auto-generate caption on mount
   useEffect(() => {
-    if (lyrics && selectedSource === 'ai-generation' && !designData.caption && !isGeneratingCaption) {
+    if (lyrics && !designData.caption && !isGeneratingCaption && currentStep === 'caption') {
       setIsGeneratingCaption(true);
       generateAutomaticCaption(lyrics, 'medium').then(caption => {
         setDesignData(prev => ({
@@ -124,22 +125,22 @@ export function FrontDesignStep({
         setIsGeneratingCaption(false);
       });
     }
-  }, [lyrics, selectedSource]);
+  }, [lyrics, currentStep]);
 
-  // Auto-generate image description after caption is ready
+  // Auto-generate image description when moving to design step with AI mode
   useEffect(() => {
-    if (lyrics && designData.caption && !imageDescription && selectedSource === 'ai-generation' && !isGeneratingDescription) {
+    if (lyrics && designData.caption && !imageDescription && selectedSource === 'ai-generation' && currentStep === 'design' && !isGeneratingDescription) {
       generateImageDescription();
     }
-  }, [lyrics, designData.caption, selectedSource]);
+  }, [currentStep, selectedSource, designData.caption]);
 
   // Switch to preview only when explicitly triggered
   useEffect(() => {
-    if (designData.imageUrl && designData.caption && selectedSource === 'ai-generation' && isGenerating === false) {
+    if (designData.imageUrl && designData.caption && selectedSource === 'ai-generation' && isGenerating === false && currentStep === 'design') {
       // Auto-switch to preview after AI generation completes
       setCurrentState('preview');
     }
-  }, [designData.imageUrl, designData.caption, selectedSource, isGenerating]);
+  }, [designData.imageUrl, designData.caption, selectedSource, isGenerating, currentStep]);
 
   const generateImageDescription = async () => {
     if (!lyrics || !designData.caption) return;
@@ -454,208 +455,289 @@ export function FrontDesignStep({
     );
   }
 
-  // Editing mode - simplified interface
+  // Editing mode with 3-step flow
   return (
     <div className="space-y-6">
-      {/* 1. Source Selection */}
-      <div className="space-y-4 border-2 border-dashed border-muted-foreground/20 rounded-lg p-6">
-        <h2 className="text-lg font-semibold">1. Вибір основи</h2>
-        <p className="text-sm text-muted-foreground">
-          Лицьова частина листівки може бути створена на основі вашого фото або згенерованого дизайну під вашу пісню
-        </p>
-        
-        <div className="flex flex-col sm:flex-row gap-3">
-          <Button 
-            variant={selectedSource === 'photo' ? 'default' : 'outline'}
-            onClick={() => setSelectedSource('photo')}
-            className="flex-1 min-h-[44px]"
-          >
-            <span className="sm:hidden">Фото</span>
-            <span className="hidden sm:inline">Завантажити фото</span>
-          </Button>
-          <span className="self-center text-muted-foreground text-sm">або</span>
-          <Button 
-            variant={selectedSource === 'ai-generation' ? 'default' : 'outline'}
-            onClick={() => setSelectedSource('ai-generation')}
-            className="flex-1 min-h-[44px]"
-          >
-            <span className="sm:hidden">Дизайн</span>
-            <span className="hidden sm:inline">Згенерувати дизайн</span>
-          </Button>
+      {/* Progress indicator */}
+      <div className="flex items-center justify-center gap-2 mb-6">
+        <div className={cn(
+          "flex items-center justify-center w-8 h-8 rounded-full text-xs font-medium",
+          currentStep === 'caption' ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+        )}>
+          1
         </div>
+        <div className={cn("h-0.5 w-12", currentStep !== 'caption' ? "bg-primary" : "bg-muted")} />
+        <div className={cn(
+          "flex items-center justify-center w-8 h-8 rounded-full text-xs font-medium",
+          currentStep === 'source' ? "bg-primary text-primary-foreground" : currentStep === 'design' ? "bg-muted text-muted-foreground" : "bg-muted text-muted-foreground"
+        )}>
+          2
+        </div>
+        <div className={cn("h-0.5 w-12", currentStep === 'design' ? "bg-primary" : "bg-muted")} />
+        <div className={cn(
+          "flex items-center justify-center w-8 h-8 rounded-full text-xs font-medium",
+          currentStep === 'design' ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+        )}>
+          3
+        </div>
+      </div>
 
-        {selectedSource === 'ai-generation' && (
-          <div className="space-y-4 mt-6">
+      {/* Step 1: Caption */}
+      {currentStep === 'caption' && (
+        <div className="space-y-6">
+          <div className="space-y-4 border-2 border-dashed border-muted-foreground/20 rounded-lg p-6">
+            <h2 className="text-lg font-semibold">Крок 1: Підпис для листівки</h2>
+            <p className="text-sm text-muted-foreground">
+              Підпис буде розміщено на лицьовій частині листівки. Він підходить як для фото, так і для згенерованого дизайну.
+            </p>
+            
             <Textarea 
-              placeholder={isGeneratingDescription ? "⏳ Генерую опис дизайну..." : imageDescription ? "Опис для генерації зображення" : "Опис для генерації зображення буде створено автоматично..."}
-              value={imageDescription}
-              onChange={(e) => setImageDescription(e.target.value)}
-              className="min-h-[120px] text-sm resize-none"
-              disabled={isGeneratingDescription}
+              value={designData.caption} 
+              onChange={e => setDesignData(prev => ({
+                ...prev,
+                caption: e.target.value
+              }))} 
+              placeholder={isGeneratingCaption ? "⏳ Генерую підпис..." : "Введіть підпис для листівки..."}
+              className="min-h-[100px] text-sm resize-none" 
+              disabled={isGeneratingCaption} 
             />
             
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                <span className="text-xs text-muted-foreground">
-                  {imageDescription?.split(' ').filter(word => word.length > 0).length || 0}/80 слів
-                </span>
-                {designData.style && (
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <button className="flex items-center gap-1 text-xs px-2 py-1 bg-primary/10 text-primary rounded cursor-pointer hover:bg-primary/20 transition-colors w-fit">
-                        <span>
-                          Стиль: {designData.style === 'joyful' ? 'Радісний' : designData.style === 'gentle' ? 'Ніжний' : 'Універсальний'}
-                        </span>
-                        <Info className="w-3 h-3" />
-                      </button>
-                    </PopoverTrigger>
-                    <PopoverContent side="top" className="p-0 w-auto">
-                      <StyleTooltip style={designData.style} />
-                    </PopoverContent>
-                  </Popover>
-                )}
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={generateImageDescription}
-                disabled={isGeneratingDescription || !lyrics || !designData.caption}
+              <span className="text-xs text-muted-foreground">
+                {designData.caption ? `${designData.caption.length}/80 символів` : '0/80 символів'}
+              </span>
+              <Button 
+                variant="ghost" 
+                onClick={async () => {
+                  setIsGeneratingCaption(true);
+                  try {
+                    const caption = await generateAutomaticCaption(lyrics, 'short');
+                    setDesignData(prev => ({
+                      ...prev,
+                      caption
+                    }));
+                    toast.success('Підпис згенеровано!');
+                  } catch (error) {
+                    toast.error('Помилка при генерації підпису');
+                  } finally {
+                    setIsGeneratingCaption(false);
+                  }
+                }} 
+                disabled={isGeneratingCaption || !lyrics} 
                 className="h-8 px-3 w-full sm:w-auto"
               >
-                {isGeneratingDescription ? (
+                {isGeneratingCaption ? (
                   <>
                     <Loader2 className="w-3 h-3 mr-1 animate-spin" />
-                    <span className="sm:hidden">Генерую...</span>
-                    <span className="hidden sm:inline">Генерую...</span>
+                    Генерую...
                   </>
                 ) : (
                   <>
-                    <RotateCcw className="w-3 h-3 mr-1" />
-                    <span className="sm:hidden">Інший опис</span>
-                    <span className="hidden sm:inline">Згенерувати інший опис</span>
+                    <Wand2 className="w-3 h-3 mr-1" />
+                    Регенерувати підпис
                   </>
                 )}
               </Button>
             </div>
-
           </div>
-        )}
 
-        {selectedSource === 'photo' && (
-          <div className="mt-6">
-            <ImageUploader 
-              onImageUpload={handleImageUpload} 
-              isUploading={isUploading} 
-            />
-          </div>
-        )}
-      </div>
-
-      {/* 2. Caption for Postcard (simplified) */}
-      <div className="space-y-4 border-2 border-dashed border-muted-foreground/20 rounded-lg p-6">
-        <h2 className="text-lg font-semibold">2. Підпис для листівки</h2>
-        <p className="text-sm text-muted-foreground">
-          Підпис буде розміщено на лицьовій частині листівки
-        </p>
-        
-        <Textarea 
-          value={designData.caption} 
-          onChange={e => setDesignData(prev => ({
-            ...prev,
-            caption: e.target.value
-          }))} 
-          placeholder={isGeneratingCaption ? "⏳ Генерую підпис..." : designData.caption ? "Підпис для листівки" : "Введіть підпис для листівки..."}
-          className="min-h-[80px] text-sm resize-none" 
-          disabled={isGeneratingCaption} 
-        />
-        
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <span className="text-xs text-muted-foreground">
-            {designData.caption ? `${designData.caption.length}/80 символів` : '0/80 символів'}
-          </span>
           <Button 
-            variant="ghost" 
-            onClick={async () => {
-              setIsGeneratingCaption(true);
-              try {
-                const caption = await generateAutomaticCaption(lyrics, 'short');
-                setDesignData(prev => ({
-                  ...prev,
-                  caption
-                }));
-                toast.success('Підпис згенеровано!');
-              } catch (error) {
-                toast.error('Помилка при генерації підпису');
-              } finally {
-                setIsGeneratingCaption(false);
-              }
-            }} 
-            disabled={isGeneratingCaption || !lyrics} 
-            className="h-8 px-3 w-full sm:w-auto"
-          >
-            {isGeneratingCaption ? (
-              <>
-                <Loader2 className="w-3 h-3 mr-1 animate-spin" />
-                <span className="sm:hidden">Генерую...</span>
-                <span className="hidden sm:inline">Генерую...</span>
-              </>
-            ) : (
-              <>
-                <Wand2 className="w-3 h-3 mr-1" />
-                <span className="sm:hidden">Ще варіанти</span>
-                <span className="hidden sm:inline">Більше варіантів</span>
-              </>
-            )}
-          </Button>
-        </div>
-      </div>
-
-      {/* 3. Action Button */}
-      {(designData.caption && selectedSource === 'ai-generation' && imageDescription) && (
-        <div className="space-y-4 border-2 border-dashed border-muted-foreground/20 rounded-lg p-6">
-          <h2 className="text-lg font-semibold">3. Створення дизайну</h2>
-          <p className="text-sm text-muted-foreground">
-            Створіть дизайн на основі опису та підпису
-          </p>
-          
-          <Button 
-            onClick={handleGenerateImage} 
-            disabled={!designData.style || !designData.prompt || isGenerating} 
+            onClick={() => setCurrentStep('source')}
+            disabled={!designData.caption}
             className="w-full"
             size="lg"
           >
-            {isGenerating ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Створюю дизайн...
-              </>
-            ) : (
-              <>
-                <Wand2 className="w-4 h-4 mr-2" />
-                Створити дизайн
-              </>
-            )}
+            Далі
+            <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </div>
       )}
 
-      {(designData.imageUrl && designData.caption && selectedSource === 'photo') && (
-        <div className="space-y-4 border-2 border-dashed border-muted-foreground/20 rounded-lg p-6">
-          <h2 className="text-lg font-semibold">3. Створення дизайну</h2>
-          <p className="text-sm text-muted-foreground">
-            Створіть лицьову частину листівки з вашим фото та підписом
-          </p>
-          
-          <Button 
-            onClick={() => {
-              setCurrentState('preview');
-            }}
-            className="w-full"
-            size="lg"
-          >
-            <Wand2 className="w-4 h-4 mr-2" />
-            Створити лицьову частину листівки
-          </Button>
+      {/* Step 2: Source Selection */}
+      {currentStep === 'source' && (
+        <div className="space-y-6">
+          {/* Show caption at top */}
+          {designData.caption && (
+            <div className="p-4 bg-muted/50 rounded-lg border">
+              <p className="text-xs text-muted-foreground mb-1">Підпис:</p>
+              <p className="text-sm font-medium">{designData.caption}</p>
+            </div>
+          )}
+
+          <div className="space-y-4 border-2 border-dashed border-muted-foreground/20 rounded-lg p-6">
+            <h2 className="text-lg font-semibold">Крок 2: Вибір основи</h2>
+            <p className="text-sm text-muted-foreground">
+              Лицьова частина листівки може бути створена на основі вашого фото або згенерованого дизайну під вашу пісню
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button 
+                variant={selectedSource === 'photo' ? 'default' : 'outline'}
+                onClick={() => setSelectedSource('photo')}
+                className="flex-1 min-h-[44px]"
+              >
+                <span className="sm:hidden">Фото</span>
+                <span className="hidden sm:inline">Завантажити фото</span>
+              </Button>
+              <span className="self-center text-muted-foreground text-sm">або</span>
+              <Button 
+                variant={selectedSource === 'ai-generation' ? 'default' : 'outline'}
+                onClick={() => setSelectedSource('ai-generation')}
+                className="flex-1 min-h-[44px]"
+              >
+                <span className="sm:hidden">Дизайн</span>
+                <span className="hidden sm:inline">Згенерувати дизайн</span>
+              </Button>
+            </div>
+          </div>
+
+          <div className="flex gap-3">
+            <Button 
+              variant="outline"
+              onClick={() => setCurrentStep('caption')}
+              className="flex-1"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Назад
+            </Button>
+            <Button 
+              onClick={() => setCurrentStep('design')}
+              className="flex-1"
+              size="lg"
+            >
+              Далі
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Step 3: Design Creation */}
+      {currentStep === 'design' && (
+        <div className="space-y-6">
+          {/* Show caption at top */}
+          {designData.caption && (
+            <div className="p-4 bg-muted/50 rounded-lg border">
+              <p className="text-xs text-muted-foreground mb-1">Підпис:</p>
+              <p className="text-sm font-medium">{designData.caption}</p>
+            </div>
+          )}
+
+          {selectedSource === 'ai-generation' && (
+            <div className="space-y-4 border-2 border-dashed border-muted-foreground/20 rounded-lg p-6">
+              <h2 className="text-lg font-semibold">Крок 3: Створення дизайну</h2>
+              <p className="text-sm text-muted-foreground">
+                Опис для генерації дизайну створюється на основі вашої пісні та підпису
+              </p>
+
+              <Textarea 
+                placeholder={isGeneratingDescription ? "⏳ Генерую опис дизайну..." : "Опис для генерації зображення"}
+                value={imageDescription}
+                onChange={(e) => setImageDescription(e.target.value)}
+                className="min-h-[120px] text-sm resize-none"
+                disabled={isGeneratingDescription}
+              />
+              
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                  <span className="text-xs text-muted-foreground">
+                    {imageDescription?.split(' ').filter(word => word.length > 0).length || 0}/80 слів
+                  </span>
+                  {designData.style && (
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <button className="flex items-center gap-1 text-xs px-2 py-1 bg-primary/10 text-primary rounded cursor-pointer hover:bg-primary/20 transition-colors w-fit">
+                          <span>
+                            Стиль: {designData.style === 'joyful' ? 'Радісний' : designData.style === 'gentle' ? 'Ніжний' : 'Універсальний'}
+                          </span>
+                          <Info className="w-3 h-3" />
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent side="top" className="p-0 w-auto">
+                        <StyleTooltip style={designData.style} />
+                      </PopoverContent>
+                    </Popover>
+                  )}
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={generateImageDescription}
+                  disabled={isGeneratingDescription || !lyrics || !designData.caption}
+                  className="h-8 px-3 w-full sm:w-auto"
+                >
+                  {isGeneratingDescription ? (
+                    <>
+                      <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                      Генерую...
+                    </>
+                  ) : (
+                    <>
+                      <RotateCcw className="w-3 h-3 mr-1" />
+                      Інший опис
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {selectedSource === 'photo' && (
+            <div className="space-y-4 border-2 border-dashed border-muted-foreground/20 rounded-lg p-6">
+              <h2 className="text-lg font-semibold">Крок 3: Завантаження фото</h2>
+              <p className="text-sm text-muted-foreground">
+                Завантажте фото для лицьової частини листівки
+              </p>
+              
+              <ImageUploader 
+                onImageUpload={handleImageUpload} 
+                isUploading={isUploading} 
+              />
+            </div>
+          )}
+
+          <div className="flex gap-3">
+            <Button 
+              variant="outline"
+              onClick={() => setCurrentStep('source')}
+              className="flex-1"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Назад
+            </Button>
+            
+            {selectedSource === 'ai-generation' && (
+              <Button 
+                onClick={handleGenerateImage} 
+                disabled={!designData.style || !designData.prompt || isGenerating} 
+                className="flex-1"
+                size="lg"
+              >
+                {isGenerating ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Створюю дизайн...
+                  </>
+                ) : (
+                  <>
+                    <Wand2 className="w-4 h-4 mr-2" />
+                    Створити дизайн
+                  </>
+                )}
+              </Button>
+            )}
+
+            {selectedSource === 'photo' && designData.imageUrl && (
+              <Button 
+                onClick={() => setCurrentState('preview')}
+                className="flex-1"
+                size="lg"
+              >
+                <Wand2 className="w-4 h-4 mr-2" />
+                Створити лицьову частину
+              </Button>
+            )}
+          </div>
         </div>
       )}
     </div>
