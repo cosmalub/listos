@@ -72,39 +72,36 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
     <div className="relative w-full h-full bg-background border rounded-xl overflow-hidden">
       {backData.selectedColor ? (
         <div 
-          className="p-8 h-full flex flex-col justify-between"
+          className="h-full flex flex-col justify-center items-center p-10"
           style={{ backgroundColor: backData.selectedColor }}
         >
-          {/* Personal message - centered in upper portion */}
-          <div className="flex-1 flex items-center justify-center px-4 pt-8">
+          {/* Personal message - centered */}
+          <div className="flex-1 flex items-center justify-center">
             {backData.personalMessage ? (
-              <div className="text-center max-w-md">
+              <div className="text-center px-6">
                 <p className={cn(
-                  "leading-relaxed text-white font-bold uppercase",
-                  size === 'large' ? "text-base sm:text-lg" : "text-sm"
+                  "leading-relaxed text-white",
+                  size === 'large' ? "text-lg sm:text-xl font-medium" : "text-base font-normal"
                 )}>
                   {backData.personalMessage}
                 </p>
               </div>
             ) : (
-              <p className="text-white/70 text-base italic">
+              <p className="text-white/70 text-lg italic">
                 Ваше особисте повідомлення
               </p>
             )}
           </div>
 
-          {/* QR Code - large, at bottom */}
-          <div className="flex flex-col items-center space-y-3 pb-8">
+          {/* QR Code - bottom */}
+          <div className="flex flex-col items-center pb-6">
             <div 
               className={cn(
-                "bg-white rounded-lg flex items-center justify-center p-3",
-                size === 'large' ? "w-40 h-40 sm:w-48 sm:h-48" : "w-32 h-32"
+                "bg-white rounded-xl flex items-center justify-center p-4 shadow-lg",
+                size === 'large' ? "w-44 h-44" : "w-36 h-36"
               )}
             >
-              <QrCode className={cn(
-                "text-gray-800",
-                size === 'large' ? "w-full h-full" : "w-24 h-24"
-              )} />
+              <QrCode className="w-full h-full text-gray-900" />
             </div>
           </div>
         </div>
