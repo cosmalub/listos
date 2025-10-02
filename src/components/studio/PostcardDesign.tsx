@@ -107,12 +107,12 @@ export function PostcardDesign({ lyrics, onComplete, onBack }: PostcardDesignPro
               </p>
             </CardHeader>
             <CardContent className="p-6">
-              <div className="max-w-md mx-auto">
+              <div className="max-w-xs mx-auto">
                 <PostcardPreview
                   frontData={designData.front}
                   backData={designData.back}
                   showFront={false}
-                  size="large"
+                  size="compact"
                 />
               </div>
             </CardContent>
