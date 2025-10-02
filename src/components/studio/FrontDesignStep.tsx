@@ -112,9 +112,9 @@ export function FrontDesignStep({
   const [showVariantDescription, setShowVariantDescription] = useState(false);
   const [newVariantDescription, setNewVariantDescription] = useState('');
 
-  // Auto-generate caption and description when AI generation is selected
+  // Auto-generate caption for both modes (AI and photo)
   useEffect(() => {
-    if (lyrics && selectedSource === 'ai-generation' && !designData.caption && !isGeneratingCaption) {
+    if (lyrics && !designData.caption && !isGeneratingCaption) {
       setIsGeneratingCaption(true);
       generateAutomaticCaption(lyrics, 'medium').then(caption => {
         setDesignData(prev => ({
@@ -124,7 +124,7 @@ export function FrontDesignStep({
         setIsGeneratingCaption(false);
       });
     }
-  }, [lyrics, selectedSource]);
+  }, [lyrics]);
 
   // Auto-generate image description after caption is ready
   useEffect(() => {
@@ -133,11 +133,14 @@ export function FrontDesignStep({
     }
   }, [lyrics, designData.caption, selectedSource]);
 
-  // Switch to preview only when explicitly triggered
+  // Switch to preview when image and caption are ready
   useEffect(() => {
-    if (designData.imageUrl && designData.caption && selectedSource === 'ai-generation' && isGenerating === false) {
-      // Auto-switch to preview after AI generation completes
-      setCurrentState('preview');
+    if (designData.imageUrl && designData.caption) {
+      if (selectedSource === 'ai-generation' && isGenerating === false) {
+        setCurrentState('preview');
+      } else if (selectedSource === 'photo') {
+        setCurrentState('preview');
+      }
     }
   }, [designData.imageUrl, designData.caption, selectedSource, isGenerating]);
 
