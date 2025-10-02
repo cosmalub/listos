@@ -72,33 +72,33 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
     <div className="relative w-full h-full bg-background border rounded-xl overflow-hidden">
       {backData.selectedColor ? (
         <div 
-          className="h-full flex flex-col justify-center items-center p-10"
+          className="h-full flex flex-col p-6"
           style={{ backgroundColor: backData.selectedColor }}
         >
-          {/* Personal message - centered */}
-          <div className="flex-1 flex items-center justify-center">
+          {/* Personal message - takes most space */}
+          <div className="flex-1 flex items-center justify-center px-4">
             {backData.personalMessage ? (
-              <div className="text-center px-6">
+              <div className="text-center max-w-sm">
                 <p className={cn(
-                  "leading-relaxed text-white",
-                  size === 'large' ? "text-lg sm:text-xl font-medium" : "text-base font-normal"
+                  "text-white leading-snug",
+                  size === 'large' ? "text-sm" : "text-xs"
                 )}>
                   {backData.personalMessage}
                 </p>
               </div>
             ) : (
-              <p className="text-white/70 text-lg italic">
+              <p className="text-white/70 text-sm italic">
                 Ваше особисте повідомлення
               </p>
             )}
           </div>
 
-          {/* QR Code - bottom */}
-          <div className="flex flex-col items-center pb-6">
+          {/* QR Code - compact at bottom */}
+          <div className="flex justify-center pb-4">
             <div 
               className={cn(
-                "bg-white rounded-xl flex items-center justify-center p-4 shadow-lg",
-                size === 'large' ? "w-44 h-44" : "w-36 h-36"
+                "bg-white rounded-lg flex items-center justify-center p-2",
+                size === 'large' ? "w-32 h-32" : "w-24 h-24"
               )}
             >
               <QrCode className="w-full h-full text-gray-900" />
