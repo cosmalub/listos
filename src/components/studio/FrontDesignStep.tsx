@@ -403,9 +403,9 @@ export function FrontDesignStep({
           </div>
         )}
 
-        {/* Large Postcard Preview */}
+        {/* Postcard Preview */}
         <div className="flex justify-center">
-          <div className="w-full max-w-md">
+          <div className="w-full max-w-xs">
             <PostcardPreview 
               frontData={designData} 
               backData={{
@@ -413,7 +413,7 @@ export function FrontDesignStep({
                 personalMessage: ''
               }}
               showFront={true}
-              size="large"
+              size="compact"
             />
           </div>
         </div>
