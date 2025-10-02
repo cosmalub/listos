@@ -57,7 +57,7 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
           />
           {/* Caption overlay - for both modes */}
           {frontData.caption && (
-            <div className="absolute top-6 left-4 right-4">
+            <div className="absolute bottom-6 left-4 right-4">
               <div className="bg-black/60 backdrop-blur-sm rounded-lg py-3 px-4">
                 <p className={cn(
                   "text-white text-center font-bold uppercase leading-snug",
