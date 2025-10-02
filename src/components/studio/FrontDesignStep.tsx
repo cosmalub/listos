@@ -457,9 +457,68 @@ export function FrontDesignStep({
   // Editing mode - simplified interface
   return (
     <div className="space-y-6">
-      {/* 1. Source Selection */}
+      {/* 1. Caption for Postcard */}
       <div className="space-y-4 border-2 border-dashed border-muted-foreground/20 rounded-lg p-6">
-        <h2 className="text-lg font-semibold">1. Вибір основи</h2>
+        <h2 className="text-lg font-semibold">1. Підпис для листівки</h2>
+        <p className="text-sm text-muted-foreground">
+          Підпис буде розміщено на лицьовій частині листівки
+        </p>
+        
+        <Textarea 
+          value={designData.caption} 
+          onChange={e => setDesignData(prev => ({
+            ...prev,
+            caption: e.target.value
+          }))} 
+          placeholder={isGeneratingCaption ? "⏳ Генерую підпис..." : designData.caption ? "Підпис для листівки" : "Введіть підпис для листівки..."}
+          className="min-h-[80px] text-sm resize-none" 
+          disabled={isGeneratingCaption} 
+        />
+        
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <span className="text-xs text-muted-foreground">
+            {designData.caption ? `${designData.caption.length}/80 символів` : '0/80 символів'}
+          </span>
+          <Button 
+            variant="ghost" 
+            onClick={async () => {
+              setIsGeneratingCaption(true);
+              try {
+                const caption = await generateAutomaticCaption(lyrics, 'short');
+                setDesignData(prev => ({
+                  ...prev,
+                  caption
+                }));
+                toast.success('Підпис згенеровано!');
+              } catch (error) {
+                toast.error('Помилка при генерації підпису');
+              } finally {
+                setIsGeneratingCaption(false);
+              }
+            }} 
+            disabled={isGeneratingCaption || !lyrics} 
+            className="h-8 px-3 w-full sm:w-auto"
+          >
+            {isGeneratingCaption ? (
+              <>
+                <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                <span className="sm:hidden">Генерую...</span>
+                <span className="hidden sm:inline">Генерую...</span>
+              </>
+            ) : (
+              <>
+                <Wand2 className="w-3 h-3 mr-1" />
+                <span className="sm:hidden">Ще варіанти</span>
+                <span className="hidden sm:inline">Більше варіантів</span>
+              </>
+            )}
+          </Button>
+        </div>
+      </div>
+
+      {/* 2. Source Selection */}
+      <div className="space-y-4 border-2 border-dashed border-muted-foreground/20 rounded-lg p-6">
+        <h2 className="text-lg font-semibold">2. Вибір основи</h2>
         <p className="text-sm text-muted-foreground">
           Лицьова частина листівки може бути створена на основі вашого фото або згенерованого дизайну під вашу пісню
         </p>
@@ -549,65 +608,6 @@ export function FrontDesignStep({
             />
           </div>
         )}
-      </div>
-
-      {/* 2. Caption for Postcard (simplified) */}
-      <div className="space-y-4 border-2 border-dashed border-muted-foreground/20 rounded-lg p-6">
-        <h2 className="text-lg font-semibold">2. Підпис для листівки</h2>
-        <p className="text-sm text-muted-foreground">
-          Підпис буде розміщено на лицьовій частині листівки
-        </p>
-        
-        <Textarea 
-          value={designData.caption} 
-          onChange={e => setDesignData(prev => ({
-            ...prev,
-            caption: e.target.value
-          }))} 
-          placeholder={isGeneratingCaption ? "⏳ Генерую підпис..." : designData.caption ? "Підпис для листівки" : "Введіть підпис для листівки..."}
-          className="min-h-[80px] text-sm resize-none" 
-          disabled={isGeneratingCaption} 
-        />
-        
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <span className="text-xs text-muted-foreground">
-            {designData.caption ? `${designData.caption.length}/80 символів` : '0/80 символів'}
-          </span>
-          <Button 
-            variant="ghost" 
-            onClick={async () => {
-              setIsGeneratingCaption(true);
-              try {
-                const caption = await generateAutomaticCaption(lyrics, 'short');
-                setDesignData(prev => ({
-                  ...prev,
-                  caption
-                }));
-                toast.success('Підпис згенеровано!');
-              } catch (error) {
-                toast.error('Помилка при генерації підпису');
-              } finally {
-                setIsGeneratingCaption(false);
-              }
-            }} 
-            disabled={isGeneratingCaption || !lyrics} 
-            className="h-8 px-3 w-full sm:w-auto"
-          >
-            {isGeneratingCaption ? (
-              <>
-                <Loader2 className="w-3 h-3 mr-1 animate-spin" />
-                <span className="sm:hidden">Генерую...</span>
-                <span className="hidden sm:inline">Генерую...</span>
-              </>
-            ) : (
-              <>
-                <Wand2 className="w-3 h-3 mr-1" />
-                <span className="sm:hidden">Ще варіанти</span>
-                <span className="hidden sm:inline">Більше варіантів</span>
-              </>
-            )}
-          </Button>
-        </div>
       </div>
 
       {/* 3. Action Button */}
