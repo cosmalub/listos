@@ -62,6 +62,7 @@ const Studio = () => {
   const [hasUnconfirmedLyrics, setHasUnconfirmedLyrics] = useState(false);
   const [selectedMusicVariant, setSelectedMusicVariant] = useState<any>(null);
   const [pageData, setPageData] = useState<any>(null);
+  const [designData, setDesignData] = useState<any>(null);
   const [chatMessages, setChatMessages] = useState<any[]>([]);
   const [showWelcome, setShowWelcome] = useState(true);
   const chatRef = useRef<ChatInterfaceRef>(null);
@@ -131,6 +132,8 @@ const Studio = () => {
 
   const handleMusicVariantSelected = async (variant: any) => {
     setSelectedMusicVariant(variant);
+    // Save selected music to sessionStorage for draft page
+    sessionStorage.setItem('studio-selected-music', JSON.stringify(variant));
     // Go directly to postcard design (step 3)
     setCurrentStep(3);
     navigate('/studio?step=3');
@@ -281,10 +284,12 @@ const Studio = () => {
         return (
           <PostcardDesign
             lyrics={lyrics}
-            onComplete={(designData) => {
+            onComplete={(postcardDesignData) => {
               // Save design data and move to next step
-              console.log('Postcard design completed:', designData);
+              console.log('Postcard design completed:', postcardDesignData);
+              setDesignData(postcardDesignData);
               setCurrentStep(4);
+              navigate('/studio?step=4');
             }}
             onBack={() => setCurrentStep(2)}
           />
@@ -294,6 +299,7 @@ const Studio = () => {
           <PageCaptionStep
             lyrics={lyrics}
             musicVariant={selectedMusicVariant}
+            designData={designData}
             onComplete={handlePageCaptionComplete}
           />
         );

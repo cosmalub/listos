@@ -18,6 +18,7 @@ interface PageCaptionData {
 interface PageCaptionStepProps {
   lyrics: string;
   musicVariant: any;
+  designData: any;
   onComplete: (data: PageCaptionData) => void;
 }
 
@@ -44,6 +45,7 @@ const tones = [
 export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
   lyrics,
   musicVariant,
+  designData,
   onComplete
 }) => {
   const navigate = useNavigate();
@@ -64,6 +66,18 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
       alert('Будь ласка, заповніть всі поля');
       return;
     }
+    
+    // Save all data to sessionStorage for draft page
+    const draftData = {
+      lyrics,
+      musicVariant,
+      designData,
+      pageInfo: formData,
+      timestamp: new Date().toISOString()
+    };
+    
+    sessionStorage.setItem('studio-draft-data', JSON.stringify(draftData));
+    
     // Navigate to draft page for editing
     navigate(`/s/draft?occasion=${formData.occasion}&recipient=${encodeURIComponent(formData.recipient)}&sender=${encodeURIComponent(formData.sender)}&tone=${formData.tone}`);
   };
