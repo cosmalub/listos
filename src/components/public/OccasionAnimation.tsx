@@ -10,19 +10,11 @@ export const OccasionAnimation: React.FC<OccasionAnimationProps> = ({
   occasion,
   duration = 3000
 }) => {
-  const [isVisible, setIsVisible] = useState(true);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationRef = useRef<any>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(false);
-    }, duration);
-
-    return () => clearTimeout(timer);
-  }, [duration]);
-
-  useEffect(() => {
-    if (!isVisible || !canvasRef.current) return;
+    if (!canvasRef.current) return;
 
     const myConfetti = confetti.create(canvasRef.current, {
       resize: true,
@@ -32,34 +24,39 @@ export const OccasionAnimation: React.FC<OccasionAnimationProps> = ({
     // Запускаємо відповідну анімацію
     switch (occasion) {
       case 'birthday':
-        runBirthdayAnimation(myConfetti);
+        animationRef.current = runBirthdayAnimation(myConfetti);
         break;
       case 'congratulations':
-        runCongratulationsAnimation(myConfetti);
+        animationRef.current = runCongratulationsAnimation(myConfetti);
         break;
       case 'love':
-        runLoveAnimation(myConfetti);
+        animationRef.current = runLoveAnimation(myConfetti);
         break;
       case 'thanks':
-        runThanksAnimation(myConfetti);
+        animationRef.current = runThanksAnimation(myConfetti);
         break;
       case 'friendship':
-        runFriendshipAnimation(myConfetti);
+        animationRef.current = runFriendshipAnimation(myConfetti);
         break;
       case 'holiday':
-        runHolidayAnimation(myConfetti);
+        animationRef.current = runHolidayAnimation(myConfetti);
+        break;
+      case 'apology':
+        animationRef.current = runApologyAnimation(myConfetti);
         break;
       default:
-        runDefaultAnimation(myConfetti);
+        animationRef.current = runDefaultAnimation(myConfetti);
         break;
     }
 
     return () => {
+      // Очищаємо інтервали при розмонтуванні
+      if (animationRef.current) {
+        clearInterval(animationRef.current);
+      }
       myConfetti.reset();
     };
-  }, [isVisible, occasion]);
-
-  if (!isVisible) return null;
+  }, [occasion]);
 
   const getScreenEffect = () => {
     switch (occasion) {
@@ -89,263 +86,350 @@ export const OccasionAnimation: React.FC<OccasionAnimationProps> = ({
         ref={canvasRef}
         className="absolute inset-0 w-full h-full"
       />
-      
-      {/* Screen overlay effects */}
-      <div className={`absolute inset-0 ${getScreenEffect()}`} />
     </div>
   );
 };
 
-// Birthday: Massive confetti explosion with screen flash
+// Birthday: Colorful celebration bursts
 const runBirthdayAnimation = (confetti: any) => {
-  const count = 200;
-  const defaults = {
-    origin: { y: 0.7 },
-    zIndex: 9999
-  };
-
-  function fire(particleRatio: number, opts: any) {
+  const colors = ['#ff0080', '#7928ca', '#ff0080', '#ffd700', '#00d4ff'];
+  
+  function celebration() {
+    // Центральний вибух
     confetti({
-      ...defaults,
-      ...opts,
-      particleCount: Math.floor(count * particleRatio),
-      spread: 100,
-      startVelocity: 55,
+      particleCount: 120,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: colors,
+      scalar: 1.2,
+      gravity: 1,
+      drift: 0
     });
+
+    // Бічні вибухи
+    setTimeout(() => {
+      confetti({
+        particleCount: 80,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0, y: 0.6 },
+        colors: colors,
+        scalar: 1
+      });
+      confetti({
+        particleCount: 80,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1, y: 0.6 },
+        colors: colors,
+        scalar: 1
+      });
+    }, 250);
+
+    // Додатковий каскад
+    setTimeout(() => {
+      confetti({
+        particleCount: 50,
+        spread: 100,
+        startVelocity: 45,
+        origin: { y: 0.5 },
+        colors: colors,
+        scalar: 0.8
+      });
+    }, 500);
   }
 
-  // Вибух 1
-  fire(0.25, {
-    spread: 26,
-    startVelocity: 55,
-  });
-  
-  // Вибух 2
-  fire(0.2, {
-    spread: 60,
-  });
-  
-  // Вибух 3
-  fire(0.35, {
-    spread: 100,
-    decay: 0.91,
-    scalar: 0.8
-  });
-  
-  // Вибух 4
-  fire(0.1, {
-    spread: 120,
-    startVelocity: 25,
-    decay: 0.92,
-    scalar: 1.2
-  });
-  
-  // Вибух 5
-  fire(0.1, {
-    spread: 120,
-    startVelocity: 45,
-  });
-
-  // Повторні вибухи
-  setTimeout(() => {
-    confetti({
-      particleCount: 100,
-      angle: 60,
-      spread: 55,
-      origin: { x: 0, y: 0.6 }
-    });
-  }, 300);
-
-  setTimeout(() => {
-    confetti({
-      particleCount: 100,
-      angle: 120,
-      spread: 55,
-      origin: { x: 1, y: 0.6 }
-    });
-  }, 300);
+  celebration();
+  const interval = setInterval(celebration, 8000);
+  return interval;
 };
 
-// Congratulations: Fireworks sequence
+// Congratulations: Elegant rising particles
 const runCongratulationsAnimation = (confetti: any) => {
-  const duration = 7000;
-  const animationEnd = Date.now() + duration;
-  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
-
+  const colors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24'];
+  
   function randomInRange(min: number, max: number) {
     return Math.random() * (max - min) + min;
   }
 
-  const interval = setInterval(function() {
-    const timeLeft = animationEnd - Date.now();
-
-    if (timeLeft <= 0) {
-      return clearInterval(interval);
-    }
-
-    const particleCount = 50 * (timeLeft / duration);
-
+  function burst() {
     confetti({
-      ...defaults,
-      particleCount,
-      origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+      particleCount: 25,
+      spread: 50,
+      startVelocity: 35,
+      origin: { x: randomInRange(0.2, 0.4), y: 0.7 },
+      colors: colors,
+      shapes: ['circle', 'square'],
+      scalar: 1.2,
+      gravity: 0.8
     });
+    
     confetti({
-      ...defaults,
-      particleCount,
-      origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
-    });
-  }, 250);
-};
-
-// Love: Hearts explosion from center
-const runLoveAnimation = (confetti: any) => {
-  const defaults = {
-    spread: 360,
-    ticks: 100,
-    gravity: 0.8,
-    decay: 0.94,
-    startVelocity: 30,
-    shapes: ['heart'],
-    colors: ['#FF0080', '#FF69B4', '#FFB6C1', '#FFC0CB', '#FF1493']
-  };
-
-  confetti({
-    ...defaults,
-    particleCount: 50,
-    scalar: 2
-  });
-
-  confetti({
-    ...defaults,
-    particleCount: 30,
-    scalar: 1.5,
-    startVelocity: 20
-  });
-
-  setTimeout(() => {
-    confetti({
-      ...defaults,
-      particleCount: 40,
-      scalar: 1.8
-    });
-  }, 300);
-
-  setTimeout(() => {
-    confetti({
-      ...defaults,
-      particleCount: 30,
-      scalar: 1.3,
-      startVelocity: 25
-    });
-  }, 600);
-};
-
-// Thanks: Golden stars rain
-const runThanksAnimation = (confetti: any) => {
-  const defaults = {
-    shapes: ['star'],
-    colors: ['#FFD700', '#FFA500', '#FFFF00', '#FFD700', '#FFC107'],
-    scalar: 1.5,
-    spread: 180,
-    ticks: 150,
-    gravity: 0.6,
-    decay: 0.95
-  };
-
-  function shoot() {
-    confetti({
-      ...defaults,
-      particleCount: 30,
-      startVelocity: 30,
-      origin: { y: 0 }
+      particleCount: 25,
+      spread: 50,
+      startVelocity: 35,
+      origin: { x: randomInRange(0.6, 0.8), y: 0.7 },
+      colors: colors,
+      shapes: ['circle', 'square'],
+      scalar: 1.2,
+      gravity: 0.8
     });
   }
 
-  shoot();
-  setTimeout(shoot, 200);
-  setTimeout(shoot, 400);
-  setTimeout(shoot, 600);
-  setTimeout(shoot, 800);
-  setTimeout(shoot, 1000);
+  const interval = setInterval(burst, 1500);
+  return interval;
 };
 
-// Friendship: Rainbow wave
-const runFriendshipAnimation = (confetti: any) => {
-  const colors = ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3'];
+// Love: Romantic hearts floating
+const runLoveAnimation = (confetti: any) => {
+  const colors = ['#ff006e', '#fb5607', '#ff006e', '#d62828', '#f72585'];
   
-  const end = Date.now() + (7 * 1000);
-
-  (function frame() {
+  function heartRain() {
+    // Великі серця
     confetti({
-      particleCount: 2,
-      angle: 60,
-      spread: 55,
-      origin: { x: 0 },
-      colors: colors
-    });
-    confetti({
-      particleCount: 2,
-      angle: 120,
-      spread: 55,
-      origin: { x: 1 },
-      colors: colors
+      particleCount: 15,
+      spread: 80,
+      startVelocity: 25,
+      gravity: 0.6,
+      ticks: 120,
+      origin: { x: 0.5, y: 0.3 },
+      shapes: ['heart'],
+      colors: colors,
+      scalar: 2
     });
 
-    if (Date.now() < end) {
-      requestAnimationFrame(frame);
-    }
-  }());
+    // Малі серця що падають
+    setTimeout(() => {
+      for (let i = 0; i < 3; i++) {
+        setTimeout(() => {
+          confetti({
+            particleCount: 8,
+            spread: 60,
+            startVelocity: 15,
+            gravity: 0.5,
+            ticks: 100,
+            origin: { x: Math.random(), y: 0 },
+            shapes: ['heart'],
+            colors: colors,
+            scalar: 1.5,
+            drift: (Math.random() - 0.5) * 2
+          });
+        }, i * 400);
+      }
+    }, 200);
+  }
+
+  heartRain();
+  const interval = setInterval(heartRain, 6000);
+  return interval;
 };
 
-// Holiday: Snow or fireworks
-const runHolidayAnimation = (confetti: any) => {
-  const duration = 7000;
-  const animationEnd = Date.now() + duration;
-
-  (function frame() {
+// Thanks: Elegant gratitude sparkles
+const runThanksAnimation = (confetti: any) => {
+  const colors = ['#ffd700', '#ffed4e', '#ffb700', '#ffa500', '#ffc300'];
+  
+  function sparkle() {
+    // Центральні зірки
     confetti({
-      particleCount: 3,
-      startVelocity: 0,
-      ticks: 200,
-      origin: {
-        x: Math.random(),
-        y: Math.random() * 0.3
-      },
-      colors: ['#ffffff', '#e0f7ff', '#b3e5fc'],
-      shapes: ['circle'],
-      gravity: 0.4,
-      scalar: 0.8,
-      drift: Math.random() > 0.5 ? 1 : -1
+      particleCount: 20,
+      spread: 70,
+      startVelocity: 30,
+      gravity: 0.7,
+      ticks: 100,
+      origin: { x: 0.5, y: 0.4 },
+      shapes: ['star'],
+      colors: colors,
+      scalar: 1.3
     });
 
-    if (Date.now() < animationEnd) {
-      requestAnimationFrame(frame);
+    // Бічні зірки
+    setTimeout(() => {
+      confetti({
+        particleCount: 12,
+        spread: 55,
+        startVelocity: 25,
+        angle: 60,
+        gravity: 0.7,
+        origin: { x: 0.2, y: 0.5 },
+        shapes: ['star'],
+        colors: colors,
+        scalar: 1.1
+      });
+      
+      confetti({
+        particleCount: 12,
+        spread: 55,
+        startVelocity: 25,
+        angle: 120,
+        gravity: 0.7,
+        origin: { x: 0.8, y: 0.5 },
+        shapes: ['star'],
+        colors: colors,
+        scalar: 1.1
+      });
+    }, 300);
+  }
+
+  sparkle();
+  const interval = setInterval(sparkle, 4000);
+  return interval;
+};
+
+// Friendship: Warm colorful celebration
+const runFriendshipAnimation = (confetti: any) => {
+  const colors = ['#ff6b9d', '#c44569', '#f8b500', '#18dcff', '#7d5fff'];
+  
+  function friendshipBurst() {
+    // Симетричні вибухи з боків
+    confetti({
+      particleCount: 30,
+      angle: 60,
+      spread: 60,
+      origin: { x: 0, y: 0.6 },
+      colors: colors,
+      scalar: 1.2,
+      gravity: 0.9
+    });
+    
+    confetti({
+      particleCount: 30,
+      angle: 120,
+      spread: 60,
+      origin: { x: 1, y: 0.6 },
+      colors: colors,
+      scalar: 1.2,
+      gravity: 0.9
+    });
+
+    // Центральний акцент
+    setTimeout(() => {
+      confetti({
+        particleCount: 40,
+        spread: 90,
+        startVelocity: 35,
+        origin: { x: 0.5, y: 0.5 },
+        colors: colors,
+        scalar: 1,
+        gravity: 1
+      });
+    }, 400);
+  }
+
+  friendshipBurst();
+  const interval = setInterval(friendshipBurst, 5000);
+  return interval;
+};
+
+// Holiday: Universal festive celebration
+const runHolidayAnimation = (confetti: any) => {
+  const colors = ['#ee5a6f', '#f29263', '#f7d794', '#778beb', '#e77f67'];
+  
+  function festive() {
+    // Святкові вибухи
+    confetti({
+      particleCount: 50,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: colors,
+      scalar: 1.1,
+      gravity: 1
+    });
+
+    // Додаткові акценти
+    setTimeout(() => {
+      for (let i = 0; i < 2; i++) {
+        confetti({
+          particleCount: 25,
+          angle: 60 + (i * 60),
+          spread: 55,
+          origin: { x: i === 0 ? 0 : 1, y: 0.6 },
+          colors: colors,
+          scalar: 0.9,
+          gravity: 1
+        });
+      }
+    }, 250);
+
+    // Верхні частинки що падають
+    setTimeout(() => {
+      confetti({
+        particleCount: 30,
+        spread: 100,
+        startVelocity: 30,
+        origin: { y: 0.3 },
+        colors: colors,
+        scalar: 0.8,
+        gravity: 0.8
+      });
+    }, 500);
+  }
+
+  festive();
+  const interval = setInterval(festive, 7000);
+  return interval;
+};
+
+// Apology: Gentle, sincere particles
+const runApologyAnimation = (confetti: any) => {
+  const colors = ['#a8dadc', '#457b9d', '#1d3557', '#f1faee', '#a8dadc'];
+  
+  function gentle() {
+    // М'які частинки що повільно падають
+    for (let i = 0; i < 3; i++) {
+      setTimeout(() => {
+        confetti({
+          particleCount: 15,
+          spread: 50,
+          startVelocity: 15,
+          gravity: 0.5,
+          ticks: 120,
+          origin: { x: 0.3 + (i * 0.2), y: 0.3 },
+          colors: colors,
+          scalar: 1,
+          drift: 0
+        });
+      }, i * 300);
     }
-  }());
+  }
+
+  gentle();
+  const interval = setInterval(gentle, 5000);
+  return interval;
 };
 
 // Default: Multi-color confetti
 const runDefaultAnimation = (confetti: any) => {
-  confetti({
-    particleCount: 100,
-    spread: 70,
-    origin: { y: 0.6 },
-    colors: ['#8b5cf6', '#ec4899', '#f59e0b', '#10b981']
-  });
+  const colors = ['#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6'];
+  
+  function burst() {
+    confetti({
+      particleCount: 80,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: colors,
+      scalar: 1.1,
+      gravity: 1
+    });
 
-  setTimeout(() => {
-    confetti({
-      particleCount: 50,
-      angle: 60,
-      spread: 55,
-      origin: { x: 0 }
-    });
-    confetti({
-      particleCount: 50,
-      angle: 120,
-      spread: 55,
-      origin: { x: 1 }
-    });
-  }, 500);
+    setTimeout(() => {
+      confetti({
+        particleCount: 40,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0, y: 0.6 },
+        colors: colors
+      });
+      confetti({
+        particleCount: 40,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1, y: 0.6 },
+        colors: colors
+      });
+    }, 400);
+  }
+
+  burst();
+  const interval = setInterval(burst, 6000);
+  return interval;
 };
