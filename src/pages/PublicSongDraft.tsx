@@ -3,7 +3,8 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Play, Pause, CheckCircle, Music } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Play, Pause, CheckCircle, Music, Info } from 'lucide-react';
 import { OccasionBackground } from '@/components/public/OccasionBackground';
 import { OccasionAnimation } from '@/components/public/OccasionAnimation';
 import { Header } from '@/components/sections/header';
@@ -93,6 +94,21 @@ const PublicSongDraft = () => {
       {/* Main content */}
       <main className="container mx-auto px-4 py-6 sm:py-8 min-h-[calc(100vh-200px)] relative z-10">
         <div className="max-w-2xl mx-auto space-y-4 sm:space-y-6">
+          {/* Draft Info Notice */}
+          <Alert className="border-blue-200 bg-blue-50/95 dark:bg-blue-950/20 backdrop-blur-sm">
+            <Info className="h-4 w-4" />
+            <AlertDescription>
+              <div className="space-y-2">
+                <p className="text-sm">
+                  <strong>Це чернетка вашої сторінки</strong> — попередній перегляд того, як буде виглядати фінальна версія для отримувача.
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Після натискання кнопки "Затвердити сторінку" вона стане доступна за QR-кодом на вашій листівці. Отримувач побачить чисту, елегантну сторінку з піснею, текстом та святковою анімацією — без меню сайту, підвалу чи інших зайвих елементів. Тільки ваш особистий подарунок! 🎁
+                </p>
+              </div>
+            </AlertDescription>
+          </Alert>
+
           {/* Song Card */}
           <Card className="bg-white/95 backdrop-blur-sm shadow-xl">
             <CardHeader className="text-center pb-4">
