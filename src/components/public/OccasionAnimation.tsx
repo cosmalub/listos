@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import confetti from 'canvas-confetti';
 
 interface OccasionAnimationProps {
@@ -90,51 +90,54 @@ export const OccasionAnimation: React.FC<OccasionAnimationProps> = ({
   );
 };
 
-// Birthday: Colorful celebration bursts
+// Birthday: Яркое праздничное конфетти
 const runBirthdayAnimation = (confetti: any) => {
-  const colors = ['#ff0080', '#7928ca', '#ff0080', '#ffd700', '#00d4ff'];
+  const colors = ['#FF1744', '#FF6B9D', '#FFD700', '#00D4FF', '#9C27B0', '#FF9800'];
   
   function celebration() {
-    // Центральний вибух
+    // Мощный центральный взрыв
     confetti({
-      particleCount: 120,
-      spread: 70,
+      particleCount: 150,
+      spread: 90,
+      startVelocity: 50,
       origin: { y: 0.6 },
       colors: colors,
-      scalar: 1.2,
+      scalar: 1.3,
       gravity: 1,
-      drift: 0
+      shapes: ['circle', 'square']
     });
 
-    // Бічні вибухи
+    // Боковые взрывы
     setTimeout(() => {
       confetti({
         particleCount: 80,
         angle: 60,
-        spread: 55,
+        spread: 60,
+        startVelocity: 45,
         origin: { x: 0, y: 0.6 },
         colors: colors,
-        scalar: 1
+        scalar: 1.1
       });
       confetti({
         particleCount: 80,
         angle: 120,
-        spread: 55,
+        spread: 60,
+        startVelocity: 45,
         origin: { x: 1, y: 0.6 },
         colors: colors,
-        scalar: 1
+        scalar: 1.1
       });
     }, 250);
 
-    // Додатковий каскад
+    // Дополнительный каскад сверху
     setTimeout(() => {
       confetti({
-        particleCount: 50,
-        spread: 100,
-        startVelocity: 45,
-        origin: { y: 0.5 },
+        particleCount: 60,
+        spread: 110,
+        startVelocity: 40,
+        origin: { y: 0.4 },
         colors: colors,
-        scalar: 0.8
+        scalar: 0.9
       });
     }, 500);
   }
@@ -180,98 +183,138 @@ const runCongratulationsAnimation = (confetti: any) => {
   return interval;
 };
 
-// Love: Romantic hearts floating
+// Love: Romantic hearts floating - с кастомной формой сердца
 const runLoveAnimation = (confetti: any) => {
-  const colors = ['#ff006e', '#fb5607', '#ff006e', '#d62828', '#f72585'];
+  const colors = ['#ff006e', '#fb5607', '#ff1744', '#f50057', '#ff4081'];
+  
+  // Создаем кастомную форму сердца
+  const heart = confetti.shapeFromPath({
+    path: 'M167.5,80.5c0,0-21.5-22.5-43-22.5c-21.5,0-41.5,22.5-41.5,22.5s-20-22.5-41.5-22.5S0,80.5,0,80.5s0,43,83.5,112.5C167,163,167.5,80.5,167.5,80.5z',
+    matrix: [0.03333333333333333, 0, 0, 0.03333333333333333, -2.7916666666666665, -2.6666666666666665]
+  });
   
   function heartRain() {
-    // Великі серця
-    confetti({
-      particleCount: 15,
-      spread: 80,
-      startVelocity: 25,
-      gravity: 0.6,
-      ticks: 120,
-      origin: { x: 0.5, y: 0.3 },
-      shapes: ['heart'],
-      colors: colors,
-      scalar: 2
-    });
-
-    // Малі серця що падають
-    setTimeout(() => {
-      for (let i = 0; i < 3; i++) {
-        setTimeout(() => {
-          confetti({
-            particleCount: 8,
-            spread: 60,
-            startVelocity: 15,
-            gravity: 0.5,
-            ticks: 100,
-            origin: { x: Math.random(), y: 0 },
-            shapes: ['heart'],
-            colors: colors,
-            scalar: 1.5,
-            drift: (Math.random() - 0.5) * 2
-          });
-        }, i * 400);
-      }
-    }, 200);
-  }
-
-  heartRain();
-  const interval = setInterval(heartRain, 6000);
-  return interval;
-};
-
-// Thanks: Elegant gratitude sparkles
-const runThanksAnimation = (confetti: any) => {
-  const colors = ['#ffd700', '#ffed4e', '#ffb700', '#ffa500', '#ffc300'];
-  
-  function sparkle() {
-    // Центральні зірки
+    // Большие сердца сверху
     confetti({
       particleCount: 20,
       spread: 70,
       startVelocity: 30,
-      gravity: 0.7,
-      ticks: 100,
-      origin: { x: 0.5, y: 0.4 },
-      shapes: ['star'],
+      gravity: 0.8,
+      ticks: 150,
+      origin: { x: 0.5, y: 0.2 },
+      shapes: [heart],
       colors: colors,
-      scalar: 1.3
+      scalar: 2.5,
+      flat: false
     });
 
-    // Бічні зірки
+    // Боковые сердца
     setTimeout(() => {
       confetti({
         particleCount: 12,
+        angle: 60,
         spread: 55,
         startVelocity: 25,
-        angle: 60,
-        gravity: 0.7,
-        origin: { x: 0.2, y: 0.5 },
-        shapes: ['star'],
+        origin: { x: 0, y: 0.5 },
+        shapes: [heart],
         colors: colors,
-        scalar: 1.1
+        scalar: 2,
+        gravity: 0.8
       });
       
       confetti({
         particleCount: 12,
+        angle: 120,
         spread: 55,
         startVelocity: 25,
-        angle: 120,
-        gravity: 0.7,
-        origin: { x: 0.8, y: 0.5 },
-        shapes: ['star'],
+        origin: { x: 1, y: 0.5 },
+        shapes: [heart],
         colors: colors,
-        scalar: 1.1
+        scalar: 2,
+        gravity: 0.8
+      });
+    }, 300);
+
+    // Дополнительный дождь из маленьких сердец
+    setTimeout(() => {
+      for (let i = 0; i < 4; i++) {
+        setTimeout(() => {
+          confetti({
+            particleCount: 10,
+            spread: 50,
+            startVelocity: 20,
+            origin: { x: 0.3 + (Math.random() * 0.4), y: 0 },
+            shapes: [heart],
+            colors: colors,
+            scalar: 1.5,
+            gravity: 0.6,
+            drift: (Math.random() - 0.5)
+          });
+        }, i * 350);
+      }
+    }, 500);
+  }
+
+  heartRain();
+  const interval = setInterval(heartRain, 7000);
+  return interval;
+};
+
+// Thanks: Золотые звезды благодарности
+const runThanksAnimation = (confetti: any) => {
+  const colors = ['#FFD700', '#FFA500', '#FFED4E', '#FFB700', '#FFC300'];
+  
+  // Создаем кастомную звезду
+  const star = confetti.shapeFromPath({
+    path: 'M0,-15L4.5,-4.5L15,-3L7.5,3L9,15L0,9L-9,15L-7.5,3L-15,-3L-4.5,-4.5Z',
+    matrix: [1, 0, 0, 1, 0, 0]
+  });
+  
+  function sparkle() {
+    // Центральный дождь звезд
+    confetti({
+      particleCount: 30,
+      spread: 80,
+      startVelocity: 35,
+      gravity: 0.8,
+      ticks: 120,
+      origin: { x: 0.5, y: 0.3 },
+      shapes: [star],
+      colors: colors,
+      scalar: 2,
+      flat: false
+    });
+
+    // Боковые звезды
+    setTimeout(() => {
+      confetti({
+        particleCount: 15,
+        spread: 60,
+        startVelocity: 30,
+        angle: 60,
+        gravity: 0.8,
+        origin: { x: 0.1, y: 0.5 },
+        shapes: [star],
+        colors: colors,
+        scalar: 1.8
+      });
+      
+      confetti({
+        particleCount: 15,
+        spread: 60,
+        startVelocity: 30,
+        angle: 120,
+        gravity: 0.8,
+        origin: { x: 0.9, y: 0.5 },
+        shapes: [star],
+        colors: colors,
+        scalar: 1.8
       });
     }, 300);
   }
 
   sparkle();
-  const interval = setInterval(sparkle, 4000);
+  const interval = setInterval(sparkle, 4500);
   return interval;
 };
 
@@ -320,52 +363,70 @@ const runFriendshipAnimation = (confetti: any) => {
   return interval;
 };
 
-// Holiday: Universal festive celebration
+// Holiday: Яркие праздничные салюты (универсально для всех праздников)
 const runHolidayAnimation = (confetti: any) => {
-  const colors = ['#ee5a6f', '#f29263', '#f7d794', '#778beb', '#e77f67'];
+  const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F'];
   
-  function festive() {
-    // Святкові вибухи
+  function festiveFireworks() {
+    // Мощный центральный салют
     confetti({
-      particleCount: 50,
-      spread: 70,
-      origin: { y: 0.6 },
+      particleCount: 100,
+      spread: 80,
+      startVelocity: 45,
+      origin: { y: 0.5 },
       colors: colors,
-      scalar: 1.1,
-      gravity: 1
+      scalar: 1.3,
+      gravity: 1,
+      shapes: ['circle', 'square']
     });
 
-    // Додаткові акценти
-    setTimeout(() => {
-      for (let i = 0; i < 2; i++) {
-        confetti({
-          particleCount: 25,
-          angle: 60 + (i * 60),
-          spread: 55,
-          origin: { x: i === 0 ? 0 : 1, y: 0.6 },
-          colors: colors,
-          scalar: 0.9,
-          gravity: 1
-        });
-      }
-    }, 250);
-
-    // Верхні частинки що падають
+    // Боковые салюты
     setTimeout(() => {
       confetti({
-        particleCount: 30,
-        spread: 100,
-        startVelocity: 30,
-        origin: { y: 0.3 },
+        particleCount: 60,
+        angle: 60,
+        spread: 70,
+        startVelocity: 40,
+        origin: { x: 0.1, y: 0.6 },
         colors: colors,
-        scalar: 0.8,
-        gravity: 0.8
+        scalar: 1.1
       });
-    }, 500);
+      
+      confetti({
+        particleCount: 60,
+        angle: 120,
+        spread: 70,
+        startVelocity: 40,
+        origin: { x: 0.9, y: 0.6 },
+        colors: colors,
+        scalar: 1.1
+      });
+    }, 300);
+
+    // Верхние каскады
+    setTimeout(() => {
+      confetti({
+        particleCount: 50,
+        spread: 120,
+        startVelocity: 35,
+        origin: { x: 0.3, y: 0.3 },
+        colors: colors,
+        scalar: 0.9
+      });
+      
+      confetti({
+        particleCount: 50,
+        spread: 120,
+        startVelocity: 35,
+        origin: { x: 0.7, y: 0.3 },
+        colors: colors,
+        scalar: 0.9
+      });
+    }, 600);
   }
 
-  festive();
-  const interval = setInterval(festive, 7000);
+  festiveFireworks();
+  const interval = setInterval(festiveFireworks, 8000);
   return interval;
 };
 
