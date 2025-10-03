@@ -183,9 +183,15 @@ const runCongratulationsAnimation = (confetti: any) => {
   return interval;
 };
 
-// Love: Romantic hearts floating
+// Love: Romantic hearts floating - з кастомною формою сердець
 const runLoveAnimation = (confetti: any) => {
   const colors = ['#ff006e', '#fb5607', '#ff1744', '#f50057', '#ff4081'];
+  
+  // Створюємо кастомну форму серця через SVG path
+  const heart = confetti.shapeFromPath({
+    path: 'M167.5,80.5c0,0-21.5-22.5-43-22.5c-21.5,0-41.5,22.5-41.5,22.5s-20-22.5-41.5-22.5S0,80.5,0,80.5s0,43,83.5,112.5C167,163,167.5,80.5,167.5,80.5z',
+    matrix: [0.03333333333333333, 0, 0, 0.03333333333333333, -2.7916666666666665, -2.6666666666666665]
+  });
   
   function heartRain() {
     // Большие сердца сверху
@@ -196,7 +202,7 @@ const runLoveAnimation = (confetti: any) => {
       gravity: 0.8,
       ticks: 150,
       origin: { x: 0.5, y: 0.2 },
-      shapes: ['heart'],
+      shapes: [heart],
       colors: colors,
       scalar: 2.5
     });
@@ -209,7 +215,7 @@ const runLoveAnimation = (confetti: any) => {
         spread: 55,
         startVelocity: 25,
         origin: { x: 0, y: 0.5 },
-        shapes: ['heart'],
+        shapes: [heart],
         colors: colors,
         scalar: 2,
         gravity: 0.8
@@ -221,7 +227,7 @@ const runLoveAnimation = (confetti: any) => {
         spread: 55,
         startVelocity: 25,
         origin: { x: 1, y: 0.5 },
-        shapes: ['heart'],
+        shapes: [heart],
         colors: colors,
         scalar: 2,
         gravity: 0.8
@@ -237,7 +243,7 @@ const runLoveAnimation = (confetti: any) => {
             spread: 50,
             startVelocity: 20,
             origin: { x: 0.3 + (Math.random() * 0.4), y: 0 },
-            shapes: ['heart'],
+            shapes: [heart],
             colors: colors,
             scalar: 1.8,
             gravity: 0.6,
@@ -253,9 +259,15 @@ const runLoveAnimation = (confetti: any) => {
   return interval;
 };
 
-// Thanks: Золотые звезды благодарности
+// Thanks: Золотые звезды благодарности - з кастомною формою зірок
 const runThanksAnimation = (confetti: any) => {
   const colors = ['#FFD700', '#FFA500', '#FFED4E', '#FFB700', '#FFC300'];
+  
+  // Створюємо кастомну форму п'ятикутної зірки через SVG path
+  const star = confetti.shapeFromPath({
+    path: 'M0,-15L4.5,-4.5L15,-3L7.5,3L9,15L0,9L-9,15L-7.5,3L-15,-3L-4.5,-4.5Z',
+    matrix: [1, 0, 0, 1, 0, 0]
+  });
   
   function sparkle() {
     // Центральный дождь звезд
@@ -266,7 +278,7 @@ const runThanksAnimation = (confetti: any) => {
       gravity: 0.8,
       ticks: 120,
       origin: { x: 0.5, y: 0.3 },
-      shapes: ['star'],
+      shapes: [star],
       colors: colors,
       scalar: 2
     });
@@ -280,7 +292,7 @@ const runThanksAnimation = (confetti: any) => {
         angle: 60,
         gravity: 0.8,
         origin: { x: 0.1, y: 0.5 },
-        shapes: ['star'],
+        shapes: [star],
         colors: colors,
         scalar: 1.8
       });
@@ -292,7 +304,7 @@ const runThanksAnimation = (confetti: any) => {
         angle: 120,
         gravity: 0.8,
         origin: { x: 0.9, y: 0.5 },
-        shapes: ['star'],
+        shapes: [star],
         colors: colors,
         scalar: 1.8
       });
