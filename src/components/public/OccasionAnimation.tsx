@@ -183,52 +183,45 @@ const runCongratulationsAnimation = (confetti: any) => {
   return interval;
 };
 
-// Love: Romantic hearts floating - с кастомной формой сердца
+// Love: Romantic hearts floating
 const runLoveAnimation = (confetti: any) => {
   const colors = ['#ff006e', '#fb5607', '#ff1744', '#f50057', '#ff4081'];
-  
-  // Создаем кастомную форму сердца
-  const heart = confetti.shapeFromPath({
-    path: 'M167.5,80.5c0,0-21.5-22.5-43-22.5c-21.5,0-41.5,22.5-41.5,22.5s-20-22.5-41.5-22.5S0,80.5,0,80.5s0,43,83.5,112.5C167,163,167.5,80.5,167.5,80.5z',
-    matrix: [0.03333333333333333, 0, 0, 0.03333333333333333, -2.7916666666666665, -2.6666666666666665]
-  });
   
   function heartRain() {
     // Большие сердца сверху
     confetti({
-      particleCount: 20,
+      particleCount: 25,
       spread: 70,
       startVelocity: 30,
       gravity: 0.8,
       ticks: 150,
       origin: { x: 0.5, y: 0.2 },
-      shapes: [heart],
+      shapes: ['heart'],
       colors: colors,
-      scalar: 2.5,
-      flat: false
+      scalar: 2.5
     });
 
     // Боковые сердца
     setTimeout(() => {
       confetti({
-        particleCount: 12,
+        particleCount: 15,
         angle: 60,
         spread: 55,
         startVelocity: 25,
         origin: { x: 0, y: 0.5 },
-        shapes: [heart],
+        shapes: ['heart'],
         colors: colors,
         scalar: 2,
         gravity: 0.8
       });
       
       confetti({
-        particleCount: 12,
+        particleCount: 15,
         angle: 120,
         spread: 55,
         startVelocity: 25,
         origin: { x: 1, y: 0.5 },
-        shapes: [heart],
+        shapes: ['heart'],
         colors: colors,
         scalar: 2,
         gravity: 0.8
@@ -240,13 +233,13 @@ const runLoveAnimation = (confetti: any) => {
       for (let i = 0; i < 4; i++) {
         setTimeout(() => {
           confetti({
-            particleCount: 10,
+            particleCount: 12,
             spread: 50,
             startVelocity: 20,
             origin: { x: 0.3 + (Math.random() * 0.4), y: 0 },
-            shapes: [heart],
+            shapes: ['heart'],
             colors: colors,
-            scalar: 1.5,
+            scalar: 1.8,
             gravity: 0.6,
             drift: (Math.random() - 0.5)
           });
@@ -264,49 +257,42 @@ const runLoveAnimation = (confetti: any) => {
 const runThanksAnimation = (confetti: any) => {
   const colors = ['#FFD700', '#FFA500', '#FFED4E', '#FFB700', '#FFC300'];
   
-  // Создаем кастомную звезду
-  const star = confetti.shapeFromPath({
-    path: 'M0,-15L4.5,-4.5L15,-3L7.5,3L9,15L0,9L-9,15L-7.5,3L-15,-3L-4.5,-4.5Z',
-    matrix: [1, 0, 0, 1, 0, 0]
-  });
-  
   function sparkle() {
     // Центральный дождь звезд
     confetti({
-      particleCount: 30,
+      particleCount: 35,
       spread: 80,
       startVelocity: 35,
       gravity: 0.8,
       ticks: 120,
       origin: { x: 0.5, y: 0.3 },
-      shapes: [star],
+      shapes: ['star'],
       colors: colors,
-      scalar: 2,
-      flat: false
+      scalar: 2
     });
 
     // Боковые звезды
     setTimeout(() => {
       confetti({
-        particleCount: 15,
+        particleCount: 18,
         spread: 60,
         startVelocity: 30,
         angle: 60,
         gravity: 0.8,
         origin: { x: 0.1, y: 0.5 },
-        shapes: [star],
+        shapes: ['star'],
         colors: colors,
         scalar: 1.8
       });
       
       confetti({
-        particleCount: 15,
+        particleCount: 18,
         spread: 60,
         startVelocity: 30,
         angle: 120,
         gravity: 0.8,
         origin: { x: 0.9, y: 0.5 },
-        shapes: [star],
+        shapes: ['star'],
         colors: colors,
         scalar: 1.8
       });
