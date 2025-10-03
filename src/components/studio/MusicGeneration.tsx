@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Textarea } from '@/components/ui/textarea';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2, Music, Sparkles, RefreshCw, HeadphonesIcon, UserCheck, Info, TestTube } from 'lucide-react';
+import { Loader2, Music, Sparkles, RefreshCw, HeadphonesIcon, Info, TestTube, ArrowRight } from 'lucide-react';
 import { MusicVariantCard } from './MusicVariantCard';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -21,20 +19,19 @@ interface MusicGenerationProps {
   lyrics: string;
   onVariantSelected: (variant: MusicVariant) => void;
   onRequestSpecialist: () => void;
+  onContinueWithoutSong?: () => void;
 }
 
 export const MusicGeneration: React.FC<MusicGenerationProps> = ({
   lyrics,
   onVariantSelected,
-  onRequestSpecialist
+  onRequestSpecialist,
+  onContinueWithoutSong
 }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [variants, setVariants] = useState<MusicVariant[]>([]);
   const [selectedVariant, setSelectedVariant] = useState<MusicVariant | null>(null);
   const [generationAttempt, setGenerationAttempt] = useState(0);
-  const [showFeedbackDialog, setShowFeedbackDialog] = useState(false);
-  const [feedback, setFeedback] = useState('');
-  const [showSpecialistDialog, setShowSpecialistDialog] = useState(false);
   const [isTestMode, setIsTestMode] = useState(false);
 
   useEffect(() => {
@@ -53,8 +50,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
       const { data, error } = await supabase.functions.invoke('generate-music', {
         body: { 
           lyrics: lyrics,
-          style: undefined, // Auto-detect style for now
-          userFeedback: generationAttempt > 0 ? feedback : undefined
+          style: undefined // Auto-detect style for now
         }
       });
 
@@ -83,14 +79,11 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
     }
   };
 
-  const handleRegenerateWithFeedback = async () => {
+  const handleRegenerate = async () => {
     if (generationAttempt >= 2) {
-      setShowSpecialistDialog(true);
       return;
     }
     
-    setShowFeedbackDialog(false);
-    setFeedback('');
     await startGeneration();
   };
 
@@ -99,10 +92,6 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
     onVariantSelected(variant);
   };
 
-  const handleContactSpecialist = () => {
-    setShowSpecialistDialog(false);
-    onRequestSpecialist();
-  };
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
@@ -163,25 +152,30 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
-            <Button
-              variant="outline"
-              onClick={() => setShowFeedbackDialog(true)}
-              disabled={generationAttempt >= 2}
-              className="w-full sm:w-auto"
-            >
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Перегенерувати
-            </Button>
-            
-            {generationAttempt >= 2 && (
+            {generationAttempt < 2 ? (
               <Button
-                variant="secondary"
-                onClick={() => setShowSpecialistDialog(true)}
+                variant="outline"
+                onClick={handleRegenerate}
                 className="w-full sm:w-auto"
               >
-                <UserCheck className="h-4 w-4 mr-2" />
-                Зв'язатися зі спеціалістом
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Перегенерувати
               </Button>
+            ) : (
+              <div className="w-full text-center space-y-3">
+                <p className="text-sm font-medium text-muted-foreground">
+                  Оберіть один із варіантів вище, або продовжте створення листівки
+                </p>
+                {onContinueWithoutSong && (
+                  <Button
+                    onClick={onContinueWithoutSong}
+                    className="w-full sm:w-auto sm:min-w-[250px]"
+                  >
+                    Продовжити далі
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </Button>
+                )}
+              </div>
             )}
           </div>
 
@@ -194,22 +188,11 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
                   <p className="text-sm">
                     <strong>Автоматичне створення пісень:</strong> У вас є 2 спроби для створення пісні. Іноді автоматичне створення може дати не той результат, який ви очікували. Це нормально!
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    Якщо після 2 спроб результат вас не влаштовує, напишіть у чат - наш менеджер допоможе створити пісню вручну спеціально для вас.
-                  </p>
-                  <div className="pt-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="text-xs h-7"
-                      onClick={() => {
-                        // TODO: Implement support chat
-                        console.log('Opening support chat...');
-                      }}
-                    >
-                      💬 Чат підтримки
-                    </Button>
-                  </div>
+                  {generationAttempt >= 2 && (
+                    <p className="text-xs text-muted-foreground">
+                      Якщо вам не підходить жоден варіант - не переживайте! Ви можете продовжити створення листівки, а наш спеціаліст зв'яжеться з вами і допоможе створити ідеальну пісню вручну.
+                    </p>
+                  )}
                 </div>
               </AlertDescription>
             </Alert>
@@ -218,72 +201,6 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
         </div>
       )}
 
-      {/* Feedback Dialog */}
-      <Dialog open={showFeedbackDialog} onOpenChange={setShowFeedbackDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Що не підходить?</DialogTitle>
-            <DialogDescription>
-              Коротко опишіть, що ви хочете змінити в музиці
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <Textarea
-              value={feedback}
-              onChange={(e) => setFeedback(e.target.value)}
-              placeholder="Наприклад: зробити більш швидко, додати гітару, змінити настрій..."
-              className="min-h-[100px]"
-            />
-            <div className="flex gap-2 justify-end">
-              <Button
-                variant="outline"
-                onClick={() => setShowFeedbackDialog(false)}
-              >
-                Скасувати
-              </Button>
-              <Button
-                onClick={handleRegenerateWithFeedback}
-                disabled={!feedback.trim()}
-              >
-                Перегенерувати
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Specialist Dialog */}
-      <Dialog open={showSpecialistDialog} onOpenChange={setShowSpecialistDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Зв'язатися зі спеціалістом</DialogTitle>
-            <DialogDescription>
-              Ми використали всі автоматичні спроби. Спеціаліст допоможе створити ідеальну музику для вашої пісні.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="bg-secondary/20 p-4 rounded-lg">
-              <p className="text-sm">
-                <strong>Ваш запит:</strong> Створення музики для пісні
-              </p>
-              <p className="text-sm text-muted-foreground mt-1">
-                Спеціаліст зв'яжеться з вами найближчим часом
-              </p>
-            </div>
-            <div className="flex gap-2 justify-end">
-              <Button
-                variant="outline"
-                onClick={() => setShowSpecialistDialog(false)}
-              >
-                Продовжити самостійно
-              </Button>
-              <Button onClick={handleContactSpecialist}>
-                Зв'язатися зі спеціалістом
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };

@@ -151,6 +151,14 @@ const Studio = () => {
     console.log("Specialist requested for music generation");
   };
 
+  const handleContinueWithoutSong = () => {
+    // User decided to continue without selecting a song
+    // Specialist will contact them later
+    console.log("User continues without song - specialist will be notified");
+    setCurrentStep(3);
+    navigate('/studio?step=3');
+  };
+
   const handleWelcomeStart = () => {
     setShowWelcome(false);
     setCurrentStep(1);
@@ -270,6 +278,7 @@ const Studio = () => {
             lyrics={lyrics}
             onVariantSelected={handleMusicVariantSelected}
             onRequestSpecialist={handleRequestSpecialist}
+            onContinueWithoutSong={handleContinueWithoutSong}
           />
         );
       case 3:
