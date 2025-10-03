@@ -133,14 +133,10 @@ export function FrontDesignStep({
     }
   }, [lyrics, designData.caption, selectedSource]);
 
-  // Switch to preview when image and caption are ready
+  // Switch to preview when image and caption are ready (only for AI generation)
   useEffect(() => {
-    if (designData.imageUrl && designData.caption) {
-      if (selectedSource === 'ai-generation' && isGenerating === false) {
-        setCurrentState('preview');
-      } else if (selectedSource === 'photo') {
-        setCurrentState('preview');
-      }
+    if (designData.imageUrl && designData.caption && selectedSource === 'ai-generation' && isGenerating === false) {
+      setCurrentState('preview');
     }
   }, [designData.imageUrl, designData.caption, selectedSource, isGenerating]);
 
