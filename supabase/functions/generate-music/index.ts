@@ -32,7 +32,8 @@ serve(async (req) => {
     const { lyrics, style, userFeedback }: MusicGenerationRequest = await req.json();
     
     // Check if we're in test mode
-    const testMode = Deno.env.get('TEST_MODE') === 'true';
+    // TEMPORARY: Hardcoded to true for development to save resources
+    const testMode = true; // Change to false when ready for production
     console.log('Test mode:', testMode);
     
     console.log('Generating music for lyrics (full length):', lyrics.length, 'characters');
