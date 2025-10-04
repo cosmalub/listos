@@ -44,6 +44,93 @@ export type Database = {
         }
         Relationships: []
       }
+      orders: {
+        Row: {
+          back_design_color: string
+          back_design_message: string
+          back_image_url: string
+          created_at: string
+          draft_page_url: string | null
+          front_design_caption: string | null
+          front_design_mode: string | null
+          front_design_prompt: string | null
+          front_design_style: string | null
+          front_image_url: string
+          id: string
+          lyrics: string
+          music_audio_url: string | null
+          music_selected: boolean | null
+          music_variant_description: string | null
+          music_variant_id: string | null
+          music_variant_style: string | null
+          music_variant_title: string | null
+          page_occasion: string
+          page_recipient: string
+          page_sender: string
+          qr_code_url: string | null
+          status: string | null
+          updated_at: string
+          user_email: string | null
+          user_phone: string | null
+        }
+        Insert: {
+          back_design_color: string
+          back_design_message: string
+          back_image_url: string
+          created_at?: string
+          draft_page_url?: string | null
+          front_design_caption?: string | null
+          front_design_mode?: string | null
+          front_design_prompt?: string | null
+          front_design_style?: string | null
+          front_image_url: string
+          id?: string
+          lyrics: string
+          music_audio_url?: string | null
+          music_selected?: boolean | null
+          music_variant_description?: string | null
+          music_variant_id?: string | null
+          music_variant_style?: string | null
+          music_variant_title?: string | null
+          page_occasion: string
+          page_recipient: string
+          page_sender: string
+          qr_code_url?: string | null
+          status?: string | null
+          updated_at?: string
+          user_email?: string | null
+          user_phone?: string | null
+        }
+        Update: {
+          back_design_color?: string
+          back_design_message?: string
+          back_image_url?: string
+          created_at?: string
+          draft_page_url?: string | null
+          front_design_caption?: string | null
+          front_design_mode?: string | null
+          front_design_prompt?: string | null
+          front_design_style?: string | null
+          front_image_url?: string
+          id?: string
+          lyrics?: string
+          music_audio_url?: string | null
+          music_selected?: boolean | null
+          music_variant_description?: string | null
+          music_variant_id?: string | null
+          music_variant_style?: string | null
+          music_variant_title?: string | null
+          page_occasion?: string
+          page_recipient?: string
+          page_sender?: string
+          qr_code_url?: string | null
+          status?: string | null
+          updated_at?: string
+          user_email?: string | null
+          user_phone?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

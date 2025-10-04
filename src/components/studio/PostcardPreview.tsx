@@ -46,7 +46,7 @@ function isLightColor(color: string): boolean {
 export function PostcardPreview({ frontData, backData, showFront = true, size = 'large' }: PostcardPreviewProps) {
   // Front side content
   const frontSide = (
-    <div className="relative w-full h-full bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl overflow-hidden">
+    <div id="postcard-front-preview" className="relative w-full h-full bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl overflow-hidden">
       {frontData.imageUrl ? (
         <>
           {/* Generated/uploaded image */}
@@ -86,7 +86,7 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
 
   // Back side content
   const backSide = (
-    <div className="relative w-full h-full bg-background border rounded-xl overflow-hidden">
+    <div id="postcard-back-preview" className="relative w-full h-full bg-background border rounded-xl overflow-hidden">
       {backData.selectedColor ? (
         <div 
           className="h-full flex flex-col p-6"

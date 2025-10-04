@@ -19,6 +19,7 @@ import { StepsHeader } from '@/components/studio/StepsHeader';
 import { StepExplanation } from '@/components/studio/StepExplanation';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { captureElement, captureDraftPageHtml } from '@/lib/postcard-generator';
 
 const steps = [
   { id: 1, title: 'Створення слів', description: 'Створюємо слова для пісні' },
@@ -165,6 +166,59 @@ const Studio = () => {
     navigate('/studio?step=1');
   };
 
+  const handlePostcardDesignComplete = async (postcardDesignData: any) => {
+    try {
+      setDesignData(postcardDesignData);
+      toast.loading('Збереження замовлення...');
+
+      // Get page data from sessionStorage
+      const storedData = sessionStorage.getItem('studio-draft-data');
+      if (!storedData) {
+        throw new Error('Page data not found');
+      }
+      const parsedPageData = JSON.parse(storedData);
+
+      // Capture front and back images
+      const frontElement = document.querySelector('#postcard-front-preview') as HTMLElement;
+      const backElement = document.querySelector('#postcard-back-preview') as HTMLElement;
+
+      if (!frontElement || !backElement) {
+        throw new Error('Postcard preview elements not found');
+      }
+
+      const frontImageBase64 = await captureElement(frontElement);
+      const backImageBase64 = await captureElement(backElement);
+
+      // Capture draft page HTML
+      const draftPageHtml = await captureDraftPageHtml();
+
+      // Call save-order edge function
+      const { data, error } = await supabase.functions.invoke('save-order', {
+        body: {
+          lyrics,
+          musicVariant: selectedMusicVariant,
+          pageData: parsedPageData,
+          frontDesign: postcardDesignData.front,
+          backDesign: postcardDesignData.back,
+          frontImageBase64,
+          backImageBase64,
+          draftPageHtml,
+        },
+      });
+
+      if (error) throw error;
+
+      toast.success('Замовлення збережено успішно!');
+      
+      // Navigate to success page
+      navigate(`/order-success?orderId=${data.orderId}`);
+
+    } catch (error) {
+      console.error('Error saving order:', error);
+      toast.error('Помилка збереження замовлення');
+    }
+  };
+
   // Dev mode functions
   const fillTestData = () => {
     setLyrics(TEST_DATA.lyrics);
@@ -294,12 +348,7 @@ const Studio = () => {
         return (
           <PostcardDesign
             lyrics={lyrics}
-            onComplete={(postcardDesignData) => {
-              // Save design data - final step
-              console.log('Postcard design completed:', postcardDesignData);
-              setDesignData(postcardDesignData);
-              toast.success('Листівка створена успішно!');
-            }}
+            onComplete={handlePostcardDesignComplete}
             onBack={() => setCurrentStep(3)}
           />
         );
