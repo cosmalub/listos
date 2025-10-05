@@ -55,8 +55,8 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
             alt="Postcard design"
             className="w-full h-full object-cover"
           />
-          {/* Caption overlay - for both modes */}
-          {frontData.caption && (
+          {/* Caption overlay - only for photo mode */}
+          {frontData.caption && frontData.mode === 'photo' && (
             <div className="absolute bottom-6 left-4 right-4">
               <div className="bg-black/60 backdrop-blur-sm rounded-lg py-3 px-4">
                 <p className={cn(
