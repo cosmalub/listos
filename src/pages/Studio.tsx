@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, CheckCircle, Circle, Settings } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Circle, Settings, Trash } from 'lucide-react';
 
 // DEV MODE - Set to false for production
 const DEV_MODE = true;
@@ -259,6 +259,12 @@ const Studio = () => {
     }
   };
 
+  const handleClearChatHistory = () => {
+    localStorage.removeItem('studio-chat-messages');
+    setChatMessages([]);
+    toast.success('Історію чату очищено');
+  };
+
   const renderStepContent = () => {
     switch (currentStep) {
       case 0:
@@ -432,6 +438,17 @@ const Studio = () => {
                 className="text-xs"
               >
                 View Data
+              </Button>
+            </div>
+            <div className="mt-2">
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={handleClearChatHistory}
+                className="text-xs w-full"
+              >
+                <Trash className="w-3 h-3 mr-1" />
+                Clear Chat
               </Button>
             </div>
           </div>
