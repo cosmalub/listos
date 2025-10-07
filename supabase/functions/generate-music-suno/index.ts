@@ -9,7 +9,12 @@ interface MusicGenerationRequest {
   lyrics: string;
   style?: string;
   userFeedback?: string;
-  model?: 'V3_5' | 'V4' | 'V4_5' | 'V4_5PLUS';
+  model?: 'V3_5' | 'V4' | 'V4_5' | 'V4_5PLUS' | 'V5';
+  vocalGender?: 'm' | 'f';
+  styleWeight?: number;
+  weirdnessConstraint?: number;
+  audioWeight?: number;
+  negativeTags?: string;
 }
 
 interface MusicVariant {
@@ -27,7 +32,17 @@ serve(async (req) => {
   }
 
   try {
-    const { lyrics, style, userFeedback, model = 'V4' }: MusicGenerationRequest = await req.json();
+    const { 
+      lyrics, 
+      style, 
+      userFeedback, 
+      model = 'V5',
+      vocalGender,
+      styleWeight,
+      weirdnessConstraint,
+      audioWeight,
+      negativeTags
+    }: MusicGenerationRequest = await req.json();
     const SUNO_API_KEY = Deno.env.get('SUNO_API_KEY');
 
     if (!SUNO_API_KEY) {
@@ -36,6 +51,11 @@ serve(async (req) => {
 
     console.log('Starting Suno music generation with lyrics:', lyrics.substring(0, 100) + '...');
     console.log('Model:', model, 'Style:', style || 'auto-detect');
+    if (vocalGender) console.log('Vocal Gender:', vocalGender);
+    if (styleWeight !== undefined) console.log('Style Weight:', styleWeight);
+    if (weirdnessConstraint !== undefined) console.log('Weirdness Constraint:', weirdnessConstraint);
+    if (audioWeight !== undefined) console.log('Audio Weight:', audioWeight);
+    if (negativeTags) console.log('Negative Tags:', negativeTags);
 
     // Analyze lyrics for style and language
     const analysis = analyzeLyrics(lyrics);
@@ -49,22 +69,42 @@ serve(async (req) => {
 
     console.log('Generated style:', musicStyle);
 
+    // Validate optional parameters
+    if (styleWeight !== undefined && (styleWeight < 0 || styleWeight > 1)) {
+      throw new Error('styleWeight must be between 0 and 1');
+    }
+    if (weirdnessConstraint !== undefined && (weirdnessConstraint < 0 || weirdnessConstraint > 1)) {
+      throw new Error('weirdnessConstraint must be between 0 and 1');
+    }
+    if (audioWeight !== undefined && (audioWeight < 0 || audioWeight > 1)) {
+      throw new Error('audioWeight must be between 0 and 1');
+    }
+
     // Step 1: Generate music via Suno API
+    const requestBody: any = {
+      prompt: prompt,
+      customMode: true,
+      instrumental: false,
+      model: model,
+      style: musicStyle,
+      title: extractTitle(lyrics) || 'Generated Song',
+      callBackUrl: '', // Not using callbacks for now
+    };
+
+    // Add optional parameters if provided
+    if (vocalGender) requestBody.vocalGender = vocalGender;
+    if (styleWeight !== undefined) requestBody.styleWeight = Math.round(styleWeight * 100) / 100;
+    if (weirdnessConstraint !== undefined) requestBody.weirdnessConstraint = Math.round(weirdnessConstraint * 100) / 100;
+    if (audioWeight !== undefined) requestBody.audioWeight = Math.round(audioWeight * 100) / 100;
+    if (negativeTags) requestBody.negativeTags = negativeTags;
+
     const generateResponse = await fetch('https://api.kie.ai/api/v1/generate', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${SUNO_API_KEY}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        prompt: prompt,
-        customMode: true,
-        instrumental: false,
-        model: model,
-        style: musicStyle,
-        title: extractTitle(lyrics) || 'Generated Song',
-        callBackUrl: '', // Not using callbacks for now
-      }),
+      body: JSON.stringify(requestBody),
     });
 
     if (!generateResponse.ok) {

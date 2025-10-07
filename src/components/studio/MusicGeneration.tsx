@@ -37,7 +37,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
   const [generationAttempt, setGenerationAttempt] = useState(0);
   const [isTestMode, setIsTestMode] = useState(false);
   const [generationMethod, setGenerationMethod] = useState<'elevenlabs' | 'suno'>('suno');
-  const [sunoModel, setSunoModel] = useState<'V3_5' | 'V4' | 'V4_5' | 'V4_5PLUS'>('V4');
+  const [sunoModel, setSunoModel] = useState<'V3_5' | 'V4' | 'V4_5' | 'V4_5PLUS' | 'V5'>('V5');
 
   useEffect(() => {
     if (lyrics) {
@@ -138,15 +138,16 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
             {generationMethod === 'suno' && (
               <div className="space-y-2">
                 <Label>Suno Model</Label>
-                <Select value={sunoModel} onValueChange={(value: 'V3_5' | 'V4' | 'V4_5' | 'V4_5PLUS') => setSunoModel(value)}>
+                <Select value={sunoModel} onValueChange={(value: 'V3_5' | 'V4' | 'V4_5' | 'V4_5PLUS' | 'V5') => setSunoModel(value)}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="V3_5">V3.5 - Краща структура пісні (макс 4 хв)</SelectItem>
-                    <SelectItem value="V4">V4 - Покращений вокал (макс 4 хв)</SelectItem>
+                    <SelectItem value="V5">V5 - Найкраща якість та швидкість (Рекомендовано)</SelectItem>
+                    <SelectItem value="V4_5PLUS">V4.5 PLUS - Багата звучання (макс 8 хв)</SelectItem>
                     <SelectItem value="V4_5">V4.5 - Швидша генерація (макс 8 хв)</SelectItem>
-                    <SelectItem value="V4_5PLUS">V4.5 PLUS - Найкраща якість (макс 8 хв)</SelectItem>
+                    <SelectItem value="V4">V4 - Покращений вокал (макс 4 хв)</SelectItem>
+                    <SelectItem value="V3_5">V3.5 - Краща структура пісні (макс 4 хв)</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
