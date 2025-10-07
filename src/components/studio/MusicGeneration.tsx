@@ -5,6 +5,9 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Music, Sparkles, RefreshCw, HeadphonesIcon, Info, TestTube, ArrowRight } from 'lucide-react';
 import { MusicVariantCard } from './MusicVariantCard';
 import { supabase } from '@/integrations/supabase/client';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface MusicVariant {
   id: string;
@@ -33,6 +36,8 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
   const [selectedVariant, setSelectedVariant] = useState<MusicVariant | null>(null);
   const [generationAttempt, setGenerationAttempt] = useState(0);
   const [isTestMode, setIsTestMode] = useState(false);
+  const [generationMethod, setGenerationMethod] = useState<'elevenlabs' | 'suno'>('suno');
+  const [sunoModel, setSunoModel] = useState<'V3_5' | 'V4' | 'V4_5' | 'V4_5PLUS'>('V4');
 
   useEffect(() => {
     if (lyrics) {
@@ -46,11 +51,15 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
     
     try {
       console.log('Starting music generation with lyrics:', lyrics.substring(0, 100) + '...');
+      console.log('Method:', generationMethod, 'Model:', sunoModel);
       
-      const { data, error } = await supabase.functions.invoke('generate-music', {
+      const functionName = generationMethod === 'suno' ? 'generate-music-suno' : 'generate-music';
+      
+      const { data, error } = await supabase.functions.invoke(functionName, {
         body: { 
           lyrics: lyrics,
-          style: undefined // Auto-detect style for now
+          style: undefined, // Auto-detect style for now
+          model: generationMethod === 'suno' ? sunoModel : undefined
         }
       });
 
@@ -93,8 +102,59 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
   };
 
 
+  // Check if DEV_MODE is enabled by looking for it in window object
+  const DEV_MODE = typeof window !== 'undefined' && (window as any).DEV_MODE === true;
+
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
+      {/* Dev Mode: Method Selection */}
+      {DEV_MODE && !isGenerating && variants.length === 0 && (
+        <Card className="border-orange-200 bg-orange-50/50 dark:bg-orange-950/20">
+          <CardHeader>
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <TestTube className="h-4 w-4" />
+              Dev Mode: Music Generation Settings
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label>Метод генерації</Label>
+              <RadioGroup value={generationMethod} onValueChange={(value: 'elevenlabs' | 'suno') => setGenerationMethod(value)}>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="suno" id="suno" />
+                  <Label htmlFor="suno" className="font-normal cursor-pointer">
+                    Suno AI (Рекомендовано) - Краща якість, довші треки
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="elevenlabs" id="elevenlabs" />
+                  <Label htmlFor="elevenlabs" className="font-normal cursor-pointer">
+                    ElevenLabs - Швидша генерація
+                  </Label>
+                </div>
+              </RadioGroup>
+            </div>
+            
+            {generationMethod === 'suno' && (
+              <div className="space-y-2">
+                <Label>Suno Model</Label>
+                <Select value={sunoModel} onValueChange={(value: 'V3_5' | 'V4' | 'V4_5' | 'V4_5PLUS') => setSunoModel(value)}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="V3_5">V3.5 - Краща структура пісні (макс 4 хв)</SelectItem>
+                    <SelectItem value="V4">V4 - Покращений вокал (макс 4 хв)</SelectItem>
+                    <SelectItem value="V4_5">V4.5 - Швидша генерація (макс 8 хв)</SelectItem>
+                    <SelectItem value="V4_5PLUS">V4.5 PLUS - Найкраща якість (макс 8 хв)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
       {/* Generation Status */}
       {isGenerating && (
         <Card className="border-border bg-muted/20">
