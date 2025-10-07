@@ -38,6 +38,21 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
   const [isTestMode, setIsTestMode] = useState(false);
   const [generationMethod, setGenerationMethod] = useState<'elevenlabs' | 'suno'>('suno');
   const [sunoModel, setSunoModel] = useState<'V3_5' | 'V4' | 'V4_5' | 'V4_5PLUS' | 'V5'>('V5');
+  const [analyzedParams, setAnalyzedParams] = useState<any>(null);
+
+  // Load analyzed parameters from sessionStorage
+  useEffect(() => {
+    const storedParams = sessionStorage.getItem('music-parameters');
+    if (storedParams) {
+      try {
+        const params = JSON.parse(storedParams);
+        setAnalyzedParams(params);
+        console.log('Loaded analyzed music parameters:', params);
+      } catch (error) {
+        console.error('Failed to parse stored music parameters:', error);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (lyrics) {
@@ -52,15 +67,29 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
     try {
       console.log('Starting music generation with lyrics:', lyrics.substring(0, 100) + '...');
       console.log('Method:', generationMethod, 'Model:', sunoModel);
+      console.log('Analyzed params:', analyzedParams);
       
       const functionName = generationMethod === 'suno' ? 'generate-music-suno' : 'generate-music';
       
+      // Prepare request body with analyzed parameters
+      const requestBody: any = { 
+        lyrics: lyrics,
+        model: generationMethod === 'suno' ? sunoModel : undefined
+      };
+
+      // Add analyzed parameters if available
+      if (analyzedParams) {
+        requestBody.style = analyzedParams.style;
+        requestBody.title = analyzedParams.title;
+        requestBody.vocalGender = analyzedParams.vocalGender;
+        requestBody.styleWeight = analyzedParams.styleWeight;
+        requestBody.weirdnessConstraint = analyzedParams.weirdnessConstraint;
+        requestBody.audioWeight = analyzedParams.audioWeight;
+        requestBody.negativeTags = analyzedParams.negativeTags;
+      }
+      
       const { data, error } = await supabase.functions.invoke(functionName, {
-        body: { 
-          lyrics: lyrics,
-          style: undefined, // Auto-detect style for now
-          model: generationMethod === 'suno' ? sunoModel : undefined
-        }
+        body: requestBody
       });
 
       if (error) {
@@ -150,6 +179,32 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
                     <SelectItem value="V3_5">V3.5 - Краща структура пісні (макс 4 хв)</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+            )}
+
+            {/* Show analyzed parameters in Dev Mode */}
+            {analyzedParams && (
+              <div className="space-y-2 mt-4 pt-4 border-t border-orange-200">
+                <Label className="text-xs font-semibold">Проаналізовані параметри з Claude:</Label>
+                <div className="text-xs space-y-1 font-mono bg-background/50 p-3 rounded-md">
+                  <div><span className="text-muted-foreground">Стиль:</span> <span className="font-semibold">{analyzedParams.style || 'auto'}</span></div>
+                  <div><span className="text-muted-foreground">Назва:</span> <span className="font-semibold">{analyzedParams.title || 'auto'}</span></div>
+                  {analyzedParams.vocalGender && (
+                    <div><span className="text-muted-foreground">Вокал:</span> <span className="font-semibold">{analyzedParams.vocalGender}</span></div>
+                  )}
+                  {analyzedParams.styleWeight !== undefined && (
+                    <div><span className="text-muted-foreground">Вага стилю:</span> <span className="font-semibold">{analyzedParams.styleWeight}/100</span></div>
+                  )}
+                  {analyzedParams.weirdnessConstraint !== undefined && (
+                    <div><span className="text-muted-foreground">Експериментальність:</span> <span className="font-semibold">{analyzedParams.weirdnessConstraint}/100</span></div>
+                  )}
+                  {analyzedParams.audioWeight !== undefined && (
+                    <div><span className="text-muted-foreground">Баланс вокал/інструменти:</span> <span className="font-semibold">{analyzedParams.audioWeight}/100</span></div>
+                  )}
+                  {analyzedParams.negativeTags && analyzedParams.negativeTags.length > 0 && (
+                    <div><span className="text-muted-foreground">Небажані елементи:</span> <span className="font-semibold">{analyzedParams.negativeTags.join(', ')}</span></div>
+                  )}
+                </div>
               </div>
             )}
           </CardContent>

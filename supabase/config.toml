@@ -17,3 +17,6 @@ verify_jwt = false
 
 [functions.generate-personal-message]
 verify_jwt = false
+
+[functions.analyze-lyrics-for-music]
+verify_jwt = false
