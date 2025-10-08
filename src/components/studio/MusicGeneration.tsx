@@ -271,13 +271,6 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
                   Наша ШІ аналізує текст, визначає стать вокаліста та генерує варіанти з вокалом
                 </p>
               </div>
-              <div className="flex items-center justify-center">
-                <div className="flex space-x-1">
-                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
-                </div>
-              </div>
             </div>
           </CardContent>
         </Card>

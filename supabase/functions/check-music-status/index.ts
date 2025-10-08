@@ -86,7 +86,7 @@ serve(async (req) => {
         id: item.id || `variant-${index}`,
         title: item.title || `Варіант ${index + 1}`,
         description: item.tags || item.style || '',
-        audioUrl: item.audio_url,
+        audioUrl: item.audioUrl,
         duration: item.duration || 0,
         style: item.tags || item.style || '',
       }));

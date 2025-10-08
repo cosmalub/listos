@@ -157,20 +157,20 @@ export const MusicVariantCard: React.FC<MusicVariantCardProps> = ({
 
           {/* Waveform Visualization */}
           <div className="flex items-center justify-center space-x-1 h-8">
-            {Array.from({ length: 20 }).map((_, i) => (
+            {Array.from({ length: 8 }).map((_, i) => (
               <div
                 key={i}
                 className={cn(
-                  "bg-primary/30 rounded-full transition-all duration-300",
+                  "bg-primary/40 rounded-full transition-all duration-300 w-1.5",
                   isPlaying 
-                    ? "animate-pulse h-2 w-1" 
-                    : "h-1 w-1"
+                    ? "animate-pulse" 
+                    : ""
                 )}
                 style={{
                   height: isPlaying 
-                    ? `${Math.random() * 16 + 4}px` 
-                    : '4px',
-                  animationDelay: `${i * 0.1}s`
+                    ? `${Math.random() * 20 + 8}px` 
+                    : '8px',
+                  animationDelay: `${i * 0.15}s`
                 }}
               />
             ))}
