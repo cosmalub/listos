@@ -8,6 +8,7 @@ const corsHeaders = {
 interface MusicGenerationRequest {
   lyrics: string;
   style?: string;
+  title?: string;
   userFeedback?: string;
   model?: 'V3_5' | 'V4' | 'V4_5' | 'V4_5PLUS' | 'V5';
   vocalGender?: 'm' | 'f';
@@ -34,7 +35,8 @@ serve(async (req) => {
   try {
     const { 
       lyrics, 
-      style, 
+      style,
+      title, 
       userFeedback, 
       model = 'V5',
       vocalGender,
@@ -87,7 +89,7 @@ serve(async (req) => {
       instrumental: false,
       model: model,
       style: musicStyle,
-      title: extractTitle(lyrics) || 'Generated Song',
+      title: title || extractTitle(lyrics) || 'Generated Song',
       callBackUrl: 'https://api.kie.ai/placeholder-callback', // Required by Suno API
     };
 

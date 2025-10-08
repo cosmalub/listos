@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2, Music, Sparkles, RefreshCw, HeadphonesIcon, Info, TestTube, ArrowRight } from 'lucide-react';
+import { Loader2, Music, Sparkles, RefreshCw, HeadphonesIcon, TestTube, ArrowRight } from 'lucide-react';
 import { MusicVariantCard } from './MusicVariantCard';
 import { supabase } from '@/integrations/supabase/client';
 import { Label } from '@/components/ui/label';
@@ -266,9 +266,9 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
                 <Loader2 className="h-12 w-12 animate-spin text-foreground" />
               </div>
               <div className="space-y-2">
-                <p className="text-lg font-semibold">Аналізуємо ваші слова...</p>
+                <p className="text-lg font-semibold">Листосик створює пісню на основі ваших слів...</p>
                 <p className="text-sm text-muted-foreground max-w-md">
-                  Наша ШІ аналізує текст, визначає стать вокаліста та генерує варіанти з вокалом
+                  Це займе 1-2 хвилини. Будь ласка, зачекайте — створюємо мелодію та вокал спеціально для вас
                 </p>
               </div>
             </div>
@@ -331,21 +331,6 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
               Спроба {generationAttempt} з 2 {isTestMode ? '• Тестовий режим' : ''}
             </p>
           </div>
-
-          {/* Info Notice */}
-          <Alert className="border-blue-200 bg-blue-50 dark:bg-blue-950/20">
-            <Info className="h-4 w-4" />
-            <AlertDescription>
-              <div className="space-y-2">
-                <p className="text-sm">
-                  <strong>Автоматичне створення пісень:</strong> У вас є 2 спроби для створення пісні. Ви можете перегенерувати варіанти, якщо результат не той, який ви очікували.
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  Якщо після спроб вам не підійде жоден варіант - не переживайте! Ви можете продовжити створення листівки, а наш спеціаліст зв'яжеться з вами і створить пісню вручну, яка вам точно сподобається.
-                </p>
-              </div>
-            </AlertDescription>
-          </Alert>
           
           <div className="grid gap-4 md:grid-cols-2">
             {variants.map((variant) => (
