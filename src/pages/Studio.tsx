@@ -109,9 +109,7 @@ const Studio = () => {
     setLyrics(confirmedLyrics);
     setHasUnconfirmedLyrics(false);
     
-    // Analyze lyrics with Claude before music generation
-    toast.loading('Аналізую текст для підбору параметрів музики...');
-    
+    // Analyze lyrics with Claude before music generation (silently in background)
     try {
       const { data: analysisData, error: analysisError } = await supabase.functions.invoke('analyze-lyrics-for-music', {
         body: { lyrics: confirmedLyrics }
@@ -119,16 +117,13 @@ const Studio = () => {
 
       if (analysisError) {
         console.error('Analysis error:', analysisError);
-        toast.error('Помилка аналізу, використовую стандартні параметри');
       } else {
         console.log('Lyrics analysis result:', analysisData);
         // Store analysis result for MusicGeneration component
         sessionStorage.setItem('music-parameters', JSON.stringify(analysisData));
-        toast.success('Параметри музики підібрано!');
       }
     } catch (error) {
       console.error('Failed to analyze lyrics:', error);
-      toast.error('Помилка аналізу, використовую стандартні параметри');
     }
     
     setCurrentStep(2);
