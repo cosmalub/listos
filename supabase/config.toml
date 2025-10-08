@@ -9,6 +9,9 @@ verify_jwt = false
 [functions.generate-music-suno]
 verify_jwt = false
 
+[functions.check-music-status]
+verify_jwt = false
+
 [functions.save-music-selection]
 verify_jwt = false
 

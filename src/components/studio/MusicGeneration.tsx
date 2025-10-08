@@ -39,6 +39,8 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
   const [generationMethod, setGenerationMethod] = useState<'elevenlabs' | 'suno'>('suno');
   const [sunoModel, setSunoModel] = useState<'V3_5' | 'V4' | 'V4_5' | 'V4_5PLUS' | 'V5'>('V5');
   const [analyzedParams, setAnalyzedParams] = useState<any>(null);
+  const [pendingTaskId, setPendingTaskId] = useState<string | null>(null);
+  const [isCheckingStatus, setIsCheckingStatus] = useState(false);
 
   // Load analyzed parameters from sessionStorage
   useEffect(() => {
@@ -90,13 +92,23 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
         requestBody.negativeTags = analyzedParams.negativeTags;
       }
       
-      const { data, error } = await supabase.functions.invoke(functionName, {
+      const response = await supabase.functions.invoke(functionName, {
         body: requestBody
       });
 
-      if (error) {
-        console.error('Supabase function error:', error);
-        throw new Error(error.message || 'Failed to generate music');
+      if (response.error) {
+        console.error('Supabase function error:', response.error);
+        throw new Error(response.error.message || 'Failed to generate music');
+      }
+
+      const data = response.data;
+
+      // Handle 202 status - task is pending
+      if (data.status === 'pending' && data.taskId) {
+        console.log('Music generation pending, taskId:', data.taskId);
+        setPendingTaskId(data.taskId);
+        setIsGenerating(false);
+        return;
       }
 
       if (!data.success) {
@@ -130,6 +142,38 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
   const handleVariantSelect = (variant: MusicVariant) => {
     setSelectedVariant(variant);
     onVariantSelected(variant);
+  };
+
+  const handleCheckStatus = async () => {
+    if (!pendingTaskId) return;
+
+    setIsCheckingStatus(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('check-music-status', {
+        body: { taskId: pendingTaskId }
+      });
+
+      if (error) {
+        console.error('Error checking status:', error);
+        throw new Error(error.message || 'Failed to check status');
+      }
+
+      if (data.status === 'pending') {
+        console.log('Still pending...');
+        return;
+      }
+
+      if (data.status === 'completed' && data.variants) {
+        console.log('Music ready:', data.variants.length, 'variants');
+        setVariants(data.variants);
+        setPendingTaskId(null);
+        setIsTestMode(data.variants?.some((v: MusicVariant) => v.title?.includes('(Test)')) || false);
+      }
+    } catch (error) {
+      console.error('Status check error:', error);
+    } finally {
+      setIsCheckingStatus(false);
+    }
   };
 
 
@@ -234,6 +278,44 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
                   <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
                 </div>
               </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Pending Status - Music still generating */}
+      {pendingTaskId && !isGenerating && variants.length === 0 && (
+        <Card className="border-yellow-200 bg-yellow-50/50 dark:bg-yellow-950/20">
+          <CardContent className="p-8 text-center">
+            <div className="flex flex-col items-center space-y-4">
+              <Music className="h-12 w-12 text-yellow-600 dark:text-yellow-400" />
+              <div className="space-y-2">
+                <p className="text-lg font-semibold">Музика генерується...</p>
+                <p className="text-sm text-muted-foreground max-w-md">
+                  Suno AI створює вашу пісню. Це може зайняти 1-2 хвилини. 
+                  Натисніть кнопку нижче, щоб перевірити готовність.
+                </p>
+              </div>
+              <Button 
+                onClick={handleCheckStatus}
+                disabled={isCheckingStatus}
+                className="mt-4"
+              >
+                {isCheckingStatus ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Перевіряємо...
+                  </>
+                ) : (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Перевірити готовність
+                  </>
+                )}
+              </Button>
+              <p className="text-xs text-muted-foreground">
+                Task ID: {pendingTaskId}
+              </p>
             </div>
           </CardContent>
         </Card>
