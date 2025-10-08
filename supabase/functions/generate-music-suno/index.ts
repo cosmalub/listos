@@ -178,14 +178,21 @@ serve(async (req) => {
       throw new Error('No music tracks were generated');
     }
 
-    const variants: MusicVariant[] = sunoData.map((track: any, index: number) => ({
-      id: track.id,
-      title: track.title || `Generated Song ${index + 1}`,
-      description: `Style: ${track.tags || musicStyle}`,
-      audioUrl: track.audioUrl,
-      duration: track.duration || 0,
-      style: track.tags || musicStyle,
-    }));
+    console.log('Full taskResult.response:', JSON.stringify(taskResult.response, null, 2));
+    console.log('sunoData array:', JSON.stringify(sunoData, null, 2));
+
+    const variants: MusicVariant[] = sunoData.map((track: any, index: number) => {
+      const variant = {
+        id: track.id,
+        title: track.title || `Generated Song ${index + 1}`,
+        description: `Style: ${track.tags || musicStyle}`,
+        audioUrl: track.audioUrl,
+        duration: track.duration || 0,
+        style: track.tags || musicStyle,
+      };
+      console.log(`Variant ${index}:`, JSON.stringify(variant, null, 2));
+      return variant;
+    });
 
     console.log(`Successfully generated ${variants.length} Suno music variant(s)`);
 

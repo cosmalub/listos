@@ -32,9 +32,9 @@ export const MusicVariantCard: React.FC<MusicVariantCardProps> = ({
   const [progress, setProgress] = React.useState(0);
 
   React.useEffect(() => {
-    if (variant.audioUrl && variant.audioUrl.startsWith('data:audio/')) {
+    if (variant.audioUrl) {
       console.log('🎵 Setting up audio for variant:', variant.title);
-      console.log('🎵 Audio URL length:', variant.audioUrl.length);
+      console.log('🎵 Audio URL:', variant.audioUrl.substring(0, 100) + '...');
       
       const audioElement = new Audio(variant.audioUrl);
       
@@ -89,7 +89,7 @@ export const MusicVariantCard: React.FC<MusicVariantCardProps> = ({
   }, [variant.audioUrl]);
 
   const handlePlayPause = () => {
-    if (!audio || !variant.audioUrl?.startsWith('data:audio/')) {
+    if (!audio || !variant.audioUrl) {
       console.log('🎵 Audio not available for playback');
       return;
     }
