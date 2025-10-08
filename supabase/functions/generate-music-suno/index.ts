@@ -124,8 +124,8 @@ serve(async (req) => {
     const taskId = generateResult.data.taskId;
     console.log('Suno task created:', taskId);
 
-    // Step 2: Poll for completion
-    const maxAttempts = 60; // 5 minutes max (5s intervals)
+    // Step 2: Poll for completion (limited to 50 seconds to avoid Edge Function timeout)
+    const maxAttempts = 10; // 50 seconds max (5s intervals)
     let attempts = 0;
     let taskResult = null;
 
@@ -168,7 +168,17 @@ serve(async (req) => {
     }
 
     if (!taskResult) {
-      throw new Error('Music generation timeout - task did not complete in time');
+      return new Response(
+        JSON.stringify({ 
+          error: 'Music generation is taking longer than expected. The task is still processing. Please wait 1-2 minutes and try regenerating.',
+          taskId: taskId,
+          status: 'pending'
+        }),
+        { 
+          status: 202, // Accepted but not completed
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
     }
 
     // Step 3: Format response
