@@ -69,15 +69,15 @@ serve(async (req) => {
 
     console.log('Generated style:', musicStyle);
 
-    // Validate optional parameters
-    if (styleWeight !== undefined && (styleWeight < 0 || styleWeight > 1)) {
-      throw new Error('styleWeight must be between 0 and 1');
+    // Validate optional parameters (expecting 0-100 range from Claude)
+    if (styleWeight !== undefined && (styleWeight < 0 || styleWeight > 100)) {
+      throw new Error('styleWeight must be between 0 and 100');
     }
-    if (weirdnessConstraint !== undefined && (weirdnessConstraint < 0 || weirdnessConstraint > 1)) {
-      throw new Error('weirdnessConstraint must be between 0 and 1');
+    if (weirdnessConstraint !== undefined && (weirdnessConstraint < 0 || weirdnessConstraint > 100)) {
+      throw new Error('weirdnessConstraint must be between 0 and 100');
     }
-    if (audioWeight !== undefined && (audioWeight < 0 || audioWeight > 1)) {
-      throw new Error('audioWeight must be between 0 and 1');
+    if (audioWeight !== undefined && (audioWeight < 0 || audioWeight > 100)) {
+      throw new Error('audioWeight must be between 0 and 100');
     }
 
     // Step 1: Generate music via Suno API
@@ -88,15 +88,17 @@ serve(async (req) => {
       model: model,
       style: musicStyle,
       title: extractTitle(lyrics) || 'Generated Song',
-      callBackUrl: '', // Not using callbacks for now
+      callBackUrl: 'https://api.kie.ai/placeholder-callback', // Required by Suno API
     };
 
-    // Add optional parameters if provided
+    // Add optional parameters if provided (convert 0-100 to 0-1 range for Suno)
     if (vocalGender) requestBody.vocalGender = vocalGender;
-    if (styleWeight !== undefined) requestBody.styleWeight = Math.round(styleWeight * 100) / 100;
-    if (weirdnessConstraint !== undefined) requestBody.weirdnessConstraint = Math.round(weirdnessConstraint * 100) / 100;
-    if (audioWeight !== undefined) requestBody.audioWeight = Math.round(audioWeight * 100) / 100;
+    if (styleWeight !== undefined) requestBody.styleWeight = Math.round(styleWeight) / 100;
+    if (weirdnessConstraint !== undefined) requestBody.weirdnessConstraint = Math.round(weirdnessConstraint) / 100;
+    if (audioWeight !== undefined) requestBody.audioWeight = Math.round(audioWeight) / 100;
     if (negativeTags) requestBody.negativeTags = negativeTags;
+
+    console.log('Suno API request body:', JSON.stringify(requestBody, null, 2));
 
     const generateResponse = await fetch('https://api.kie.ai/api/v1/generate', {
       method: 'POST',

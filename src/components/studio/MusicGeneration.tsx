@@ -54,11 +54,13 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
     }
   }, []);
 
+  // Start generation only when both lyrics and analyzedParams are ready
   useEffect(() => {
-    if (lyrics) {
+    if (lyrics && analyzedParams) {
+      console.log('Starting generation with lyrics and analyzedParams');
       startGeneration();
     }
-  }, [lyrics]);
+  }, [lyrics, analyzedParams]);
 
   const startGeneration = async () => {
     setIsGenerating(true);
