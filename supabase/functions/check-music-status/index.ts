@@ -34,8 +34,8 @@ serve(async (req) => {
 
     console.log('Checking status for task:', taskId);
 
-    // Check task status
-    const statusResponse = await fetch(`https://api.aimlapi.com/suno/task/${taskId}`, {
+    // Check task status using Kie.ai API
+    const statusResponse = await fetch(`https://api.kie.ai/api/v1/generate/record-info?taskId=${taskId}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${sunoApiKey}`,
@@ -45,15 +45,22 @@ serve(async (req) => {
 
     if (!statusResponse.ok) {
       const errorText = await statusResponse.text();
-      console.error('Suno API error:', errorText);
-      throw new Error(`Suno API error: ${statusResponse.status} ${errorText}`);
+      console.error('Kie.ai API error:', errorText);
+      throw new Error(`Kie.ai API error: ${statusResponse.status} ${errorText}`);
     }
 
-    const taskResult = await statusResponse.json();
-    console.log('Task status:', taskResult.status);
+    const statusResult = await statusResponse.json();
+    console.log('Status result:', JSON.stringify(statusResult, null, 2));
+
+    if (statusResult.code !== 200) {
+      throw new Error(statusResult.message || 'Failed to check task status');
+    }
+
+    const taskStatus = statusResult.data?.status;
+    console.log('Task status:', taskStatus);
 
     // If still pending, return pending status
-    if (taskResult.status === 'pending' || taskResult.status === 'processing') {
+    if (taskStatus === 'PENDING') {
       return new Response(
         JSON.stringify({ 
           status: 'pending',
@@ -67,13 +74,15 @@ serve(async (req) => {
     }
 
     // If failed, return error
-    if (taskResult.status === 'failed' || taskResult.status === 'error') {
-      throw new Error(taskResult.error || 'Music generation failed');
+    if (taskStatus === 'CREATE_TASK_FAILED' || taskStatus === 'FAIL') {
+      throw new Error(statusResult.data?.failReason || 'Music generation failed');
     }
 
     // If completed, format and return variants
-    if (taskResult.status === 'completed' && taskResult.data) {
-      const variants: MusicVariant[] = taskResult.data.map((item: any, index: number) => ({
+    if ((taskStatus === 'SUCCESS' || taskStatus === 'FIRST_SUCCESS') && statusResult.data?.response?.sunoData) {
+      const sunoData = statusResult.data.response.sunoData;
+      
+      const variants: MusicVariant[] = sunoData.map((item: any, index: number) => ({
         id: item.id || `variant-${index}`,
         title: item.title || `Варіант ${index + 1}`,
         description: item.tags || item.style || '',
@@ -98,7 +107,7 @@ serve(async (req) => {
     }
 
     // Unknown status
-    throw new Error(`Unexpected task status: ${taskResult.status}`);
+    throw new Error(`Unexpected task status: ${taskStatus}`);
 
   } catch (error) {
     console.error('Error checking music status:', error);
