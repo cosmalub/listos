@@ -56,27 +56,6 @@ export const MusicStyleSelector: React.FC<MusicStyleSelectorProps> = ({
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
-      {/* Заголовок */}
-      <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
-        <CardHeader>
-          <div className="flex items-start gap-3">
-            <div className="p-2 rounded-full bg-primary/10">
-              <Sparkles className="w-5 h-5 text-primary" />
-            </div>
-            <div className="flex-1">
-              <CardTitle className="text-xl mb-2">
-                Оберіть стиль музики
-              </CardTitle>
-              <p className="text-sm text-muted-foreground">
-                {showAllStyles 
-                  ? 'Переглядаєте всі доступні стилі. Кожен стиль має свої унікальні характеристики.'
-                  : 'На основі вашого тексту, ми підібрали найкращі стилі. Ви також можете переглянути всі доступні варіанти.'
-                }
-              </p>
-            </div>
-          </div>
-        </CardHeader>
-      </Card>
 
       {/* Переключення між рекомендованими та всіма стилями */}
       <div className="flex justify-center">
