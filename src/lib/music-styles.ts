@@ -419,6 +419,126 @@ export const MUSIC_STYLES: MusicStyle[] = [
     energy: 5,
     romance: 2,
     icon: '🕺'
+  },
+
+  // GRUNGE
+  {
+    id: 'grunge',
+    style: '90s Grunge, Heavy, Dark, male vocals',
+    name: 'Гранж',
+    description: 'Важкий темний гранж з емоційним звучанням',
+    category: 'energetic',
+    mood: 'Бунтарський, емоційний',
+    bestFor: ['Підлітки', 'Емоційні моменти', 'Для друзів-бунтарів'],
+    vocalGender: 'male',
+    energy: 5,
+    romance: 1,
+    icon: '🎸'
+  },
+
+  // BLUES ROCK
+  {
+    id: 'blues-rock',
+    style: 'Blues Rock, Soulful, Gritty, male vocals',
+    name: 'Блюз-Рок',
+    description: 'Душевний блюз-рок з грубим звучанням',
+    category: 'emotional',
+    mood: 'Душевний, чесний',
+    bestFor: ['Дорослі чоловіки', 'Чесні емоції', 'Життєві історії'],
+    vocalGender: 'male',
+    energy: 4,
+    romance: 3,
+    icon: '🎸'
+  },
+
+  // DREAM POP
+  {
+    id: 'dream-pop',
+    style: 'Dream Pop, Ethereal, Shimmering Guitars, Lush Synths, female vocals',
+    name: 'Дрім-Поп',
+    description: 'Ефірний поп з мерехтливими гітарами та синтезаторами',
+    category: 'romantic',
+    mood: 'Мрійливий, ефірний',
+    bestFor: ['Романтичні моменти', 'Мрійливі послання', 'Для творчих людей'],
+    vocalGender: 'female',
+    energy: 2,
+    romance: 5,
+    icon: '✨'
+  },
+
+  // PUNK ROCK
+  {
+    id: 'punk-rock',
+    style: 'Punk Rock, Aggressive, Youthful, male vocals',
+    name: 'Панк-Рок',
+    description: 'Агресивний молодіжний панк зі швидким темпом',
+    category: 'energetic',
+    mood: 'Бунтарський, енергійний',
+    bestFor: ['Молодь', 'Енергійні привітання', 'Бунтарські друзі'],
+    vocalGender: 'male',
+    energy: 5,
+    romance: 1,
+    icon: '🤘'
+  },
+
+  // PSYCHEDELIC ROCK
+  {
+    id: 'psychedelic-rock',
+    style: 'Psychedelic Rock, Groovy, Eclectic, male vocals',
+    name: 'Психоделічний Рок',
+    description: 'Грувовий психоделічний рок з екслектичним звучанням',
+    category: 'creative',
+    mood: 'Психоделічний, експериментальний',
+    bestFor: ['Креативні люди', 'Незвичайні подарунки', 'Експериментальні моменти'],
+    vocalGender: 'male',
+    energy: 3,
+    romance: 2,
+    icon: '🌀'
+  },
+
+  // POWER METAL
+  {
+    id: 'power-metal',
+    style: 'Heavy Metal, Power, Epic, male vocals',
+    name: 'Павер-Метал',
+    description: 'Епічний павер-метал з героїчними темами',
+    category: 'energetic',
+    mood: 'Епічний, героїчний',
+    bestFor: ['Фанати металу', 'Епічні моменти', 'Героїчні теми'],
+    vocalGender: 'male',
+    energy: 5,
+    romance: 1,
+    icon: '⚔️'
+  },
+
+  // THRASH METAL
+  {
+    id: 'thrash-metal',
+    style: 'Thrash Metal, Aggressive, Dark, male vocals',
+    name: 'Треш-Метал',
+    description: 'Агресивний темний треш-метал зі швидким темпом',
+    category: 'energetic',
+    mood: 'Агресивний, темний',
+    bestFor: ['Екстремальна енергія', 'Агресивні привітання', 'Молодь'],
+    vocalGender: 'male',
+    energy: 5,
+    romance: 1,
+    icon: '⚡'
+  },
+
+  // DOOM METAL
+  {
+    id: 'doom-metal',
+    style: 'Heavy Metal, Doom, Dark, male vocals',
+    name: 'Дум-Метал',
+    description: 'Важкий повільний метал з темною атмосферою',
+    category: 'emotional',
+    mood: 'Темний, важкий',
+    bestFor: ['Темні теми', 'Важкі емоції', 'Повільний метал'],
+    vocalGender: 'male',
+    energy: 4,
+    romance: 1,
+    icon: '🌑'
   }
 ];
 
