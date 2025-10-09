@@ -355,8 +355,8 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
         </Card>
       )}
 
-      {/* Generation Status */}
-      {isGenerating && (
+      {/* Generation Status - Single unified animation */}
+      {(isGenerating || (pendingTaskId && variants.length === 0)) && (
         <Card className="border-border bg-muted/20">
           <CardContent className="p-8 text-center">
             <div className="flex flex-col items-center space-y-4">
@@ -369,26 +369,6 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
                   Це займе 1-2 хвилини. Будь ласка, зачекайте — створюємо мелодію та вокал спеціально для вас
                 </p>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Pending Status - Music still generating */}
-      {pendingTaskId && !isGenerating && variants.length === 0 && (
-        <Card className="border-yellow-200 bg-yellow-50/50 dark:bg-yellow-950/20">
-          <CardContent className="p-8 text-center">
-            <div className="flex flex-col items-center space-y-4">
-              <Music className="h-12 w-12 text-yellow-600 dark:text-yellow-400" />
-              <div className="space-y-2">
-                <p className="text-lg font-semibold">Музика генерується...</p>
-                <p className="text-sm text-muted-foreground max-w-md">
-                  Suno AI створює вашу пісню. Це може зайняти 1-2 хвилини.
-                </p>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Task ID: {pendingTaskId}
-              </p>
             </div>
           </CardContent>
         </Card>
