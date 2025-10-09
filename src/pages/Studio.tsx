@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ChatInterface, ChatInterfaceRef } from '@/components/studio/ChatInterface';
 import { LyricsDraft } from '@/components/studio/LyricsDraft';
 import { MusicGeneration } from '@/components/studio/MusicGeneration';
+import { MusicStyleSelector } from '@/components/studio/MusicStyleSelector';
 import { PageCaptionStep } from '@/components/studio/PageCaptionStep';
 import { PostcardDesign } from '@/components/studio/PostcardDesign';
 import { WelcomeTutorial } from '@/components/studio/WelcomeTutorial';
@@ -19,10 +20,12 @@ import { StepsHeader } from '@/components/studio/StepsHeader';
 import { StepExplanation } from '@/components/studio/StepExplanation';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { MusicStyle, MUSIC_STYLES, getStyleById } from '@/lib/music-styles';
 import { captureElement, captureDraftPageHtml } from '@/lib/postcard-generator';
 
 const steps = [
   { id: 1, title: 'Створення слів', description: 'Створюємо слова для пісні' },
+  { id: 1.5, title: 'Вибір стилю', description: 'Обираємо стиль музики' },
   { id: 2, title: 'Генерація музики', description: 'Генеруємо 2 варіанти на основі тексту' },
   { id: 3, title: 'Сторінка з піснею', description: 'Створюємо персональну сторінку з піснею' },
   { id: 4, title: 'Дизайн листівки', description: 'Робимо дизайн листівки з QR-кодом' },
@@ -66,6 +69,9 @@ const Studio = () => {
   const [designData, setDesignData] = useState<any>(null);
   const [chatMessages, setChatMessages] = useState<any[]>([]);
   const [showWelcome, setShowWelcome] = useState(true);
+  const [recommendedStyles, setRecommendedStyles] = useState<MusicStyle[]>([]);
+  const [selectedStyle, setSelectedStyle] = useState<MusicStyle | null>(null);
+  const [isAnalyzingLyrics, setIsAnalyzingLyrics] = useState(false);
   const chatRef = useRef<ChatInterfaceRef>(null);
 
   // Load chat history from localStorage
@@ -93,8 +99,8 @@ const Studio = () => {
   useEffect(() => {
     const stepParam = searchParams.get('step');
     if (stepParam) {
-      const step = parseInt(stepParam, 10);
-      if (step >= 1 && step <= 4) {
+      const step = parseFloat(stepParam);
+      if ((step >= 1 && step <= 4) || step === 1.5) {
         setCurrentStep(step);
         setShowWelcome(false);
       }
@@ -108,7 +114,54 @@ const Studio = () => {
   const handleLyricsConfirmed = async (confirmedLyrics: string) => {
     setLyrics(confirmedLyrics);
     setHasUnconfirmedLyrics(false);
-    setCurrentStep(2);
+    
+    // Аналізуємо тексти та отримуємо рекомендовані стилі
+    setIsAnalyzingLyrics(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('analyze-lyrics-for-music', {
+        body: { lyrics: confirmedLyrics }
+      });
+
+      if (error) {
+        console.error('Error analyzing lyrics:', error);
+        toast.error('Помилка аналізу текстів');
+        // Використовуємо універсальні стилі як запасний варіант
+        const fallbackStyles = ['pop-dance', 'acoustic-folk', 'soul-emotional']
+          .map(id => getStyleById(id))
+          .filter(Boolean) as MusicStyle[];
+        setRecommendedStyles(fallbackStyles);
+      } else {
+        console.log('Analysis result:', data);
+        // Зберігаємо параметри для генерації
+        sessionStorage.setItem('music-parameters', JSON.stringify(data));
+        
+        // Отримуємо рекомендовані стилі
+        const recommendedStyleIds = data.recommendedStyles || [];
+        const styles = recommendedStyleIds
+          .map((id: string) => getStyleById(id))
+          .filter(Boolean) as MusicStyle[];
+        
+        setRecommendedStyles(styles);
+        
+        if (styles.length > 0) {
+          toast.success('Підібрали найкращі стилі для вашої пісні!');
+        }
+      }
+    } catch (error) {
+      console.error('Failed to analyze lyrics:', error);
+      toast.error('Помилка аналізу текстів');
+      // Використовуємо універсальні стилі
+      const fallbackStyles = ['pop-dance', 'acoustic-folk', 'soul-emotional']
+        .map(id => getStyleById(id))
+        .filter(Boolean) as MusicStyle[];
+      setRecommendedStyles(fallbackStyles);
+    } finally {
+      setIsAnalyzingLyrics(false);
+    }
+    
+    // Переходимо на крок вибору стилю
+    setCurrentStep(1.5);
+    navigate('/studio?step=1.5');
   };
 
   const handleLyricsGenerated = (generatedLyrics: string) => {
@@ -129,6 +182,25 @@ const Studio = () => {
     setTimeout(() => {
       chatRef.current?.prefillAndSend(composedMessage);
     }, 100);
+  };
+
+  const handleStyleSelected = async (style: MusicStyle) => {
+    setSelectedStyle(style);
+    
+    // Оновлюємо параметри з обраним стилем
+    const storedParams = sessionStorage.getItem('music-parameters');
+    if (storedParams) {
+      const params = JSON.parse(storedParams);
+      params.selectedStyleId = style.id;
+      params.style = style.style;
+      sessionStorage.setItem('music-parameters', JSON.stringify(params));
+    }
+    
+    toast.success(`Обрано стиль: ${style.name}`);
+    
+    // Переходимо на генерацію музики
+    setCurrentStep(2);
+    navigate('/studio?step=2');
   };
 
   const handleMusicVariantSelected = async (variant: any) => {
@@ -231,9 +303,20 @@ const Studio = () => {
     // In dev mode, allow jumping to any step
     if (DEV_MODE) {
       // Auto-fill missing data for higher steps
-      if (step >= 2 && !lyrics) {
+      if (step >= 1.5 && !lyrics) {
         setLyrics(TEST_DATA.lyrics);
         setHasUnconfirmedLyrics(false);
+      }
+      if (step >= 1.5 && recommendedStyles.length === 0) {
+        // Auto-fill recommended styles
+        const fallbackStyles = ['pop-dance', 'acoustic-folk', 'soul-emotional']
+          .map(id => getStyleById(id))
+          .filter(Boolean) as MusicStyle[];
+        setRecommendedStyles(fallbackStyles);
+      }
+      if (step >= 2 && !selectedStyle) {
+        const style = getStyleById('pop-dance');
+        if (style) setSelectedStyle(style);
       }
       if (step >= 3 && !selectedMusicVariant) {
         setSelectedMusicVariant(TEST_DATA.musicVariant);
@@ -323,14 +406,26 @@ const Studio = () => {
                   <Button 
                     size="sm" 
                     onClick={() => handleLyricsConfirmed(lyrics)}
+                    disabled={isAnalyzingLyrics}
                     className="flex-1"
                   >
-                    Підтвердити і далі
+                    {isAnalyzingLyrics ? 'Аналізую...' : 'Підтвердити і далі'}
                   </Button>
                 </div>
               )}
             </div>
           </div>
+        );
+      case 1.5:
+        return (
+          <MusicStyleSelector
+            recommendedStyles={recommendedStyles}
+            onStyleSelected={handleStyleSelected}
+            onBack={() => {
+              setCurrentStep(1);
+              navigate('/studio?step=1');
+            }}
+          />
         );
       case 2:
         return (
@@ -398,7 +493,7 @@ const Studio = () => {
             </div>
 
             {/* Step Buttons */}
-            <div className="grid grid-cols-4 gap-1">
+            <div className="grid grid-cols-5 gap-1">
               {steps.map((step) => (
                 <Button
                   key={step.id}
@@ -407,7 +502,7 @@ const Studio = () => {
                   onClick={() => goToStep(step.id)}
                   className="h-8 w-8 p-0 text-xs"
                 >
-                  {step.id}
+                  {step.id === 1.5 ? '1.5' : step.id}
                 </Button>
               ))}
             </div>
