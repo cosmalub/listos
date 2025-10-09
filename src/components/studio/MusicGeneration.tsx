@@ -8,6 +8,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
 
 interface MusicVariant {
   id: string;
@@ -41,6 +43,8 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
   const [analyzedParams, setAnalyzedParams] = useState<any>(null);
   const [pendingTaskId, setPendingTaskId] = useState<string | null>(null);
   const [isCheckingStatus, setIsCheckingStatus] = useState(false);
+  const [showFeedbackDialog, setShowFeedbackDialog] = useState(false);
+  const [feedbackText, setFeedbackText] = useState('');
 
   // Load analyzed parameters from sessionStorage
   useEffect(() => {
@@ -55,6 +59,44 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
       }
     }
   }, []);
+
+  // Auto-check pending task status every 10 seconds
+  useEffect(() => {
+    if (!pendingTaskId) return;
+
+    const checkStatus = async () => {
+      setIsCheckingStatus(true);
+      try {
+        const { data, error } = await supabase.functions.invoke('check-music-status', {
+          body: { taskId: pendingTaskId }
+        });
+
+        if (error) {
+          console.error('Error checking status:', error);
+          return;
+        }
+
+        if (data.status === 'completed' && data.variants) {
+          console.log('Music ready:', data.variants.length, 'variants');
+          setVariants(data.variants);
+          setPendingTaskId(null);
+          setIsTestMode(data.variants?.some((v: MusicVariant) => v.title?.includes('(Test)')) || false);
+        }
+      } catch (error) {
+        console.error('Status check error:', error);
+      } finally {
+        setIsCheckingStatus(false);
+      }
+    };
+
+    // Check immediately
+    checkStatus();
+
+    // Then check every 10 seconds
+    const interval = setInterval(checkStatus, 10000);
+
+    return () => clearInterval(interval);
+  }, [pendingTaskId]);
 
   // Start generation only when both lyrics and analyzedParams are ready
   useEffect(() => {
@@ -142,6 +184,38 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
       console.log('Re-analyzing lyrics for regeneration...');
       const { data: analysisData, error: analysisError } = await supabase.functions.invoke('analyze-lyrics-for-music', {
         body: { lyrics }
+      });
+
+      if (analysisError) {
+        console.error('Analysis error during regeneration:', analysisError);
+        // Continue with existing params if analysis fails
+      } else if (analysisData) {
+        console.log('New parameters from re-analysis:', analysisData);
+        setAnalyzedParams(analysisData);
+        // Update sessionStorage with new params
+        sessionStorage.setItem('music-parameters', JSON.stringify(analysisData));
+      }
+    } catch (error) {
+      console.error('Error during re-analysis:', error);
+      // Continue with existing params if analysis fails
+    }
+    setIsGenerating(false);
+    
+    // Start generation with new or existing params
+    await startGeneration();
+  };
+
+  const handleRegenerateWithFeedback = async (feedback: string) => {
+    if (generationAttempt >= 2) {
+      return;
+    }
+    
+    // Re-analyze lyrics to get new parameters for variation with feedback
+    setIsGenerating(true);
+    try {
+      console.log('Re-analyzing lyrics for regeneration with feedback...');
+      const { data: analysisData, error: analysisError } = await supabase.functions.invoke('analyze-lyrics-for-music', {
+        body: { lyrics, feedback }
       });
 
       if (analysisError) {
@@ -309,27 +383,9 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
               <div className="space-y-2">
                 <p className="text-lg font-semibold">Музика генерується...</p>
                 <p className="text-sm text-muted-foreground max-w-md">
-                  Suno AI створює вашу пісню. Це може зайняти 1-2 хвилини. 
-                  Натисніть кнопку нижче, щоб перевірити готовність.
+                  Suno AI створює вашу пісню. Це може зайняти 1-2 хвилини.
                 </p>
               </div>
-              <Button 
-                onClick={handleCheckStatus}
-                disabled={isCheckingStatus}
-                className="mt-4"
-              >
-                {isCheckingStatus ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Перевіряємо...
-                  </>
-                ) : (
-                  <>
-                    <RefreshCw className="h-4 w-4 mr-2" />
-                    Перевірити готовність
-                  </>
-                )}
-              </Button>
               <p className="text-xs text-muted-foreground">
                 Task ID: {pendingTaskId}
               </p>
@@ -372,7 +428,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
             {generationAttempt < 2 ? (
               <Button
                 variant="outline"
-                onClick={handleRegenerate}
+                onClick={() => setShowFeedbackDialog(true)}
                 className="w-full sm:w-auto"
               >
                 <RefreshCw className="h-4 w-4 mr-2" />
@@ -398,6 +454,107 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
 
         </div>
       )}
+
+      {/* Feedback Dialog */}
+      <Dialog open={showFeedbackDialog} onOpenChange={setShowFeedbackDialog}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Що ви хочете змінити?</DialogTitle>
+            <DialogDescription>
+              Опишіть, що ви хочете покращити в музиці. Це допоможе нам створити саме те, що вам потрібно.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label>Швидкий вибір:</Label>
+              <div className="grid grid-cols-2 gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setFeedbackText('Більш енергійно і весело')}
+                  className="text-xs"
+                >
+                  Більш енергійно
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setFeedbackText('Більш романтично і ніжно')}
+                  className="text-xs"
+                >
+                  Більш романтично
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setFeedbackText('Жіночий вокал замість чоловічого')}
+                  className="text-xs"
+                >
+                  Жіночий вокал
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setFeedbackText('Чоловічий вокал замість жіночого')}
+                  className="text-xs"
+                >
+                  Чоловічий вокал
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setFeedbackText('Повільніше і спокійніше')}
+                  className="text-xs"
+                >
+                  Повільніше
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setFeedbackText('Більш акустично, менше інструментів')}
+                  className="text-xs"
+                >
+                  Більш акустично
+                </Button>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="feedback">Або опишіть своїми словами:</Label>
+              <Textarea
+                id="feedback"
+                value={feedbackText}
+                onChange={(e) => setFeedbackText(e.target.value)}
+                placeholder="Наприклад: 'Хочу більш веселу мелодію з акустичною гітарою' або 'Зробіть більш емоційно і з жіночим вокалом'"
+                className="min-h-[100px]"
+              />
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setShowFeedbackDialog(false);
+                setFeedbackText('');
+              }}
+            >
+              Скасувати
+            </Button>
+            <Button
+              onClick={async () => {
+                setShowFeedbackDialog(false);
+                await handleRegenerateWithFeedback(feedbackText);
+                setFeedbackText('');
+              }}
+              disabled={!feedbackText.trim()}
+            >
+              Перегенерувати
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
     </div>
   );

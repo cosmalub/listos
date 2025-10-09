@@ -8,6 +8,7 @@ const corsHeaders = {
 
 interface AnalysisRequest {
   lyrics: string;
+  feedback?: string;
 }
 
 interface AnalysisResponse {
@@ -26,7 +27,7 @@ serve(async (req) => {
   }
 
   try {
-    const { lyrics }: AnalysisRequest = await req.json();
+    const { lyrics, feedback }: AnalysisRequest = await req.json();
     
     if (!lyrics) {
       throw new Error('Lyrics are required');
@@ -38,6 +39,22 @@ serve(async (req) => {
     }
 
     console.log('Analyzing lyrics for music generation...');
+
+    const feedbackSection = feedback ? `
+
+## ФІДБЕК КОРИСТУВАЧА
+Користувач хоче змінити попередню версію:
+"${feedback}"
+
+**ВАЖЛИВО**: Враховуй цей фідбек при визначенні параметрів! Якщо користувач просить:
+- "Більш енергійно" → збільш styleWeight на 10-15, зроби стиль більш upbeat/energetic
+- "Більш романтично" → зроби стиль romantic ballad, збільш audioWeight (фокус на вокал)
+- "Жіночий/Чоловічий вокал" → зміни vocalGender відповідно
+- "Повільніше" → зроби стиль slower/ballad, зменш энергійність
+- "Більш акустично" → додай acoustic до стилю, зменш інструментальність
+- Інші побажання → адаптуй параметри відповідно
+
+` : '';
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -56,6 +73,7 @@ serve(async (req) => {
 
 ТЕКСТ ПІСНІ:
 ${lyrics}
+${feedbackSection}
 
 ## КРОК 1: ВИЗНАЧ КОНТЕКСТ
 
