@@ -95,6 +95,46 @@ const Studio = () => {
     }
   }, [chatMessages]);
 
+  // Restore data from sessionStorage (for returning from /s/draft page)
+  useEffect(() => {
+    const savedDraftData = sessionStorage.getItem('studio-draft-data');
+    if (savedDraftData) {
+      try {
+        const parsed = JSON.parse(savedDraftData);
+        
+        // Restore lyrics if not already set
+        if (parsed.lyrics && !lyrics) {
+          setLyrics(parsed.lyrics);
+          setHasUnconfirmedLyrics(false);
+        }
+        
+        // Restore selectedMusicVariant if not already set
+        if (parsed.musicVariant && !selectedMusicVariant) {
+          setSelectedMusicVariant(parsed.musicVariant);
+        }
+        
+        // Restore pageData if not already set
+        if (parsed.pageInfo && !pageData) {
+          setPageData(parsed.pageInfo);
+        }
+        
+        // Restore designData if not already set
+        if (parsed.designData && !designData) {
+          setDesignData(parsed.designData);
+        }
+        
+        console.log('✅ Restored data from sessionStorage:', {
+          hasLyrics: !!parsed.lyrics,
+          hasMusicVariant: !!parsed.musicVariant,
+          hasPageInfo: !!parsed.pageInfo,
+          hasDesignData: !!parsed.designData
+        });
+      } catch (error) {
+        console.error('Error restoring draft data:', error);
+      }
+    }
+  }, []);
+
   // Sync current step with URL parameter
   useEffect(() => {
     const stepParam = searchParams.get('step');
@@ -330,6 +370,16 @@ const Studio = () => {
           sender: 'Олексія'
         };
         setPageData(testPageData);
+        
+        // Also save to sessionStorage for step 4 to work properly
+        const draftData = {
+          lyrics: lyrics || TEST_DATA.lyrics,
+          musicVariant: selectedMusicVariant || TEST_DATA.musicVariant,
+          designData: null,
+          pageInfo: testPageData,
+          timestamp: new Date().toISOString()
+        };
+        sessionStorage.setItem('studio-draft-data', JSON.stringify(draftData));
       }
       setCurrentStep(step);
       setShowWelcome(false);
