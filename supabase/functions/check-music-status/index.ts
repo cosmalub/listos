@@ -53,10 +53,12 @@ serve(async (req) => {
     console.log('Status result:', JSON.stringify(statusResult, null, 2));
 
     if (statusResult.code !== 200) {
-      throw new Error(statusResult.message || 'Failed to check task status');
+      console.error('API returned error code:', statusResult.code, statusResult.msg);
+      throw new Error(statusResult.msg || 'Failed to check task status');
     }
 
-    const taskStatus = statusResult.data?.status;
+    const taskData = statusResult.data;
+    const taskStatus = taskData?.status;
     console.log('Task status:', taskStatus);
 
     // If still pending, return pending status
@@ -64,7 +66,7 @@ serve(async (req) => {
       return new Response(
         JSON.stringify({ 
           status: 'pending',
-          message: 'Музика ще генерується, спробуйте через 30 секунд'
+          message: 'Музика ще генерується, спробуйте через 10 секунд'
         }),
         { 
           status: 200,
@@ -73,14 +75,34 @@ serve(async (req) => {
       );
     }
 
-    // If failed, return error
-    if (taskStatus === 'CREATE_TASK_FAILED' || taskStatus === 'FAIL') {
-      throw new Error(statusResult.data?.failReason || 'Music generation failed');
+    // If failed, return error with proper error message field
+    if (taskStatus === 'CREATE_TASK_FAILED' || taskStatus === 'GENERATE_AUDIO_FAILED' || 
+        taskStatus === 'CALLBACK_EXCEPTION' || taskStatus === 'SENSITIVE_WORD_ERROR') {
+      const errorMessage = taskData?.errorMessage || taskData?.failReason || `Generation failed with status: ${taskStatus}`;
+      console.error('Task failed:', errorMessage);
+      throw new Error(errorMessage);
     }
 
-    // If completed, format and return variants
-    if ((taskStatus === 'SUCCESS' || taskStatus === 'FIRST_SUCCESS') && statusResult.data?.response?.sunoData) {
-      const sunoData = statusResult.data.response.sunoData;
+    // If completed or first success, check if response exists
+    if (taskStatus === 'SUCCESS' || taskStatus === 'FIRST_SUCCESS') {
+      const responseData = taskData?.response;
+      
+      // Check if response and sunoData exist
+      if (!responseData || !responseData.sunoData || !Array.isArray(responseData.sunoData)) {
+        console.warn('Response or sunoData missing, task may still be processing');
+        return new Response(
+          JSON.stringify({ 
+            status: 'pending',
+            message: 'Дані ще обробляються'
+          }),
+          { 
+            status: 200,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+          }
+        );
+      }
+      
+      const sunoData = responseData.sunoData;
       
       const variants: MusicVariant[] = sunoData.map((item: any, index: number) => ({
         id: item.id || `variant-${index}`,
@@ -107,6 +129,7 @@ serve(async (req) => {
     }
 
     // Unknown status
+    console.warn('Unexpected task status:', taskStatus, 'Full taskData:', taskData);
     throw new Error(`Unexpected task status: ${taskStatus}`);
 
   } catch (error) {
