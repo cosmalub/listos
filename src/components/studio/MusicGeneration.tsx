@@ -136,6 +136,30 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
       return;
     }
     
+    // Re-analyze lyrics to get new parameters for variation
+    setIsGenerating(true);
+    try {
+      console.log('Re-analyzing lyrics for regeneration...');
+      const { data: analysisData, error: analysisError } = await supabase.functions.invoke('analyze-lyrics-for-music', {
+        body: { lyrics }
+      });
+
+      if (analysisError) {
+        console.error('Analysis error during regeneration:', analysisError);
+        // Continue with existing params if analysis fails
+      } else if (analysisData) {
+        console.log('New parameters from re-analysis:', analysisData);
+        setAnalyzedParams(analysisData);
+        // Update sessionStorage with new params
+        sessionStorage.setItem('music-parameters', JSON.stringify(analysisData));
+      }
+    } catch (error) {
+      console.error('Error during re-analysis:', error);
+      // Continue with existing params if analysis fails
+    }
+    setIsGenerating(false);
+    
+    // Start generation with new or existing params
     await startGeneration();
   };
 
