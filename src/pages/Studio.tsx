@@ -309,7 +309,7 @@ const Studio = () => {
         body: {
           lyrics,
           musicVariant: selectedMusicVariant,
-          pageData: parsedPageData,
+          pageData: parsedPageData.pageInfo,
           frontDesign: postcardDesignData.front,
           backDesign: postcardDesignData.back,
           frontImageBase64,
