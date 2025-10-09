@@ -108,24 +108,6 @@ const Studio = () => {
   const handleLyricsConfirmed = async (confirmedLyrics: string) => {
     setLyrics(confirmedLyrics);
     setHasUnconfirmedLyrics(false);
-    
-    // Analyze lyrics with Claude before music generation (silently in background)
-    try {
-      const { data: analysisData, error: analysisError } = await supabase.functions.invoke('analyze-lyrics-for-music', {
-        body: { lyrics: confirmedLyrics }
-      });
-
-      if (analysisError) {
-        console.error('Analysis error:', analysisError);
-      } else {
-        console.log('Lyrics analysis result:', analysisData);
-        // Store analysis result for MusicGeneration component
-        sessionStorage.setItem('music-parameters', JSON.stringify(analysisData));
-      }
-    } catch (error) {
-      console.error('Failed to analyze lyrics:', error);
-    }
-    
     setCurrentStep(2);
   };
 
