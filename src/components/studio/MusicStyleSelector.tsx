@@ -267,6 +267,26 @@ export const MusicStyleSelector: React.FC<MusicStyleSelectorProps> = ({
         </Card>
       )}
 
+      {/* Підказка */}
+      {selectedStyleId && (
+        <Card className="border-primary/20 bg-primary/5">
+          <CardContent className="p-4">
+            <div className="flex items-start gap-3">
+              <Info className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+              <div className="text-sm">
+                <p className="font-medium text-foreground mb-1">
+                  Чудовий вибір! 
+                </p>
+                <p className="text-muted-foreground">
+                  Ми згенеруємо 2 варіанти музики в обраному стилі. 
+                  Ви зможете прослухати обидва і обрати той, що найбільше підходить.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Кнопки дій */}
       <div className="flex gap-3 justify-between items-center">
         {onBack && (
@@ -287,26 +307,6 @@ export const MusicStyleSelector: React.FC<MusicStyleSelectorProps> = ({
           <ArrowRight className="w-4 h-4" />
         </Button>
       </div>
-
-      {/* Підказка */}
-      {selectedStyleId && (
-        <Card className="border-primary/20 bg-primary/5">
-          <CardContent className="p-4">
-            <div className="flex items-start gap-3">
-              <Info className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-              <div className="text-sm">
-                <p className="font-medium text-foreground mb-1">
-                  Чудовий вибір! 
-                </p>
-                <p className="text-muted-foreground">
-                  Ми згенеруємо 2 варіанти музики в обраному стилі. 
-                  Ви зможете прослухати обидва і обрати той, що найбільше підходить.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
     </div>
   );
 };
