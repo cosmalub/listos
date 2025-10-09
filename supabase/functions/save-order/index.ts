@@ -58,8 +58,8 @@ Deno.serve(async (req) => {
         front_design_caption: frontDesign.caption,
         front_design_prompt: frontDesign.prompt,
         front_image_url: '', // Will update after upload
-        back_design_color: backDesign.color,
-        back_design_message: backDesign.message,
+        back_design_color: backDesign.selectedColor,
+        back_design_message: backDesign.personalMessage,
         back_image_url: '', // Will update after upload
       })
       .select()
