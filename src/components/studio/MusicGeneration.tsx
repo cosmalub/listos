@@ -77,10 +77,18 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
         }
 
         if (data.status === 'completed' && data.variants) {
-          console.log('Music ready:', data.variants.length, 'variants');
-          setVariants(data.variants);
-          setPendingTaskId(null);
-          setIsTestMode(data.variants?.some((v: MusicVariant) => v.title?.includes('(Test)')) || false);
+          // Перевіряємо, що ВСІ варіанти мають audioUrl
+          const allVariantsReady = data.variants.every((v: MusicVariant) => v.audioUrl);
+          
+          if (allVariantsReady) {
+            console.log('Music ready:', data.variants.length, 'variants');
+            setVariants(data.variants);
+            setPendingTaskId(null);
+            setIsTestMode(data.variants?.some((v: MusicVariant) => v.title?.includes('(Test)')) || false);
+          } else {
+            console.log('Waiting for all variants to have audioUrl...', 
+              data.variants.filter((v: MusicVariant) => !v.audioUrl).length, 'variants still pending');
+          }
         }
       } catch (error) {
         console.error('Status check error:', error);
@@ -262,10 +270,18 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
       }
 
       if (data.status === 'completed' && data.variants) {
-        console.log('Music ready:', data.variants.length, 'variants');
-        setVariants(data.variants);
-        setPendingTaskId(null);
-        setIsTestMode(data.variants?.some((v: MusicVariant) => v.title?.includes('(Test)')) || false);
+        // Перевіряємо, що ВСІ варіанти мають audioUrl
+        const allVariantsReady = data.variants.every((v: MusicVariant) => v.audioUrl);
+        
+        if (allVariantsReady) {
+          console.log('Music ready:', data.variants.length, 'variants');
+          setVariants(data.variants);
+          setPendingTaskId(null);
+          setIsTestMode(data.variants?.some((v: MusicVariant) => v.title?.includes('(Test)')) || false);
+        } else {
+          console.log('Waiting for all variants to have audioUrl...', 
+            data.variants.filter((v: MusicVariant) => !v.audioUrl).length, 'variants still pending');
+        }
       }
     } catch (error) {
       console.error('Status check error:', error);
