@@ -21,7 +21,7 @@ import { StepExplanation } from '@/components/studio/StepExplanation';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { MusicStyle, MUSIC_STYLES, getStyleById } from '@/lib/music-styles';
-import { captureElement } from '@/lib/postcard-generator';
+import { captureElement, preprocessImageToA6 } from '@/lib/postcard-generator';
 
 const steps = [
   { id: 1, title: 'Створення слів', description: 'Створюємо слова для пісні' },
@@ -298,7 +298,15 @@ const Studio = () => {
         throw new Error('Postcard preview elements not found');
       }
 
-      const frontImageBase64 = await captureElement(frontElement);
+      // Preprocess front image to A6 format if in photo mode
+      let frontImageBase64;
+      if (postcardDesignData.front.mode === 'photo' && postcardDesignData.front.imageUrl) {
+        frontImageBase64 = await preprocessImageToA6(postcardDesignData.front.imageUrl);
+        console.log('Front image preprocessed to A6 format');
+      } else {
+        frontImageBase64 = await captureElement(frontElement);
+      }
+
       const backImageBase64 = await captureElement(backElement);
 
       // Call save-order edge function
