@@ -25,6 +25,7 @@ Deno.serve(async (req) => {
       backDesign,
       frontImageBase64,
       backImageBase64,
+      songPageHtml,
     } = await req.json();
 
     console.log('Saving order with data:', {
@@ -95,6 +96,23 @@ Deno.serve(async (req) => {
       return publicUrl;
     }
 
+    // Helper function to upload text content (e.g., HTML)
+    async function uploadText(content: string, path: string, contentType: string) {
+      const encoder = new TextEncoder();
+      const bytes = encoder.encode(content);
+      const { error } = await supabase.storage
+        .from('postcards')
+        .upload(path, bytes, { contentType, upsert: true });
+      if (error) {
+        console.error(`Error uploading ${path}:`, error);
+        throw error;
+      }
+      const { data: { publicUrl } } = supabase.storage
+        .from('postcards')
+        .getPublicUrl(path);
+      return publicUrl;
+    }
+
     // Upload front image
     const frontImagePath = `${orderId}/front.png`;
     const frontImageUrl = await uploadBase64Image(frontImageBase64, frontImagePath);
@@ -121,6 +139,12 @@ Deno.serve(async (req) => {
     const qrCodeUrl = await uploadBase64Image(qrCodeDataUrl, qrCodePath);
     console.log('QR code uploaded:', qrCodeUrl);
 
+    // Upload song page HTML (draft page)
+    const draftPagePath = `${orderId}/page.html`;
+    const draftPageContent = typeof songPageHtml === 'string' && songPageHtml.trim() ? songPageHtml : '<!-- empty -->';
+    const draftPageUrl = await uploadText(draftPageContent, draftPagePath, 'text/html; charset=utf-8');
+    console.log('Draft page uploaded:', draftPageUrl);
+
     // Update order with all URLs
     const { error: updateError } = await supabase
       .from('orders')
@@ -128,6 +152,7 @@ Deno.serve(async (req) => {
         front_image_url: frontImageUrl,
         back_image_url: backImageUrl,
         qr_code_url: qrCodeUrl,
+        draft_page_url: draftPageUrl,
       })
       .eq('id', orderId);
 

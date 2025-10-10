@@ -21,7 +21,7 @@ import { StepExplanation } from '@/components/studio/StepExplanation';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { MusicStyle, MUSIC_STYLES, getStyleById } from '@/lib/music-styles';
-import { captureElement } from '@/lib/postcard-generator';
+import { captureElement, captureDraftPageHtml } from '@/lib/postcard-generator';
 
 const steps = [
   { id: 1, title: 'Створення слів', description: 'Створюємо слова для пісні' },
@@ -300,6 +300,7 @@ const Studio = () => {
 
       const frontImageBase64 = await captureElement(frontElement);
       const backImageBase64 = await captureElement(backElement);
+      const songPageHtml = await captureDraftPageHtml();
 
       // Call save-order edge function
       const { data, error } = await supabase.functions.invoke('save-order', {
@@ -311,6 +312,7 @@ const Studio = () => {
           backDesign: postcardDesignData.back,
           frontImageBase64,
           backImageBase64,
+          songPageHtml,
         },
       });
 
