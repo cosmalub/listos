@@ -155,8 +155,12 @@ const Studio = () => {
     setLyrics(confirmedLyrics);
     setHasUnconfirmedLyrics(false);
     
-    // Аналізуємо тексти та отримуємо рекомендовані стилі
+    // Переходимо на крок 1.5 та показуємо лоадер
     setIsAnalyzingLyrics(true);
+    setCurrentStep(1.5);
+    navigate('/studio?step=1.5');
+    
+    // Аналізуємо тексти та отримуємо рекомендовані стилі
     try {
       const { data, error } = await supabase.functions.invoke('analyze-lyrics-for-music', {
         body: { lyrics: confirmedLyrics }
@@ -198,10 +202,6 @@ const Studio = () => {
     } finally {
       setIsAnalyzingLyrics(false);
     }
-    
-    // Переходимо на крок вибору стилю
-    setCurrentStep(1.5);
-    navigate('/studio?step=1.5');
   };
 
   const handleLyricsGenerated = (generatedLyrics: string) => {
