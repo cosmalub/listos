@@ -25,7 +25,6 @@ Deno.serve(async (req) => {
       backDesign,
       frontImageBase64,
       backImageBase64,
-      draftPageHtml,
     } = await req.json();
 
     console.log('Saving order with data:', {
@@ -36,7 +35,6 @@ Deno.serve(async (req) => {
       hasBackDesign: !!backDesign,
       hasFrontImage: !!frontImageBase64,
       hasBackImage: !!backImageBase64,
-      hasDraftHtml: !!draftPageHtml,
     });
 
     // Generate unique order ID
@@ -57,10 +55,10 @@ Deno.serve(async (req) => {
         front_design_style: frontDesign.style,
         front_design_caption: frontDesign.caption,
         front_design_prompt: frontDesign.prompt,
-        front_image_url: '', // Will update after upload
+        front_image_url: null, // Will update after upload
         back_design_color: backDesign.selectedColor,
         back_design_message: backDesign.personalMessage,
-        back_image_url: '', // Will update after upload
+        back_image_url: null, // Will update after upload
       })
       .select()
       .single();
@@ -123,26 +121,6 @@ Deno.serve(async (req) => {
     const qrCodeUrl = await uploadBase64Image(qrCodeDataUrl, qrCodePath);
     console.log('QR code uploaded:', qrCodeUrl);
 
-    // Save draft page HTML
-    const draftHtmlPath = `${orderId}/draft.html`;
-    const { data: draftData, error: draftError } = await supabase.storage
-      .from('postcards')
-      .upload(draftHtmlPath, draftPageHtml, {
-        contentType: 'text/html',
-        upsert: true,
-      });
-
-    if (draftError) {
-      console.error('Error uploading draft HTML:', draftError);
-      throw draftError;
-    }
-
-    const { data: { publicUrl: draftPageUrl } } = supabase.storage
-      .from('postcards')
-      .getPublicUrl(draftHtmlPath);
-
-    console.log('Draft HTML uploaded:', draftPageUrl);
-
     // Update order with all URLs
     const { error: updateError } = await supabase
       .from('orders')
@@ -150,7 +128,6 @@ Deno.serve(async (req) => {
         front_image_url: frontImageUrl,
         back_image_url: backImageUrl,
         qr_code_url: qrCodeUrl,
-        draft_page_url: draftPageUrl,
       })
       .eq('id', orderId);
 
