@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, CheckCircle, Circle, Settings, Trash } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Circle, Settings, Trash, Loader2 } from 'lucide-react';
 
 // DEV MODE - Set to false for production
 const DEV_MODE = true;
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ChatInterface, ChatInterfaceRef } from '@/components/studio/ChatInterface';
 import { LyricsDraft } from '@/components/studio/LyricsDraft';
@@ -463,6 +463,27 @@ const Studio = () => {
           </div>
         );
       case 1.5:
+        // Show loading animation while analyzing lyrics
+        if (isAnalyzingLyrics) {
+          return (
+            <Card className="border-border bg-muted/20 max-w-4xl mx-auto">
+              <CardContent className="p-8 text-center">
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="relative">
+                    <Loader2 className="h-12 w-12 animate-spin text-foreground" />
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-lg font-semibold">Листосик аналізує ваш текст...</p>
+                    <p className="text-sm text-muted-foreground max-w-md">
+                      Підбираємо найкращі музичні стилі для вашої пісні
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        }
+        
         return (
           <MusicStyleSelector
             recommendedStyles={recommendedStyles}
