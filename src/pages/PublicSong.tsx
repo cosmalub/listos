@@ -63,18 +63,22 @@ export default function PublicSong() {
       <div className="relative z-10">
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-2xl p-8">
-            {/* Заголовок */}
+            {/* Заголовок - используем caption с лицевой стороны или стандартный по событию */}
             <h1 className="text-4xl font-bold text-center mb-6">
-              {orderData.page_occasion === 'birthday' && '🎂 З Днем Народження!'}
-              {orderData.page_occasion === 'anniversary' && '💕 З річницею!'}
-              {orderData.page_occasion === 'new-year' && '🎄 З Новим Роком!'}
-              {orderData.page_occasion === 'valentines' && '💖 З Днем Святого Валентина!'}
-              {orderData.page_occasion === 'mothers-day' && '🌸 З Днем Матері!'}
-              {orderData.page_occasion === 'congratulations' && '🎉 Вітаємо!'}
-              {orderData.page_occasion === 'thanks' && '🙏 Дякую!'}
-              {orderData.page_occasion === 'apology' && '💐 Вибач!'}
-              {orderData.page_occasion === 'love' && '❤️ Кохаю!'}
-              {orderData.page_occasion === 'friendship' && '🤝 Дружбі!'}
+              {orderData.front_design_caption || (
+                <>
+                  {orderData.page_occasion === 'birthday' && '🎂 З Днем Народження!'}
+                  {orderData.page_occasion === 'anniversary' && '💕 З річницею!'}
+                  {orderData.page_occasion === 'new-year' && '🎄 З Новим Роком!'}
+                  {orderData.page_occasion === 'valentines' && '💖 З Днем Святого Валентина!'}
+                  {orderData.page_occasion === 'mothers-day' && '🌸 З Днем Матері!'}
+                  {orderData.page_occasion === 'congratulations' && '🎉 Вітаємо!'}
+                  {orderData.page_occasion === 'thanks' && '🙏 Дякую!'}
+                  {orderData.page_occasion === 'apology' && '💐 Вибач!'}
+                  {orderData.page_occasion === 'love' && '❤️ Кохаю!'}
+                  {orderData.page_occasion === 'friendship' && '🤝 Дружбі!'}
+                </>
+              )}
             </h1>
             
             {/* Для кого / От кого */}
@@ -87,17 +91,10 @@ export default function PublicSong() {
               </p>
             </div>
 
-            {/* Подпись с лицевой стороны */}
-            {orderData.front_design_caption && (
-              <p className="text-center text-2xl italic mb-8 text-primary">
-                {orderData.front_design_caption}
-              </p>
-            )}
-
             {/* Аудио плеер */}
             {orderData.music_selected && orderData.music_audio_url && (
               <div className="text-center mb-8">
-                <h3 className="text-xl font-semibold mb-4">Для вас створили пісню ❤️</h3>
+                <h3 className="text-xl font-semibold mb-4">Для вас створили пісню:</h3>
                 <audio controls className="mx-auto w-full max-w-md">
                   <source src={orderData.music_audio_url} type="audio/mpeg" />
                   Ваш браузер не підтримує аудіо елемент.
