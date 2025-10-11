@@ -83,11 +83,8 @@ export default function PublicSong() {
             
             {/* Для кого / От кого */}
             <div className="mb-8">
-              <p className="text-xl text-center mb-2">
-                <strong>Для:</strong> {orderData.page_recipient}
-              </p>
-              <p className="text-xl text-center">
-                <strong>Від:</strong> {orderData.page_sender}
+              <p className="text-base text-center text-muted-foreground">
+                Для: {orderData.page_recipient} • Від: {orderData.page_sender}
               </p>
             </div>
 
