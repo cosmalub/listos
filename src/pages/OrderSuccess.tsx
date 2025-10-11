@@ -156,7 +156,7 @@ export default function OrderSuccess() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] via-white to-white">
       <OccasionAnimation occasion={orderData.page_occasion || 'congratulations'} />
       <Header />
 
@@ -171,12 +171,11 @@ export default function OrderSuccess() {
             </div>
 
             {/* Title */}
-            <h1 className="text-4xl md:text-5xl font-bold text-center mb-4">
-              Вітаємо! 🎉
-            </h1>
-            <p className="text-xl text-center text-muted-foreground mb-12">
-              Ваша унікальна листівка створена!
-            </p>
+            <div className="max-w-2xl mx-auto mb-12">
+              <p className="text-center text-lg text-foreground bg-muted/20 rounded-lg px-6 py-4 font-medium">
+                Вітаємо! 🎉 Ваша унікальна листівка створена!
+              </p>
+            </div>
 
             {/* Postcard Preview - both sides */}
             <div className="grid md:grid-cols-2 gap-8 mb-12">
