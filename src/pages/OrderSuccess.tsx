@@ -156,16 +156,18 @@ export default function OrderSuccess() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[hsl(var(--primary))] via-white to-white">
+    <div className="min-h-screen bg-background">
       <OccasionAnimation occasion={orderData.page_occasion || 'congratulations'} />
       <Header />
 
       <main className="container mx-auto px-4 py-12 relative z-10">
-        <Card className="max-w-5xl mx-auto shadow-2xl">
+        <Card className="max-w-5xl mx-auto">
           <CardContent className="p-8 md:p-12">
             {/* Success Icon */}
             <div className="flex justify-center mb-6">
-              <CheckCircle className="w-24 h-24 text-green-500" />
+              <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center">
+                <CheckCircle className="w-14 h-14 text-primary" />
+              </div>
             </div>
 
             {/* Title */}
@@ -182,7 +184,7 @@ export default function OrderSuccess() {
                 <h3 className="text-lg font-semibold mb-3 text-center">
                   Лицьова сторона
                 </h3>
-                <div className="aspect-[105/148] rounded-lg overflow-hidden shadow-lg">
+                <div className="aspect-[105/148] rounded-lg overflow-hidden border-2 border-border">
                   <img
                     src={orderData.front_image_url}
                     alt="Front of postcard"
@@ -194,7 +196,7 @@ export default function OrderSuccess() {
                 <h3 className="text-lg font-semibold mb-3 text-center">
                   Зворотня сторона
                 </h3>
-                <div className="aspect-[105/148] rounded-lg overflow-hidden shadow-lg">
+                <div className="aspect-[105/148] rounded-lg overflow-hidden border-2 border-border">
                   <img
                     src={orderData.back_image_url}
                     alt="Back of postcard"
@@ -205,7 +207,7 @@ export default function OrderSuccess() {
             </div>
 
             {/* Next Steps */}
-            <div className="bg-gradient-to-r from-[hsl(var(--primary))]/10 to-[hsl(var(--secondary))]/10 rounded-lg p-6 mb-8">
+            <div className="bg-secondary/30 rounded-lg p-6 mb-8 border border-border">
               <h2 className="text-2xl font-bold mb-4">Що далі?</h2>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
@@ -229,7 +231,7 @@ export default function OrderSuccess() {
 
             {/* Contact Form */}
             {!contactSubmitted && (
-              <div className="bg-white rounded-lg border p-6 mb-8">
+              <div className="bg-card rounded-lg border border-border p-6 mb-8">
                 <h3 className="text-xl font-semibold mb-4">
                   Залиште контакти для зв'язку
                 </h3>
@@ -257,7 +259,7 @@ export default function OrderSuccess() {
             )}
 
             {contactSubmitted && (
-              <Alert className="mb-8">
+              <Alert className="mb-8 bg-secondary/30 border-border">
                 <CheckCircle className="h-4 w-4" />
                 <AlertDescription>
                   Дякуємо! Ми зв'яжемося з вами найближчим часом.
@@ -266,7 +268,7 @@ export default function OrderSuccess() {
             )}
 
             {/* Draft Page Link */}
-            <Alert>
+            <Alert className="bg-secondary/30 border-border">
               <Info className="h-4 w-4" />
               <AlertDescription className="flex items-center justify-between">
                 <span>Ваша персональна сторінка з піснею готова!</span>
