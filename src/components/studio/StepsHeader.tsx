@@ -2,10 +2,10 @@ import React from 'react';
 import { CheckCircle } from 'lucide-react';
 
 const steps = [
-  { id: 1, title: 'Створення слів', description: 'Створюємо слова для пісні' },
+  { id: 1, title: 'Створення слів', description: 'Створюємо слова\nдля пісні' },
   { id: 2, title: 'Генерація музики', description: 'Генеруємо 2 варіанти на основі тексту' },
   { id: 3, title: 'Сторінка з піснею', description: 'Створюємо персональну сторінку з піснею' },
-  { id: 4, title: 'Дизайн листівки', description: 'Робимо дизайн листівки з QR-кодом' },
+  { id: 4, title: 'Дизайн листівки', description: 'Робимо дизайн\nлистівки з QR-кодом' },
 ];
 
 interface StepsHeaderProps {
@@ -40,7 +40,7 @@ export const StepsHeader: React.FC<StepsHeaderProps> = ({ currentStep }) => {
                   }`}>
                     {step.title}
                   </div>
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-xs text-muted-foreground whitespace-pre-line">
                     {step.description}
                   </div>
                 </div>
