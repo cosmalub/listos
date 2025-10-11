@@ -71,3 +71,213 @@ export async function preprocessImageToA6(imageUrl: string): Promise<string> {
     img.src = imageUrl;
   });
 }
+
+export async function composeFrontImageA6(imageUrl: string, caption: string): Promise<string> {
+  const A6_WIDTH = 1240;
+  const A6_HEIGHT = 1748;
+  const MARGIN = 40;
+  const BOTTOM_MARGIN = 64;
+  const PAD_X = 28;
+  const PAD_Y = 22;
+  const MAX_LINES = 3;
+  const INITIAL_FONT = 64;
+  const MIN_FONT = 28;
+  const LINE_HEIGHT_RATIO = 1.2;
+
+  const toUpper = (t: string) => (t || '').trim().toUpperCase();
+  const setFont = (ctx: CanvasRenderingContext2D, size: number) => {
+    ctx.font = `bold ${size}px Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif`;
+  };
+
+  function wrapText(
+    ctx: CanvasRenderingContext2D,
+    text: string,
+    maxWidth: number,
+    maxLines: number
+  ): { lines: string[]; fontSize: number; lineHeight: number } {
+    let fontSize = INITIAL_FONT;
+    let lines: string[] = [];
+    let lineHeight = 0;
+    const words = text.split(/\s+/);
+
+    while (fontSize >= MIN_FONT) {
+      setFont(ctx, fontSize);
+      const lh = Math.round(fontSize * LINE_HEIGHT_RATIO);
+      const tmpLines: string[] = [];
+      let current = '';
+
+      for (const w of words) {
+        const test = current ? current + ' ' + w : w;
+        if (ctx.measureText(test).width <= maxWidth) {
+          current = test;
+        } else {
+          if (current) tmpLines.push(current);
+          current = w;
+        }
+      }
+      if (current) tmpLines.push(current);
+
+      if (tmpLines.length <= maxLines) {
+        lines = tmpLines;
+        lineHeight = lh;
+        break;
+      }
+      fontSize -= 2;
+    }
+
+    if (lines.length === 0) {
+      setFont(ctx, MIN_FONT);
+      lineHeight = Math.round(MIN_FONT * LINE_HEIGHT_RATIO);
+      lines = [text];
+    }
+
+    const size = parseInt(ctx.font.match(/\d+/)?.[0] || '32', 10);
+    return { lines, fontSize: size, lineHeight };
+  }
+
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    if (!imageUrl.startsWith('blob:')) {
+      img.crossOrigin = 'anonymous';
+    }
+
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = A6_WIDTH;
+      canvas.height = A6_HEIGHT;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return reject(new Error('Canvas context unavailable'));
+
+      // Fill white background
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, A6_WIDTH, A6_HEIGHT);
+
+      // object-cover drawing
+      const imgRatio = img.width / img.height;
+      const canvasRatio = A6_WIDTH / A6_HEIGHT;
+      let drawW: number, drawH: number, offX: number, offY: number;
+      if (imgRatio > canvasRatio) {
+        drawH = A6_HEIGHT;
+        drawW = img.width * (A6_HEIGHT / img.height);
+        offX = -(drawW - A6_WIDTH) / 2;
+        offY = 0;
+      } else {
+        drawW = A6_WIDTH;
+        drawH = img.height * (A6_WIDTH / img.width);
+        offX = 0;
+        offY = -(drawH - A6_HEIGHT) / 2;
+      }
+      ctx.drawImage(img, offX, offY, drawW, drawH);
+
+      // Caption overlay
+      const text = toUpper(caption || '');
+      if (text) {
+        const maxTextWidth = A6_WIDTH - (MARGIN + PAD_X) * 2;
+        const { lines, fontSize, lineHeight } = wrapText(ctx, text, maxTextWidth, MAX_LINES);
+        const textHeight = lines.length * lineHeight;
+
+        const rectW = maxTextWidth + PAD_X * 2;
+        const rectH = textHeight + PAD_Y * 2;
+        const rectX = MARGIN;
+        const rectY = A6_HEIGHT - BOTTOM_MARGIN - rectH;
+
+        ctx.fillStyle = 'rgba(0,0,0,0.6)';
+        ctx.fillRect(rectX, rectY, rectW, rectH);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        setFont(ctx, fontSize);
+        const centerX = rectX + rectW / 2;
+        let y = rectY + PAD_Y + lineHeight / 2;
+
+        for (const line of lines) {
+          ctx.fillText(line, centerX, y);
+          y += lineHeight;
+        }
+      }
+
+      resolve(canvas.toDataURL('image/png'));
+    };
+
+    img.onerror = () => reject(new Error('Failed to load image'));
+    img.src = imageUrl;
+  });
+}
+
+export async function composeBackImageA6(opts: { color: string; message: string }): Promise<string> {
+  const { color, message } = opts;
+  const A6_WIDTH = 1240;
+  const A6_HEIGHT = 1748;
+  const PAD = 80;
+  const INITIAL = 48;
+  const MIN = 24;
+  const LINE_H = 1.25;
+
+  const isLight = (hex: string) => {
+    const h = hex.replace('#', '');
+    const r = parseInt(h.slice(0, 2), 16);
+    const g = parseInt(h.slice(2, 4), 16);
+    const b = parseInt(h.slice(4, 6), 16);
+    const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return lum > 0.5;
+  };
+
+  const canvas = document.createElement('canvas');
+  canvas.width = A6_WIDTH;
+  canvas.height = A6_HEIGHT;
+  const ctx = canvas.getContext('2d')!;
+  ctx.fillStyle = color || '#FFFFFF';
+  ctx.fillRect(0, 0, A6_WIDTH, A6_HEIGHT);
+
+  const textColor = isLight(color || '#FFFFFF') ? '#111111' : '#FFFFFF';
+  const maxWidth = A6_WIDTH - PAD * 2;
+
+  const words = (message || '').trim().split(/\s+/);
+  let fontSize = INITIAL;
+  let lines: string[] = [];
+  let lineHeight = 0;
+
+  function setFont(size: number) {
+    ctx.font = `500 ${size}px Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif`;
+  }
+
+  while (fontSize >= MIN) {
+    setFont(fontSize);
+    const lh = Math.round(fontSize * LINE_H);
+    const tmp: string[] = [];
+    let cur = '';
+    for (const w of words) {
+      const test = cur ? cur + ' ' + w : w;
+      if (ctx.measureText(test).width <= maxWidth) {
+        cur = test;
+      } else {
+        if (cur) tmp.push(cur);
+        cur = w;
+      }
+    }
+    if (cur) tmp.push(cur);
+
+    if (tmp.length <= 12) {
+      lines = tmp;
+      lineHeight = lh;
+      break;
+    }
+    fontSize -= 2;
+  }
+
+  ctx.fillStyle = textColor;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  setFont(fontSize);
+
+  const totalH = lines.length * lineHeight;
+  let y = (A6_HEIGHT - totalH) / 2 + lineHeight / 2;
+  const centerX = A6_WIDTH / 2;
+  for (const line of lines) {
+    ctx.fillText(line, centerX, y);
+    y += lineHeight;
+  }
+
+  return canvas.toDataURL('image/png');
+}

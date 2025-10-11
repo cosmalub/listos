@@ -182,7 +182,7 @@ export default function OrderSuccess() {
                 <h3 className="text-lg font-semibold mb-3 text-center">
                   Лицьова сторона
                 </h3>
-                <div className="aspect-[3/4] rounded-lg overflow-hidden shadow-lg">
+                <div className="aspect-[105/148] rounded-lg overflow-hidden shadow-lg">
                   <img
                     src={orderData.front_image_url}
                     alt="Front of postcard"
@@ -194,7 +194,7 @@ export default function OrderSuccess() {
                 <h3 className="text-lg font-semibold mb-3 text-center">
                   Зворотня сторона
                 </h3>
-                <div className="aspect-[3/4] rounded-lg overflow-hidden shadow-lg">
+                <div className="aspect-[105/148] rounded-lg overflow-hidden shadow-lg">
                   <img
                     src={orderData.back_image_url}
                     alt="Back of postcard"

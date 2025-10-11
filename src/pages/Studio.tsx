@@ -21,7 +21,7 @@ import { StepExplanation } from '@/components/studio/StepExplanation';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { MusicStyle, MUSIC_STYLES, getStyleById } from '@/lib/music-styles';
-import { captureElement, preprocessImageToA6 } from '@/lib/postcard-generator';
+import { composeFrontImageA6, composeBackImageA6, preprocessImageToA6 } from '@/lib/postcard-generator';
 
 const steps = [
   { id: 1, title: 'Створення слів', description: 'Створюємо слова для пісні' },
@@ -290,24 +290,27 @@ const Studio = () => {
       }
       const parsedPageData = JSON.parse(storedData);
 
-      // Capture front and back images
-      const frontElement = document.querySelector('#postcard-front-preview') as HTMLElement;
-      const backElement = document.querySelector('#postcard-back-preview') as HTMLElement;
-
-      if (!frontElement || !backElement) {
-        throw new Error('Postcard preview elements not found');
-      }
-
-      // Preprocess front image to A6 format if in photo mode
+      // Compose front image using Canvas (no more html2canvas for photo mode)
       let frontImageBase64;
       if (postcardDesignData.front.mode === 'photo' && postcardDesignData.front.imageUrl) {
+        frontImageBase64 = await composeFrontImageA6(
+          postcardDesignData.front.imageUrl,
+          postcardDesignData.front.caption || ''
+        );
+        console.log('Front image composed to A6 format with caption overlay');
+      } else if (postcardDesignData.front.imageUrl) {
         frontImageBase64 = await preprocessImageToA6(postcardDesignData.front.imageUrl);
         console.log('Front image preprocessed to A6 format');
       } else {
-        frontImageBase64 = await captureElement(frontElement);
+        throw new Error('Front image URL is missing');
       }
 
-      const backImageBase64 = await captureElement(backElement);
+      // Compose back image using Canvas (no more html2canvas)
+      const backImageBase64 = await composeBackImageA6({
+        color: postcardDesignData.back.selectedColor || '#FFFFFF',
+        message: postcardDesignData.back.personalMessage || ''
+      });
+      console.log('Back image composed to A6 format');
 
       // Call save-order edge function
       const { data, error } = await supabase.functions.invoke('save-order', {
