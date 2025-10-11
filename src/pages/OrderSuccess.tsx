@@ -161,20 +161,12 @@ export default function OrderSuccess() {
       <Header centerTitle="Студія створення листівки" hideNav showMenu={false} />
 
       {/* Success Header Section with Pink Background */}
-      <div className="bg-transparent pt-24 md:pt-28 pb-12">
+      <div className="bg-transparent pt-24 md:pt-28 pb-8">
         <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto text-center">
-            {/* Success Icon */}
-            <div className="flex justify-center mb-6">
-              <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center">
-                <CheckCircle className="w-14 h-14 text-primary" />
-              </div>
-            </div>
-
-            {/* Title */}
-            <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
-              Вітаємо! 🎉 Ваша унікальна листівка створена!
-            </h1>
+          <div className="max-w-4xl mx-auto">
+            <p className="text-center text-foreground bg-muted/20 rounded-lg px-6 py-3 text-base md:text-lg font-normal">
+              Вітаємо! 🎉 Ваша листівка створена
+            </p>
           </div>
         </div>
       </div>
