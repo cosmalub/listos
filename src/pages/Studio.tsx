@@ -308,7 +308,8 @@ const Studio = () => {
       // Compose back image using Canvas (no more html2canvas)
       const backImageBase64 = await composeBackImageA6({
         color: postcardDesignData.back.selectedColor || '#FFFFFF',
-        message: postcardDesignData.back.personalMessage || ''
+        message: postcardDesignData.back.personalMessage || '',
+        qrUrl: 'https://listos.app/postcard/sample'
       });
       console.log('Back image composed to A6 format');
 

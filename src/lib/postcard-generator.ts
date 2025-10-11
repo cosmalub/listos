@@ -1,4 +1,5 @@
 import html2canvas from 'html2canvas';
+import QRCode from 'qrcode';
 
 export async function captureElement(element: HTMLElement): Promise<string> {
   const canvas = await html2canvas(element, {
@@ -205,8 +206,8 @@ export async function composeFrontImageA6(imageUrl: string, caption: string): Pr
   });
 }
 
-export async function composeBackImageA6(opts: { color: string; message: string }): Promise<string> {
-  const { color, message } = opts;
+export async function composeBackImageA6(opts: { color: string; message: string; qrUrl: string }): Promise<string> {
+  const { color, message, qrUrl } = opts;
   const A6_WIDTH = 1240;
   const A6_HEIGHT = 1748;
   const PAD = 80;
@@ -266,18 +267,52 @@ export async function composeBackImageA6(opts: { color: string; message: string 
     fontSize -= 2;
   }
 
+  // QR Code dimensions
+  const QR_SIZE = 300;
+  const QR_PADDING = 24;
+  const QR_BOTTOM_MARGIN = 64;
+  const qrBoxSize = QR_SIZE + QR_PADDING * 2;
+
+  // Calculate available height for text (excluding QR code area)
+  const availableHeightForText = A6_HEIGHT - QR_BOTTOM_MARGIN - qrBoxSize - 40; // 40 - spacing between text and QR
+
   ctx.fillStyle = textColor;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   setFont(fontSize);
 
   const totalH = lines.length * lineHeight;
-  let y = (A6_HEIGHT - totalH) / 2 + lineHeight / 2;
+  let y = (availableHeightForText - totalH) / 2 + lineHeight / 2;
   const centerX = A6_WIDTH / 2;
   for (const line of lines) {
     ctx.fillText(line, centerX, y);
     y += lineHeight;
   }
+
+  // Generate QR code as data URL
+  const qrDataUrl = await QRCode.toDataURL(qrUrl, {
+    width: QR_SIZE,
+    margin: 0,
+    color: {
+      dark: '#000000',
+      light: '#FFFFFF'
+    }
+  });
+
+  // Draw white rounded box for QR
+  const qrBoxX = (A6_WIDTH - qrBoxSize) / 2;
+  const qrBoxY = A6_HEIGHT - QR_BOTTOM_MARGIN - qrBoxSize;
+  ctx.fillStyle = '#FFFFFF';
+  ctx.roundRect(qrBoxX, qrBoxY, qrBoxSize, qrBoxSize, 12);
+  ctx.fill();
+
+  // Draw QR code
+  const qrImg = new Image();
+  await new Promise<void>((resolve) => {
+    qrImg.onload = () => resolve();
+    qrImg.src = qrDataUrl;
+  });
+  ctx.drawImage(qrImg, qrBoxX + QR_PADDING, qrBoxY + QR_PADDING, QR_SIZE, QR_SIZE);
 
   return canvas.toDataURL('image/png');
 }
