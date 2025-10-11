@@ -76,14 +76,14 @@ export async function preprocessImageToA6(imageUrl: string): Promise<string> {
 export async function composeFrontImageA6(imageUrl: string, caption: string): Promise<string> {
   const A6_WIDTH = 1240;
   const A6_HEIGHT = 1748;
-  const MARGIN = 40;
-  const BOTTOM_MARGIN = 64;
-  const PAD_X = 28;
-  const PAD_Y = 22;
+  const MARGIN = 50;
+  const BOTTOM_MARGIN = 75;
+  const PAD_X = 50;
+  const PAD_Y = 37;
   const MAX_LINES = 3;
-  const INITIAL_FONT = 64;
-  const MIN_FONT = 28;
-  const LINE_HEIGHT_RATIO = 1.2;
+  const INITIAL_FONT = 85;
+  const MIN_FONT = 45;
+  const LINE_HEIGHT_RATIO = 1.15;
 
   const toUpper = (t: string) => (t || '').trim().toUpperCase();
   const setFont = (ctx: CanvasRenderingContext2D, size: number) => {
