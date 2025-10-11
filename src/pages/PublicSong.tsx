@@ -97,7 +97,7 @@ export default function PublicSong() {
             {/* Аудио плеер */}
             {orderData.music_selected && orderData.music_audio_url && (
               <div className="text-center mb-8">
-                <h3 className="text-xl font-semibold mb-4">🎵 Прослухати пісню</h3>
+                <h3 className="text-xl font-semibold mb-4">Для вас створили пісню ❤️</h3>
                 <audio controls className="mx-auto w-full max-w-md">
                   <source src={orderData.music_audio_url} type="audio/mpeg" />
                   Ваш браузер не підтримує аудіо елемент.
@@ -110,7 +110,7 @@ export default function PublicSong() {
               <div className="bg-gradient-to-r from-[hsl(var(--primary))]/10 to-[hsl(var(--secondary))]/10 rounded-lg p-6">
                 <h2 className="text-2xl font-bold mb-4 text-center">Текст пісні</h2>
                 <div className="whitespace-pre-wrap text-center">
-                  {orderData.lyrics}
+                  {orderData.lyrics.replace(/\[.*?\]/g, '').trim()}
                 </div>
               </div>
             )}
