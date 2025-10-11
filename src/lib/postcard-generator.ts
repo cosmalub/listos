@@ -210,9 +210,9 @@ export async function composeBackImageA6(opts: { color: string; message: string;
   const { color, message, qrUrl } = opts;
   const A6_WIDTH = 1240;
   const A6_HEIGHT = 1748;
-  const PAD = 80;
-  const INITIAL = 56;
-  const MIN = 28;
+  const PAD = 100;
+  const INITIAL = 64;
+  const MIN = 32;
   const LINE_H = 1.25;
 
   const isLight = (hex: string) => {
