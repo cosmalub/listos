@@ -80,7 +80,7 @@ export async function composeFrontImageA6(imageUrl: string, caption: string): Pr
   const BOTTOM_MARGIN = 75;
   const PAD_X = 50;
   const PAD_Y = 37;
-  const MAX_LINES = 3;
+  const MAX_LINES = 2;
   const INITIAL_FONT = 85;
   const MIN_FONT = 45;
   const LINE_HEIGHT_RATIO = 1.15;
@@ -211,8 +211,8 @@ export async function composeBackImageA6(opts: { color: string; message: string;
   const A6_WIDTH = 1240;
   const A6_HEIGHT = 1748;
   const PAD = 80;
-  const INITIAL = 48;
-  const MIN = 24;
+  const INITIAL = 56;
+  const MIN = 28;
   const LINE_H = 1.25;
 
   const isLight = (hex: string) => {
