@@ -105,10 +105,15 @@ export default function PublicSong() {
             {/* Текст песни */}
             {orderData.lyrics && (
               <div className="bg-gradient-to-r from-[hsl(var(--primary))]/10 to-[hsl(var(--secondary))]/10 rounded-lg p-6">
-                <h2 className="text-2xl font-bold mb-4 text-center">Текст пісні</h2>
-                <div className="whitespace-pre-wrap text-center">
-                  {orderData.lyrics.replace(/\[.*?\]/g, '').trim()}
-                </div>
+                <div 
+                  className="whitespace-pre-wrap text-center"
+                  dangerouslySetInnerHTML={{
+                    __html: orderData.lyrics
+                      .replace(/\[.*?\]/g, '') // Remove tags like [Куплет 1]
+                      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Convert **text** to bold
+                      .trim()
+                  }}
+                />
               </div>
             )}
           </div>
