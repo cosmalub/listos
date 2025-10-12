@@ -81,9 +81,9 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
       console.log('Validation response:', data);
 
       if (data.valid) {
-        // Зберігаємо токен і orderId в sessionStorage
+        // Зберігаємо токен і preOrderId в sessionStorage
         sessionStorage.setItem('studio-access-token', accessToken.trim());
-        sessionStorage.setItem('studio-order-id', data.orderId);
+        sessionStorage.setItem('studio-pre-order-id', data.preOrderId);
         
         console.log('Token validated successfully, stored in sessionStorage');
         
@@ -116,7 +116,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
   const handleDevSkip = () => {
     // Імітуємо валідний токен для dev режиму
     sessionStorage.setItem('studio-access-token', 'dev-mode-token');
-    sessionStorage.setItem('studio-order-id', 'dev-mode-order-id');
+    sessionStorage.setItem('studio-pre-order-id', 'dev-mode-pre-order-id');
     
     console.log('🔧 DEV MODE: Skipped token validation');
     toast.success('Dev mode: пропущено перевірку токена');

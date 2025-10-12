@@ -164,9 +164,9 @@ const Studio = () => {
 
     // Перевіряємо наявність токена в sessionStorage
     const token = sessionStorage.getItem('studio-access-token');
-    const orderId = sessionStorage.getItem('studio-order-id');
+    const preOrderId = sessionStorage.getItem('studio-pre-order-id');
 
-    if (!token || !orderId) {
+    if (!token || !preOrderId) {
       console.log('No access token found, redirecting to welcome screen');
       setShowWelcome(true);
       setCurrentStep(0);
@@ -340,18 +340,17 @@ const Studio = () => {
       });
       console.log('Back image composed to A6 format');
 
-      // Get orderId from sessionStorage
-      const storedOrderId = sessionStorage.getItem('studio-order-id');
+      // Get preOrderId from sessionStorage
+      const storedPreOrderId = sessionStorage.getItem('studio-pre-order-id');
       
-      // Якщо dev режим і немає реального orderId - не передаємо orderId
-      const orderIdToUse = (DEV_MODE && storedOrderId === 'dev-mode-order-id') 
-        ? null 
-        : storedOrderId;
+      if (!storedPreOrderId) {
+        throw new Error('Pre-order ID not found in session storage');
+      }
 
       // Call save-order edge function
       const { data, error } = await supabase.functions.invoke('save-order', {
         body: {
-          orderId: orderIdToUse,
+          preOrderId: storedPreOrderId,
           lyrics,
           musicVariant: selectedMusicVariant,
           pageData: parsedPageData.pageInfo,
@@ -368,7 +367,7 @@ const Studio = () => {
       
       // Очищаємо токен доступу (більше не потрібен)
       sessionStorage.removeItem('studio-access-token');
-      sessionStorage.removeItem('studio-order-id');
+      sessionStorage.removeItem('studio-pre-order-id');
       
       // Navigate to success page
       navigate(`/order-success?orderId=${data.orderId}`);

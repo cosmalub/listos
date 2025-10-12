@@ -34,9 +34,9 @@ Deno.serve(async (req) => {
 
     console.log('Validating access token:', token.substring(0, 8) + '...');
 
-    // Шукаємо замовлення з таким токеном
-    const { data: order, error } = await supabase
-      .from('orders')
+    // Шукаємо передзамовлення з таким токеном
+    const { data: preOrder, error } = await supabase
+      .from('pre_orders')
       .select('*')
       .eq('access_token', token)
       .maybeSingle();
@@ -46,7 +46,7 @@ Deno.serve(async (req) => {
       throw error;
     }
 
-    if (!order) {
+    if (!preOrder) {
       console.log('Token not found in database');
       return new Response(
         JSON.stringify({ 
@@ -58,8 +58,8 @@ Deno.serve(async (req) => {
     }
 
     // Перевіряємо чи оплачено
-    if (!order.is_paid) {
-      console.log('Order not paid:', order.id);
+    if (!preOrder.is_paid) {
+      console.log('Pre-order not paid:', preOrder.id);
       return new Response(
         JSON.stringify({ 
           valid: false, 
@@ -70,8 +70,8 @@ Deno.serve(async (req) => {
     }
 
     // Перевіряємо чи не завершено вже
-    if (order.studio_completed) {
-      console.log('Studio already completed for order:', order.id);
+    if (preOrder.status === 'completed') {
+      console.log('Studio already completed for pre-order:', preOrder.id);
       return new Response(
         JSON.stringify({ 
           valid: false, 
@@ -81,26 +81,26 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Оновлюємо studio_started_at якщо це перший вхід
-    if (!order.studio_started_at) {
-      console.log('First time access, updating studio_started_at for order:', order.id);
+    // Оновлюємо статус на studio_started якщо це перший вхід
+    if (preOrder.status === 'paid') {
+      console.log('First time access, updating status to studio_started for pre-order:', preOrder.id);
       const { error: updateError } = await supabase
-        .from('orders')
-        .update({ studio_started_at: new Date().toISOString() })
-        .eq('id', order.id);
+        .from('pre_orders')
+        .update({ status: 'studio_started' })
+        .eq('id', preOrder.id);
 
       if (updateError) {
-        console.error('Error updating studio_started_at:', updateError);
+        console.error('Error updating pre-order status:', updateError);
         // Не критично, продовжуємо
       }
     }
 
-    console.log('Token validated successfully for order:', order.id);
+    console.log('Token validated successfully for pre-order:', preOrder.id);
 
     return new Response(
       JSON.stringify({ 
         valid: true,
-        orderId: order.id,
+        preOrderId: preOrder.id,
         message: 'Код доступу дійсний. Ласкаво просимо до створення вашої музичної листівки!' 
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

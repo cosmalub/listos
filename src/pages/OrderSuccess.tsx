@@ -105,13 +105,31 @@ export default function OrderSuccess() {
       return;
     }
 
-    const { error } = await supabase
+    // Оновлюємо контакти в pre_orders через order->pre_order зв'язок
+    // Спочатку отримуємо pre_order_id з order
+    const { data: order } = await supabase
       .from('orders')
+      .select('pre_order_id')
+      .eq('id', orderId)
+      .single();
+
+    if (!order?.pre_order_id) {
+      toast({
+        title: 'Помилка',
+        description: 'Не знайдено пов\'язане передзамовлення',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // Оновлюємо контакти в pre_orders
+    const { error } = await supabase
+      .from('pre_orders')
       .update({
         user_email: email || null,
         user_phone: phone || null,
       })
-      .eq('id', orderId);
+      .eq('id', order.pre_order_id);
 
     if (error) {
       console.error('Error updating contact:', error);

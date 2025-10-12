@@ -46,7 +46,6 @@ export type Database = {
       }
       orders: {
         Row: {
-          access_token: string
           back_design_color: string | null
           back_design_message: string | null
           back_image_url: string | null
@@ -58,7 +57,6 @@ export type Database = {
           front_design_style: string | null
           front_image_url: string | null
           id: string
-          is_paid: boolean
           lyrics: string
           music_audio_url: string | null
           music_selected: boolean | null
@@ -69,17 +67,14 @@ export type Database = {
           page_occasion: string
           page_recipient: string
           page_sender: string
+          pre_order_id: string
           qr_code_url: string | null
-          status: string | null
           studio_completed: boolean
           studio_completed_at: string | null
           studio_started_at: string | null
           updated_at: string
-          user_email: string | null
-          user_phone: string | null
         }
         Insert: {
-          access_token?: string
           back_design_color?: string | null
           back_design_message?: string | null
           back_image_url?: string | null
@@ -91,7 +86,6 @@ export type Database = {
           front_design_style?: string | null
           front_image_url?: string | null
           id?: string
-          is_paid?: boolean
           lyrics: string
           music_audio_url?: string | null
           music_selected?: boolean | null
@@ -102,17 +96,14 @@ export type Database = {
           page_occasion: string
           page_recipient: string
           page_sender: string
+          pre_order_id: string
           qr_code_url?: string | null
-          status?: string | null
           studio_completed?: boolean
           studio_completed_at?: string | null
           studio_started_at?: string | null
           updated_at?: string
-          user_email?: string | null
-          user_phone?: string | null
         }
         Update: {
-          access_token?: string
           back_design_color?: string | null
           back_design_message?: string | null
           back_image_url?: string | null
@@ -124,7 +115,6 @@ export type Database = {
           front_design_style?: string | null
           front_image_url?: string | null
           id?: string
-          is_paid?: boolean
           lyrics?: string
           music_audio_url?: string | null
           music_selected?: boolean | null
@@ -135,11 +125,164 @@ export type Database = {
           page_occasion?: string
           page_recipient?: string
           page_sender?: string
+          pre_order_id?: string
           qr_code_url?: string | null
-          status?: string | null
           studio_completed?: boolean
           studio_completed_at?: string | null
           studio_started_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_pre_order_id_fkey"
+            columns: ["pre_order_id"]
+            isOneToOne: false
+            referencedRelation: "pre_orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders_backup: {
+        Row: {
+          access_token: string | null
+          back_design_color: string | null
+          back_design_message: string | null
+          back_image_url: string | null
+          created_at: string | null
+          draft_page_url: string | null
+          front_design_caption: string | null
+          front_design_mode: string | null
+          front_design_prompt: string | null
+          front_design_style: string | null
+          front_image_url: string | null
+          id: string | null
+          is_paid: boolean | null
+          lyrics: string | null
+          music_audio_url: string | null
+          music_selected: boolean | null
+          music_variant_description: string | null
+          music_variant_id: string | null
+          music_variant_style: string | null
+          music_variant_title: string | null
+          page_occasion: string | null
+          page_recipient: string | null
+          page_sender: string | null
+          qr_code_url: string | null
+          status: string | null
+          studio_completed: boolean | null
+          studio_completed_at: string | null
+          studio_started_at: string | null
+          updated_at: string | null
+          user_email: string | null
+          user_phone: string | null
+        }
+        Insert: {
+          access_token?: string | null
+          back_design_color?: string | null
+          back_design_message?: string | null
+          back_image_url?: string | null
+          created_at?: string | null
+          draft_page_url?: string | null
+          front_design_caption?: string | null
+          front_design_mode?: string | null
+          front_design_prompt?: string | null
+          front_design_style?: string | null
+          front_image_url?: string | null
+          id?: string | null
+          is_paid?: boolean | null
+          lyrics?: string | null
+          music_audio_url?: string | null
+          music_selected?: boolean | null
+          music_variant_description?: string | null
+          music_variant_id?: string | null
+          music_variant_style?: string | null
+          music_variant_title?: string | null
+          page_occasion?: string | null
+          page_recipient?: string | null
+          page_sender?: string | null
+          qr_code_url?: string | null
+          status?: string | null
+          studio_completed?: boolean | null
+          studio_completed_at?: string | null
+          studio_started_at?: string | null
+          updated_at?: string | null
+          user_email?: string | null
+          user_phone?: string | null
+        }
+        Update: {
+          access_token?: string | null
+          back_design_color?: string | null
+          back_design_message?: string | null
+          back_image_url?: string | null
+          created_at?: string | null
+          draft_page_url?: string | null
+          front_design_caption?: string | null
+          front_design_mode?: string | null
+          front_design_prompt?: string | null
+          front_design_style?: string | null
+          front_image_url?: string | null
+          id?: string | null
+          is_paid?: boolean | null
+          lyrics?: string | null
+          music_audio_url?: string | null
+          music_selected?: boolean | null
+          music_variant_description?: string | null
+          music_variant_id?: string | null
+          music_variant_style?: string | null
+          music_variant_title?: string | null
+          page_occasion?: string | null
+          page_recipient?: string | null
+          page_sender?: string | null
+          qr_code_url?: string | null
+          status?: string | null
+          studio_completed?: boolean | null
+          studio_completed_at?: string | null
+          studio_started_at?: string | null
+          updated_at?: string | null
+          user_email?: string | null
+          user_phone?: string | null
+        }
+        Relationships: []
+      }
+      pre_orders: {
+        Row: {
+          access_token: string
+          city: string | null
+          comment: string | null
+          contact_type: string | null
+          created_at: string
+          id: string
+          is_paid: boolean
+          nova_poshta: string | null
+          status: string | null
+          updated_at: string
+          user_email: string | null
+          user_phone: string | null
+        }
+        Insert: {
+          access_token?: string
+          city?: string | null
+          comment?: string | null
+          contact_type?: string | null
+          created_at?: string
+          id?: string
+          is_paid?: boolean
+          nova_poshta?: string | null
+          status?: string | null
+          updated_at?: string
+          user_email?: string | null
+          user_phone?: string | null
+        }
+        Update: {
+          access_token?: string
+          city?: string | null
+          comment?: string | null
+          contact_type?: string | null
+          created_at?: string
+          id?: string
+          is_paid?: boolean
+          nova_poshta?: string | null
+          status?: string | null
           updated_at?: string
           user_email?: string | null
           user_phone?: string | null

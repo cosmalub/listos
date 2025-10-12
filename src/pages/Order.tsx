@@ -25,27 +25,24 @@ export default function Order() {
     e.preventDefault();
     
     try {
-      // Створюємо запис у таблиці orders
+      // Створюємо запис у таблиці pre_orders
       const { data, error } = await supabase
-        .from('orders')
+        .from('pre_orders')
         .insert({
-          // Дані з форми
-          user_email: formData.contactType === 'phone' ? null : formData.telegram,
+          user_email: formData.contactType === 'telegram' ? formData.telegram : null,
           user_phone: formData.contactType === 'phone' ? formData.phone : null,
-          // Пусті поля, які будуть заповнені в Studio
-          lyrics: '',
-          page_occasion: '',
-          page_recipient: '',
-          page_sender: '',
-          // is_paid = false за замовчуванням
-          // access_token згенерується автоматично
+          city: formData.city,
+          nova_poshta: formData.novaPoshta,
+          comment: formData.comment,
+          contact_type: formData.contactType,
+          // is_paid = false, access_token - автоматично генерується
         })
         .select()
         .single();
 
       if (error) throw error;
 
-      console.log('Order created:', data);
+      console.log('Pre-order created:', data);
 
       // Показуємо успішне повідомлення
       toast.success('Ваша заявка успішно створена!', {

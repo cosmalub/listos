@@ -17,7 +17,7 @@ Deno.serve(async (req) => {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     const {
-      orderId,
+      preOrderId,
       lyrics,
       musicVariant,
       pageData,
@@ -28,6 +28,7 @@ Deno.serve(async (req) => {
     } = await req.json();
 
     console.log('Saving order with data:', {
+      preOrderId,
       hasLyrics: !!lyrics,
       hasMusicVariant: !!musicVariant,
       hasPageData: !!pageData,
@@ -37,11 +38,11 @@ Deno.serve(async (req) => {
       hasBackImage: !!backImageBase64,
     });
 
-    // Перевірка наявності orderId
-    if (!orderId) {
-      console.error('No orderId provided');
+    // Перевірка наявності preOrderId
+    if (!preOrderId) {
+      console.error('No preOrderId provided');
       return new Response(
-        JSON.stringify({ error: 'orderId is required' }),
+        JSON.stringify({ error: 'preOrderId is required' }),
         { 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
           status: 400,
@@ -49,37 +50,82 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Оновлюємо існуючий запис замість створення нового
-    const { data: orderData, error: updateError } = await supabase
+    // Перевіряємо, чи вже існує запис для цього pre_order
+    const { data: existingOrder } = await supabase
       .from('orders')
-      .update({
-        lyrics,
-        music_variant_id: musicVariant?.id || null,
-        music_variant_title: musicVariant?.title || null,
-        music_variant_description: musicVariant?.description || null,
-        music_variant_style: musicVariant?.style || null,
-        music_selected: !!musicVariant,
-        music_audio_url: musicVariant?.audioUrl || null,
-        page_occasion: pageData.occasion,
-        page_recipient: pageData.recipient,
-        page_sender: pageData.sender,
-        front_design_mode: frontDesign.mode,
-        front_design_style: frontDesign.style,
-        front_design_caption: frontDesign.caption,
-        front_design_prompt: frontDesign.prompt,
-        back_design_color: backDesign.selectedColor,
-        back_design_message: backDesign.personalMessage,
-      })
-      .eq('id', orderId)
-      .select()
-      .single();
+      .select('id')
+      .eq('pre_order_id', preOrderId)
+      .maybeSingle();
 
-    if (updateError) {
-      console.error('Error updating order:', updateError);
-      throw updateError;
+    let orderId: string;
+
+    if (existingOrder) {
+      // Якщо запис існує - оновлюємо його
+      console.log('Updating existing order:', existingOrder.id);
+      const { error: updateError } = await supabase
+        .from('orders')
+        .update({
+          lyrics,
+          music_variant_id: musicVariant?.id || null,
+          music_variant_title: musicVariant?.title || null,
+          music_variant_description: musicVariant?.description || null,
+          music_variant_style: musicVariant?.style || null,
+          music_selected: !!musicVariant,
+          music_audio_url: musicVariant?.audioUrl || null,
+          page_occasion: pageData.occasion,
+          page_recipient: pageData.recipient,
+          page_sender: pageData.sender,
+          front_design_mode: frontDesign.mode,
+          front_design_style: frontDesign.style,
+          front_design_caption: frontDesign.caption,
+          front_design_prompt: frontDesign.prompt,
+          back_design_color: backDesign.selectedColor,
+          back_design_message: backDesign.personalMessage,
+        })
+        .eq('id', existingOrder.id);
+
+      if (updateError) {
+        console.error('Error updating order:', updateError);
+        throw updateError;
+      }
+      
+      orderId = existingOrder.id;
+      console.log('Order updated with ID:', orderId);
+    } else {
+      // Якщо запису немає - створюємо новий
+      console.log('Creating new order for pre_order:', preOrderId);
+      const { data: newOrder, error: insertError } = await supabase
+        .from('orders')
+        .insert({
+          pre_order_id: preOrderId,
+          lyrics,
+          music_variant_id: musicVariant?.id || null,
+          music_variant_title: musicVariant?.title || null,
+          music_variant_description: musicVariant?.description || null,
+          music_variant_style: musicVariant?.style || null,
+          music_selected: !!musicVariant,
+          music_audio_url: musicVariant?.audioUrl || null,
+          page_occasion: pageData.occasion,
+          page_recipient: pageData.recipient,
+          page_sender: pageData.sender,
+          front_design_mode: frontDesign.mode,
+          front_design_style: frontDesign.style,
+          front_design_caption: frontDesign.caption,
+          front_design_prompt: frontDesign.prompt,
+          back_design_color: backDesign.selectedColor,
+          back_design_message: backDesign.personalMessage,
+        })
+        .select()
+        .single();
+
+      if (insertError) {
+        console.error('Error inserting order:', insertError);
+        throw insertError;
+      }
+
+      orderId = newOrder.id;
+      console.log('Order created with ID:', orderId);
     }
-
-    console.log('Order updated with ID:', orderId);
 
     // Helper function to upload base64 image
     async function uploadBase64Image(base64Data: string, path: string) {
@@ -129,6 +175,17 @@ Deno.serve(async (req) => {
     if (finalUpdateError) {
       console.error('Error updating order with images:', finalUpdateError);
       throw finalUpdateError;
+    }
+
+    // Оновлюємо статус в pre_orders
+    const { error: preOrderUpdateError } = await supabase
+      .from('pre_orders')
+      .update({ status: 'completed' })
+      .eq('id', preOrderId);
+
+    if (preOrderUpdateError) {
+      console.error('Error updating pre_order status:', preOrderUpdateError);
+      // Не кидаємо помилку, бо order вже збережено
     }
 
     console.log('Order saved and completed successfully:', orderId);
