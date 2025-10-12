@@ -17,6 +17,7 @@ Deno.serve(async (req) => {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     const {
+      orderId,
       lyrics,
       musicVariant,
       pageData,
@@ -119,6 +120,25 @@ Deno.serve(async (req) => {
     }
 
     console.log('Order saved successfully:', orderId);
+
+    // Позначаємо замовлення як завершене
+    if (orderId) {
+      console.log('Marking order as completed:', orderId);
+      
+      const { error: completeError } = await supabase
+        .from('orders')
+        .update({
+          studio_completed: true,
+          studio_completed_at: new Date().toISOString()
+        })
+        .eq('id', orderId);
+
+      if (completeError) {
+        console.error('Error marking order as completed:', completeError);
+      } else {
+        console.log('Order marked as completed successfully');
+      }
+    }
 
     return new Response(
       JSON.stringify({ orderId, success: true }),

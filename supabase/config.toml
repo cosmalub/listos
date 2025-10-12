@@ -23,3 +23,15 @@ verify_jwt = false
 
 [functions.analyze-lyrics-for-music]
 verify_jwt = false
+
+[functions.generate-image-description]
+verify_jwt = false
+
+[functions.generate-postcard-image]
+verify_jwt = false
+
+[functions.save-order]
+verify_jwt = false
+
+[functions.validate-studio-token]
+verify_jwt = false

@@ -7,6 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft, Music, Shield, Play, CheckCircle, Sparkles, Phone, MessageCircle } from "lucide-react";
 import { Header } from "@/components/sections/header";
 import { Footer } from "@/components/sections/footer";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export default function Order() {
   const [formData, setFormData] = useState({
@@ -19,10 +21,55 @@ export default function Order() {
     telegram: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log("Order data:", formData);
+    
+    try {
+      // Створюємо запис у таблиці orders
+      const { data, error } = await supabase
+        .from('orders')
+        .insert({
+          // Дані з форми
+          user_email: formData.contactType === 'phone' ? null : formData.telegram,
+          user_phone: formData.contactType === 'phone' ? formData.phone : null,
+          // Пусті поля, які будуть заповнені в Studio
+          lyrics: '',
+          page_occasion: '',
+          page_recipient: '',
+          page_sender: '',
+          // is_paid = false за замовчуванням
+          // access_token згенерується автоматично
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      console.log('Order created:', data);
+
+      // Показуємо успішне повідомлення
+      toast.success('Ваша заявка успішно створена!', {
+        description: 'Ми зв\'яжемося з вами найближчим часом для підтвердження оплати',
+        duration: 5000,
+      });
+
+      // Очищаємо форму
+      setFormData({
+        name: "",
+        phone: "",
+        city: "",
+        novaPoshta: "",
+        comment: "",
+        contactType: "phone",
+        telegram: ""
+      });
+
+    } catch (error) {
+      console.error('Error creating order:', error);
+      toast.error('Помилка при створенні замовлення', {
+        description: 'Будь ласка, спробуйте ще раз або зв\'яжіться з нами',
+      });
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {

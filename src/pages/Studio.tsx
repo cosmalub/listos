@@ -151,6 +151,27 @@ const Studio = () => {
     }
   }, [searchParams]);
 
+  // Захист від неавторизованого доступу
+  useEffect(() => {
+    // Якщо показуємо Welcome екран - не перевіряємо токен
+    if (showWelcome) return;
+
+    // Перевіряємо наявність токена в sessionStorage
+    const token = sessionStorage.getItem('studio-access-token');
+    const orderId = sessionStorage.getItem('studio-order-id');
+
+    if (!token || !orderId) {
+      console.log('No access token found, redirecting to welcome screen');
+      setShowWelcome(true);
+      setCurrentStep(0);
+      navigate('/studio');
+      toast.error('Будь ласка, введіть код доступу для продовження', {
+        description: 'Код доступу ви отримали після оплати',
+        duration: 5000,
+      });
+    }
+  }, [showWelcome, currentStep, navigate]);
+
   const handleLyricsConfirmed = async (confirmedLyrics: string) => {
     setLyrics(confirmedLyrics);
     setHasUnconfirmedLyrics(false);
@@ -313,9 +334,13 @@ const Studio = () => {
       });
       console.log('Back image composed to A6 format');
 
+      // Get orderId from sessionStorage
+      const storedOrderId = sessionStorage.getItem('studio-order-id');
+
       // Call save-order edge function
       const { data, error } = await supabase.functions.invoke('save-order', {
         body: {
+          orderId: storedOrderId,
           lyrics,
           musicVariant: selectedMusicVariant,
           pageData: parsedPageData.pageInfo,
@@ -329,6 +354,10 @@ const Studio = () => {
       if (error) throw error;
 
       toast.success('Замовлення збережено успішно!');
+      
+      // Очищаємо токен доступу (більше не потрібен)
+      sessionStorage.removeItem('studio-access-token');
+      sessionStorage.removeItem('studio-order-id');
       
       // Navigate to success page
       navigate(`/order-success?orderId=${data.orderId}`);

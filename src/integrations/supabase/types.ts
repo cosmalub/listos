@@ -46,17 +46,19 @@ export type Database = {
       }
       orders: {
         Row: {
-          back_design_color: string
-          back_design_message: string
-          back_image_url: string
+          access_token: string
+          back_design_color: string | null
+          back_design_message: string | null
+          back_image_url: string | null
           created_at: string
           draft_page_url: string | null
           front_design_caption: string | null
           front_design_mode: string | null
           front_design_prompt: string | null
           front_design_style: string | null
-          front_image_url: string
+          front_image_url: string | null
           id: string
+          is_paid: boolean
           lyrics: string
           music_audio_url: string | null
           music_selected: boolean | null
@@ -69,22 +71,27 @@ export type Database = {
           page_sender: string
           qr_code_url: string | null
           status: string | null
+          studio_completed: boolean
+          studio_completed_at: string | null
+          studio_started_at: string | null
           updated_at: string
           user_email: string | null
           user_phone: string | null
         }
         Insert: {
-          back_design_color: string
-          back_design_message: string
-          back_image_url: string
+          access_token?: string
+          back_design_color?: string | null
+          back_design_message?: string | null
+          back_image_url?: string | null
           created_at?: string
           draft_page_url?: string | null
           front_design_caption?: string | null
           front_design_mode?: string | null
           front_design_prompt?: string | null
           front_design_style?: string | null
-          front_image_url: string
+          front_image_url?: string | null
           id?: string
+          is_paid?: boolean
           lyrics: string
           music_audio_url?: string | null
           music_selected?: boolean | null
@@ -97,22 +104,27 @@ export type Database = {
           page_sender: string
           qr_code_url?: string | null
           status?: string | null
+          studio_completed?: boolean
+          studio_completed_at?: string | null
+          studio_started_at?: string | null
           updated_at?: string
           user_email?: string | null
           user_phone?: string | null
         }
         Update: {
-          back_design_color?: string
-          back_design_message?: string
-          back_image_url?: string
+          access_token?: string
+          back_design_color?: string | null
+          back_design_message?: string | null
+          back_image_url?: string | null
           created_at?: string
           draft_page_url?: string | null
           front_design_caption?: string | null
           front_design_mode?: string | null
           front_design_prompt?: string | null
           front_design_style?: string | null
-          front_image_url?: string
+          front_image_url?: string | null
           id?: string
+          is_paid?: boolean
           lyrics?: string
           music_audio_url?: string | null
           music_selected?: boolean | null
@@ -125,6 +137,9 @@ export type Database = {
           page_sender?: string
           qr_code_url?: string | null
           status?: string | null
+          studio_completed?: boolean
+          studio_completed_at?: string | null
+          studio_started_at?: string | null
           updated_at?: string
           user_email?: string | null
           user_phone?: string | null

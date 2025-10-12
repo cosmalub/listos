@@ -1,13 +1,22 @@
-import React from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Play, ArrowRight, Music, Heart, Palette, Send, Sparkles, Star } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Play, ArrowRight, Music, Heart, Palette, Send, Sparkles, Star, Loader2, Lock } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 interface WelcomeTutorialProps {
   onStart: () => void;
 }
 
 export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => {
+  const [showTokenDialog, setShowTokenDialog] = useState(false);
+  const [accessToken, setAccessToken] = useState('');
+  const [isValidating, setIsValidating] = useState(false);
+
   const steps = [
     {
       icon: Music,
@@ -42,6 +51,65 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
       iconColor: "text-green-600"
     }
   ];
+
+  const handleStartClick = () => {
+    setShowTokenDialog(true);
+  };
+
+  const handleTokenSubmit = async () => {
+    if (!accessToken.trim()) {
+      toast.error('Будь ласка, введіть код доступу');
+      return;
+    }
+
+    setIsValidating(true);
+
+    try {
+      console.log('Validating access token...');
+      
+      const { data, error } = await supabase.functions.invoke('validate-studio-token', {
+        body: { token: accessToken.trim() }
+      });
+
+      if (error) {
+        console.error('Error invoking function:', error);
+        throw error;
+      }
+
+      console.log('Validation response:', data);
+
+      if (data.valid) {
+        // Зберігаємо токен і orderId в sessionStorage
+        sessionStorage.setItem('studio-access-token', accessToken.trim());
+        sessionStorage.setItem('studio-order-id', data.orderId);
+        
+        console.log('Token validated successfully, stored in sessionStorage');
+        
+        toast.success(data.message || 'Код доступу підтверджено!');
+        
+        // Закриваємо діалог і переходимо до студії
+        setShowTokenDialog(false);
+        setAccessToken('');
+        onStart();
+      } else {
+        toast.error(data.message || 'Невірний код доступу');
+      }
+    } catch (error) {
+      console.error('Error validating token:', error);
+      toast.error('Помилка при перевірці коду доступу. Спробуйте ще раз.');
+    } finally {
+      setIsValidating(false);
+    }
+  };
+
+  const handleDialogClose = (open: boolean) => {
+    if (!isValidating) {
+      setShowTokenDialog(open);
+      if (!open) {
+        setAccessToken('');
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen px-4 py-8">
@@ -97,7 +165,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
         {/* Start Button */}
         <div className="flex justify-center">
           <Button
-            onClick={onStart}
+            onClick={handleStartClick}
             size="lg"
             className="min-w-[200px]"
           >
@@ -105,6 +173,77 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
             <ArrowRight className="h-5 w-5" />
           </Button>
         </div>
+
+      {/* Діалог для введення токена */}
+      <Dialog open={showTokenDialog} onOpenChange={handleDialogClose}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Lock className="h-5 w-5 text-[#6A5ACD]" />
+              Введіть код доступу
+            </DialogTitle>
+            <DialogDescription>
+              Введіть код доступу, який ви отримали після оплати замовлення
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="access-token">Код доступу</Label>
+              <Input
+                id="access-token"
+                type="text"
+                placeholder="Вставте ваш код доступу"
+                value={accessToken}
+                onChange={(e) => setAccessToken(e.target.value)}
+                disabled={isValidating}
+                className="text-center font-mono"
+                autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !isValidating) {
+                    handleTokenSubmit();
+                  }
+                }}
+              />
+              <p className="text-xs text-muted-foreground">
+                Код виглядає як: 12345678-1234-1234-1234-123456789abc
+              </p>
+            </div>
+
+            <Card className="bg-blue-50 border-blue-200 p-3">
+              <p className="text-sm text-blue-900">
+                <strong>Не отримали код?</strong><br />
+                Зв'яжіться з нами після оплати, і ми відправимо вам код доступу
+              </p>
+            </Card>
+          </div>
+
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => handleDialogClose(false)}
+              disabled={isValidating}
+            >
+              Скасувати
+            </Button>
+            <Button
+              onClick={handleTokenSubmit}
+              disabled={isValidating || !accessToken.trim()}
+              className="bg-[#6A5ACD] hover:bg-[#5A4ABD]"
+            >
+              {isValidating ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  Перевірка...
+                </>
+              ) : (
+                'Продовжити'
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
