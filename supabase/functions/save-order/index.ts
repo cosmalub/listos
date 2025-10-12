@@ -37,10 +37,22 @@ Deno.serve(async (req) => {
       hasBackImage: !!backImageBase64,
     });
 
-    // Generate unique order ID
-    const { data: orderData, error: insertError } = await supabase
+    // Перевірка наявності orderId
+    if (!orderId) {
+      console.error('No orderId provided');
+      return new Response(
+        JSON.stringify({ error: 'orderId is required' }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400,
+        }
+      );
+    }
+
+    // Оновлюємо існуючий запис замість створення нового
+    const { data: orderData, error: updateError } = await supabase
       .from('orders')
-      .insert({
+      .update({
         lyrics,
         music_variant_id: musicVariant?.id || null,
         music_variant_title: musicVariant?.title || null,
@@ -55,21 +67,19 @@ Deno.serve(async (req) => {
         front_design_style: frontDesign.style,
         front_design_caption: frontDesign.caption,
         front_design_prompt: frontDesign.prompt,
-        front_image_url: null, // Will update after upload
         back_design_color: backDesign.selectedColor,
         back_design_message: backDesign.personalMessage,
-        back_image_url: null, // Will update after upload
       })
+      .eq('id', orderId)
       .select()
       .single();
 
-    if (insertError) {
-      console.error('Error inserting order:', insertError);
-      throw insertError;
+    if (updateError) {
+      console.error('Error updating order:', updateError);
+      throw updateError;
     }
 
-    const orderId = orderData.id;
-    console.log('Order created with ID:', orderId);
+    console.log('Order updated with ID:', orderId);
 
     // Helper function to upload base64 image
     async function uploadBase64Image(base64Data: string, path: string) {
@@ -105,43 +115,23 @@ Deno.serve(async (req) => {
     const backImageUrl = await uploadBase64Image(backImageBase64, backImagePath);
     console.log('Back image uploaded:', backImageUrl);
 
-    // Update order with all URLs
-    const { error: updateError } = await supabase
+    // Update order with image URLs and mark as completed
+    const { error: finalUpdateError } = await supabase
       .from('orders')
       .update({
         front_image_url: frontImageUrl,
         back_image_url: backImageUrl,
+        studio_completed: true,
+        studio_completed_at: new Date().toISOString()
       })
       .eq('id', orderId);
 
-    if (updateError) {
-      console.error('Error updating order:', updateError);
-      throw updateError;
+    if (finalUpdateError) {
+      console.error('Error updating order with images:', finalUpdateError);
+      throw finalUpdateError;
     }
 
-    console.log('Order saved successfully:', orderId);
-
-    // Позначаємо замовлення як завершене (тільки якщо orderId передано)
-    const requestOrderId = orderId; // з request body
-    if (requestOrderId) {
-      console.log('Marking order as completed:', requestOrderId);
-      
-      const { error: completeError } = await supabase
-        .from('orders')
-        .update({
-          studio_completed: true,
-          studio_completed_at: new Date().toISOString()
-        })
-        .eq('id', requestOrderId);
-
-      if (completeError) {
-        console.error('Error marking order as completed:', completeError);
-      } else {
-        console.log('Order marked as completed successfully');
-      }
-    } else {
-      console.log('⚠️ No orderId provided (possibly dev mode), skipping order completion');
-    }
+    console.log('Order saved and completed successfully:', orderId);
 
     return new Response(
       JSON.stringify({ orderId, success: true }),
