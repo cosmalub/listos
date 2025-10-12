@@ -17,10 +17,10 @@ export const StepsHeader: React.FC<StepsHeaderProps> = ({ currentStep }) => {
     <div className="bg-transparent pt-24 md:pt-28">
       <div className="container mx-auto px-4 py-6">
         {/* Desktop: Horizontal layout with connecting lines */}
-        <div className="hidden md:flex items-center justify-between max-w-4xl mx-auto">
+        <div className="hidden md:flex items-start justify-center gap-4 max-w-4xl mx-auto">
           {steps.map((step, index) => (
-            <div key={step.id} className="flex items-center flex-1">
-              <div className="flex flex-col items-center">
+            <React.Fragment key={step.id}>
+              <div className="flex flex-col items-center w-36">
                 <div className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-colors ${
                   currentStep > step.id 
                     ? 'bg-success border-success text-success-foreground' 
@@ -46,11 +46,11 @@ export const StepsHeader: React.FC<StepsHeaderProps> = ({ currentStep }) => {
                 </div>
               </div>
               {index < steps.length - 1 && (
-                <div className={`flex-1 h-0.5 mx-4 transition-colors ${
+                <div className={`h-0.5 w-12 mt-5 transition-colors ${
                   currentStep > step.id ? 'bg-success' : 'bg-border'
                 }`} />
               )}
-            </div>
+            </React.Fragment>
           ))}
         </div>
 
