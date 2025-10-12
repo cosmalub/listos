@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, Circle, Settings, Trash, Loader2 } from 'lucide-react';
 
-// DEV MODE - Set to false for production
-const DEV_MODE = true;
+// DEV MODE - Automatically true only in development
+const DEV_MODE = import.meta.env.DEV;
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -155,6 +155,12 @@ const Studio = () => {
   useEffect(() => {
     // Якщо показуємо Welcome екран - не перевіряємо токен
     if (showWelcome) return;
+
+    // У DEV режимі пропускаємо перевірку токена
+    if (DEV_MODE) {
+      console.log('🔧 DEV MODE: Skipping token validation');
+      return;
+    }
 
     // Перевіряємо наявність токена в sessionStorage
     const token = sessionStorage.getItem('studio-access-token');
@@ -336,11 +342,16 @@ const Studio = () => {
 
       // Get orderId from sessionStorage
       const storedOrderId = sessionStorage.getItem('studio-order-id');
+      
+      // Якщо dev режим і немає реального orderId - не передаємо orderId
+      const orderIdToUse = (DEV_MODE && storedOrderId === 'dev-mode-order-id') 
+        ? null 
+        : storedOrderId;
 
       // Call save-order edge function
       const { data, error } = await supabase.functions.invoke('save-order', {
         body: {
-          orderId: storedOrderId,
+          orderId: orderIdToUse,
           lyrics,
           musicVariant: selectedMusicVariant,
           pageData: parsedPageData.pageInfo,

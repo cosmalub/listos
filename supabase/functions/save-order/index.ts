@@ -121,9 +121,10 @@ Deno.serve(async (req) => {
 
     console.log('Order saved successfully:', orderId);
 
-    // Позначаємо замовлення як завершене
-    if (orderId) {
-      console.log('Marking order as completed:', orderId);
+    // Позначаємо замовлення як завершене (тільки якщо orderId передано)
+    const requestOrderId = orderId; // з request body
+    if (requestOrderId) {
+      console.log('Marking order as completed:', requestOrderId);
       
       const { error: completeError } = await supabase
         .from('orders')
@@ -131,13 +132,15 @@ Deno.serve(async (req) => {
           studio_completed: true,
           studio_completed_at: new Date().toISOString()
         })
-        .eq('id', orderId);
+        .eq('id', requestOrderId);
 
       if (completeError) {
         console.error('Error marking order as completed:', completeError);
       } else {
         console.log('Order marked as completed successfully');
       }
+    } else {
+      console.log('⚠️ No orderId provided (possibly dev mode), skipping order completion');
     }
 
     return new Response(

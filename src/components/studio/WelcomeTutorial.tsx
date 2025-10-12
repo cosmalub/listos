@@ -8,6 +8,8 @@ import { Play, ArrowRight, Music, Heart, Palette, Send, Sparkles, Star, Loader2,
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
+const DEV_MODE = import.meta.env.DEV;
+
 interface WelcomeTutorialProps {
   onStart: () => void;
 }
@@ -111,6 +113,17 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
     }
   };
 
+  const handleDevSkip = () => {
+    // Імітуємо валідний токен для dev режиму
+    sessionStorage.setItem('studio-access-token', 'dev-mode-token');
+    sessionStorage.setItem('studio-order-id', 'dev-mode-order-id');
+    
+    console.log('🔧 DEV MODE: Skipped token validation');
+    toast.success('Dev mode: пропущено перевірку токена');
+    
+    onStart();
+  };
+
   return (
     <div className="min-h-screen px-4 py-8">
         {/* Lystosyk with Speech Bubble */}
@@ -163,7 +176,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
         </div>
 
         {/* Start Button */}
-        <div className="flex justify-center">
+        <div className="flex justify-center gap-4">
           <Button
             onClick={handleStartClick}
             size="lg"
@@ -172,6 +185,18 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
             Почати створення
             <ArrowRight className="h-5 w-5" />
           </Button>
+          
+          {/* Dev кнопка - показується тільки в dev режимі */}
+          {DEV_MODE && (
+            <Button
+              onClick={handleDevSkip}
+              size="lg"
+              variant="outline"
+              className="min-w-[200px] border-orange-500 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950"
+            >
+              🔧 Skip (Dev)
+            </Button>
+          )}
         </div>
 
       {/* Діалог для введення токена */}
