@@ -8,6 +8,29 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Detect language from lyrics
+function detectLanguage(lyrics: string): 'Ukrainian' | 'Russian' | 'English' {
+  const ukrainianMarkers = ['і', 'ї', 'є', 'ґ', 'тобі', 'мій', 'твій', 'щастя', 'доля', 'хай'];
+  const russianMarkers = ['ы', 'ъ', 'тебе', 'мой', 'твой', 'что', 'это', 'счастье', 'судьба'];
+  
+  let ukrainianScore = 0;
+  let russianScore = 0;
+  
+  const lowerLyrics = lyrics.toLowerCase();
+  
+  ukrainianMarkers.forEach(marker => {
+    if (lowerLyrics.includes(marker)) ukrainianScore++;
+  });
+  
+  russianMarkers.forEach(marker => {
+    if (lowerLyrics.includes(marker)) russianScore++;
+  });
+  
+  if (ukrainianScore > russianScore) return 'Ukrainian';
+  if (russianScore > ukrainianScore) return 'Russian';
+  return 'English';
+}
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -27,7 +50,19 @@ serve(async (req) => {
       long: 'Создай подпись (максимум 12 слов для особых случаев)'
     };
 
+    // Detect language from lyrics
+    const detectedLanguage = detectLanguage(lyrics);
+    console.log('Detected language:', detectedLanguage);
+
+    const languageInstructions = {
+      Ukrainian: 'КРИТИЧНО: Створи підпис ВИКЛЮЧНО українською мовою. Використовуй українську лексику, граматику та правопис.',
+      Russian: 'КРИТИЧНО: Создай подпись ИСКЛЮЧИТЕЛЬНО на русском языке. Используй русскую лексику, грамматику и правописание.',
+      English: 'CRITICAL: Create caption EXCLUSIVELY in English language. Use English vocabulary, grammar and spelling.'
+    };
+
     const systemPrompt = `Ты - эксперт по созданию коротких, емких подписей для открыток. Твоя задача - на основе слов песни создать краткую подпись (2-8 слов) для лицевой части открытки А6, которая передаст суть послания и эмоцию.
+
+${languageInstructions[detectedLanguage]}
 
 Алгоритм работы:
 
@@ -68,7 +103,7 @@ serve(async (req) => {
 4. ТЕХНИЧЕСКИЕ ТРЕБОВАНИЯ:
 - ${lengthPrompts[length]}
 - Формат: Одна строка или две короткие строки
-- Язык: Тот же, что и в исходной песне
+- Язык: ${detectedLanguage} (определен из песни)
 - Тон: Соответствует настроению песни и поводу
 
 5. СТРОГО ЗАПРЕЩЕНО:
@@ -79,7 +114,7 @@ serve(async (req) => {
 - Прямого копирования строк из песни
 - Банальных штампов без связи с текстом
 
-ВАЖНО: Подпись должна содержать ТОЛЬКО текст, никаких эмоджи!
+ВАЖНО: Подпись должна содержать ТОЛЬКО текст на языке ${detectedLanguage}, никаких эмоджи!
 На выходе только готовая подпись БЕЗ эмоджи и без дополнительных объяснений.`;
 
     const userPrompt = `ТЕКСТ ПЕСНИ:
@@ -110,7 +145,7 @@ serve(async (req) => {
     const sanitizeCaption = (text: string) => limitByLength(removeEmojis(text));
 
     const pick = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
-    const serverFallback = (): string => {
+    const serverFallback = (language: 'Ukrainian' | 'Russian' | 'English'): string => {
       try {
         const lower = String(lyrics || '').toLowerCase();
         const joyWords = ['радість','щастя','сміх','весел','святк'];
@@ -196,7 +231,7 @@ serve(async (req) => {
     }
 
     if (!finalCaption) {
-      finalCaption = serverFallback();
+      finalCaption = serverFallback(detectedLanguage);
     }
 
     console.log('Generated caption (sanitized):', finalCaption);

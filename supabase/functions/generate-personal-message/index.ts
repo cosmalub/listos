@@ -5,6 +5,29 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Detect language from lyrics
+function detectLanguage(lyrics: string): 'Ukrainian' | 'Russian' | 'English' {
+  const ukrainianMarkers = ['і', 'ї', 'є', 'ґ', 'тобі', 'мій', 'твій', 'щастя', 'доля', 'хай'];
+  const russianMarkers = ['ы', 'ъ', 'тебе', 'мой', 'твой', 'что', 'это', 'счастье', 'судьба'];
+  
+  let ukrainianScore = 0;
+  let russianScore = 0;
+  
+  const lowerLyrics = lyrics.toLowerCase();
+  
+  ukrainianMarkers.forEach(marker => {
+    if (lowerLyrics.includes(marker)) ukrainianScore++;
+  });
+  
+  russianMarkers.forEach(marker => {
+    if (lowerLyrics.includes(marker)) russianScore++;
+  });
+  
+  if (ukrainianScore > russianScore) return 'Ukrainian';
+  if (russianScore > ukrainianScore) return 'Russian';
+  return 'English';
+}
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -25,7 +48,19 @@ serve(async (req) => {
       throw new Error('ANTHROPIC_API_KEY is not configured');
     }
 
+    // Detect language from caption and lyrics
+    const detectedLanguage = detectLanguage(lyrics || caption);
+    console.log('Detected language:', detectedLanguage);
+
+    const languageInstructions = {
+      Ukrainian: 'КРИТИЧНО: Створи повідомлення ВИКЛЮЧНО українською мовою. Використовуй українську лексику, граматику та правопис.',
+      Russian: 'КРИТИЧНО: Создай сообщение ИСКЛЮЧИТЕЛЬНО на русском языке. Используй русскую лексику, грамматику и правописание.',
+      English: 'CRITICAL: Create message EXCLUSIVELY in English language. Use English vocabulary, grammar and spelling.'
+    };
+
     const systemPrompt = `Ты - эксперт по созданию персональных посланий для обратной стороны открыток. Твоя задача - на основе заголовка лицевой части и слов песни создать теплое, личное послание (25-40 слов), которое объясняет подарок-песню и передает глубокие чувства отправителя.
+
+${languageInstructions[detectedLanguage]}
 
 Алгоритм работы:
 
@@ -51,7 +86,7 @@ serve(async (req) => {
 4. Технические требования:
    - Длина: 25-40 слов (2-3 предложения)
    - Тон: Теплый, личный, искренний
-   - Язык: Тот же, что и в заголовке лицевой части
+   - Язык: ${detectedLanguage} (определен из текста песни)
    - Обязательно: Упоминание QR-кода и песни
 
 5. Избегать:
@@ -62,7 +97,7 @@ serve(async (req) => {
    - Превышения лимита слов
 
 Формат ответа:
-На выходе только готовый текст послания (25-40 слов) без дополнительных пояснений.`;
+На выходе только готовый текст послания (25-40 слов) на языке ${detectedLanguage} без дополнительных пояснений.`;
 
     const userPrompt = `Заголовок лицевой части: ${caption}
 
