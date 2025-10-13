@@ -84,8 +84,8 @@ const Header = ({ centerTitle, hideNav = false, showMenu = true }: HeaderProps) 
               <ToggleGroupItem value="ua" className="rounded-md px-2.5 py-1 text-xs font-medium text-foreground/80 data-[state=on]:bg-primary data-[state=on]:text-white transition-all duration-200 hover:bg-primary/10">
                 UA
               </ToggleGroupItem>
-              <ToggleGroupItem value="en" className="rounded-md px-2.5 py-1 text-xs font-medium text-foreground/80 data-[state=on]:bg-primary data-[state=on]:text-white transition-all duration-200 hover:bg-primary/10">
-                EN
+              <ToggleGroupItem value="ru" className="rounded-md px-2.5 py-1 text-xs font-medium text-foreground/80 data-[state=on]:bg-primary data-[state=on]:text-white transition-all duration-200 hover:bg-primary/10">
+                RU
               </ToggleGroupItem>
             </ToggleGroup>
 
