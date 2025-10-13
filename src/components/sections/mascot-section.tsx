@@ -95,34 +95,26 @@ export function MascotSection() {
                   <h3 className="text-xl font-bold text-primary mb-3">Крок 2: Створюєш пісню і дизайн у студії</h3>
                   <p className="text-muted-foreground mb-3">У зручній студії ти:</p>
 
-                  {/* Grid 2x2 з відео-заглушками */}
-                  <div className="grid grid-cols-2 gap-3 mb-4">
-                    {/* 1. Слова пісні */}
-                    <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-square flex flex-col items-center justify-center p-4 text-center">
-                      <div className="text-4xl mb-2">✍️</div>
-                      <p className="text-sm font-medium text-primary">Слова пісні</p>
+                  {/* Grid 2x2 з іконками (компактна) */}
+                  <div className="grid grid-cols-2 gap-2 mb-3 max-w-xs">
+                    <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-square flex flex-col items-center justify-center p-2 text-center">
+                      <div className="text-2xl mb-1">✍️</div>
+                      <p className="text-xs font-medium text-primary">Слова пісні</p>
                     </div>
-
-                    {/* 2. Музика */}
-                    <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-square flex flex-col items-center justify-center p-4 text-center">
-                      <div className="text-4xl mb-2">🎵</div>
-                      <p className="text-sm font-medium text-primary">Музика</p>
+                    <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-square flex flex-col items-center justify-center p-2 text-center">
+                      <div className="text-2xl mb-1">🎵</div>
+                      <p className="text-xs font-medium text-primary">Музика</p>
                     </div>
-
-                    {/* 3. Сторінка */}
-                    <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-square flex flex-col items-center justify-center p-4 text-center">
-                      <div className="text-4xl mb-2">✨</div>
-                      <p className="text-sm font-medium text-primary">Сторінка</p>
+                    <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-square flex flex-col items-center justify-center p-2 text-center">
+                      <div className="text-2xl mb-1">✨</div>
+                      <p className="text-xs font-medium text-primary">Сторінка</p>
                     </div>
-
-                    {/* 4. Листівка */}
-                    <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-square flex flex-col items-center justify-center p-4 text-center">
-                      <div className="text-4xl mb-2">🎨</div>
-                      <p className="text-sm font-medium text-primary">Листівка</p>
+                    <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-square flex flex-col items-center justify-center p-2 text-center">
+                      <div className="text-2xl mb-1">🎨</div>
+                      <p className="text-xs font-medium text-primary">Листівка</p>
                     </div>
                   </div>
 
-                  {/* Повні описи */}
                   <ol className="space-y-2 text-muted-foreground">
                     <li className="flex gap-2">
                       <span className="font-semibold text-primary">1.</span>
@@ -144,6 +136,11 @@ export function MascotSection() {
                   <p className="text-muted-foreground mt-3">
                     <span className="font-semibold text-primary">Процес займає 10 хвилин.</span> Все інтуїтивно — справиться кожен!
                   </p>
+                </div>
+                <div className="w-full md:w-80 flex-shrink-0">
+                  <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-video flex items-center justify-center">
+                    <p className="text-muted-foreground text-sm">Відео буде тут</p>
+                  </div>
                 </div>
               </div>
 
