@@ -151,15 +151,30 @@ export function HeroSection() {
               руках. Я, Листосик, допоможу тобі легко і тепло висловити будь-які почуття.
             </p>
 
-            {/* Переваги під підзаголовком */}
-            <div className="mb-6 space-y-2 text-center">
-              <div className="flex items-center justify-center gap-2 text-[#6A5ACD]/90">
-                <span className="text-lg">✅</span>
-                <span className="text-base md:text-lg">Створення в студії — легко, швидко, за 10 хвилин</span>
+            {/* Переваги під підзаголовком - 3 карточки */}
+            <div className="mb-8 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 max-w-3xl mx-auto">
+              {/* Картка 1 */}
+              <div className="bg-white/70 backdrop-blur-sm p-4 rounded-xl shadow-md border-2 border-[#FFD1DC] hover:shadow-lg transition-all hover:scale-105 flex-1">
+                <div className="text-center">
+                  <div className="text-3xl mb-2">⚡️</div>
+                  <p className="text-[#6A5ACD] font-semibold text-sm">Створення за 10 хвилин</p>
+                </div>
               </div>
-              <div className="flex items-center justify-center gap-2 text-[#6A5ACD]/90">
-                <span className="text-lg">✅</span>
-                <span className="text-base md:text-lg">Доставка за 1-2 дні. Гарантуємо вау-ефект або повертаємо гроші</span>
+              
+              {/* Картка 2 */}
+              <div className="bg-white/70 backdrop-blur-sm p-4 rounded-xl shadow-md border-2 border-[#B8B3FF] hover:shadow-lg transition-all hover:scale-105 flex-1">
+                <div className="text-center">
+                  <div className="text-3xl mb-2">🚚</div>
+                  <p className="text-[#6A5ACD] font-semibold text-sm">Доставка за 1-2 дні</p>
+                </div>
+              </div>
+              
+              {/* Картка 3 */}
+              <div className="bg-white/70 backdrop-blur-sm p-4 rounded-xl shadow-md border-2 border-[#F3D1FF] hover:shadow-lg transition-all hover:scale-105 flex-1">
+                <div className="text-center">
+                  <div className="text-3xl mb-2">💎</div>
+                  <p className="text-[#6A5ACD] font-semibold text-sm">Вау-ефект або повертаємо гроші</p>
+                </div>
               </div>
             </div>
 
