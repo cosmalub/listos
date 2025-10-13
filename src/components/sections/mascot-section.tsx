@@ -94,27 +94,6 @@ export function MascotSection() {
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-primary mb-3">Крок 2: Створюєш пісню і дизайн у студії</h3>
                   <p className="text-muted-foreground mb-3">У зручній студії ти:</p>
-
-                  {/* Grid 2x2 з іконками (компактна) */}
-                  <div className="grid grid-cols-2 gap-2 mb-3 max-w-xs">
-                    <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-square flex flex-col items-center justify-center p-2 text-center">
-                      <div className="text-2xl mb-1">✍️</div>
-                      <p className="text-xs font-medium text-primary">Слова пісні</p>
-                    </div>
-                    <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-square flex flex-col items-center justify-center p-2 text-center">
-                      <div className="text-2xl mb-1">🎵</div>
-                      <p className="text-xs font-medium text-primary">Музика</p>
-                    </div>
-                    <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-square flex flex-col items-center justify-center p-2 text-center">
-                      <div className="text-2xl mb-1">✨</div>
-                      <p className="text-xs font-medium text-primary">Сторінка</p>
-                    </div>
-                    <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-square flex flex-col items-center justify-center p-2 text-center">
-                      <div className="text-2xl mb-1">🎨</div>
-                      <p className="text-xs font-medium text-primary">Листівка</p>
-                    </div>
-                  </div>
-
                   <ol className="space-y-2 text-muted-foreground">
                     <li className="flex gap-2">
                       <span className="font-semibold text-primary">1.</span>
