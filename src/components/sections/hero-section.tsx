@@ -151,6 +151,18 @@ export function HeroSection() {
               руках. Я, Листосик, допоможу тобі легко і тепло висловити будь-які почуття.
             </p>
 
+            {/* Переваги під підзаголовком */}
+            <div className="mb-6 space-y-2 text-center">
+              <div className="flex items-center justify-center gap-2 text-[#6A5ACD]/90">
+                <span className="text-lg">✅</span>
+                <span className="text-base md:text-lg">Створення в студії — легко, швидко, за 10 хвилин</span>
+              </div>
+              <div className="flex items-center justify-center gap-2 text-[#6A5ACD]/90">
+                <span className="text-lg">✅</span>
+                <span className="text-base md:text-lg">Доставка за 1-2 дні. Гарантуємо вау-ефект або повертаємо гроші</span>
+              </div>
+            </div>
+
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button 
                 onClick={() => window.location.href = '/studio'}
