@@ -151,24 +151,25 @@ export function HeroSection() {
               руках. Я, Листосик, допоможу тобі легко і тепло висловити будь-які почуття.
             </p>
 
-            {/* Переваги під підзаголовком - легкі badges */}
-            <div className="mb-8 flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 max-w-3xl mx-auto">
-              {/* Badge 1 */}
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#8A7AEE]/10 to-[#D292FF]/10 border border-[#8A7AEE]/20">
-                <span className="text-2xl">⚡️</span>
-                <span className="text-[#6A5ACD] font-medium text-sm sm:text-base whitespace-nowrap">Створення за 10 хвилин</span>
+            {/* Переваги під підзаголовком - простий текст з іконками */}
+            <div className="mb-10 flex flex-wrap justify-center items-center gap-x-3 gap-y-2 max-w-3xl mx-auto text-[#6A5ACD]">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">⚡️</span>
+                <span className="font-medium text-sm sm:text-base">Створення за 10 хвилин</span>
               </div>
               
-              {/* Badge 2 */}
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#8A7AEE]/10 to-[#D292FF]/10 border border-[#8A7AEE]/20">
-                <span className="text-2xl">🚚</span>
-                <span className="text-[#6A5ACD] font-medium text-sm sm:text-base whitespace-nowrap">Доставка за 1-2 дні</span>
+              <span className="text-[#6A5ACD]/40 hidden sm:inline">•</span>
+              
+              <div className="flex items-center gap-2">
+                <span className="text-xl">🚚</span>
+                <span className="font-medium text-sm sm:text-base">Доставка за 1-2 дні</span>
               </div>
               
-              {/* Badge 3 */}
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#8A7AEE]/10 to-[#D292FF]/10 border border-[#8A7AEE]/20">
-                <span className="text-2xl">💎</span>
-                <span className="text-[#6A5ACD] font-medium text-sm sm:text-base whitespace-nowrap">Вау-ефект гарантуємо</span>
+              <span className="text-[#6A5ACD]/40 hidden sm:inline">•</span>
+              
+              <div className="flex items-center gap-2">
+                <span className="text-xl">💎</span>
+                <span className="font-medium text-sm sm:text-base">Вау-ефект гарантуємо</span>
               </div>
             </div>
 
