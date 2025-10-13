@@ -151,30 +151,24 @@ export function HeroSection() {
               руках. Я, Листосик, допоможу тобі легко і тепло висловити будь-які почуття.
             </p>
 
-            {/* Переваги під підзаголовком - 3 карточки */}
-            <div className="mb-8 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 max-w-3xl mx-auto">
-              {/* Картка 1 */}
-              <div className="bg-white/70 backdrop-blur-sm p-4 rounded-xl shadow-md border-2 border-[#FFD1DC] hover:shadow-lg transition-all hover:scale-105 flex-1">
-                <div className="text-center">
-                  <div className="text-3xl mb-2">⚡️</div>
-                  <p className="text-[#6A5ACD] font-semibold text-sm">Створення за 10 хвилин</p>
-                </div>
+            {/* Переваги під підзаголовком - легкі badges */}
+            <div className="mb-8 flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 max-w-3xl mx-auto">
+              {/* Badge 1 */}
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#8A7AEE]/10 to-[#D292FF]/10 border border-[#8A7AEE]/20">
+                <span className="text-2xl">⚡️</span>
+                <span className="text-[#6A5ACD] font-medium text-sm sm:text-base whitespace-nowrap">Створення за 10 хвилин</span>
               </div>
               
-              {/* Картка 2 */}
-              <div className="bg-white/70 backdrop-blur-sm p-4 rounded-xl shadow-md border-2 border-[#B8B3FF] hover:shadow-lg transition-all hover:scale-105 flex-1">
-                <div className="text-center">
-                  <div className="text-3xl mb-2">🚚</div>
-                  <p className="text-[#6A5ACD] font-semibold text-sm">Доставка за 1-2 дні</p>
-                </div>
+              {/* Badge 2 */}
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#8A7AEE]/10 to-[#D292FF]/10 border border-[#8A7AEE]/20">
+                <span className="text-2xl">🚚</span>
+                <span className="text-[#6A5ACD] font-medium text-sm sm:text-base whitespace-nowrap">Доставка за 1-2 дні</span>
               </div>
               
-              {/* Картка 3 */}
-              <div className="bg-white/70 backdrop-blur-sm p-4 rounded-xl shadow-md border-2 border-[#F3D1FF] hover:shadow-lg transition-all hover:scale-105 flex-1">
-                <div className="text-center">
-                  <div className="text-3xl mb-2">💎</div>
-                  <p className="text-[#6A5ACD] font-semibold text-sm">Вау-ефект або повертаємо гроші</p>
-                </div>
+              {/* Badge 3 */}
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#8A7AEE]/10 to-[#D292FF]/10 border border-[#8A7AEE]/20">
+                <span className="text-2xl">💎</span>
+                <span className="text-[#6A5ACD] font-medium text-sm sm:text-base whitespace-nowrap">Вау-ефект гарантуємо</span>
               </div>
             </div>
 
