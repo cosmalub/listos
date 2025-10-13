@@ -105,6 +105,10 @@ export function MascotSection() {
                     </li>
                     <li className="flex gap-2">
                       <span className="font-semibold text-primary">3.</span>
+                      <span><span className="font-semibold text-primary">Створюєш сторінку з анімацією для пісні</span> — обираєш нагоду (день народження, подяка, кохання тощо), вказуєш кому та від кого. Система автоматично створює персональну сторінку з анімацією, музикою та текстом пісні. Отримувач побачить її, відсканувавши QR-код на листівці.</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="font-semibold text-primary">4.</span>
                       <span><span className="font-semibold text-primary">Створюєш дизайн листівки</span> — обираєш фото, текст, стиль. Все просто, як конструктор.</span>
                     </li>
                   </ol>
