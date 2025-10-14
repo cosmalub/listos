@@ -51,129 +51,136 @@ export function MascotSection() {
             </div>
           </div>
 
-          {/* Process Steps - directly after Lystosyk introduction without heading */}
-          <div className="max-w-5xl mx-auto mt-16 mb-12 px-4">
-            <div className="flex flex-col md:flex-row gap-6 md:gap-0">
-              {/* Step 1 */}
-              <div className="flex-1 relative">
-                <div className="bg-card rounded-xl border-l-4 border-[#B8B3FF]/60 hover:border-[#B8B3FF] p-6 h-full transition-colors hover:shadow-md">
-                  <div className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-[#B8B3FF] flex items-center justify-center text-white text-lg font-bold">
+          {/* How it works section */}
+          <div className="max-w-6xl mx-auto mt-20 mb-12 px-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-center text-primary mb-4">
+              Як це працює?
+            </h2>
+            <p className="text-lg text-center text-muted-foreground mb-12">
+              4 простих кроки — від покупки до готової листівки
+            </p>
+
+            <div className="space-y-8">
+              {/* Step 1: Купуєш доступ */}
+              <div className="flex flex-col md:flex-row gap-6 items-center bg-card rounded-2xl border-2 border-[#B8B3FF]/40 hover:border-[#B8B3FF] transition-all hover:shadow-lg p-6">
+                <div className="flex-shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-[#B8B3FF] flex items-center justify-center text-white text-2xl font-bold">
                     1
                   </div>
-                  <h3 className="text-xl font-bold mb-3 text-[#6A5ACD]">Створюєш слова і пісню</h3>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-primary mb-3">Крок 1: Купуєш доступ до студії</h3>
                   <p className="text-muted-foreground">
-                    Ти складаєш <span className="font-semibold text-[#6A5ACD]">слова пісні</span> та відразу{" "}
-                    <span className="font-semibold text-[#6A5ACD]">створюєш саму пісню</span> для твого привітання, вибачення чи
-                    подяки. Листосик допоможе знайти правильні слова та мелодію! Ти отримуєш{" "}
-                    <span className="font-semibold text-[#6A5ACD]">готову персоналізовану пісню</span> одразу після створення.
+                    Оплачуєш 399 грн → на твій email приходить посилання на студію.
                   </p>
+                  <p className="text-muted-foreground mt-2">
+                    Студія доступна <span className="font-semibold text-primary">24/7</span> — створюй, коли зручно! Ніхто не поганяє, ніхто не чекає. Твій темп, твій час.
+                  </p>
+                </div>
+                <div className="w-full md:w-80 flex-shrink-0">
+                  <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-video flex items-center justify-center">
+                    <p className="text-muted-foreground text-sm">Візуал буде тут</p>
+                  </div>
                 </div>
               </div>
 
-              {/* Arrow 1 */}
-              <div className="hidden md:flex items-center justify-center w-12">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="48"
-                  height="24"
-                  viewBox="0 0 48 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-[#B8B3FF]"
-                >
-                  <path d="M5 12h38" />
-                  <path d="M30 5l13 7-13 7" />
-                </svg>
-              </div>
-
-              {/* Step 2 */}
-              <div className="flex-1 relative">
-                <div className="bg-card rounded-xl border-l-4 border-[#E8B3FF]/60 hover:border-[#E8B3FF] p-6 h-full transition-colors hover:shadow-md">
-                  <div className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-[#E8B3FF] flex items-center justify-center text-white text-lg font-bold">
+              {/* Step 2: Створюєш у студії */}
+              <div className="flex flex-col md:flex-row-reverse gap-6 items-center bg-card rounded-2xl border-2 border-[#E8B3FF]/40 hover:border-[#E8B3FF] transition-all hover:shadow-lg p-6">
+                <div className="flex-shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-[#E8B3FF] flex items-center justify-center text-white text-2xl font-bold">
                     2
                   </div>
-                  <h3 className="text-xl font-bold mb-3 text-[#6A5ACD]">Створюєш дизайн листівки</h3>
-                  <p className="text-muted-foreground">
-                    Ти оформлюєш <span className="font-semibold text-[#6A5ACD]">лицеву сторону листівки</span> з головним
-                    посланням. Потім додаєш{" "}
-                    <span className="font-semibold text-[#6A5ACD]">особисті слова на зворотній стороні</span> та підпис –
-                    щоб зробити подарунок по-справжньому неповторним.
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-primary mb-3">Крок 2: Створюєш пісню і дизайн у студії</h3>
+                  <p className="text-muted-foreground mb-3">У зручній студії ти:</p>
+                  <ol className="space-y-2 text-muted-foreground">
+                    <li className="flex gap-2">
+                      <span className="font-semibold text-primary">1.</span>
+                      <span><span className="font-semibold text-primary">Створюєш слова пісні</span> — Листосик (ШІ-помічник) ставить питання і допомагає знайти правильні слова. <span className="font-semibold">Не потрібно писати вірші</span> — просто розкажи, що хочеш сказати.</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="font-semibold text-primary">2.</span>
+                      <span><span className="font-semibold text-primary">Генеруєш унікальну музику</span> — ШІ створює пісню за 30 секунд. Не сподобалось? Перегенеруй безкоштовно. Скільки завгодно разів.</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="font-semibold text-primary">3.</span>
+                      <span><span className="font-semibold text-primary">Створюєш дизайн листівки</span> — обираєш фото, текст, стиль. Все просто, як конструктор.</span>
+                    </li>
+                  </ol>
+                  <p className="text-muted-foreground mt-3">
+                    <span className="font-semibold text-primary">Процес займає 10 хвилин.</span> Все інтуїтивно — справиться кожен!
                   </p>
+                </div>
+                <div className="w-full md:w-80 flex-shrink-0">
+                  <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-video flex items-center justify-center">
+                    <p className="text-muted-foreground text-sm">Скріншоти студії</p>
+                  </div>
                 </div>
               </div>
 
-              {/* Arrow 2 */}
-              <div className="hidden md:flex items-center justify-center w-12">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="48"
-                  height="24"
-                  viewBox="0 0 48 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-[#B8B3FF]"
-                >
-                  <path d="M5 12h38" />
-                  <path d="M30 5l13 7-13 7" />
-                </svg>
-              </div>
-
-              {/* Step 3 */}
-              <div className="flex-1 relative">
-                <div className="bg-card rounded-xl border-l-4 border-[#B8B3FF]/60 hover:border-[#B8B3FF] p-6 h-full transition-colors hover:shadow-md">
-                  <div className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-[#B8B3FF] flex items-center justify-center text-white text-lg font-bold">
+              {/* Step 3: Замовляєш доставку */}
+              <div className="flex flex-col md:flex-row gap-6 items-center bg-card rounded-2xl border-2 border-[#B8B3FF]/40 hover:border-[#B8B3FF] transition-all hover:shadow-lg p-6">
+                <div className="flex-shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-[#B8B3FF] flex items-center justify-center text-white text-2xl font-bold">
                     3
                   </div>
-                  <h3 className="text-xl font-bold mb-3 text-[#6A5ACD]">Отримуєш готову листівку</h3>
-                  <p className="text-muted-foreground">
-                    Ось і все! Твоя <span className="font-semibold text-[#6A5ACD]">унікальна листівка</span> з
-                    персоналізованою піснею готова. Завдяки{" "}
-                    <span className="font-semibold text-[#6A5ACD]">спеціальному QR-коду</span> на листівці, твій одержувач
-                    зможе відразу почути твоє музичне послання.
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-primary mb-3">Крок 3: Замовляєш доставку</h3>
+                  <p className="text-muted-foreground mb-2">
+                    Коли пісня і дизайн готові — замовляєш доставку прямо у студії.
                   </p>
+                  <p className="text-muted-foreground mb-2">Вказуєш:</p>
+                  <ul className="space-y-1 text-muted-foreground ml-4">
+                    <li>— ПІБ отримувача</li>
+                    <li>— Номер відділення Нової пошти</li>
+                    <li>— Коментар (якщо потрібно)</li>
+                  </ul>
+                  <p className="text-muted-foreground mt-3">
+                    <span className="font-semibold text-primary">Доставка безкоштовна</span> по всій Україні.
+                  </p>
+                </div>
+                <div className="w-full md:w-80 flex-shrink-0">
+                  <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-video flex items-center justify-center">
+                    <p className="text-muted-foreground text-sm">Форма замовлення</p>
+                  </div>
                 </div>
               </div>
 
-              {/* Mobile arrows */}
-              <div className="flex justify-center md:hidden my-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-[#B8B3FF]"
-                >
-                  <path d="M12 5v14" />
-                  <path d="M19 12l-7 7-7-7" />
-                </svg>
-              </div>
-              <div className="flex justify-center md:hidden my-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-[#B8B3FF]"
-                >
-                  <path d="M12 5v14" />
-                  <path d="M19 12l-7 7-7-7" />
-                </svg>
+              {/* Step 4: Отримуєш готову листівку */}
+              <div className="flex flex-col md:flex-row-reverse gap-6 items-center bg-card rounded-2xl border-2 border-[#E8B3FF]/40 hover:border-[#E8B3FF] transition-all hover:shadow-lg p-6">
+                <div className="flex-shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-[#E8B3FF] flex items-center justify-center text-white text-2xl font-bold">
+                    4
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-primary mb-3">Крок 4: Отримуєш готову листівку</h3>
+                  <p className="text-muted-foreground mb-2">
+                    Листівка приїжджає за 1-2 дні.
+                  </p>
+                  <p className="text-muted-foreground mb-3">
+                    Відкриваєш → читаєш текст → сканінуєш QR-код на зворотній стороні → відкривається анімована сторінка з піснею.
+                  </p>
+                  <p className="text-muted-foreground font-semibold text-primary mb-2">
+                    І тут починається магія.
+                  </p>
+                  <p className="text-muted-foreground mb-2">
+                    Пісня звучить. Фото з'являються. Емоції переповнюють.
+                  </p>
+                  <p className="text-muted-foreground font-semibold mb-2">
+                    <span className="text-primary">Мама плаче від радості. Коханий обіймає. Друг посміхається.</span>
+                  </p>
+                  <p className="text-muted-foreground italic">
+                    Це не просто листівка. Це спогад на все життя.
+                  </p>
+                </div>
+                <div className="w-full md:w-80 flex-shrink-0">
+                  <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-video flex items-center justify-center">
+                    <p className="text-muted-foreground text-sm">Листівка + смартфон</p>
+                  </div>
+                </div>
               </div>
             </div>
 
