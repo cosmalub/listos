@@ -121,7 +121,7 @@ export function ReviewsSection() {
   const secondRowReviews = reviews.slice(5, 10);
 
   return (
-    <section className="py-16 bg-gradient-to-b from-white to-[#FFD1DC]/10 relative z-10 overflow-hidden">
+    <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10 overflow-hidden">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center text-[#6A5ACD] mb-4">
           Що кажуть наші клієнти?
