@@ -1,4 +1,5 @@
 import { Play } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export function MascotSection() {
   return (
@@ -183,6 +184,37 @@ export function MascotSection() {
                 <div className="w-full md:w-80 flex-shrink-0">
                   <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-video flex items-center justify-center">
                     <p className="text-muted-foreground text-sm">Листівка + смартфон</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* CTA після 4 кроків */}
+            <div className="mt-16 max-w-3xl mx-auto">
+              <div className="bg-card rounded-3xl border-2 border-[#B8B3FF]/60 hover:border-[#B8B3FF] transition-all hover:shadow-lg p-8">
+                <div className="text-center">
+                  <Button 
+                    onClick={() => window.location.href = '/studio'}
+                    className="text-lg px-10 py-7 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold mb-6"
+                  >
+                    Купити доступ за 399 грн
+                  </Button>
+                  
+                  <div className="space-y-3 text-[#6A5ACD]/80">
+                    <div className="flex items-center justify-center gap-2">
+                      <span className="text-xl">⚡️</span>
+                      <span className="text-sm md:text-base">Створення займає 10 хвилин</span>
+                    </div>
+                    
+                    <div className="flex items-center justify-center gap-2">
+                      <span className="text-xl">💯</span>
+                      <span className="text-sm md:text-base font-semibold text-[#6A5ACD]">Гарантуємо вау-ефект або повернемо гроші</span>
+                    </div>
+                    
+                    <div className="flex items-center justify-center gap-2">
+                      <span className="text-xl">🚚</span>
+                      <span className="text-sm md:text-base">Доставка Новою поштою за 1-2 дні</span>
+                    </div>
                   </div>
                 </div>
               </div>
