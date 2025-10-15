@@ -116,6 +116,10 @@ export function ReviewsSection() {
     },
   ];
 
+  // Розділяємо відгуки на два ряди
+  const firstRowReviews = reviews.slice(0, 5);
+  const secondRowReviews = reviews.slice(5, 10);
+
   return (
     <section className="py-16 bg-gradient-to-b from-white to-[#FFD1DC]/10 relative z-10 overflow-hidden">
       <div className="container mx-auto px-4">
@@ -126,16 +130,26 @@ export function ReviewsSection() {
           Понад 500 сімей вже подарували незабутні емоції
         </p>
 
-        {/* Безкінечний scroll каруселя */}
-        <div className="relative mb-16">
-          <div className="flex gap-6 animate-scroll">
-            {/* Перший набір відгуків */}
-            {reviews.map((review, index) => (
-              <ReviewCard key={`review-1-${index}`} {...review} />
+        {/* Перший ряд - рух вліво */}
+        <div className="relative mb-6">
+          <div className="flex gap-6 animate-scroll-left">
+            {firstRowReviews.map((review, index) => (
+              <ReviewCard key={`row1-1-${index}`} {...review} />
             ))}
-            {/* Дублюємо для безкінечного ефекту */}
-            {reviews.map((review, index) => (
-              <ReviewCard key={`review-2-${index}`} {...review} />
+            {firstRowReviews.map((review, index) => (
+              <ReviewCard key={`row1-2-${index}`} {...review} />
+            ))}
+          </div>
+        </div>
+
+        {/* Другий ряд - рух вправо */}
+        <div className="relative mb-16">
+          <div className="flex gap-6 animate-scroll-right">
+            {secondRowReviews.map((review, index) => (
+              <ReviewCard key={`row2-1-${index}`} {...review} />
+            ))}
+            {secondRowReviews.map((review, index) => (
+              <ReviewCard key={`row2-2-${index}`} {...review} />
             ))}
           </div>
         </div>
@@ -176,7 +190,7 @@ export function ReviewsSection() {
       </div>
 
       <style jsx>{`
-        @keyframes scroll {
+        @keyframes scroll-left {
           0% {
             transform: translateX(0);
           }
@@ -185,11 +199,25 @@ export function ReviewsSection() {
           }
         }
         
-        .animate-scroll {
-          animation: scroll 60s linear infinite;
+        @keyframes scroll-right {
+          0% {
+            transform: translateX(-50%);
+          }
+          100% {
+            transform: translateX(0);
+          }
         }
         
-        .animate-scroll:hover {
+        .animate-scroll-left {
+          animation: scroll-left 60s linear infinite;
+        }
+        
+        .animate-scroll-right {
+          animation: scroll-right 60s linear infinite;
+        }
+        
+        .animate-scroll-left:hover,
+        .animate-scroll-right:hover {
           animation-play-state: paused;
         }
       `}</style>
