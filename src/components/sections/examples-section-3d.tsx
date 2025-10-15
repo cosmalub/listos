@@ -433,6 +433,39 @@ export default function ExamplesSection3D() {
               <CarouselNext className="relative static transform-none bg-[#6A5ACD] hover:bg-[#5A4BBD] text-white border-[#6A5ACD]" />
             </div>
           </Carousel>
+
+          {/* CTA після прикладів */}
+          <div className="mt-16 max-w-3xl mx-auto">
+            <div className="bg-card rounded-3xl border-2 border-[#B8B3FF]/60 hover:border-[#B8B3FF] transition-all hover:shadow-lg p-8 text-center">
+              <h3 className="text-2xl font-bold text-[#6A5ACD] mb-6">
+                Створи свою унікальну історію
+              </h3>
+              
+              <Button 
+                onClick={() => window.location.href = '/studio'}
+                className="text-lg px-10 py-7 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold mb-6"
+              >
+                Створити свою пісню
+              </Button>
+              
+              <div className="space-y-3 text-[#6A5ACD]/80">
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-xl">💝</span>
+                  <span className="text-sm md:text-base">Створи емоції, які запам'ятаються назавжди</span>
+                </div>
+                
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-xl">✨</span>
+                  <span className="text-sm md:text-base">Листосик допоможе з усім — від слів пісні до дизайну листівки</span>
+                </div>
+                
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-xl">⚡️</span>
+                  <span className="text-sm md:text-base">Готова листівка за 10 хвилин</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
