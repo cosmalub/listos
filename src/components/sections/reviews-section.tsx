@@ -13,19 +13,19 @@ interface ReviewProps {
 
 function ReviewCard({ rating, text, customerName, customerAge, customerCity, giftFor }: ReviewProps) {
   return (
-    <Card className="border-2 border-[#B8B3FF]/40 hover:border-[#B8B3FF] transition-all hover:shadow-lg">
+    <Card className="border-2 border-[#B8B3FF]/40 hover:border-[#B8B3FF] transition-all hover:shadow-lg flex-shrink-0 w-[350px]">
       <CardContent className="p-6">
         <div className="flex text-yellow-400 mb-4">
           {[...Array(rating)].map((_, i) => (
             <Star key={i} className="h-5 w-5 fill-current" />
           ))}
         </div>
-        <p className="text-[#6A5ACD]/80 leading-relaxed mb-4">{text}</p>
+        <p className="text-[#6A5ACD]/80 leading-relaxed mb-4 text-sm">{text}</p>
         <div className="border-t border-[#B8B3FF]/30 pt-4">
-          <p className="font-semibold text-[#6A5ACD] mb-1">
+          <p className="font-semibold text-[#6A5ACD] mb-1 text-sm">
             — {customerName}, {customerAge} років ({customerCity})
           </p>
-          <p className="text-sm text-[#6A5ACD]/70">Подарунок: {giftFor}</p>
+          <p className="text-xs text-[#6A5ACD]/70">Подарунок: {giftFor}</p>
         </div>
       </CardContent>
     </Card>
@@ -82,10 +82,42 @@ export function ReviewsSection() {
       customerCity: "Київ",
       giftFor: "Для коханого на день народження",
     },
+    {
+      rating: 5,
+      text: "Замовляв уже втретє! Спочатку для дружини, потім для мами, тепер для сестри. Кожен раз — сльози радості. Це справді працює! ШІ створює дуже особисті та зворушливі пісні. Всім рекомендую!",
+      customerName: "Олег",
+      customerAge: 38,
+      customerCity: "Вінниця",
+      giftFor: "Для сестри на весілля",
+    },
+    {
+      rating: 5,
+      text: "Подарувала бабусі на 80 років. Вона слухала і плакала. Каже, що це найдорожчий подарунок у її житті. Всі онуки записали свої побажання у пісню. Магія! Процес створення простий — навіть не вірила, що справлюсь.",
+      customerName: "Тетяна",
+      customerAge: 45,
+      customerCity: "Полтава",
+      giftFor: "Для бабусі на 80 років",
+    },
+    {
+      rating: 5,
+      text: "Освідчувався з цією піснею! Спеціально додав дату нашого знайомства і всі важливі моменти. Вона сказала \"так\" зі слізьми на очах. Листівка тепер у рамці на стіні. Найкраще рішення для освідчення!",
+      customerName: "Максим",
+      customerAge: 30,
+      customerCity: "Запоріжжя",
+      giftFor: "Для коханої (освідчення)",
+    },
+    {
+      rating: 5,
+      text: "Подарунок від колег на ювілей роботи. Усі 15 років згадали у пісні! Був шокований і дуже зворушений. Колеги сказали, що студія дуже проста — вони справились всі разом за 15 хвилин. Дякую за такий сервіс!",
+      customerName: "Сергій",
+      customerAge: 52,
+      customerCity: "Черкаси",
+      giftFor: "Для себе (від колег)",
+    },
   ];
 
   return (
-    <section className="py-16 bg-gradient-to-b from-white to-[#FFD1DC]/10 relative z-10">
+    <section className="py-16 bg-gradient-to-b from-white to-[#FFD1DC]/10 relative z-10 overflow-hidden">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center text-[#6A5ACD] mb-4">
           Що кажуть наші клієнти?
@@ -94,10 +126,18 @@ export function ReviewsSection() {
           Понад 500 сімей вже подарували незабутні емоції
         </p>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-          {reviews.map((review, index) => (
-            <ReviewCard key={index} {...review} />
-          ))}
+        {/* Безкінечний scroll каруселя */}
+        <div className="relative mb-16">
+          <div className="flex gap-6 animate-scroll">
+            {/* Перший набір відгуків */}
+            {reviews.map((review, index) => (
+              <ReviewCard key={`review-1-${index}`} {...review} />
+            ))}
+            {/* Дублюємо для безкінечного ефекту */}
+            {reviews.map((review, index) => (
+              <ReviewCard key={`review-2-${index}`} {...review} />
+            ))}
+          </div>
         </div>
 
         {/* CTA після відгуків */}
@@ -134,6 +174,25 @@ export function ReviewsSection() {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes scroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+        
+        .animate-scroll {
+          animation: scroll 60s linear infinite;
+        }
+        
+        .animate-scroll:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
     </section>
   );
 }
