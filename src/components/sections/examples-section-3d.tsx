@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, forwardRef } from "react"
 import { Canvas } from "@react-three/fiber"
 import { PresentationControls, Environment } from "@react-three/drei"
-import { Play, Pause, RotateCw, ArrowLeft, ArrowRight } from "lucide-react"
+import { Play, Pause, RotateCw, ArrowLeft, ArrowRight, Star } from "lucide-react"
 import * as THREE from "three"
 import { cn } from "@/lib/utils"
 import useEmblaCarousel from "embla-carousel-react"
@@ -275,6 +275,37 @@ function AudioPlayer({ audioSrc, songTitle, artist }: { audioSrc: string; songTi
   )
 }
 
+
+// --- Customer Story Component ---
+function CustomerStory({ story, reaction, customerName, customerLocation, rating }: { 
+  story: string; 
+  reaction: string; 
+  customerName: string; 
+  customerLocation: string;
+  rating: number;
+}) {
+  return (
+    <div className="mt-4 bg-[#6A5ACD]/5 rounded-xl p-4 border-2 border-[#B8B3FF]/30">
+      <div className="mb-3">
+        <p className="text-sm font-semibold text-[#6A5ACD] mb-1">Історія від {customerName.split(',')[0]}:</p>
+        <p className="text-sm text-[#6A5ACD]/80 leading-relaxed">{story}</p>
+      </div>
+      <div className="mb-3">
+        <p className="text-sm font-semibold text-[#6A5ACD] mb-1">Реакція:</p>
+        <p className="text-sm text-[#6A5ACD]/80 leading-relaxed">{reaction}</p>
+      </div>
+      <div className="flex items-center justify-between">
+        <p className="text-xs italic text-[#6A5ACD]/70">— {customerName} ({customerLocation})</p>
+        <div className="flex text-yellow-400">
+          {[...Array(rating)].map((_, i) => (
+            <Star key={i} className="h-3 w-3 fill-current" />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // --- Main Component ---
 const postcardExamples = [
   { 
@@ -285,7 +316,12 @@ const postcardExamples = [
     backImage: "/images/postcards/example-back.jpg", 
     songTitle: "З днем народження, мамо", 
     artist: "Від Ані", 
-    audioSrc: "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//OEAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAEAAABIADAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV6urq6urq6urq6urq6urq6urq6urq6urq6v////////////////////////////////8AAAAATGF2YzU4LjU0AAAAAAAAAAAAAAAAJAAAAAAAAAAAASDs90hvAAAAAAAAAAAAAAAAAAAA//OCEAAADwAABHiAAATgsAAhXiAAEaQhEIRAQYgcEKIoDAgCA" 
+    audioSrc: "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//OEAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAEAAABIADAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV6urq6urq6urq6urq6urq6urq6urq6urq6v////////////////////////////////8AAAAATGF2YzU4LjU0AAAAAAAAAAAAAAAAJAAAAAAAAAAAASDs90hvAAAAAAAAAAAAAAAAAAAA//OCEAAADwAABHiAAATgsAAhXiAAEaQhEIRAQYgcEKIoDAgCA",
+    customerStory: "Діти створили пісню, де згадали всі імена членів родини — маму, тата, братів, сестер. Додали фрази: \"Ти завжди поруч\", \"Дякуємо за все\", \"Ми любимо тебе\".",
+    customerReaction: "Мама розплакалась на святкуванні. Гості були вражені. Листівку зберігає на комоді і показує всім друзям.",
+    customerName: "Олена, 48 років",
+    customerLocation: "Київ",
+    rating: 5
   },
   { 
     id: 2, 
@@ -295,7 +331,12 @@ const postcardExamples = [
     backImage: "/images/postcards/example-back.jpg", 
     songTitle: "Ти - моє все", 
     artist: "Від Максима", 
-    audioSrc: "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//OEAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAEAAABIADAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV6urq6urq6urq6urq6urq6urq6urq6urq6v////////////////////////////////8AAAAATGF2YzU4LjU0AAAAAAAAAAAAAAAAJAAAAAAAAAAAASDs90hvAAAAAAAAAAAAAAAAAAAA//OCEAAADwAABHiAAATgsAAhXiAAEaQhEIRAQYgcEKIoDAgCA" 
+    audioSrc: "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//OEAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAEAAABIADAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV6urq6urq6urq6urq6urq6urq6urq6urq6v////////////////////////////////8AAAAATGF2YzU4LjU0AAAAAAAAAAAAAAAAJAAAAAAAAAAAASDs90hvAAAAAAAAAAAAAAAAAAAA//OCEAAADwAABHiAAATgsAAhXiAAEaQhEIRAQYgcEKIoDAgCA",
+    customerStory: "Пара згадала перше знайомство, перше побачення, момент пропозиції. Додали дати: \"10 травня 2020 — день, коли ми зустрілись\", \"15 серпня 2022 — наше весілля\".",
+    customerReaction: "Чоловік не стримав сліз. Каже, що це найкращий подарунок за всі роки. Тепер це їхня улюблена пісня — слухають кожну річницю.",
+    customerName: "Світлана, 27 років",
+    customerLocation: "Київ",
+    rating: 5
   },
   { 
     id: 3, 
@@ -305,7 +346,12 @@ const postcardExamples = [
     backImage: "/images/postcards/example-back.jpg", 
     songTitle: "Дякую за все", 
     artist: "Від Олега", 
-    audioSrc: "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//OEAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAEAAABIADAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV6urq6urq6urq6urq6urq6urq6urq6urq6v////////////////////////////////8AAAAATGF2YzU4LjU0AAAAAAAAAAAAAAAAJAAAAAAAAAAAASDs90hvAAAAAAAAAAAAAAAAAAAA//OCEAAADwAABHiAAATgsAAhXiAAEaQhEIRAQYgcEKIoDAgCA"
+    audioSrc: "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//OEAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAEAAABIADAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV6urq6urq6urq6urq6urq6urq6urq6urq6v////////////////////////////////8AAAAATGF2YzU4LjU0AAAAAAAAAAAAAAAAJAAAAAAAAAAAASDs90hvAAAAAAAAAAAAAAAAAAAA//OCEAAADwAABHiAAATgsAAhXiAAEaQhEIRAQYgcEKIoDAgCA",
+    customerStory: "Син створив пісню-подяку для батька, згадавши всі важливі життєві поради та спільні моменти. Додав щирі слова вдячності за підтримку.",
+    customerReaction: "Батько не очікував такого подарунка. Слухав пісню кілька разів поспіль. Каже, це найцінніший подарунок у його житті.",
+    customerName: "Олег, 35 років",
+    customerLocation: "Львів",
+    rating: 5
   },
 ]
 
@@ -367,6 +413,14 @@ export default function ExamplesSection3D() {
                           audioSrc={postcard.audioSrc} 
                           songTitle={postcard.songTitle} 
                           artist={postcard.artist} 
+                        />
+                        
+                        <CustomerStory 
+                          story={postcard.customerStory} 
+                          reaction={postcard.customerReaction} 
+                          customerName={postcard.customerName} 
+                          customerLocation={postcard.customerLocation}
+                          rating={postcard.rating}
                         />
                       </CardContent>
                     </Card>
