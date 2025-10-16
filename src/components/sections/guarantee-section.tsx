@@ -120,28 +120,28 @@ export function GuaranteeSection() {
 
               {/* Benefits grid */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                <div className="flex flex-col items-center gap-2 p-4 bg-white/10 rounded-xl backdrop-blur-sm">
-                  <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-                    <CheckCircle className="w-6 h-6" />
+                <div className="flex flex-col items-center gap-3 p-6 bg-white/10 rounded-2xl backdrop-blur-sm">
+                  <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center">
+                    <CheckCircle className="w-8 h-8" />
                   </div>
-                  <p className="font-semibold">Повернення за 24 години</p>
-                  <p className="text-sm text-white/80">Без питань та бюрократії</p>
+                  <p className="font-semibold text-lg">Повернення за 24 години</p>
+                  <p className="text-sm text-white/90">Без питань та бюрократії</p>
                 </div>
 
-                <div className="flex flex-col items-center gap-2 p-4 bg-white/10 rounded-xl backdrop-blur-sm">
-                  <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-                    <Sparkles className="w-6 h-6" />
+                <div className="flex flex-col items-center gap-3 p-6 bg-white/10 rounded-2xl backdrop-blur-sm">
+                  <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center">
+                    <Sparkles className="w-8 h-8" />
                   </div>
-                  <p className="font-semibold">100% унікальність</p>
-                  <p className="text-sm text-white/80">Подвійне повернення якщо знайдеш копію</p>
+                  <p className="font-semibold text-lg">100% унікальність</p>
+                  <p className="text-sm text-white/90">Подвійне повернення якщо знайдеш копію</p>
                 </div>
 
-                <div className="flex flex-col items-center gap-2 p-4 bg-white/10 rounded-xl backdrop-blur-sm">
-                  <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-                    <RefreshCw className="w-6 h-6" />
+                <div className="flex flex-col items-center gap-3 p-6 bg-white/10 rounded-2xl backdrop-blur-sm">
+                  <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center">
+                    <RefreshCw className="w-8 h-8" />
                   </div>
-                  <p className="font-semibold">Необмежені спроби</p>
-                  <p className="text-sm text-white/80">Перегенеруй скільки потрібно</p>
+                  <p className="font-semibold text-lg">Необмежені спроби</p>
+                  <p className="text-sm text-white/90">Перегенеруй скільки потрібно</p>
                 </div>
               </div>
 
