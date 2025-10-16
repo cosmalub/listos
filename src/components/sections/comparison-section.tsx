@@ -1,4 +1,4 @@
-import { X, Check } from "lucide-react";
+import { X, Check, ArrowDown } from "lucide-react";
 
 interface ComparisonRowProps {
   standard: {
@@ -16,36 +16,54 @@ interface ComparisonRowProps {
 
 function ComparisonRow({ standard, listosyk }: ComparisonRowProps) {
   return (
-    <div className="grid md:grid-cols-2 gap-4">
-      {/* Стандартний подарунок */}
-      <div className="bg-gray-50 border-2 border-gray-200 rounded-xl p-6 relative">
-        <div className="absolute -top-3 -right-3 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
-          <X className="w-5 h-5 text-white" />
+    <div className="relative">
+      <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+        {/* Стандартний подарунок */}
+        <div className="bg-gray-50 border-2 border-gray-200 rounded-xl p-6 relative">
+          <div className="absolute -top-3 -right-3 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+            <X className="w-5 h-5 text-white" />
+          </div>
+          <div className="flex items-start gap-3">
+            <span className="text-4xl">{standard.icon}</span>
+            <div className="flex-1">
+              <h3 className="font-bold text-gray-700 mb-1">
+                {standard.title} <span className="text-sm text-gray-500">({standard.price})</span>
+              </h3>
+              <p className="text-sm text-red-600">{standard.downside}</p>
+            </div>
+          </div>
         </div>
-        <div className="flex items-start gap-3">
-          <span className="text-4xl">{standard.icon}</span>
-          <div className="flex-1">
-            <h3 className="font-bold text-gray-700 mb-1">
-              {standard.title} <span className="text-sm text-gray-500">({standard.price})</span>
-            </h3>
-            <p className="text-sm text-red-600">{standard.downside}</p>
+
+        {/* Стрілка ЗАМІСТЬ (тільки на мобілці) */}
+        <div className="md:hidden flex items-center justify-center -my-2">
+          <div className="bg-[#6A5ACD] rounded-full px-6 py-2 flex items-center gap-2 shadow-lg">
+            <ArrowDown className="w-5 h-5 text-white" />
+            <span className="text-white font-bold text-sm">ЗАМІСТЬ</span>
+            <ArrowDown className="w-5 h-5 text-white" />
+          </div>
+        </div>
+
+        {/* Listosyk */}
+        <div className="bg-gradient-to-br from-[#6A5ACD]/10 to-[#D292FF]/10 border-2 border-[#B8B3FF] rounded-xl p-6 relative">
+          <div className="absolute -top-3 -right-3 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+            <Check className="w-5 h-5 text-white" />
+          </div>
+          <div className="flex items-start gap-3">
+            <span className="text-4xl">{listosyk.icon}</span>
+            <div className="flex-1">
+              <h3 className="font-bold text-[#6A5ACD] mb-1">
+                {listosyk.title}
+              </h3>
+              <p className="text-sm text-green-600 font-semibold">{listosyk.benefit}</p>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Listosyk */}
-      <div className="bg-gradient-to-br from-[#6A5ACD]/10 to-[#D292FF]/10 border-2 border-[#B8B3FF] rounded-xl p-6 relative">
-        <div className="absolute -top-3 -right-3 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-          <Check className="w-5 h-5 text-white" />
-        </div>
-        <div className="flex items-start gap-3">
-          <span className="text-4xl">{listosyk.icon}</span>
-          <div className="flex-1">
-            <h3 className="font-bold text-[#6A5ACD] mb-1">
-              {listosyk.title}
-            </h3>
-            <p className="text-sm text-green-600 font-semibold">{listosyk.benefit}</p>
-          </div>
+      {/* VS badge (тільки на десктопі) */}
+      <div className="hidden md:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+        <div className="bg-[#6A5ACD] rounded-full w-12 h-12 flex items-center justify-center shadow-lg border-4 border-white">
+          <span className="text-white font-bold text-sm">VS</span>
         </div>
       </div>
     </div>
@@ -145,7 +163,7 @@ export function ComparisonSection() {
           </div>
 
           {/* Порівняння */}
-          <div className="space-y-6 mb-12">
+          <div className="space-y-8 mb-12">
             {comparisons.map((comparison, index) => (
               <ComparisonRow key={index} {...comparison} />
             ))}
