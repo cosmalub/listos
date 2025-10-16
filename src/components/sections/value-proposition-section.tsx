@@ -18,24 +18,24 @@ export function ValuePropositionSection() {
           </h2>
           <p className="text-lg md:text-xl text-[#6A5ACD]/80 max-w-4xl mx-auto leading-relaxed">
             На ринку генерації музики є топові сервіси — <strong className="text-[#6A5ACD]">Suno AI</strong> та <strong className="text-[#6A5ACD]">ElevenLabs Music</strong>. 
-            Багато хто використовує їх для створення пісень на замовлення.
+            Багато хто пропонує пісні на замовлення за <strong className="text-[#6A5ACD]">500-2500 грн</strong>, створюючи їх вручну в цих інструментах — це довго і складно.
           </p>
           <p className="text-lg md:text-xl text-[#6A5ACD]/80 max-w-4xl mx-auto mt-4 leading-relaxed">
-            <strong className="text-[#6A5ACD]">Ми теж використовуємо їхні моделі</strong> — але пропонуємо значно більше!
+            <strong className="text-[#6A5ACD]">Ми інтегрували API цих моделей</strong> та автоматизували весь процес — тому це швидко, доступно і ви отримуєте набагато більше!
           </p>
         </div>
 
         {/* Візуальне порівняння */}
         <div className="max-w-6xl mx-auto mb-16">
           <div className="grid md:grid-cols-2 gap-8 items-start">
-            {/* Ліва частина - Інструменти */}
+            {/* Ліва частина - Інші варіанти */}
             <div className="space-y-6">
               <div className="text-center md:text-left">
                 <h3 className="text-2xl font-bold text-gray-700 mb-4 flex items-center justify-center md:justify-start gap-2">
                   <Music className="w-7 h-7" />
-                  Просто інструмент
+                  Інші варіанти на ринку
                 </h3>
-                <p className="text-gray-600 mb-6">Те, що пропонують інші:</p>
+                <p className="text-gray-600 mb-6">Те, що пропонують конкуренти:</p>
               </div>
 
               <div className="space-y-4">
@@ -44,8 +44,8 @@ export function ValuePropositionSection() {
                     <div className="flex items-start gap-3 mb-3">
                       <div className="text-3xl">🎵</div>
                       <div>
-                        <h4 className="font-bold text-gray-800 mb-1">Suno AI v5 / ElevenLabs</h4>
-                        <p className="text-sm text-gray-600">від $10-22/міс</p>
+                        <h4 className="font-bold text-gray-800 mb-1">Самостійно через Suno/ElevenLabs</h4>
+                        <p className="text-sm text-gray-600">від $10-22/міс підписка</p>
                       </div>
                     </div>
                     <ul className="space-y-2 text-sm text-gray-600">
@@ -69,9 +69,39 @@ export function ValuePropositionSection() {
                   </CardContent>
                 </Card>
 
-                <div className="bg-gray-50 rounded-xl p-5 border-2 border-gray-200">
-                  <p className="text-center text-gray-600 font-semibold">
-                    ⚠️ Для технічно підкованих користувачів
+                <Card className="border-2 border-orange-200 hover:border-orange-300 transition-all">
+                  <CardContent className="p-5">
+                    <div className="flex items-start gap-3 mb-3">
+                      <div className="text-3xl">👨‍💻</div>
+                      <div>
+                        <h4 className="font-bold text-gray-800 mb-1">Пісні на замовлення</h4>
+                        <p className="text-sm text-orange-600 font-semibold">500-2500 грн</p>
+                      </div>
+                    </div>
+                    <ul className="space-y-2 text-sm text-gray-600">
+                      <li className="flex items-start gap-2">
+                        <span className="text-orange-400">•</span>
+                        <span>Створюють вручну в тих же інструментах</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-orange-400">•</span>
+                        <span>Очікування 2-7 днів</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-orange-400">•</span>
+                        <span>Висока ціна за роботу людини</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-orange-400">•</span>
+                        <span>Тільки пісня, без додаткових матеріалів</span>
+                      </li>
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                <div className="bg-gray-50 rounded-xl p-4 border-2 border-gray-200">
+                  <p className="text-center text-gray-600 font-semibold text-sm">
+                    ⚠️ Або складно, або дорого, або довго
                   </p>
                 </div>
               </div>
@@ -99,15 +129,18 @@ export function ValuePropositionSection() {
                     </div>
 
                     <div className="bg-white/70 rounded-lg p-3 mb-3">
-                      <p className="text-xs font-semibold text-[#6A5ACD] mb-2">🔥 Використовуємо ті самі топові моделі:</p>
-                      <div className="flex flex-wrap gap-2">
+                      <p className="text-xs font-semibold text-[#6A5ACD] mb-2">🔥 API інтеграція топових моделей:</p>
+                      <div className="flex flex-wrap gap-2 mb-2">
                         <span className="bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] text-white px-3 py-1 rounded-full text-xs font-semibold">
-                          Suno AI v5
+                          Suno AI v5 API
                         </span>
                         <span className="bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] text-white px-3 py-1 rounded-full text-xs font-semibold">
-                          ElevenLabs Music
+                          ElevenLabs API
                         </span>
                       </div>
+                      <p className="text-xs text-[#6A5ACD]/70">
+                        ⚡️ Автоматично обробляємо через API — без ручної роботи
+                      </p>
                     </div>
 
                     <ul className="space-y-2 text-sm text-[#6A5ACD]">
@@ -212,9 +245,9 @@ export function ValuePropositionSection() {
                     <Music className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-[#6A5ACD] mb-2">Професійний результат</h4>
+                    <h4 className="font-bold text-[#6A5ACD] mb-2">API автоматизація</h4>
                     <p className="text-sm text-[#6A5ACD]/80">
-                      Використовуємо і Suno AI v5, і ElevenLabs одночасно — вибираємо найкращий результат для вашої пісні.
+                      Інтегрували Suno AI v5 та ElevenLabs через API. Все працює автоматично — за 30 секунд отримуєте результат, який іншим потрібно робити вручну годинами.
                     </p>
                   </div>
                 </div>
@@ -223,16 +256,23 @@ export function ValuePropositionSection() {
 
             {/* Висновок */}
             <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-8 border-2 border-green-300 text-center">
-              <p className="text-2xl font-bold text-green-700 mb-3">
+              <p className="text-2xl font-bold text-green-700 mb-4">
                 💎 Висновок
               </p>
-              <p className="text-lg text-gray-700 leading-relaxed">
-                <strong>Suno і ElevenLabs</strong> — це потужні інструменти.<br />
-                <strong className="text-[#6A5ACD]">Listosyk</strong> — це повноцінний сервіс подарунків, який використовує ці інструменти + додає експертизу, персоналізацію та фізичне втілення.
-              </p>
-              <div className="mt-6 inline-block bg-white px-6 py-3 rounded-full border-2 border-[#8A7AEE]">
+              <div className="space-y-3 mb-6">
+                <p className="text-base text-gray-700 leading-relaxed">
+                  <strong>Самостійно через Suno/ElevenLabs</strong> — складно і потрібно розбиратися.
+                </p>
+                <p className="text-base text-gray-700 leading-relaxed">
+                  <strong>Пісні на замовлення (500-2500 грн)</strong> — роблять вручну, довго і дорого.
+                </p>
+                <p className="text-lg text-[#6A5ACD] leading-relaxed font-semibold">
+                  <strong className="text-[#6A5ACD]">Listosyk (399 грн)</strong> — API автоматизація топових моделей + експертиза + персоналізація + комплексний подарунок з фізичною листівкою.
+                </p>
+              </div>
+              <div className="inline-block bg-white px-6 py-3 rounded-full border-2 border-[#8A7AEE] shadow-lg">
                 <p className="text-[#6A5ACD] font-bold">
-                  Інструмент → Готовий подарунок = 399 грн ✨
+                  🤖 Автоматизація + ❤️ Експертиза = 🎁 Готовий подарунок
                 </p>
               </div>
             </div>
