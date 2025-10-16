@@ -8,6 +8,7 @@ import { PricingSection } from "@/components/sections/pricing-section";
 import { ReviewsSection } from "@/components/sections/reviews-section";
 import { AiBenefitsSection } from "@/components/sections/ai-benefits-section";
 import { ValuePropositionSection } from "@/components/sections/value-proposition-section";
+import { GuaranteeSection } from "@/components/sections/guarantee-section";
 import { FaqSection } from "@/components/sections/faq-section";
 import FaqAndCtaSections from "@/components/sections/faq-and-cta-sections";
 import { Footer } from "@/components/sections/footer";
@@ -43,6 +44,9 @@ const Index = () => {
       </section>
       <section id="pricing">
         <PricingSection />
+      </section>
+      <section id="guarantee">
+        <GuaranteeSection />
       </section>
       <section id="faq">
         <FaqAndCtaSections />
