@@ -86,7 +86,7 @@ export function ComparisonSection() {
   ];
 
   return (
-    <section className="py-16 bg-gradient-to-b from-white to-[#F8F7FF] relative">
+    <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-[#6A5ACD] mb-4">
