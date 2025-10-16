@@ -1,4 +1,3 @@
-import { Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function MascotSection() {
@@ -216,29 +215,6 @@ export function MascotSection() {
                       <span className="text-sm md:text-base">Доставка Новою поштою за 1-2 дні</span>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Video demonstration */}
-            <div className="mt-16 max-w-4xl mx-auto">
-              <h3 className="text-2xl font-bold mb-6 text-center text-[#6A5ACD]">
-                Подивіться, як це працює:
-              </h3>
-              <div className="relative rounded-xl overflow-hidden shadow-soft border-2 border-[#B8B3FF]/60 hover:border-[#B8B3FF] transition-colors hover:shadow-md bg-card">
-                <div className="aspect-video">
-                  <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center relative">
-                    {/* Custom play button overlay */}
-                    <div className="bg-card/90 backdrop-blur-sm text-primary rounded-full p-4 transform transition-transform hover:scale-110 shadow-soft cursor-pointer">
-                      <Play size={32} />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="p-4 bg-card">
-                  <p className="text-muted-foreground text-center">
-                    Від ідеї до готової музичної листівки — весь процес створення за 2 хвилини
-                  </p>
                 </div>
               </div>
             </div>
