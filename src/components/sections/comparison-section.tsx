@@ -1,70 +1,45 @@
-import { X, Check, ArrowDown } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 interface ComparisonRowProps {
   standard: {
     icon: string;
     title: string;
-    price: string;
-    downside: string;
+    subtitle: string;
   };
   listosyk: {
     icon: string;
     title: string;
-    benefit: string;
+    subtitle: string;
   };
 }
 
 function ComparisonRow({ standard, listosyk }: ComparisonRowProps) {
   return (
-    <div className="relative">
-      <div className="grid md:grid-cols-2 gap-4 md:gap-6">
-        {/* Стандартний подарунок */}
-        <div className="bg-gray-50 border-2 border-gray-200 rounded-xl p-6 relative">
-          <div className="absolute -top-3 -right-3 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
-            <X className="w-5 h-5 text-white" />
-          </div>
-          <div className="flex items-start gap-3">
-            <span className="text-4xl">{standard.icon}</span>
-            <div className="flex-1">
-              <h3 className="font-bold text-gray-700 mb-1">
-                {standard.title} <span className="text-sm text-gray-500">({standard.price})</span>
-              </h3>
-              <p className="text-sm text-red-600">{standard.downside}</p>
-            </div>
-          </div>
+    <div className="grid md:grid-cols-[1fr_auto_1fr] gap-4 items-center">
+      {/* Стандартний подарунок */}
+      <div className="bg-white border border-gray-200 rounded-2xl p-5 hover:border-gray-300 transition-all">
+        <div className="flex items-center gap-3 mb-2">
+          <span className="text-3xl">{standard.icon}</span>
+          <h4 className="font-bold text-gray-700">{standard.title}</h4>
         </div>
-
-        {/* Стрілка ЗАМІСТЬ (тільки на мобілці) */}
-        <div className="md:hidden flex items-center justify-center -my-2">
-          <div className="bg-[#6A5ACD] rounded-full px-6 py-2 flex items-center gap-2 shadow-lg">
-            <ArrowDown className="w-5 h-5 text-white" />
-            <span className="text-white font-bold text-sm">ЗАМІСТЬ</span>
-            <ArrowDown className="w-5 h-5 text-white" />
-          </div>
-        </div>
-
-        {/* Listosyk */}
-        <div className="bg-gradient-to-br from-[#6A5ACD]/10 to-[#D292FF]/10 border-2 border-[#B8B3FF] rounded-xl p-6 relative">
-          <div className="absolute -top-3 -right-3 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-            <Check className="w-5 h-5 text-white" />
-          </div>
-          <div className="flex items-start gap-3">
-            <span className="text-4xl">{listosyk.icon}</span>
-            <div className="flex-1">
-              <h3 className="font-bold text-[#6A5ACD] mb-1">
-                {listosyk.title}
-              </h3>
-              <p className="text-sm text-green-600 font-semibold">{listosyk.benefit}</p>
-            </div>
-          </div>
-        </div>
+        <p className="text-sm text-gray-500 ml-12">{standard.subtitle}</p>
       </div>
 
-      {/* VS badge (тільки на десктопі) */}
-      <div className="hidden md:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-        <div className="bg-[#6A5ACD] rounded-full w-12 h-12 flex items-center justify-center shadow-lg border-4 border-white">
-          <span className="text-white font-bold text-sm">VS</span>
+      {/* Стрілка */}
+      <div className="hidden md:flex items-center justify-center">
+        <ArrowRight className="w-6 h-6 text-[#6A5ACD]/40" />
+      </div>
+      <div className="md:hidden flex items-center justify-center -my-2">
+        <ArrowRight className="w-6 h-6 text-[#6A5ACD]/40 rotate-90" />
+      </div>
+
+      {/* Listosyk */}
+      <div className="bg-gradient-to-br from-[#F8F7FF] to-white border border-[#B8B3FF]/50 rounded-2xl p-5 hover:border-[#B8B3FF] hover:shadow-sm transition-all">
+        <div className="flex items-center gap-3 mb-2">
+          <span className="text-3xl">{listosyk.icon}</span>
+          <h4 className="font-bold text-[#6A5ACD]">{listosyk.title}</h4>
         </div>
+        <p className="text-sm text-[#6A5ACD]/70 ml-12">{listosyk.subtitle}</p>
       </div>
     </div>
   );
@@ -75,110 +50,69 @@ export function ComparisonSection() {
     {
       standard: {
         icon: "💐",
-        title: "Букет квітів",
-        price: "500 грн",
-        downside: "завяне через тиждень",
+        title: "Букет квітів (500 грн)",
+        subtitle: "Завяне через тиждень",
       },
       listosyk: {
         icon: "🎵",
-        title: "Пісня що не зів'яне",
-        benefit: "залишиться назавжди",
-      },
-    },
-    {
-      standard: {
-        icon: "💌",
-        title: "Листівка з магазину",
-        price: "50 грн",
-        downside: "прочитає і покладе в шухляду",
-      },
-      listosyk: {
-        icon: "🎶",
-        title: "Персональна музика",
-        benefit: "буде слухати знову і знову",
-      },
-    },
-    {
-      standard: {
-        icon: "🍫",
-        title: "Цукерки",
-        price: "300 грн",
-        downside: "з'їдяться через день",
-      },
-      listosyk: {
-        icon: "💎",
-        title: "Емоції що залишаться",
-        benefit: "безцінно",
+        title: "Пісня + листівка",
+        subtitle: "Залишиться назавжди",
       },
     },
     {
       standard: {
         icon: "⏰",
         title: "Купити в магазині",
-        price: "1 година",
-        downside: "час на пошуки",
+        subtitle: "Година на пошуки, стандартна листівка",
       },
       listosyk: {
         icon: "⚡️",
         title: "Створити онлайн",
-        benefit: "за 10 хвилин у студії",
+        subtitle: "10 хвилин, унікальна листівка з піснею",
       },
     },
     {
       standard: {
         icon: "😐",
-        title: "Реакція: \"Дякую\"",
-        price: "",
-        downside: "забуде через тиждень",
+        title: "Звичайна реакція",
+        subtitle: "\"Дякую\" — забуде через тиждень",
       },
       listosyk: {
         icon: "😭",
-        title: "Реакція: \"Я плачу\"",
-        benefit: "запам'ятає назавжди",
+        title: "Емоційна реакція",
+        subtitle: "\"Я плачу\" — запам'ятає назавжди",
       },
     },
   ];
 
   return (
-    <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
+    <section className="py-16 bg-gradient-to-b from-white to-[#F8F7FF] relative">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-[#6A5ACD] mb-4">
-          Listosyk vs Стандартні подарунки
-        </h2>
-        <p className="text-lg text-center text-[#6A5ACD]/80 mb-12 max-w-3xl mx-auto">
-          Що вибереш: подарунок, який зів'яне, або емоцію, яка залишиться назавжди?
-        </p>
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#6A5ACD] mb-4">
+            Чому Listosyk краще?
+          </h2>
+          <p className="text-lg text-[#6A5ACD]/70 max-w-2xl mx-auto">
+            Порівняй зі звичайними подарунками
+          </p>
+        </div>
 
-        <div className="max-w-5xl mx-auto">
-          {/* Заголовки колонок */}
-          <div className="grid md:grid-cols-2 gap-4 mb-6">
-            <div className="bg-gray-100 border-2 border-gray-300 rounded-xl p-4 text-center">
-              <h3 className="text-xl font-bold text-gray-700">Стандартні подарунки</h3>
-              <p className="text-sm text-gray-500 mt-1">(багато варіантів, що не залишаються)</p>
-            </div>
-            <div className="bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] rounded-xl p-4 text-center">
-              <h3 className="text-xl font-bold text-white">Один Listosyk</h3>
-              <p className="text-sm text-white/90 mt-1">(399 грн — замінює все)</p>
-            </div>
-          </div>
-
-          {/* Порівняння */}
-          <div className="space-y-8 mb-12">
-            {comparisons.map((comparison, index) => (
-              <ComparisonRow key={index} {...comparison} />
-            ))}
-          </div>
+        <div className="max-w-4xl mx-auto space-y-6 mb-12">
+          {comparisons.map((comparison, index) => (
+            <ComparisonRow key={index} {...comparison} />
+          ))}
         </div>
 
         {/* Висновок */}
-        <div className="max-w-3xl mx-auto bg-gradient-to-r from-[#8A7AEE]/10 to-[#D292FF]/10 rounded-2xl border-2 border-[#B8B3FF] p-8 text-center">
-          <h3 className="text-2xl font-bold text-[#6A5ACD] mb-4">Висновок:</h3>
-          <p className="text-lg text-[#6A5ACD]/90 mb-4">
-            Стандартні подарунки — це витрати. Listosyk — це інвестиція в емоції.
-          </p>
-          <p className="text-xl font-bold text-[#6A5ACD]">
-            399 грн за спогад, який залишиться на все життя. Це не дорого. Це безцінно.
-          </p>
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-white rounded-3xl border border-[#B8B3FF]/30 p-8 text-center shadow-sm">
+            <p className="text-lg text-[#6A5ACD]/80 mb-3">
+              Стандартні подарунки — це витрати.
+            </p>
+            <p className="text-2xl font-bold text-[#6A5ACD]">
+              Listosyk — це інвестиція в емоції 💜
+            </p>
+          </div>
         </div>
       </div>
     </section>
