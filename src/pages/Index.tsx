@@ -11,6 +11,7 @@ import { ValuePropositionSection } from "@/components/sections/value-proposition
 import { GuaranteeSection } from "@/components/sections/guarantee-section";
 import { FaqSection } from "@/components/sections/faq-section";
 import FaqAndCtaSections from "@/components/sections/faq-and-cta-sections";
+import { FinalCtaSection } from "@/components/sections/final-cta-section";
 import { Footer } from "@/components/sections/footer";
 
 
@@ -50,6 +51,9 @@ const Index = () => {
       </section>
       <section id="faq">
         <FaqAndCtaSections />
+      </section>
+      <section id="final-cta">
+        <FinalCtaSection />
       </section>
       <Footer />
     </div>
