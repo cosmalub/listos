@@ -287,7 +287,6 @@ export function ValuePropositionSection() {
           >
             🎵 Створити подарунок зараз
           </Button>
-          <p className="text-sm text-[#6A5ACD]/60 mt-4">Перші 10 хвилин — безкоштовно</p>
         </div>
       </div>
     </section>
