@@ -10,7 +10,6 @@ interface ComparisonRowProps {
   listosyk: {
     icon: string;
     title: string;
-    price: string;
     benefit: string;
   };
 }
@@ -43,7 +42,7 @@ function ComparisonRow({ standard, listosyk }: ComparisonRowProps) {
           <span className="text-4xl">{listosyk.icon}</span>
           <div className="flex-1">
             <h3 className="font-bold text-[#6A5ACD] mb-1">
-              {listosyk.title} <span className="text-sm text-[#6A5ACD]/70">({listosyk.price})</span>
+              {listosyk.title}
             </h3>
             <p className="text-sm text-green-600 font-semibold">{listosyk.benefit}</p>
           </div>
@@ -64,8 +63,7 @@ export function ComparisonSection() {
       },
       listosyk: {
         icon: "🎵",
-        title: "Пісня + листівка",
-        price: "399 грн",
+        title: "Пісня що не зів'яне",
         benefit: "залишиться назавжди",
       },
     },
@@ -78,8 +76,7 @@ export function ComparisonSection() {
       },
       listosyk: {
         icon: "🎶",
-        title: "Персональна пісня",
-        price: "399 грн",
+        title: "Персональна музика",
         benefit: "буде слухати знову і знову",
       },
     },
@@ -92,8 +89,7 @@ export function ComparisonSection() {
       },
       listosyk: {
         icon: "💎",
-        title: "Емоції + спогади",
-        price: "399 грн",
+        title: "Емоції що залишаться",
         benefit: "безцінно",
       },
     },
@@ -107,8 +103,7 @@ export function ComparisonSection() {
       listosyk: {
         icon: "⚡️",
         title: "Створити онлайн",
-        price: "10 хвилин",
-        benefit: "у студії",
+        benefit: "за 10 хвилин у студії",
       },
     },
     {
@@ -120,8 +115,7 @@ export function ComparisonSection() {
       },
       listosyk: {
         icon: "😭",
-        title: "Реакція: \"Я плачу від емоцій\"",
-        price: "",
+        title: "Реакція: \"Я плачу\"",
         benefit: "запам'ятає назавжди",
       },
     },
@@ -137,10 +131,25 @@ export function ComparisonSection() {
           Що вибереш: подарунок, який зів'яне, або емоцію, яка залишиться назавжди?
         </p>
 
-        <div className="max-w-5xl mx-auto space-y-6 mb-12">
-          {comparisons.map((comparison, index) => (
-            <ComparisonRow key={index} {...comparison} />
-          ))}
+        <div className="max-w-5xl mx-auto">
+          {/* Заголовки колонок */}
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            <div className="bg-gray-100 border-2 border-gray-300 rounded-xl p-4 text-center">
+              <h3 className="text-xl font-bold text-gray-700">Стандартні подарунки</h3>
+              <p className="text-sm text-gray-500 mt-1">(багато варіантів, що не залишаються)</p>
+            </div>
+            <div className="bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] rounded-xl p-4 text-center">
+              <h3 className="text-xl font-bold text-white">Один Listosyk</h3>
+              <p className="text-sm text-white/90 mt-1">(399 грн — замінює все)</p>
+            </div>
+          </div>
+
+          {/* Порівняння */}
+          <div className="space-y-6 mb-12">
+            {comparisons.map((comparison, index) => (
+              <ComparisonRow key={index} {...comparison} />
+            ))}
+          </div>
         </div>
 
         {/* Висновок */}
