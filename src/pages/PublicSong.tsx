@@ -22,10 +22,14 @@ const locale = {
   uk: {
     for: 'Для:',
     from: 'Від:',
+    songCreated: 'Для вас створили пісню:',
+    browserNotSupported: 'Ваш браузер не підтримує аудіо елемент.',
   },
   ru: {
     for: 'Для:',
     from: 'От:',
+    songCreated: 'Для вас создали песню:',
+    browserNotSupported: 'Ваш браузер не поддерживает аудио элемент.',
   }
 };
 
@@ -116,10 +120,12 @@ export default function PublicSong() {
             {/* Аудио плеер */}
             {orderData.music_selected && orderData.music_audio_url && (
               <div className="text-center mb-8">
-                <h3 className="text-xl font-semibold mb-4">Для вас створили пісню:</h3>
+                <h3 className="text-xl font-semibold mb-4">
+                  {locale[detectLanguage(orderData.lyrics || '')].songCreated}
+                </h3>
                 <audio controls className="mx-auto w-full max-w-md">
                   <source src={orderData.music_audio_url} type="audio/mpeg" />
-                  Ваш браузер не підтримує аудіо елемент.
+                  {locale[detectLanguage(orderData.lyrics || '')].browserNotSupported}
                 </audio>
               </div>
             )}
