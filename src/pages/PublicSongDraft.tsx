@@ -1,20 +1,85 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Play, Pause, CheckCircle, Music, Info } from 'lucide-react';
+import { CheckCircle, Info } from 'lucide-react';
 import { OccasionBackground } from '@/components/public/OccasionBackground';
 import { OccasionAnimation } from '@/components/public/OccasionAnimation';
 import { Header } from '@/components/sections/header';
 import { StepsHeader } from '@/components/studio/StepsHeader';
 import { Footer } from '@/components/sections/footer';
 
+// Визначення мови
+const detectLanguage = (text: string): 'uk' | 'ru' => {
+  const ukrainianChars = /[іїєґ]/i;
+  const russianChars = /[ыэъ]/i;
+  
+  const hasUkrainian = ukrainianChars.test(text);
+  const hasRussian = russianChars.test(text);
+  
+  if (hasUkrainian && !hasRussian) return 'uk';
+  if (hasRussian && !hasUkrainian) return 'ru';
+  return 'uk';
+};
+
+// Об'єкт локалізації
+const locale = {
+  uk: {
+    for: 'Для:',
+    from: 'Від:',
+    songCreated: 'Для вас створили пісню:',
+    browserNotSupported: 'Ваш браузер не підтримує аудіо елемент.',
+  },
+  ru: {
+    for: 'Для:',
+    from: 'От:',
+    songCreated: 'Для вас создали песню:',
+    browserNotSupported: 'Ваш браузер не поддерживает аудио элемент.',
+  }
+};
+
+// Очищення тексту пісні
+const cleanLyrics = (text: string): string => {
+  return text
+    .replace(/<LYRICS>|<\/LYRICS>/gi, '')
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/\[.*?\]/g, '')
+    .replace(/\(.*?\)/g, '')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+};
+
+// Отримати заголовок події
+const getOccasionTitle = (occasion: string, lang: 'uk' | 'ru') => {
+  const titles = {
+    uk: {
+      'birthday': '🎂 З Днем Народження!',
+      'anniversary': '💕 З річницею!',
+      'new-year': '🎄 З Новим Роком!',
+      'congratulations': '🎉 Вітаємо!',
+      'thanks': '🙏 Дякуємо!',
+      'apology': '😔 Вибачте!',
+      'love': '❤️ З любов\'ю!',
+      'friendship': '🤝 З дружбою!',
+    },
+    ru: {
+      'birthday': '🎂 С Днем Рождения!',
+      'anniversary': '💕 С годовщиной!',
+      'new-year': '🎄 С Новым Годом!',
+      'congratulations': '🎉 Поздравляем!',
+      'thanks': '🙏 Спасибо!',
+      'apology': '😔 Извините!',
+      'love': '❤️ С любовью!',
+      'friendship': '🤝 С дружбой!',
+    }
+  };
+  return titles[lang]?.[occasion] || titles[lang]['congratulations'];
+};
+
 const PublicSongDraft = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [isPlaying, setIsPlaying] = useState(false);
   const [draftData, setDraftData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -53,20 +118,13 @@ const PublicSongDraft = () => {
   const caption = draftData?.designData?.front?.caption || 'З найкращими побажаннями';
   const musicVariant = draftData?.musicVariant;
   
-  const song = {
-    title: musicVariant?.title || "Персональна пісня для вас",
-    duration: musicVariant?.duration || "2:45",
-    lyrics: lyrics
-  };
+  // Визначення мови та заголовка
+  const language = detectLanguage(lyrics);
+  const occasionTitle = getOccasionTitle(occasion, language);
 
   const handleApprove = () => {
     alert('Сторінка затверджена та опублікована! Переходимо до наступного кроку.');
     navigate('/studio?step=4');
-  };
-
-  const togglePlay = () => {
-    setIsPlaying(!isPlaying);
-    // In real app, this would control audio playback
   };
 
   if (isLoading) {
@@ -110,63 +168,44 @@ const PublicSongDraft = () => {
           </Alert>
 
           {/* Song Card */}
-          <Card className="bg-white/95 backdrop-blur-sm shadow-xl">
-            <CardHeader className="text-center pb-4">
-              <div className="space-y-3">
-                <div className="flex flex-wrap items-center justify-center gap-2">
-                  <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-300">
-                    Чернетка
-                  </Badge>
-                  <Badge variant="secondary">
-                    {occasion === 'birthday' ? 'День народження' :
-                     occasion === 'congratulations' ? 'Вітання' : 
-                     occasion === 'thanks' ? 'Подяка' : 
-                     occasion === 'apology' ? 'Вибачення' :
-                     occasion === 'love' ? 'Кохання' :
-                     occasion === 'friendship' ? 'Дружба' : 'Особлива нагода'}
-                  </Badge>
-                </div>
-                <div className="flex items-center justify-center gap-2">
-                  <Music className="w-5 h-5 text-primary" />
-                  <CardTitle className="text-xl sm:text-2xl">{caption || song.title}</CardTitle>
-                </div>
-                <p className="text-sm text-muted-foreground">Для {recipient} від {sender}</p>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4 sm:space-y-6 px-4 sm:px-6">
-              {/* Audio Player */}
-              <div className="bg-gradient-to-br from-muted/80 to-muted/40 rounded-xl p-4 sm:p-5 border border-border/50">
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <Button
-                    size="lg"
-                    variant={isPlaying ? "secondary" : "default"}
-                    onClick={togglePlay}
-                    className="w-14 h-14 rounded-full p-0 shadow-lg"
-                  >
-                    {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6 ml-0.5" />}
-                  </Button>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between text-xs sm:text-sm text-muted-foreground mb-2">
-                      <span className="truncate">Ваша персональна пісня</span>
-                      <span className="ml-2 flex-shrink-0">{song.duration}</span>
-                    </div>
-                    <div className="w-full bg-border/50 rounded-full h-2.5">
-                      <div className="bg-primary h-2.5 rounded-full w-1/3 transition-all shadow-sm"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div className="bg-white/95 backdrop-blur-sm rounded-lg shadow-2xl p-8">
+            {/* Для кого / Від кого — НАД заголовком */}
+            <div className="mb-4">
+              <p className="text-lg text-center font-baloo text-muted-foreground">
+                {locale[language].for} {recipient} • {locale[language].from} {sender}
+              </p>
+            </div>
 
-              {/* Song Lyrics */}
-              <div className="space-y-3">
-                <div className="bg-gradient-to-br from-muted/40 to-muted/20 rounded-xl p-4 sm:p-6 border border-border/30">
-                  <div className="text-sm sm:text-base whitespace-pre-line leading-relaxed text-foreground/90">
-                    {song.lyrics}
-                  </div>
-                </div>
+            {/* Заголовок */}
+            <h1 className="text-4xl font-bold font-baloo text-center mb-8">
+              {caption || occasionTitle}
+            </h1>
+
+            {/* Стандартний HTML аудіо плеєр */}
+            {musicVariant?.audio_url && (
+              <div className="text-center mb-8">
+                <h3 className="text-xl font-semibold mb-4">
+                  {locale[language].songCreated}
+                </h3>
+                <audio controls className="mx-auto w-full max-w-md">
+                  <source src={musicVariant.audio_url} type="audio/mpeg" />
+                  {locale[language].browserNotSupported}
+                </audio>
               </div>
-            </CardContent>
-          </Card>
+            )}
+
+            {/* Текст пісні з HTML рендерингом */}
+            {lyrics && (
+              <div className="bg-gradient-to-r from-[hsl(var(--primary))]/10 to-[hsl(var(--secondary))]/10 rounded-lg p-6">
+                <div 
+                  className="whitespace-pre-wrap text-center"
+                  dangerouslySetInnerHTML={{
+                    __html: cleanLyrics(lyrics)
+                  }}
+                />
+              </div>
+            )}
+          </div>
         </div>
       </main>
 
