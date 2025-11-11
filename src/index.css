@@ -483,6 +483,12 @@ All colors MUST be HSL.
   }
 }
 
+/* Reviews section scroll animations - pause on hover */
+.animate-scroll-left:hover,
+.animate-scroll-right:hover {
+  animation-play-state: paused;
+}
+
 /* Animation classes */
 .animate-birthday-flash {
   animation: birthday-flash 7s ease-out forwards;

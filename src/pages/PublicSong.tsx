@@ -105,10 +105,24 @@ export default function PublicSong() {
                 <div 
                   className="whitespace-pre-wrap text-center"
                   dangerouslySetInnerHTML={{
-                    __html: orderData.lyrics
-                      .replace(/\[.*?\]/g, '') // Remove tags like [Куплет 1]
-                      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Convert **text** to bold
-                      .trim()
+                    __html: (() => {
+                      return orderData.lyrics
+                        // Видаляємо слово LYRICS (з або без зворотних лапок)
+                        .replace(/```?LYRICS```?/gi, '')
+                        .replace(/^LYRICS\s*/gim, '')
+                        // Видаляємо зворотні лапки markdown
+                        .replace(/```/g, '')
+                        // Видаляємо теги в квадратних дужках: [Куплет 1], [Припев] тощо
+                        .replace(/\[.*?\]/g, '')
+                        // Видаляємо теги в круглих дужках: (Куплет 1), (Припев) тощо
+                        .replace(/\(.*?(куплет|припев|verse|chorus|bridge|outro|intro).*?\)/gi, '')
+                        // Конвертуємо **текст** в <strong>текст</strong>
+                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                        // Видаляємо зайві порожні рядки (більше 2 підряд)
+                        .replace(/\n{3,}/g, '\n\n')
+                        // Обрізаємо пробіли на початку і в кінці
+                        .trim();
+                    })()
                   }}
                 />
               </div>

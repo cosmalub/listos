@@ -188,39 +188,6 @@ export function ReviewsSection() {
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes scroll-left {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-        
-        @keyframes scroll-right {
-          0% {
-            transform: translateX(-50%);
-          }
-          100% {
-            transform: translateX(0);
-          }
-        }
-        
-        .animate-scroll-left {
-          animation: scroll-left 60s linear infinite;
-        }
-        
-        .animate-scroll-right {
-          animation: scroll-right 60s linear infinite;
-        }
-        
-        .animate-scroll-left:hover,
-        .animate-scroll-right:hover {
-          animation-play-state: paused;
-        }
-      `}</style>
     </section>
   );
 }
