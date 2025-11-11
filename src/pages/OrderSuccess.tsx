@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { CheckCircle, Info, Loader2 } from 'lucide-react';
+import { Info, Loader2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { Header } from '@/components/sections/header';
 import { Footer } from '@/components/sections/footer';
 import { OccasionAnimation } from '@/components/public/OccasionAnimation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -17,9 +16,6 @@ export default function OrderSuccess() {
   const orderId = searchParams.get('orderId');
   const [orderData, setOrderData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [contactSubmitted, setContactSubmitted] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -95,57 +91,6 @@ export default function OrderSuccess() {
     fetchOrder();
   }, [orderId, toast]);
 
-  const handleSubmitContact = async () => {
-    if (!orderId || (!email && !phone)) {
-      toast({
-        title: 'Помилка',
-        description: 'Введіть хоча б email або телефон',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    // Оновлюємо контакти в pre_orders через order->pre_order зв'язок
-    // Спочатку отримуємо pre_order_id з order
-    const { data: order } = await supabase
-      .from('orders')
-      .select('pre_order_id')
-      .eq('id', orderId)
-      .single();
-
-    if (!order?.pre_order_id) {
-      toast({
-        title: 'Помилка',
-        description: 'Не знайдено пов\'язане передзамовлення',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    // Оновлюємо контакти в pre_orders
-    const { error } = await supabase
-      .from('pre_orders')
-      .update({
-        user_email: email || null,
-        user_phone: phone || null,
-      })
-      .eq('id', order.pre_order_id);
-
-    if (error) {
-      console.error('Error updating contact:', error);
-      toast({
-        title: 'Помилка',
-        description: 'Не вдалося зберегти контакти',
-        variant: 'destructive',
-      });
-    } else {
-      setContactSubmitted(true);
-      toast({
-        title: 'Успіх!',
-        description: 'Контактні дані збережено',
-      });
-    }
-  };
 
   if (loading) {
     return (
@@ -244,43 +189,6 @@ export default function OrderSuccess() {
               </ul>
             </div>
 
-            {/* Contact Form */}
-            {!contactSubmitted && (
-              <div className="bg-card rounded-lg border border-border p-6 mb-8">
-                <h3 className="text-xl font-semibold mb-4">
-                  Залиште контакти для зв'язку
-                </h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Це допоможе нам швидше узгодити деталі доставки
-                </p>
-                <div className="grid md:grid-cols-2 gap-4 mb-4">
-                  <Input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  <Input
-                    type="tel"
-                    placeholder="Телефон"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                  />
-                </div>
-                <Button onClick={handleSubmitContact} className="w-full">
-                  Надіслати контакти
-                </Button>
-              </div>
-            )}
-
-            {contactSubmitted && (
-              <Alert className="mb-8 bg-secondary/30 border-border">
-                <CheckCircle className="h-4 w-4" />
-                <AlertDescription>
-                  Дякуємо! Ми зв'яжемося з вами найближчим часом.
-                </AlertDescription>
-              </Alert>
-            )}
 
             {/* Draft Page Link */}
             <Alert className="bg-secondary/30 border-border">
