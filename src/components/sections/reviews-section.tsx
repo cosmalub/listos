@@ -157,12 +157,12 @@ export function ReviewsSection() {
         {/* CTA після відгуків */}
         <div className="max-w-3xl mx-auto">
           <div className="bg-card rounded-3xl border-2 border-[#B8B3FF]/60 hover:border-[#B8B3FF] transition-all hover:shadow-lg p-8 text-center">
-            <Button 
-              onClick={() => window.location.href = '/studio'}
-              className="text-lg px-10 py-7 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold mb-6"
-            >
-              Створити музичний подарунок
-            </Button>
+          <Button 
+            onClick={() => window.location.href = '/order'}
+            className="text-lg px-10 py-7 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold mb-6"
+          >
+            🎵 Я теж хочу такий подарунок!
+          </Button>
             
             <div className="space-y-3 text-[#6A5ACD]/80">
               <div className="flex items-center justify-center gap-2">
