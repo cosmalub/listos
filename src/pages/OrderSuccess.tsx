@@ -200,6 +200,17 @@ export default function OrderSuccess() {
                 </Button>
               </AlertDescription>
             </Alert>
+
+            {/* Discount CTA */}
+            <div className="text-center mt-6">
+              <Button
+                size="lg"
+                className="text-lg"
+                onClick={() => window.location.href = `/discount?ref=${orderId}`}
+              >
+                Отримати знижку 25% на наступне замовлення 🎁
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </main>

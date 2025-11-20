@@ -9,6 +9,7 @@ import Studio from "./pages/Studio";
 import PublicSongDraft from "./pages/PublicSongDraft";
 import OrderSuccess from "./pages/OrderSuccess";
 import PublicSong from "./pages/PublicSong";
+import Discount from "./pages/Discount";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/s/draft" element={<PublicSongDraft />} />
           <Route path="/order-success" element={<OrderSuccess />} />
           <Route path="/s/song/:orderId" element={<PublicSong />} />
+          <Route path="/discount" element={<Discount />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
