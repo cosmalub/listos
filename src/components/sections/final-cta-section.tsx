@@ -71,10 +71,10 @@ export function FinalCtaSection() {
           {/* CTA Button */}
           <div className="text-center">
             <Button
-              onClick={() => window.location.href = '/studio'}
+              onClick={() => window.location.href = '/order'}
               className="text-xl px-16 py-8 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-2xl transition-all hover:shadow-3xl hover:scale-110 font-bold animate-pulse-slow"
             >
-              🎵 Створити пісню зараз
+              🎵 Створити спогад назавжди
             </Button>
             
             <p className="text-sm text-[#6A5ACD]/60 mt-6">
