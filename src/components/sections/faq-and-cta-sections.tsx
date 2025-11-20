@@ -221,10 +221,10 @@ export default function FaqAndCtaSections() {
           </h3>
           
           <Button
-            onClick={() => window.location.href = '/studio'}
+            onClick={() => window.location.href = '/order'}
             className="text-lg px-12 py-7 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold mb-6"
           >
-            🎵 Створити листівку
+            🎵 Усі питання закриті — замовляю!
           </Button>
 
           <div className="flex flex-col md:flex-row justify-center items-center gap-4 text-[#6A5ACD]/80">

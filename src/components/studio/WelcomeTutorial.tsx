@@ -207,8 +207,9 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
               <Lock className="h-5 w-5 text-[#6A5ACD]" />
               Введіть код доступу
             </DialogTitle>
-            <DialogDescription>
-              Введіть код доступу, який ви отримали після оплати замовлення
+            <DialogDescription className="space-y-2">
+              <p>Введіть код доступу, який ви отримали на email/telegram після оплати.</p>
+              <p className="text-sm">Або просто перейдіть за посиланням з email/telegram — код підставиться автоматично.</p>
             </DialogDescription>
           </DialogHeader>
           

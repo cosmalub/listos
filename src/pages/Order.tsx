@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,6 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 export default function Order() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -107,24 +109,8 @@ export default function Order() {
         }
       }
 
-      // Показуємо успішне повідомлення
-      toast.success('Ваша заявка успішно створена!', {
-        description: 'Ми зв\'яжемося з вами найближчим часом для підтвердження оплати',
-        duration: 5000,
-      });
-
-      // Очищаємо форму
-      setFormData({
-        name: "",
-        phone: "",
-        city: "",
-        novaPoshta: "",
-        comment: "",
-        contactType: "phone",
-        telegram: "",
-        promoCode: ""
-      });
-      setPromoStatus(null);
+      // Redirect to pending page with order ID
+      navigate(`/order-pending?orderId=${data.id}`);
 
     } catch (error) {
       console.error('Error creating order:', error);
