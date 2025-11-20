@@ -110,7 +110,7 @@ export function GuaranteeSection() {
 
               <div className="flex justify-center mb-8">
                 <Button 
-                  onClick={() => window.location.href = '/studio'}
+                  onClick={() => window.location.href = '/order'}
                   size="lg"
                   className="text-lg px-12 py-7 rounded-full bg-white text-[#6A5ACD] hover:bg-gray-50 shadow-xl transition-all hover:scale-105 font-bold"
                 >

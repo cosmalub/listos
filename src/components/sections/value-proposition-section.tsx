@@ -282,10 +282,10 @@ export function ValuePropositionSection() {
         {/* CTA */}
         <div className="text-center mt-12">
           <Button
-            onClick={() => (window.location.href = "/studio")}
+            onClick={() => (window.location.href = "/order")}
             className="text-lg px-10 py-7 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold"
           >
-            🎵 Створити подарунок зараз
+            🎵 Обираю професійне рішення
           </Button>
         </div>
       </div>
