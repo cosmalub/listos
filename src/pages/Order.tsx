@@ -153,9 +153,9 @@ export default function Order() {
           </div>
 
           {/* Процесс создания */}
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="mb-12">
             {/* Как это работает */}
-            <Card className="bg-white/70 backdrop-blur-xl ring-1 ring-white/20 shadow-sm border-0">
+            <Card className="bg-white/70 backdrop-blur-xl ring-1 ring-white/20 shadow-sm border-0 max-w-2xl mx-auto">
               <CardHeader className="pb-4">
                 <CardTitle className="text-lg font-medium text-[#6A5ACD]">
                   Як це працює
@@ -178,28 +178,6 @@ export default function Order() {
                     </div>
                   </div>
                 ))}
-              </CardContent>
-            </Card>
-
-            {/* Видео-демонстрация */}
-            <Card className="bg-white/70 backdrop-blur-xl ring-1 ring-white/20 shadow-sm border-0">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-lg font-medium text-[#6A5ACD]">
-                  Демонстрація процесу
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="relative bg-gradient-to-br from-[#6A5ACD]/5 to-[#6A5ACD]/10 rounded-xl aspect-video flex items-center justify-center ring-1 ring-[#6A5ACD]/10">
-                  <div className="text-center space-y-2">
-                    <Play className="h-8 w-8 text-[#6A5ACD]/60 mx-auto" />
-                    <p className="text-sm text-[#6A5ACD]/70 font-medium">
-                      Відео буде додано найближчим часом
-                    </p>
-                    <p className="text-xs text-[#6A5ACD]/60">
-                      Тут ви побачите весь процес створення
-                    </p>
-                  </div>
-                </div>
               </CardContent>
             </Card>
           </div>
