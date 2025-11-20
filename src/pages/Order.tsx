@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Music, Shield, Play, CheckCircle, Sparkles, Phone, MessageCircle } from "lucide-react";
+import { ArrowLeft, Music, Shield, Play, CheckCircle, Sparkles, Phone, MessageCircle, Loader2 } from "lucide-react";
 import { Header } from "@/components/sections/header";
 import { Footer } from "@/components/sections/footer";
 import { supabase } from "@/integrations/supabase/client";
@@ -18,8 +18,50 @@ export default function Order() {
     novaPoshta: "",
     comment: "",
     contactType: "phone",
-    telegram: ""
+    telegram: "",
+    promoCode: ""
   });
+
+  const [promoStatus, setPromoStatus] = useState<{
+    valid: boolean;
+    message: string;
+    discountPercent?: number;
+  } | null>(null);
+  const [validatingPromo, setValidatingPromo] = useState(false);
+
+  const validatePromoCode = async () => {
+    if (!formData.promoCode.trim()) {
+      toast.error('Введіть промокод');
+      return;
+    }
+
+    setValidatingPromo(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('validate-promo-code', {
+        body: { promoCode: formData.promoCode.trim() }
+      });
+
+      if (error) throw error;
+
+      setPromoStatus(data);
+      
+      if (data.valid) {
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.error('Error validating promo code:', error);
+      toast.error('Помилка при перевірці промокоду');
+    } finally {
+      setValidatingPromo(false);
+    }
+  };
+
+  const basePrice = 399;
+  const finalPrice = promoStatus?.valid 
+    ? basePrice * (1 - (promoStatus.discountPercent || 0) / 100)
+    : basePrice;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,7 +77,6 @@ export default function Order() {
           nova_poshta: formData.novaPoshta,
           comment: formData.comment,
           contact_type: formData.contactType,
-          // is_paid = false, access_token - автоматично генерується
         })
         .select()
         .single();
@@ -43,6 +84,28 @@ export default function Order() {
       if (error) throw error;
 
       console.log('Pre-order created:', data);
+
+      // Если использовался промокод - отмечаем его как использованный
+      if (promoStatus?.valid && formData.promoCode) {
+        try {
+          const { error: promoUpdateError } = await supabase
+            .from('promo_codes')
+            .update({
+              is_used: true,
+              used_at: new Date().toISOString(),
+              used_in_order_id: data.id
+            })
+            .eq('code', formData.promoCode.toUpperCase().trim());
+
+          if (promoUpdateError) {
+            console.error('Error updating promo code:', promoUpdateError);
+          } else {
+            console.log('Promo code marked as used');
+          }
+        } catch (promoError) {
+          console.error('Error with promo code update:', promoError);
+        }
+      }
 
       // Показуємо успішне повідомлення
       toast.success('Ваша заявка успішно створена!', {
@@ -58,8 +121,10 @@ export default function Order() {
         novaPoshta: "",
         comment: "",
         contactType: "phone",
-        telegram: ""
+        telegram: "",
+        promoCode: ""
       });
+      setPromoStatus(null);
 
     } catch (error) {
       console.error('Error creating order:', error);
@@ -250,10 +315,51 @@ export default function Order() {
                   </div>
                 </div>
 
+                {/* Промокод */}
+                <div className="space-y-2">
+                  <Label htmlFor="promoCode">Промокод (опціонально)</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="promoCode"
+                      value={formData.promoCode}
+                      onChange={(e) => handleInputChange("promoCode", e.target.value.toUpperCase())}
+                      placeholder="NEXT25-XXXXXX"
+                      className="flex-1"
+                    />
+                    <Button
+                      type="button"
+                      onClick={validatePromoCode}
+                      disabled={validatingPromo || !formData.promoCode.trim()}
+                      variant="outline"
+                    >
+                      {validatingPromo ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Застосувати'}
+                    </Button>
+                  </div>
+                  {promoStatus && (
+                    <p className={`text-sm ${promoStatus.valid ? 'text-green-600' : 'text-red-600'}`}>
+                      {promoStatus.message}
+                    </p>
+                  )}
+                </div>
+
                 <div className="bg-[#6A5ACD]/10 p-4 rounded-lg border border-[#6A5ACD]/20">
-                  <div className="flex justify-between items-center text-lg font-semibold">
-                    <span className="text-[#6A5ACD]">До сплати:</span>
-                    <span className="text-[#6A5ACD]">399 грн</span>
+                  <div className="space-y-2">
+                    {promoStatus?.valid && (
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-[#6A5ACD]/70">Початкова ціна:</span>
+                        <span className="text-[#6A5ACD]/70 line-through">{basePrice} грн</span>
+                      </div>
+                    )}
+                    {promoStatus?.valid && (
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-green-600">Знижка {promoStatus.discountPercent}%:</span>
+                        <span className="text-green-600">-{basePrice - finalPrice} грн</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between items-center text-lg font-semibold">
+                      <span className="text-[#6A5ACD]">До сплати:</span>
+                      <span className="text-[#6A5ACD]">{finalPrice} грн</span>
+                    </div>
                   </div>
                   <p className="text-sm text-[#6A5ACD]/70 mt-1">
                     Безкоштовна доставка Новою Поштою включена

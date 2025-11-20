@@ -1,20 +1,106 @@
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Copy, Gift, ArrowRight } from "lucide-react";
+import { Copy, Gift, ArrowRight, Loader2 } from "lucide-react";
 import { Header } from "@/components/sections/header";
 import { Footer } from "@/components/sections/footer";
+import { supabase } from "@/integrations/supabase/client";
 
 const Discount = () => {
   const [searchParams] = useSearchParams();
   const orderId = searchParams.get("ref");
-  const promoCode = "NEXT25";
+  const [promoData, setPromoData] = useState<{
+    code: string;
+    expiresAt: string;
+  } | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPromoCode = async () => {
+      if (!orderId) {
+        setLoading(false);
+        return;
+      }
+      
+      try {
+        const { data, error } = await supabase
+          .from('promo_codes')
+          .select('code, expires_at')
+          .eq('pre_order_id', orderId)
+          .eq('is_used', false)
+          .maybeSingle();
+
+        if (error) {
+          console.error('Error fetching promo code:', error);
+        } else if (data) {
+          setPromoData({
+            code: data.code,
+            expiresAt: data.expires_at
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching promo code:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPromoCode();
+  }, [orderId]);
 
   const copyPromoCode = () => {
-    navigator.clipboard.writeText(promoCode);
-    toast.success("Промокод скопійовано!");
+    if (promoData?.code) {
+      navigator.clipboard.writeText(promoData.code);
+      toast.success("Промокод скопійовано!");
+    }
   };
+
+  const formatExpiryDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('uk-UA', { 
+      day: 'numeric', 
+      month: 'long', 
+      year: 'numeric' 
+    });
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-background to-accent/20">
+        <Header />
+        <main className="container mx-auto px-4 py-16">
+          <div className="max-w-2xl mx-auto text-center">
+            <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto" />
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!promoData) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-background to-accent/20">
+        <Header />
+        <main className="container mx-auto px-4 py-16">
+          <div className="max-w-2xl mx-auto text-center space-y-8">
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground">
+              Промокод не знайдено
+            </h1>
+            <p className="text-xl text-muted-foreground">
+              Можливо, промокод ще генерується або вже використаний
+            </p>
+            <Button onClick={() => window.location.href = '/'}>
+              На головну
+            </Button>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-accent/20">
@@ -47,11 +133,11 @@ const Discount = () => {
               
               <div className="bg-background/80 backdrop-blur-sm rounded-lg p-6 space-y-4">
                 <p className="text-sm text-muted-foreground uppercase tracking-wide">
-                  Ваш промокод
+                  Ваш персональний промокод
                 </p>
                 <div className="flex items-center justify-center gap-4">
                   <code className="text-3xl font-mono font-bold text-foreground tracking-wider">
-                    {promoCode}
+                    {promoData.code}
                   </code>
                   <Button
                     onClick={copyPromoCode}
@@ -62,6 +148,9 @@ const Discount = () => {
                     <Copy className="h-5 w-5" />
                   </Button>
                 </div>
+                <p className="text-sm text-muted-foreground">
+                  Дійсний до: {formatExpiryDate(promoData.expiresAt)}
+                </p>
               </div>
             </div>
           </Card>
@@ -78,7 +167,7 @@ const Discount = () => {
               </li>
               <li className="flex gap-3">
                 <span className="font-semibold text-primary">2.</span>
-                <span>При оформленні замовлення введіть промокод <code className="bg-muted px-2 py-1 rounded text-foreground font-mono">{promoCode}</code></span>
+                <span>При оформленні замовлення введіть промокод <code className="bg-muted px-2 py-1 rounded text-foreground font-mono">{promoData.code}</code></span>
               </li>
               <li className="flex gap-3">
                 <span className="font-semibold text-primary">3.</span>
@@ -92,7 +181,7 @@ const Discount = () => {
             <Button
               size="lg"
               className="text-lg"
-              onClick={() => window.location.href = `/?promo=${promoCode}`}
+              onClick={() => window.location.href = `/?promo=${promoData.code}`}
             >
               Створити нову листівку
               <ArrowRight className="ml-2 h-5 w-5" />

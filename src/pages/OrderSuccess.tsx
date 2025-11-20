@@ -91,6 +91,28 @@ export default function OrderSuccess() {
     fetchOrder();
   }, [orderId, toast]);
 
+  // Генерация промокода при загрузке страницы
+  useEffect(() => {
+    const generatePromoCode = async () => {
+      if (!orderData?.pre_order_id) return;
+      
+      try {
+        console.log('Generating promo code for pre_order_id:', orderData.pre_order_id);
+        const { data, error } = await supabase.functions.invoke('generate-promo-code', {
+          body: { preOrderId: orderData.pre_order_id }
+        });
+
+        if (error) throw error;
+        
+        console.log('Promo code generated:', data);
+      } catch (error) {
+        console.error('Error generating promo code:', error);
+      }
+    };
+
+    generatePromoCode();
+  }, [orderData?.pre_order_id]);
+
 
   if (loading) {
     return (
