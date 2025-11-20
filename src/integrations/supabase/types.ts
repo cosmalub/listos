@@ -289,6 +289,60 @@ export type Database = {
         }
         Relationships: []
       }
+      promo_codes: {
+        Row: {
+          code: string
+          created_at: string
+          discount_percent: number
+          expires_at: string
+          id: string
+          is_used: boolean
+          pre_order_id: string | null
+          updated_at: string
+          used_at: string | null
+          used_in_order_id: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          discount_percent?: number
+          expires_at: string
+          id?: string
+          is_used?: boolean
+          pre_order_id?: string | null
+          updated_at?: string
+          used_at?: string | null
+          used_in_order_id?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          discount_percent?: number
+          expires_at?: string
+          id?: string
+          is_used?: boolean
+          pre_order_id?: string | null
+          updated_at?: string
+          used_at?: string | null
+          used_in_order_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "promo_codes_pre_order_id_fkey"
+            columns: ["pre_order_id"]
+            isOneToOne: false
+            referencedRelation: "pre_orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "promo_codes_used_in_order_id_fkey"
+            columns: ["used_in_order_id"]
+            isOneToOne: false
+            referencedRelation: "pre_orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
