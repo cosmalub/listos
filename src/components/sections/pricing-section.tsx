@@ -99,7 +99,7 @@ export function PricingSection() {
                   className="text-lg px-12 py-7 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold mb-6" 
                   onClick={() => window.location.href = '/order'}
                 >
-                  🎵 Купити за 399 грн
+                  🎵 Замовити зараз
                 </Button>
 
                 {/* Benefits under button */}
