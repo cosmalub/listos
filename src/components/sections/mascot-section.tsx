@@ -196,7 +196,7 @@ export function MascotSection() {
                     onClick={() => window.location.href = '/order'}
                     className="text-lg px-10 py-7 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold mb-6"
                   >
-                    Купити доступ за 399 грн
+                    Купити доступ
                   </Button>
                   
                   <div className="space-y-3 text-[#6A5ACD]/80">
