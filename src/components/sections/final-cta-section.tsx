@@ -27,7 +27,7 @@ export function FinalCtaSection() {
               </p>
 
               <p className="text-2xl font-bold text-[#6A5ACD] text-center py-4">
-                Стандартні подарунки — це витрати. Listosyk — це інвестиція в емоції.
+                Стандартні подарунки — це витрати. Листосик — це інвестиція в емоції.
               </p>
             </div>
           </div>

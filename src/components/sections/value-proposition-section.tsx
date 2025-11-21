@@ -107,7 +107,7 @@ export function ValuePropositionSection() {
               </div>
             </div>
 
-            {/* Права частина - Listosyk */}
+            {/* Права частина - Листосик */}
             <div className="space-y-6">
               <div className="text-center md:text-left">
                 <h3 className="text-2xl font-bold text-[#6A5ACD] mb-4 flex items-center justify-center md:justify-start gap-2">
@@ -123,7 +123,7 @@ export function ValuePropositionSection() {
                     <div className="flex items-start gap-3 mb-4">
                       <div className="text-3xl">✨</div>
                       <div>
-                        <h4 className="font-bold text-[#6A5ACD] mb-1">Listosyk</h4>
+                        <h4 className="font-bold text-[#6A5ACD] mb-1">Листосик</h4>
                         <p className="text-sm text-[#6A5ACD]/80">399 грн (~$10 одноразово)</p>
                       </div>
                     </div>
@@ -267,7 +267,7 @@ export function ValuePropositionSection() {
                   <strong>Пісні на замовлення (500-2500 грн)</strong> — роблять вручну, довго і дорого.
                 </p>
                 <p className="text-lg text-[#6A5ACD] leading-relaxed font-semibold">
-                  <strong className="text-[#6A5ACD]">Listosyk (399 грн)</strong> — API автоматизація топових моделей + експертиза + персоналізація + комплексний подарунок з фізичною листівкою.
+                  <strong className="text-[#6A5ACD]">Листосик (399 грн)</strong> — API автоматизація топових моделей + експертиза + персоналізація + комплексний подарунок з фізичною листівкою.
                 </p>
               </div>
               <div className="inline-block bg-white px-6 py-3 rounded-full border-2 border-[#8A7AEE] shadow-lg">
