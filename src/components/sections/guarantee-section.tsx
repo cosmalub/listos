@@ -1,5 +1,6 @@
 import { CheckCircle, Sparkles, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import mascotQualityGuarantee from "@/assets/mascot-quality-guarantee.png";
 
 interface GuaranteeCardProps {
   icon: string;
@@ -161,8 +162,8 @@ export function GuaranteeSection() {
         <div className="max-w-4xl mx-auto mt-12 flex flex-col md:flex-row items-center gap-6">
           <div className="w-full md:w-1/4 flex justify-center">
             <img
-              src="/lovable-uploads/bfc3ff59-dfa5-40be-a6ec-6d9dbe6007d8.png"
-              alt="Листосик - гарантує безпеку"
+              src={mascotQualityGuarantee}
+              alt="Листосик - якість гарантую"
               className="w-48 h-48 transform transition-transform hover:scale-105 drop-shadow-2xl"
             />
           </div>
