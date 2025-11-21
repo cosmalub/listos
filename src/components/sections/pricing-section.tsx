@@ -1,6 +1,7 @@
 import { Check, ShieldCheck, Sparkles, Zap, Truck, RefreshCw, Music, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import mascot100Guarantee from "@/assets/mascot-100-guarantee.png";
 
 export function PricingSection() {
   const features = [
@@ -141,8 +142,8 @@ export function PricingSection() {
             {/* Cat Image */}
             <div className="w-full md:w-1/3 flex justify-center">
               <img
-                src="/lovable-uploads/bfc3ff59-dfa5-40be-a6ec-6d9dbe6007d8.png"
-                alt="Листосик - гарантія якості"
+                src={mascot100Guarantee}
+                alt="Листосик - 100% гарантія"
                 className="w-64 h-64 transform transition-transform hover:scale-105 drop-shadow-2xl"
               />
             </div>
