@@ -164,7 +164,7 @@ export function GuaranteeSection() {
             <img
               src={mascotQualityGuarantee}
               alt="Листосик - якість гарантую"
-              className="w-48 h-48 transform transition-transform hover:scale-105 drop-shadow-2xl"
+              className="w-64 h-64 transform transition-transform hover:scale-105 drop-shadow-2xl"
             />
           </div>
 
