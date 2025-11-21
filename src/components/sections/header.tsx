@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Menu } from "lucide-react";
+import logoListosik from "@/assets/logo-listosik.png";
 
 interface HeaderProps {
   centerTitle?: string;
@@ -52,9 +53,9 @@ const Header = ({ centerTitle, hideNav = false, showMenu = true }: HeaderProps) 
       <div className="w-full max-w-[90rem] 2xl:max-w-screen-2xl backdrop-blur-md bg-background/30 border border-white/10 rounded-2xl px-6 shadow-lg shadow-black/5 my-[3px] py-0 mx-auto">
         <div className="grid grid-cols-[auto_1fr_auto] md:grid-cols-3 items-center md:justify-items-center">
           {/* Logo */}
-          <div className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent justify-self-start">
-            Listosyk
-          </div>
+          <a href="/" className="justify-self-start hover:opacity-80 transition-opacity">
+            <img src={logoListosik} alt="Listosyk" className="h-8 md:h-10" />
+          </a>
 
           {/* Desktop Navigation or Center Title */}
           {centerTitle ? (
