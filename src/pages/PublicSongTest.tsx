@@ -184,7 +184,7 @@ export default function PublicSongTest() {
 
           {/* Footer */}
           <div className="text-center text-sm text-muted-foreground mt-8">
-            <p>Створено за допомогою Listosyk</p>
+            <p>Створено за допомогою Листосик</p>
           </div>
         </div>
       </div>

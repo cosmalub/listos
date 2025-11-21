@@ -77,7 +77,7 @@ export function AiBenefitsSection() {
         items: [
           { name: "Студія звукозапису", price: "40 000 грн", time: "2-4 тижні" },
           { name: "Живі музиканти", price: "10 000 грн", time: "1 тиждень" },
-          { name: "Listosyk", price: "399 грн", time: "30 секунд", isHighlight: true },
+          { name: "Листосик", price: "399 грн", time: "30 секунд", isHighlight: true },
         ],
       },
       bottomText: "Результат? Той самий професійний звук. Але у 1000 разів швидше і дешевше.",
@@ -103,12 +103,12 @@ export function AiBenefitsSection() {
       title: "Доступно — ціна як у букету",
       description: `Студія звукозапису бере 40 000 грн за пісню. Живий музикант — 10 000 грн.
 
-Listosyk — 399 грн. Як букет квітів.`,
+Листосик — 399 грн. Як букет квітів.`,
       comparison: {
         title: "Порівняння:",
         items: [
           { name: "Букет квітів", price: "500 грн", time: "завяне через тиждень" },
-          { name: "Listosyk", price: "399 грн", time: "залишиться назавжди", isHighlight: true },
+          { name: "Листосик", price: "399 грн", time: "залишиться назавжди", isHighlight: true },
         ],
       },
       bottomText: "Що обереш?",

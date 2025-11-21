@@ -90,7 +90,7 @@ export function ComparisonSection() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-[#6A5ACD] mb-4">
-            Чому Listosyk краще?
+            Чому Листосик краще?
           </h2>
           <p className="text-lg text-[#6A5ACD]/70 max-w-2xl mx-auto">
             Порівняй зі звичайними подарунками
@@ -110,7 +110,7 @@ export function ComparisonSection() {
               Стандартні подарунки — це витрати.
             </p>
             <p className="text-2xl font-bold text-[#6A5ACD]">
-              Listosyk — це інвестиція в емоції 💜
+              Листосик — це інвестиція в емоції 💜
             </p>
           </div>
         </div>

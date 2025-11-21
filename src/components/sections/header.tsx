@@ -54,7 +54,7 @@ const Header = ({ centerTitle, hideNav = false, showMenu = true }: HeaderProps) 
         <div className="grid grid-cols-[auto_1fr_auto] md:grid-cols-3 items-center md:justify-items-center">
           {/* Logo */}
           <a href="/" className="justify-self-start hover:opacity-80 transition-opacity">
-            <img src={logoListosik} alt="Listosyk" className="h-8 md:h-10" />
+            <img src={logoListosik} alt="Листосик" className="h-8 md:h-10" />
           </a>
 
           {/* Desktop Navigation or Center Title */}
