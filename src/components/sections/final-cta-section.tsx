@@ -19,7 +19,7 @@ export function FinalCtaSection() {
           <div className="bg-gradient-to-br from-[#F8F7FF] to-white border-2 border-[#B8B3FF]/60 rounded-3xl p-8 md:p-12 mb-8 shadow-lg hover:shadow-xl hover:border-[#B8B3FF] transition-all shadow-[0_0_20px_rgba(184,179,255,0.15)]">
             <div className="space-y-6 text-[#6A5ACD]/80 text-lg leading-relaxed">
               <p>
-                <strong className="text-[#6A5ACD] text-xl">399 грн</strong> (або <strong className="text-[#6A5ACD] text-xl">299 грн</strong> зі знижкою) — це не ціна листівки. <strong className="text-[#6A5ACD]">Це ціна спогаду на все життя.</strong>
+                <strong className="text-[#6A5ACD] text-xl">399 грн</strong> — це не ціна листівки. <strong className="text-[#6A5ACD]">Це ціна спогаду на все життя.</strong>
               </p>
 
               <p>
