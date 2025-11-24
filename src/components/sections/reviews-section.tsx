@@ -1,42 +1,40 @@
 import { Button } from "@/components/ui/button";
-import { MessageCircle } from "lucide-react";
-
 interface ReviewScreenshotProps {
   imagePath: string;
   alt: string;
 }
-
-function ReviewScreenshot({ imagePath, alt }: ReviewScreenshotProps) {
-  return (
-    <div className="flex-shrink-0 w-[380px] md:w-[450px]">
+function ReviewScreenshot({
+  imagePath,
+  alt
+}: ReviewScreenshotProps) {
+  return <div className="flex-shrink-0 w-[380px] md:w-[450px]">
       <div className="bg-white rounded-2xl p-2 shadow-lg shadow-primary/20 border border-primary/10 overflow-hidden hover:shadow-xl hover:shadow-primary/30 transition-all duration-300">
-        <img 
-          src={imagePath} 
-          alt={alt}
-          className="w-full h-auto rounded-xl object-contain"
-        />
+        <img src={imagePath} alt={alt} className="w-full h-auto rounded-xl object-contain" />
       </div>
-    </div>
-  );
+    </div>;
 }
-
 export function ReviewsSection() {
-  const reviews = [
-    { imagePath: "/lovable-uploads/1-3.png", alt: "Відгук клієнта 1" },
-    { imagePath: "/lovable-uploads/2-2.png", alt: "Відгук клієнта 2" },
-    { imagePath: "/lovable-uploads/3.png", alt: "Відгук клієнта 3" },
-    { imagePath: "/lovable-uploads/4.png", alt: "Відгук клієнта 4" },
-  ];
+  const reviews = [{
+    imagePath: "/lovable-uploads/1-3.png",
+    alt: "Відгук клієнта 1"
+  }, {
+    imagePath: "/lovable-uploads/2-2.png",
+    alt: "Відгук клієнта 2"
+  }, {
+    imagePath: "/lovable-uploads/3.png",
+    alt: "Відгук клієнта 3"
+  }, {
+    imagePath: "/lovable-uploads/4.png",
+    alt: "Відгук клієнта 4"
+  }];
 
   // Дублюємо відгуки для безперервної прокрутки
   const firstRow = [...reviews, ...reviews];
   const secondRow = [...reviews.slice().reverse(), ...reviews.slice().reverse()];
-
-  return (
-    <section className="py-16 bg-white relative z-10 overflow-hidden">
+  return <section className="py-16 bg-white relative z-10 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-center gap-3 mb-4">
-          <MessageCircle className="w-8 h-8 text-primary" />
+          
           <h2 className="text-3xl md:text-4xl font-bold text-center text-primary">
             Відгуки наших клієнтів
           </h2>
@@ -48,28 +46,21 @@ export function ReviewsSection() {
         {/* Перший ряд - рух вліво */}
         <div className="relative mb-6">
           <div className="flex gap-5 animate-scroll-left">
-            {firstRow.map((review, index) => (
-              <ReviewScreenshot key={`row1-${index}`} {...review} />
-            ))}
+            {firstRow.map((review, index) => <ReviewScreenshot key={`row1-${index}`} {...review} />)}
           </div>
         </div>
 
         {/* Другий ряд - рух вправо */}
         <div className="relative mb-16">
           <div className="flex gap-5 animate-scroll-right">
-            {secondRow.map((review, index) => (
-              <ReviewScreenshot key={`row2-${index}`} {...review} />
-            ))}
+            {secondRow.map((review, index) => <ReviewScreenshot key={`row2-${index}`} {...review} />)}
           </div>
         </div>
 
         {/* CTA після відгуків */}
         <div className="max-w-3xl mx-auto">
           <div className="bg-card rounded-3xl border-2 border-primary/30 hover:border-primary/50 transition-all hover:shadow-lg p-8 text-center">
-            <Button 
-              onClick={() => window.location.href = '/order'}
-              className="text-lg px-10 py-7 rounded-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold mb-6"
-            >
+            <Button onClick={() => window.location.href = '/order'} className="text-lg px-10 py-7 rounded-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold mb-6">
               🎵 Я теж хочу такий подарунок!
             </Button>
             
@@ -97,6 +88,5 @@ export function ReviewsSection() {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 }
