@@ -8,7 +8,7 @@ interface ReviewScreenshotProps {
 
 function ReviewScreenshot({ imagePath, alt }: ReviewScreenshotProps) {
   return (
-    <div className="flex-shrink-0 w-[300px] md:w-[350px]">
+    <div className="flex-shrink-0 w-[380px] md:w-[450px]">
       <div className="bg-white rounded-2xl p-2 shadow-lg border border-gray-200 overflow-hidden">
         <img 
           src={imagePath} 
