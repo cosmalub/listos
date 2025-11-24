@@ -1,170 +1,87 @@
-import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { MessageCircle, CheckCheck } from "lucide-react";
 
-interface ReviewProps {
-  rating: number;
+interface MessageProps {
   text: string;
-  customerName: string;
-  customerAge: number;
-  customerCity: string;
-  giftFor: string;
+  emojis?: string;
 }
 
-function ReviewCard({ rating, text, customerName, customerAge, customerCity, giftFor }: ReviewProps) {
+function MessageBubble({ text, emojis }: MessageProps) {
   return (
-    <Card className="border-2 border-[#B8B3FF]/40 hover:border-[#B8B3FF] transition-all hover:shadow-lg flex-shrink-0 w-[350px]">
-      <CardContent className="p-6">
-        <div className="flex text-yellow-400 mb-4">
-          {[...Array(rating)].map((_, i) => (
-            <Star key={i} className="h-5 w-5 fill-current" />
-          ))}
+    <div className="flex-shrink-0 w-[380px] md:w-[420px]">
+      <div className="bg-white rounded-3xl rounded-bl-md p-5 shadow-md border-2 border-primary/20 relative">
+        <p className="text-foreground/90 leading-relaxed text-base mb-2">
+          {text}
+        </p>
+        {emojis && (
+          <div className="flex gap-1 mt-3">
+            {emojis.split('').map((emoji, i) => (
+              <span key={i} className="text-xl">{emoji}</span>
+            ))}
+          </div>
+        )}
+        <div className="flex items-center justify-end gap-1 mt-2 text-xs text-muted-foreground">
+          <CheckCheck className="w-4 h-4 text-primary" />
         </div>
-        <p className="text-[#6A5ACD]/80 leading-relaxed mb-4 text-sm">{text}</p>
-        <div className="border-t border-[#B8B3FF]/30 pt-4">
-          <p className="font-semibold text-[#6A5ACD] mb-1 text-sm">
-            — {customerName}, {customerAge} років ({customerCity})
-          </p>
-          <p className="text-xs text-[#6A5ACD]/70">Подарунок: {giftFor}</p>
-        </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 
 export function ReviewsSection() {
-  const reviews = [
-    {
-    rating: 5,
-    text: "Я аж расплакалась! Коли почула імена всіх моїх дітей у пісні — не змогла стримати емоцій. Листівка лежить на комоді, щодня дивлюсь на неї і посміхаюсь. Студія дуже зручна — справилась за 10 хвилин. Дякую, Листосик!",
-    customerName: "Олена",
-      customerAge: 48,
-      customerCity: "Київ",
-      giftFor: "Для себе (від дітей на 50 років)",
-    },
-    {
-      rating: 5,
-      text: "Дуже сподобалось сину і гостям! Танцювали під цю пісню весь вечір. Листівка стала хітом вечірки. Усі просили посилання, де замовити. Це краще, ніж букет квітів за 500 грн! Студія проста — навіть я, технічний нуль, справився.",
-      customerName: "Андрій",
-      customerAge: 35,
-      customerCity: "Львів",
-      giftFor: "Для сина на 18 років",
-    },
-    {
-      rating: 5,
-      text: "Незвичний подарунок викликав купу приємних емоцій. Мама слухає щодня! Сказала, що це найкращий подарунок за все життя. Процес створення простий — справилась за 10 хвилин. Спочатку боялась, що ШІ зробить погано, але результат вразив!",
-      customerName: "Марія",
-      customerAge: 29,
-      customerCity: "Дніпро",
-      giftFor: "Для мами на день народження",
-    },
-    {
-      rating: 5,
-      text: "Створила пісню за 10 хвилин. Листівка прийшла через 2 дні. Усе просто і швидко! Чоловік був вражений — не очікував такого. Каже, що це найоригінальніший подарунок. Студія інтуїтивна — кожен крок зрозумілий.",
-      customerName: "Ірина",
-      customerAge: 32,
-      customerCity: "Харків",
-      giftFor: "Для чоловіка на річницю",
-    },
-    {
-      rating: 5,
-      text: "Спочатку боявся, що ШІ зробить погано. Але результат вразив! Краще, ніж у студії звукозапису! Пісня звучить професійно — ніхто не повірив, що це зробив ШІ. Мама плакала від радості. Рекомендую всім!",
-      customerName: "Віктор",
-      customerAge: 41,
-      customerCity: "Одеса",
-      giftFor: "Для мами на 8 березня",
-    },
-    {
-      rating: 5,
-      text: "Найкращий подарунок, який я коли-небудь робила. Коханий був просто вражений! Слухав пісню раз 20 підряд. Листівку поставив на стіл у рамку. Це безцінно! Студія дуже зручна — навіть не очікувала, що все так просто.",
-      customerName: "Світлана",
-      customerAge: 27,
-      customerCity: "Київ",
-      giftFor: "Для коханого на день народження",
-    },
-    {
-      rating: 5,
-      text: "Замовляв уже втретє! Спочатку для дружини, потім для мами, тепер для сестри. Кожен раз — сльози радості. Це справді працює! ШІ створює дуже особисті та зворушливі пісні. Всім рекомендую!",
-      customerName: "Олег",
-      customerAge: 38,
-      customerCity: "Вінниця",
-      giftFor: "Для сестри на весілля",
-    },
-    {
-      rating: 5,
-      text: "Подарувала бабусі на 80 років. Вона слухала і плакала. Каже, що це найдорожчий подарунок у її житті. Всі онуки записали свої побажання у пісню. Магія! Процес створення простий — навіть не вірила, що справлюсь.",
-      customerName: "Тетяна",
-      customerAge: 45,
-      customerCity: "Полтава",
-      giftFor: "Для бабусі на 80 років",
-    },
-    {
-      rating: 5,
-      text: "Освідчувався з цією піснею! Спеціально додав дату нашого знайомства і всі важливі моменти. Вона сказала \"так\" зі слізьми на очах. Листівка тепер у рамці на стіні. Найкраще рішення для освідчення!",
-      customerName: "Максим",
-      customerAge: 30,
-      customerCity: "Запоріжжя",
-      giftFor: "Для коханої (освідчення)",
-    },
-    {
-      rating: 5,
-      text: "Подарунок від колег на ювілей роботи. Усі 15 років згадали у пісні! Був шокований і дуже зворушений. Колеги сказали, що студія дуже проста — вони справились всі разом за 15 хвилин. Дякую за такий сервіс!",
-      customerName: "Сергій",
-      customerAge: 52,
-      customerCity: "Черкаси",
-      giftFor: "Для себе (від колег)",
-    },
+  const messages = [
+    { text: "Дуже дякую. Все сподобалось 😊", emojis: "😊" },
+    { text: "Дякую вам, Наталі🙏🏻 Дякую що втілили мою ідею в життя. Тепер чекаємо на день народження і будемо дарувати листівку💜", emojis: "🙏🏻💜" },
+    { text: "Дякую велике🥹🫶🏻 Дуже красива листівка вийшла. Особливо сподобалась пісня. Я прям заплакала😭", emojis: "🥹🫶🏻😭" },
+    { text: "Дякую велике🙏 Сподобалось все🤗", emojis: "🙏🤗" },
   ];
 
-  // Розділяємо відгуки на два ряди
-  const firstRowReviews = reviews.slice(0, 5);
-  const secondRowReviews = reviews.slice(5, 10);
+  // Дублюємо повідомлення для безперервної прокрутки
+  const firstRow = [...messages, ...messages];
+  const secondRow = [...messages.slice().reverse(), ...messages.slice().reverse()];
 
   return (
-    <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10 overflow-hidden">
+    <section className="py-16 bg-gradient-to-b from-secondary/30 to-background relative z-10 overflow-hidden">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-[#6A5ACD] mb-4">
-          Що кажуть наші клієнти?
-        </h2>
-        <p className="text-lg text-center text-[#6A5ACD]/80 mb-12 max-w-2xl mx-auto">
-          Понад 500 сімей вже подарували незабутні емоції
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <MessageCircle className="w-8 h-8 text-primary" />
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-primary">
+            Відгуки наших клієнтів
+          </h2>
+        </div>
+        <p className="text-lg text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
+          Реальні повідомлення від задоволених покупців
         </p>
 
         {/* Перший ряд - рух вліво */}
         <div className="relative mb-6">
-          <div className="flex gap-6 animate-scroll-left">
-            {firstRowReviews.map((review, index) => (
-              <ReviewCard key={`row1-1-${index}`} {...review} />
-            ))}
-            {firstRowReviews.map((review, index) => (
-              <ReviewCard key={`row1-2-${index}`} {...review} />
+          <div className="flex gap-5 animate-scroll-left">
+            {firstRow.map((message, index) => (
+              <MessageBubble key={`row1-${index}`} {...message} />
             ))}
           </div>
         </div>
 
         {/* Другий ряд - рух вправо */}
         <div className="relative mb-16">
-          <div className="flex gap-6 animate-scroll-right">
-            {secondRowReviews.map((review, index) => (
-              <ReviewCard key={`row2-1-${index}`} {...review} />
-            ))}
-            {secondRowReviews.map((review, index) => (
-              <ReviewCard key={`row2-2-${index}`} {...review} />
+          <div className="flex gap-5 animate-scroll-right">
+            {secondRow.map((message, index) => (
+              <MessageBubble key={`row2-${index}`} {...message} />
             ))}
           </div>
         </div>
 
         {/* CTA після відгуків */}
         <div className="max-w-3xl mx-auto">
-          <div className="bg-card rounded-3xl border-2 border-[#B8B3FF]/60 hover:border-[#B8B3FF] transition-all hover:shadow-lg p-8 text-center">
-          <Button 
-            onClick={() => window.location.href = '/order'}
-            className="text-lg px-10 py-7 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold mb-6"
-          >
-            🎵 Я теж хочу такий подарунок!
-          </Button>
+          <div className="bg-card rounded-3xl border-2 border-primary/30 hover:border-primary/50 transition-all hover:shadow-lg p-8 text-center">
+            <Button 
+              onClick={() => window.location.href = '/order'}
+              className="text-lg px-10 py-7 rounded-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold mb-6"
+            >
+              🎵 Я теж хочу такий подарунок!
+            </Button>
             
-            <div className="space-y-3 text-[#6A5ACD]/80">
+            <div className="space-y-3 text-muted-foreground">
               <div className="flex items-center justify-center gap-2">
                 <span className="text-xl">💝</span>
                 <span className="text-sm md:text-base">Понад 500 створених емоційних історій</span>
