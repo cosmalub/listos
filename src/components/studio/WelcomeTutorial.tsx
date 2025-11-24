@@ -236,29 +236,33 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
               </p>
             </div>
 
-            <Card className="bg-blue-50 border-blue-200 p-3">
-              <p className="text-sm text-blue-900">
-                <strong>Не отримали код?</strong><br />
-                Зв'яжіться з нами після оплати, і ми відправимо вам код доступу
-              </p>
-            </Card>
-
-            <Card className="bg-purple-50 border-purple-200 p-3">
-              <p className="text-sm text-purple-900">
-                <strong>У вас ще немає коду?</strong><br />
-                Ви можете{' '}
-                <a 
-                  href="/order" 
-                  className="text-[#6A5ACD] underline hover:text-[#5A4ABD] font-semibold"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    window.location.href = '/order';
-                  }}
-                >
-                  оформити замовлення тут
-                </a>
-                {' '}і отримати код доступу після оплати
-              </p>
+            <Card className="bg-gradient-to-br from-blue-50 to-purple-50 border-purple-200 p-4">
+              <div className="space-y-3">
+                <div>
+                  <p className="text-sm text-purple-900">
+                    <strong>Не отримали код?</strong><br />
+                    Зв'яжіться з нами після оплати, і ми відправимо вам код доступу
+                  </p>
+                </div>
+                
+                <div className="border-t border-purple-200 pt-3">
+                  <p className="text-sm text-purple-900">
+                    <strong>У вас ще немає коду?</strong><br />
+                    Ви можете{' '}
+                    <a 
+                      href="/order" 
+                      className="text-[#6A5ACD] underline hover:text-[#5A4ABD] font-semibold"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.location.href = '/order';
+                      }}
+                    >
+                      оформити замовлення тут
+                    </a>
+                    {' '}і отримати код доступу після оплати
+                  </p>
+                </div>
+              </div>
             </Card>
           </div>
 
