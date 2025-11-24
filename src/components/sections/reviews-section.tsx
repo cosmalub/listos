@@ -9,7 +9,7 @@ interface ReviewScreenshotProps {
 function ReviewScreenshot({ imagePath, alt }: ReviewScreenshotProps) {
   return (
     <div className="flex-shrink-0 w-[380px] md:w-[450px]">
-      <div className="bg-white rounded-2xl p-2 shadow-lg border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-2xl p-2 shadow-lg shadow-primary/20 border border-primary/10 overflow-hidden hover:shadow-xl hover:shadow-primary/30 transition-all duration-300">
         <img 
           src={imagePath} 
           alt={alt}
@@ -33,7 +33,7 @@ export function ReviewsSection() {
   const secondRow = [...reviews.slice().reverse(), ...reviews.slice().reverse()];
 
   return (
-    <section className="py-16 bg-gradient-to-b from-secondary/30 to-background relative z-10 overflow-hidden">
+    <section className="py-16 bg-white relative z-10 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-center gap-3 mb-4">
           <MessageCircle className="w-8 h-8 text-primary" />
