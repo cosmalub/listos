@@ -1,28 +1,20 @@
 import { Button } from "@/components/ui/button";
-import { MessageCircle, CheckCheck } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 
-interface MessageProps {
-  text: string;
-  emojis?: string;
+interface ReviewScreenshotProps {
+  imagePath: string;
+  alt: string;
 }
 
-function MessageBubble({ text, emojis }: MessageProps) {
+function ReviewScreenshot({ imagePath, alt }: ReviewScreenshotProps) {
   return (
-    <div className="flex-shrink-0 w-[380px] md:w-[420px]">
-      <div className="bg-white rounded-3xl rounded-bl-md p-5 shadow-md border-2 border-primary/20 relative">
-        <p className="text-foreground/90 leading-relaxed text-base mb-2">
-          {text}
-        </p>
-        {emojis && (
-          <div className="flex gap-1 mt-3">
-            {emojis.split('').map((emoji, i) => (
-              <span key={i} className="text-xl">{emoji}</span>
-            ))}
-          </div>
-        )}
-        <div className="flex items-center justify-end gap-1 mt-2 text-xs text-muted-foreground">
-          <CheckCheck className="w-4 h-4 text-primary" />
-        </div>
+    <div className="flex-shrink-0 w-[300px] md:w-[350px]">
+      <div className="bg-card rounded-2xl p-2 shadow-lg border border-border overflow-hidden hover:shadow-xl transition-shadow">
+        <img 
+          src={imagePath} 
+          alt={alt}
+          className="w-full h-auto rounded-xl object-contain"
+        />
       </div>
     </div>
   );
@@ -56,8 +48,8 @@ export function ReviewsSection() {
         {/* Перший ряд - рух вліво */}
         <div className="relative mb-6">
           <div className="flex gap-5 animate-scroll-left">
-            {firstRow.map((message, index) => (
-              <MessageBubble key={`row1-${index}`} {...message} />
+            {firstRow.map((review, index) => (
+              <ReviewScreenshot key={`row1-${index}`} {...review} />
             ))}
           </div>
         </div>
@@ -65,8 +57,8 @@ export function ReviewsSection() {
         {/* Другий ряд - рух вправо */}
         <div className="relative mb-16">
           <div className="flex gap-5 animate-scroll-right">
-            {secondRow.map((message, index) => (
-              <MessageBubble key={`row2-${index}`} {...message} />
+            {secondRow.map((review, index) => (
+              <ReviewScreenshot key={`row2-${index}`} {...review} />
             ))}
           </div>
         </div>
