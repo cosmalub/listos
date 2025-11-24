@@ -242,6 +242,24 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
                 Зв'яжіться з нами після оплати, і ми відправимо вам код доступу
               </p>
             </Card>
+
+            <Card className="bg-purple-50 border-purple-200 p-3">
+              <p className="text-sm text-purple-900">
+                <strong>У вас ще немає коду?</strong><br />
+                Ви можете{' '}
+                <a 
+                  href="/order" 
+                  className="text-[#6A5ACD] underline hover:text-[#5A4ABD] font-semibold"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.location.href = '/order';
+                  }}
+                >
+                  оформити замовлення тут
+                </a>
+                {' '}і отримати код доступу після оплати
+              </p>
+            </Card>
           </div>
 
           <DialogFooter>
