@@ -17,6 +17,7 @@ Deno.serve(async (req) => {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     const {
+      phase = 'finalize', // 'create' or 'finalize'
       preOrderId,
       lyrics,
       musicVariant,
@@ -25,9 +26,11 @@ Deno.serve(async (req) => {
       backDesign,
       frontImageBase64,
       backImageBase64,
+      qrCodeUrl,
     } = await req.json();
 
     console.log('Saving order with data:', {
+      phase,
       preOrderId,
       hasLyrics: !!lyrics,
       hasMusicVariant: !!musicVariant,
@@ -36,6 +39,7 @@ Deno.serve(async (req) => {
       hasBackDesign: !!backDesign,
       hasFrontImage: !!frontImageBase64,
       hasBackImage: !!backImageBase64,
+      qrCodeUrl,
     });
 
     // Перевірка наявності preOrderId
@@ -161,6 +165,19 @@ Deno.serve(async (req) => {
       console.log('Order created with ID:', orderId);
     }
 
+    // PHASE 1: If 'create' phase, just return the orderId
+    if (phase === 'create') {
+      console.log('Phase CREATE completed, returning orderId:', orderId);
+      return new Response(
+        JSON.stringify({ orderId, success: true }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 200,
+        }
+      );
+    }
+
+    // PHASE 2: 'finalize' phase - upload images and complete order
     // Helper function to upload base64 image
     async function uploadBase64Image(base64Data: string, path: string) {
       const base64Content = base64Data.split(',')[1];
@@ -195,12 +212,13 @@ Deno.serve(async (req) => {
     const backImageUrl = await uploadBase64Image(backImageBase64, backImagePath);
     console.log('Back image uploaded:', backImageUrl);
 
-    // Update order with image URLs and mark as completed
+    // Update order with image URLs, QR code URL, and mark as completed
     const { error: finalUpdateError } = await supabase
       .from('orders')
       .update({
         front_image_url: frontImageUrl,
         back_image_url: backImageUrl,
+        qr_code_url: qrCodeUrl || null,
         studio_completed: true,
         studio_completed_at: new Date().toISOString()
       })
@@ -222,7 +240,7 @@ Deno.serve(async (req) => {
       // Не кидаємо помилку, бо order вже збережено
     }
 
-    console.log('Order saved and completed successfully:', orderId);
+    console.log('Order finalized and completed successfully:', orderId);
 
     return new Response(
       JSON.stringify({ orderId, success: true }),
