@@ -50,11 +50,45 @@ Deno.serve(async (req) => {
       );
     }
 
+    // Handle dev mode: create pre_order if it doesn't exist
+    let actualPreOrderId = preOrderId;
+    if (preOrderId === 'dev-mode-pre-order-id') {
+      console.log('Dev mode detected, checking/creating pre_order');
+      const { data: existingPreOrder } = await supabase
+        .from('pre_orders')
+        .select('id')
+        .eq('access_token', 'dev-mode-token')
+        .maybeSingle();
+
+      if (!existingPreOrder) {
+        const { data: newPreOrder, error: preOrderError } = await supabase
+          .from('pre_orders')
+          .insert({
+            access_token: 'dev-mode-token',
+            is_paid: false,
+            status: 'pending',
+          })
+          .select()
+          .single();
+
+        if (preOrderError) {
+          console.error('Error creating dev pre_order:', preOrderError);
+          throw preOrderError;
+        }
+
+        actualPreOrderId = newPreOrder.id;
+        console.log('Created dev pre_order with ID:', actualPreOrderId);
+      } else {
+        actualPreOrderId = existingPreOrder.id;
+        console.log('Using existing dev pre_order with ID:', actualPreOrderId);
+      }
+    }
+
     // Перевіряємо, чи вже існує запис для цього pre_order
     const { data: existingOrder } = await supabase
       .from('orders')
       .select('id')
-      .eq('pre_order_id', preOrderId)
+      .eq('pre_order_id', actualPreOrderId)
       .maybeSingle();
 
     let orderId: string;
@@ -93,11 +127,11 @@ Deno.serve(async (req) => {
       console.log('Order updated with ID:', orderId);
     } else {
       // Якщо запису немає - створюємо новий
-      console.log('Creating new order for pre_order:', preOrderId);
+      console.log('Creating new order for pre_order:', actualPreOrderId);
       const { data: newOrder, error: insertError } = await supabase
         .from('orders')
         .insert({
-          pre_order_id: preOrderId,
+          pre_order_id: actualPreOrderId,
           lyrics,
           music_variant_id: musicVariant?.id || null,
           music_variant_title: musicVariant?.title || null,
@@ -181,7 +215,7 @@ Deno.serve(async (req) => {
     const { error: preOrderUpdateError } = await supabase
       .from('pre_orders')
       .update({ status: 'completed' })
-      .eq('id', preOrderId);
+      .eq('id', actualPreOrderId);
 
     if (preOrderUpdateError) {
       console.error('Error updating pre_order status:', preOrderUpdateError);
