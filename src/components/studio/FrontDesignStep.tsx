@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Progress } from '@/components/ui/progress';
 import { ArrowLeft, Wand2, Loader2, RotateCcw, ArrowRight, Heart, Gift, MessageCircle, Info, RefreshCw } from 'lucide-react';
 import { ImageUploader } from './ImageUploader';
 import { PostcardPreview } from './PostcardPreview';
@@ -111,6 +112,9 @@ export function FrontDesignStep({
   const [isGeneratingNewVariant, setIsGeneratingNewVariant] = useState(false);
   const [showVariantDescription, setShowVariantDescription] = useState(false);
   const [newVariantDescription, setNewVariantDescription] = useState('');
+  const [generationProgress, setGenerationProgress] = useState(0);
+  const [currentTaskId, setCurrentTaskId] = useState<string | null>(null);
+  const pollingIntervalRef = useRef<number | null>(null);
 
   // Auto-generate caption for both modes (AI and photo)
   useEffect(() => {
@@ -252,14 +256,17 @@ export function FrontDesignStep({
     }
     
     setIsGenerating(true);
+    setGenerationProgress(0);
+    
     try {
-      console.log('Generating postcard image with:', {
+      console.log('Creating postcard generation task with:', {
         caption: designData.caption,
         imageDescription: imageDescription.substring(0, 100),
         style: designData.style
       });
 
-      const { data, error } = await supabase.functions.invoke('generate-postcard-image', {
+      // Step 1: Create the task
+      const { data: taskData, error: taskError } = await supabase.functions.invoke('create-postcard-task', {
         body: {
           caption: designData.caption,
           imageDescription: imageDescription,
@@ -267,30 +274,103 @@ export function FrontDesignStep({
         }
       });
 
-      if (error) {
-        console.error('Error generating postcard image:', error);
-        throw new Error(error.message || 'Помилка генерації зображення');
+      if (taskError || !taskData?.taskId) {
+        console.error('Error creating postcard task:', taskError);
+        throw new Error(taskError?.message || 'Помилка створення задачі генерації');
       }
 
-      if (data?.imageUrl) {
-        setDesignData(prev => ({
-          ...prev,
-          imageUrl: data.imageUrl,
-          prompt: data.prompt || prev.prompt,
-          mode: 'ai-generation'
-        }));
-        toast.success('Зображення успішно згенеровано!');
-        console.log('Generated image URL:', data.imageUrl);
-      } else {
-        throw new Error('Не отримано URL зображення');
-      }
+      const taskId = taskData.taskId;
+      setCurrentTaskId(taskId);
+      console.log('Task created with ID:', taskId);
+      toast.info('Генерація розпочата...');
+
+      // Step 2: Poll for completion
+      await pollForCompletion(taskId);
+      
     } catch (error) {
       console.error('Failed to generate postcard image:', error);
       toast.error('Помилка при генерації зображення: ' + error.message);
-    } finally {
       setIsGenerating(false);
+      setGenerationProgress(0);
+      setCurrentTaskId(null);
     }
   };
+
+  const pollForCompletion = async (taskId: string) => {
+    let attempts = 0;
+    const maxAttempts = 60; // 2 minutes max (2s * 60)
+    
+    const checkStatus = async () => {
+      attempts++;
+      console.log(`Polling attempt ${attempts}/${maxAttempts}...`);
+
+      try {
+        const { data, error } = await supabase.functions.invoke('check-postcard-status', {
+          body: { taskId }
+        });
+
+        if (error) {
+          throw new Error(error.message || 'Помилка перевірки статусу');
+        }
+
+        if (data.status === 'completed' && data.imageUrl) {
+          // Success!
+          console.log('Image generation completed!');
+          setDesignData(prev => ({
+            ...prev,
+            imageUrl: data.imageUrl,
+            mode: 'ai-generation'
+          }));
+          setGenerationProgress(100);
+          toast.success('Зображення успішно згенеровано!');
+          
+          if (pollingIntervalRef.current) {
+            clearInterval(pollingIntervalRef.current);
+            pollingIntervalRef.current = null;
+          }
+          setIsGenerating(false);
+          setCurrentTaskId(null);
+          return;
+        }
+
+        if (data.status === 'failed') {
+          throw new Error(data.error || 'Генерація зображення не вдалася');
+        }
+
+        // Still generating - update progress
+        const progress = Math.min(5 + (attempts * 1.5), 95);
+        setGenerationProgress(progress);
+
+        if (attempts >= maxAttempts) {
+          throw new Error('Час очікування вичерпано. Спробуйте ще раз.');
+        }
+      } catch (error) {
+        console.error('Polling error:', error);
+        if (pollingIntervalRef.current) {
+          clearInterval(pollingIntervalRef.current);
+          pollingIntervalRef.current = null;
+        }
+        setIsGenerating(false);
+        setGenerationProgress(0);
+        setCurrentTaskId(null);
+        toast.error('Помилка: ' + error.message);
+      }
+    };
+
+    // Start polling every 2 seconds
+    pollingIntervalRef.current = window.setInterval(checkStatus, 2000);
+    // Check immediately
+    checkStatus();
+  };
+
+  // Cleanup polling on unmount
+  useEffect(() => {
+    return () => {
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current);
+      }
+    };
+  }, []);
 
   const handleImageUpload = async (file: File) => {
     setIsUploading(true);
@@ -617,6 +697,19 @@ export function FrontDesignStep({
             Створіть дизайн на основі опису та підпису
           </p>
           
+          {isGenerating && generationProgress > 0 && (
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Генерація зображення...</span>
+                <span className="font-medium">{Math.round(generationProgress)}%</span>
+              </div>
+              <Progress value={generationProgress} className="h-2" />
+              <p className="text-xs text-muted-foreground text-center">
+                Це може зайняти до 2 хвилин. Будь ласка, зачекайте.
+              </p>
+            </div>
+          )}
+
           <Button 
             onClick={handleGenerateImage} 
             disabled={!designData.style || !designData.prompt || isGenerating} 
