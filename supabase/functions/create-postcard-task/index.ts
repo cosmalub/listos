@@ -59,10 +59,12 @@ async function createImageTask(prompt: string, apiKey: string): Promise<string> 
     },
     body: JSON.stringify({
       model: 'nano-banana-pro',
-      prompt: prompt,
-      aspect_ratio: '2:3',
-      resolution: '2K',
-      output_format: 'png'
+      input: {
+        prompt: prompt,
+        aspect_ratio: '2:3',
+        resolution: '2K',
+        output_format: 'png'
+      }
     }),
   });
 
@@ -75,8 +77,8 @@ async function createImageTask(prompt: string, apiKey: string): Promise<string> 
   const data = await response.json();
   console.log('Kie.ai API response:', JSON.stringify(data, null, 2));
   
-  // Check both possible field names for taskId
-  const taskId = data.taskId || data.task_id || data.id;
+  // Response structure: { code: 200, msg: "success", data: { taskId: "..." } }
+  const taskId = data?.data?.taskId;
   
   if (!taskId) {
     console.error('No taskId found in response. Full response:', JSON.stringify(data, null, 2));
