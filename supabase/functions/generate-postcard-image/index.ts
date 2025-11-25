@@ -1,7 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+const kieApiKey = Deno.env.get('KIE_API_KEY');
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -28,54 +28,29 @@ serve(async (req) => {
       throw new Error('Caption and image description are required');
     }
 
-    if (!openAIApiKey) {
-      console.error('OpenAI API key not configured');
-      throw new Error('OpenAI API key not configured');
+    if (!kieApiKey) {
+      console.error('KIE API key not configured');
+      throw new Error('KIE API key not configured');
     }
 
-    // Создаем объединенный промт для генерации открытки
+    // Create postcard prompt
     const postcardPrompt = createPostcardPrompt(caption, imageDescription, style);
     
     console.log('Generated postcard prompt:', postcardPrompt.substring(0, 200));
-    console.log('Calling OpenAI gpt-image-1 API...');
+    console.log('Creating image generation task with Kie.ai API...');
 
-    const response = await fetch('https://api.openai.com/v1/images/generations', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${openAIApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'gpt-image-1',
-        prompt: postcardPrompt,
-        size: '1024x1536', // Portrait format for A6 postcard
-        quality: 'low',
-        output_format: 'png',
-        background: 'opaque',
-        n: 1
-      }),
-    });
+    // Step 1: Create task
+    const taskId = await createImageTask(postcardPrompt);
+    console.log('Task created with ID:', taskId);
 
-    if (!response.ok) {
-      const errorData = await response.text();
-      console.error('OpenAI API error:', response.status, errorData);
-      throw new Error(`OpenAI API error: ${response.status}`);
-    }
+    // Step 2: Poll for results
+    console.log('Polling for task completion...');
+    const imageUrl = await pollTaskResult(taskId);
+    console.log('Image generated successfully:', imageUrl);
 
-    const data = await response.json();
-    console.log('OpenAI image generation response received');
-    console.log('Full response structure:', JSON.stringify(data, null, 2));
-
-    // gpt-image-1 returns base64 data, not URL
-    if (!data.data || !data.data[0] || !data.data[0].b64_json) {
-      console.error('Invalid response structure from OpenAI:', data);
-      throw new Error('Invalid response from OpenAI API - no base64 data found');
-    }
-
-    const base64Image = data.data[0].b64_json;
-    
-    // Convert base64 to data URL for the frontend
-    const dataUrl = `data:image/png;base64,${base64Image}`;
+    // Step 3: Convert to base64
+    console.log('Converting image to base64...');
+    const dataUrl = await fetchImageAsBase64(imageUrl);
 
     return new Response(JSON.stringify({ 
       imageUrl: dataUrl,
@@ -93,29 +68,122 @@ serve(async (req) => {
   }
 });
 
+async function createImageTask(prompt: string): Promise<string> {
+  const response = await fetch('https://api.kie.ai/api/v1/jobs/createTask', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${kieApiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'nano-banana-pro',
+      input: {
+        prompt: prompt,
+        aspect_ratio: '2:3',    // Portrait format for A6 postcard
+        resolution: '2K',        // Medium resolution
+        output_format: 'png'
+      }
+    })
+  });
+
+  if (!response.ok) {
+    const errorData = await response.text();
+    console.error('Kie.ai API error:', response.status, errorData);
+    throw new Error(`Kie.ai API error: ${response.status}`);
+  }
+
+  const data = await response.json();
+  
+  if (!data.data || !data.data.taskId) {
+    console.error('Invalid response structure from Kie.ai:', data);
+    throw new Error('Invalid response from Kie.ai API - no taskId found');
+  }
+
+  return data.data.taskId;
+}
+
+async function pollTaskResult(taskId: string, maxAttempts = 30): Promise<string> {
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    console.log(`Polling attempt ${attempt}/${maxAttempts}...`);
+    
+    const response = await fetch(
+      `https://api.kie.ai/api/v1/jobs/recordInfo?taskId=${taskId}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${kieApiKey}`
+        }
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('Error polling task status:', response.status, errorData);
+      throw new Error(`Failed to poll task status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('Task state:', data.data.state);
+
+    if (data.data.state === 'success') {
+      const result = JSON.parse(data.data.resultJson);
+      if (!result.resultUrls || !result.resultUrls[0]) {
+        throw new Error('No result URLs in successful response');
+      }
+      return result.resultUrls[0];
+    }
+
+    if (data.data.state === 'fail') {
+      const failMsg = data.data.failMsg || 'Unknown error';
+      console.error('Task failed:', failMsg);
+      throw new Error(`Image generation failed: ${failMsg}`);
+    }
+
+    // Wait 2 seconds before next poll
+    if (attempt < maxAttempts) {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+  }
+
+  throw new Error('Task timeout: image generation took too long');
+}
+
+async function fetchImageAsBase64(url: string): Promise<string> {
+  const response = await fetch(url);
+  
+  if (!response.ok) {
+    throw new Error(`Failed to fetch image: ${response.status}`);
+  }
+
+  const arrayBuffer = await response.arrayBuffer();
+  const bytes = new Uint8Array(arrayBuffer);
+  const base64 = btoa(String.fromCharCode(...bytes));
+  
+  return `data:image/png;base64,${base64}`;
+}
+
 function createPostcardPrompt(caption: string, imageDescription: string, style: string): string {
-  // Базовые настройки для открытки А6
+  // Base settings for A6 postcard
   const basePrompt = `Create a beautiful postcard design in A6 format (105x148mm, vertical orientation). `;
   
-  // Стилистические модификаторы
+  // Style modifiers
   const styleModifiers = {
     joyful: `Bright, energetic, festive style with vivid colors, simple flat 2D graphics, cartoonish elements, celebration motifs like confetti or stars. `,
     gentle: `Soft watercolor techniques with natural color bleeding, delicate brush strokes, organic textures, pastel and muted color palette, airy composition with lots of white space, dreamy artistic look. `,
     universal: `Studio Ghibli style with soft pastel tones, natural elements like clouds, trees, flowers, landscapes, whimsical and dreamy atmosphere, balanced composition with warm mood, clean professional appearance. `
   };
 
-  // Определяем стиль
+  // Determine style
   const styleKey = style === 'энергичный' || style === 'joyful' ? 'joyful' :
                   style === 'нежный' || style === 'gentle' ? 'gentle' : 
                   'universal';
   
-  // Требования к тексту на открытке
+  // Text requirements
   const textRequirements = `The postcard must include the text "${caption}" prominently displayed and clearly readable. `;
   
-  // Композиционные требования
+  // Composition requirements
   const compositionRequirements = `The design should be centered, leave space for the text, and maintain good visual balance. `;
   
-  // Технические требования  
+  // Technical requirements  
   const technicalRequirements = `High quality illustration, professional postcard design, suitable for printing, vibrant but not overwhelming colors. `;
 
   return basePrompt + styleModifiers[styleKey] + textRequirements + imageDescription + '. ' + compositionRequirements + technicalRequirements;
