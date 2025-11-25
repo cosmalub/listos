@@ -1,0 +1,106 @@
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
+serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  try {
+    const { taskId } = await req.json();
+    console.log('Check postcard status called for taskId:', taskId);
+
+    if (!taskId) {
+      throw new Error('taskId is required');
+    }
+
+    const KIE_API_KEY = Deno.env.get('KIE_API_KEY');
+    if (!KIE_API_KEY) {
+      throw new Error('KIE_API_KEY is not configured');
+    }
+
+    const status = await getTaskStatus(taskId, KIE_API_KEY);
+    console.log('Task status:', status);
+
+    if (status.state === 'success' && status.resultUrls && status.resultUrls.length > 0) {
+      const imageUrl = status.resultUrls[0];
+      const base64Image = await fetchImageAsBase64(imageUrl);
+      
+      return new Response(
+        JSON.stringify({ 
+          status: 'completed', 
+          imageUrl: base64Image 
+        }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 200
+        }
+      );
+    }
+
+    if (status.state === 'fail') {
+      return new Response(
+        JSON.stringify({ 
+          status: 'failed', 
+          error: status.failMsg || 'Image generation failed' 
+        }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 200
+        }
+      );
+    }
+
+    // Still generating or waiting
+    return new Response(
+      JSON.stringify({ 
+        status: 'generating',
+        state: status.state
+      }),
+      { 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 200
+      }
+    );
+  } catch (error) {
+    console.error('Error in check-postcard-status function:', error);
+    return new Response(
+      JSON.stringify({ error: error.message }),
+      { 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 500
+      }
+    );
+  }
+});
+
+async function getTaskStatus(taskId: string, apiKey: string): Promise<any> {
+  const response = await fetch(`https://api.kie.ai/api/v1/jobs/recordInfo?taskId=${taskId}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error('Kie.ai API error:', response.status, errorText);
+    throw new Error(`Failed to get task status: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data;
+}
+
+async function fetchImageAsBase64(url: string): Promise<string> {
+  console.log('Fetching image from URL:', url);
+  const response = await fetch(url);
+  const arrayBuffer = await response.arrayBuffer();
+  const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+  return `data:image/png;base64,${base64}`;
+}
