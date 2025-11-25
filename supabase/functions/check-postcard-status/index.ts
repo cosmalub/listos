@@ -24,29 +24,45 @@ serve(async (req) => {
     }
 
     const status = await getTaskStatus(taskId, KIE_API_KEY);
-    console.log('Task status:', status);
+    console.log('Task status:', JSON.stringify(status, null, 2));
 
-    if (status.state === 'success' && status.resultUrls && status.resultUrls.length > 0) {
-      const imageUrl = status.resultUrls[0];
-      const base64Image = await fetchImageAsBase64(imageUrl);
-      
-      return new Response(
-        JSON.stringify({ 
-          status: 'completed', 
-          imageUrl: base64Image 
-        }),
-        { 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 200
-        }
-      );
+    // Access data via status.data
+    const taskData = status?.data;
+
+    if (!taskData) {
+      throw new Error('Invalid response from Kie.ai API');
     }
 
-    if (status.state === 'fail') {
+    console.log('Task data:', JSON.stringify(taskData, null, 2));
+
+    if (taskData.state === 'success' && taskData.resultJson) {
+      // Parse resultJson to get resultUrls
+      const resultData = JSON.parse(taskData.resultJson);
+      console.log('Result data:', JSON.stringify(resultData, null, 2));
+      
+      const imageUrl = resultData.resultUrls?.[0];
+      
+      if (imageUrl) {
+        const base64Image = await fetchImageAsBase64(imageUrl);
+        
+        return new Response(
+          JSON.stringify({ 
+            status: 'completed', 
+            imageUrl: base64Image 
+          }),
+          { 
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            status: 200
+          }
+        );
+      }
+    }
+
+    if (taskData.state === 'fail') {
       return new Response(
         JSON.stringify({ 
           status: 'failed', 
-          error: status.failMsg || 'Image generation failed' 
+          error: taskData.failMsg || 'Image generation failed' 
         }),
         { 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -59,7 +75,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         status: 'generating',
-        state: status.state
+        state: taskData.state
       }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
