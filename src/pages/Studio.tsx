@@ -317,7 +317,37 @@ const Studio = () => {
       }
       const parsedPageData = JSON.parse(storedData);
 
-      // Compose front image using Canvas (no more html2canvas for photo mode)
+      // Get preOrderId from sessionStorage
+      const storedPreOrderId = sessionStorage.getItem('studio-pre-order-id');
+      
+      if (!storedPreOrderId) {
+        throw new Error('Pre-order ID not found in session storage');
+      }
+
+      // PHASE 1: Create order and get orderId
+      console.log('Phase 1: Creating order...');
+      const { data: createData, error: createError } = await supabase.functions.invoke('save-order', {
+        body: {
+          phase: 'create',
+          preOrderId: storedPreOrderId,
+          lyrics,
+          musicVariant: selectedMusicVariant,
+          pageData: parsedPageData.pageInfo,
+          frontDesign: postcardDesignData.front,
+          backDesign: postcardDesignData.back,
+        },
+      });
+
+      if (createError) throw createError;
+      
+      const orderId = createData.orderId;
+      console.log('Order created with ID:', orderId);
+
+      // Generate QR code URL with correct orderId
+      const qrUrl = `https://listos.app/s/song/${orderId}`;
+      console.log('QR URL generated:', qrUrl);
+
+      // Compose front image using Canvas
       let frontImageBase64;
       if (postcardDesignData.front.mode === 'photo' && postcardDesignData.front.imageUrl) {
         frontImageBase64 = await composeFrontImageA6(
@@ -332,24 +362,19 @@ const Studio = () => {
         throw new Error('Front image URL is missing');
       }
 
-      // Compose back image using Canvas (no more html2canvas)
+      // Compose back image using Canvas with CORRECT QR code
       const backImageBase64 = await composeBackImageA6({
         color: postcardDesignData.back.selectedColor || '#FFFFFF',
         message: postcardDesignData.back.personalMessage || '',
-        qrUrl: 'https://listos.app/postcard/sample'
+        qrUrl: qrUrl
       });
-      console.log('Back image composed to A6 format');
+      console.log('Back image composed to A6 format with QR code');
 
-      // Get preOrderId from sessionStorage
-      const storedPreOrderId = sessionStorage.getItem('studio-pre-order-id');
-      
-      if (!storedPreOrderId) {
-        throw new Error('Pre-order ID not found in session storage');
-      }
-
-      // Call save-order edge function
-      const { data, error } = await supabase.functions.invoke('save-order', {
+      // PHASE 2: Finalize order with images
+      console.log('Phase 2: Finalizing order with images...');
+      const { data: finalizeData, error: finalizeError } = await supabase.functions.invoke('save-order', {
         body: {
+          phase: 'finalize',
           preOrderId: storedPreOrderId,
           lyrics,
           musicVariant: selectedMusicVariant,
@@ -358,10 +383,11 @@ const Studio = () => {
           backDesign: postcardDesignData.back,
           frontImageBase64,
           backImageBase64,
+          qrCodeUrl: qrUrl,
         },
       });
 
-      if (error) throw error;
+      if (finalizeError) throw finalizeError;
 
       toast.success('Замовлення збережено успішно!');
       
@@ -370,7 +396,7 @@ const Studio = () => {
       sessionStorage.removeItem('studio-pre-order-id');
       
       // Navigate to success page
-      navigate(`/order-success?orderId=${data.orderId}`);
+      navigate(`/order-success?orderId=${orderId}`);
 
     } catch (error) {
       console.error('Error saving order:', error);
