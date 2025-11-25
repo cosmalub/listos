@@ -73,12 +73,17 @@ async function createImageTask(prompt: string, apiKey: string): Promise<string> 
   }
 
   const data = await response.json();
+  console.log('Kie.ai API response:', JSON.stringify(data, null, 2));
   
-  if (!data.taskId) {
+  // Check both possible field names for taskId
+  const taskId = data.taskId || data.task_id || data.id;
+  
+  if (!taskId) {
+    console.error('No taskId found in response. Full response:', JSON.stringify(data, null, 2));
     throw new Error('No taskId received from Kie.ai API');
   }
 
-  return data.taskId;
+  return taskId;
 }
 
 function createPostcardPrompt(caption: string, imageDescription: string, style: string): string {
