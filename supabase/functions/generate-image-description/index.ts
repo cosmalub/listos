@@ -21,6 +21,18 @@ interface UserContext {
   conversationSummary?: string;
 }
 
+// Song imagery extracted from lyrics
+interface SongImagery {
+  directImages?: string[];
+  metaphors?: string[];
+  colorMood?: string;
+  atmosphere?: string;
+  timeContext?: string;
+  personalObjects?: string[];
+  relationship?: string;
+  emotionalCore?: string;
+}
+
 // Detect language from lyrics
 function detectLanguage(lyrics: string): 'Ukrainian' | 'Russian' | 'English' {
   const ukrainianMarkers = ['і', 'ї', 'є', 'ґ', 'тобі', 'мій', 'твій', 'щастя', 'доля', 'хай'];
@@ -98,12 +110,14 @@ serve(async (req) => {
   }
 
   try {
-    const { lyrics, caption, userContext } = await req.json();
+    const { lyrics, caption, userContext, songImagery } = await req.json();
     console.log('Input received:', { 
       lyricsLength: lyrics?.length,
       caption,
       hasUserContext: !!userContext,
-      userContext
+      hasSongImagery: !!songImagery,
+      userContext,
+      songImagery
     });
 
     if (!openAIApiKey) {
@@ -143,27 +157,60 @@ serve(async (req) => {
       }
     }
 
+    // Build song imagery context
+    let songImageryContext = '';
+    if (songImagery) {
+      const imageryParts: string[] = [];
+      
+      if (songImagery.directImages?.length > 0) {
+        imageryParts.push(`Образи з пісні: ${songImagery.directImages.join(', ')}`);
+      }
+      if (songImagery.metaphors?.length > 0) {
+        imageryParts.push(`Метафори: ${songImagery.metaphors.join(', ')}`);
+      }
+      if (songImagery.colorMood) {
+        imageryParts.push(`Кольорова гама: ${songImagery.colorMood}`);
+      }
+      if (songImagery.atmosphere) {
+        imageryParts.push(`Атмосфера: ${songImagery.atmosphere}`);
+      }
+      if (songImagery.timeContext) {
+        imageryParts.push(`Час/сезон: ${songImagery.timeContext}`);
+      }
+      if (songImagery.personalObjects?.length > 0) {
+        imageryParts.push(`Особисті деталі: ${songImagery.personalObjects.join(', ')}`);
+      }
+      if (songImagery.emotionalCore) {
+        imageryParts.push(`Головна емоція: ${songImagery.emotionalCore}`);
+      }
+      
+      if (imageryParts.length > 0) {
+        songImageryContext = `\n\nОБРАЗИ З ПІСНІ (ВИКОРИСТОВУЙ ЦЕ!):\n${imageryParts.join('\n')}`;
+      }
+    }
+
     const languageInstructions = {
       Ukrainian: 'КРИТИЧНО: Створи опис ВИКЛЮЧНО українською мовою. Використовуй українську лексику, граматику та правопис.',
       Russian: 'КРИТИЧНО: Создай описание ИСКЛЮЧИТЕЛЬНО на русском языке. Используй русскую лексику, грамматику и правописание.',
       English: 'CRITICAL: Create description EXCLUSIVELY in English language. Use English vocabulary, grammar and spelling.'
     };
 
-    const systemPrompt = `Ти створюєш ПЕРСОНАЛІЗОВАНИЙ опис дизайну листівки на основі тексту пісні.
+    const systemPrompt = `Ти створюєш ПЕРСОНАЛІЗОВАНИЙ опис дизайну листівки на основі КОНКРЕТНИХ образів з пісні.
 
 ${languageInstructions[detectedLanguage]}
 ${personalizationContext}
+${songImageryContext}
 
 ТВОЯ ЗАДАЧА - створити УНІКАЛЬНИЙ опис що ВІДОБРАЖАЄ:
-1. Конкретного отримувача (якщо відомо)
-2. Привід (якщо відомо)
-3. Настрій та образи з пісні
-4. Специфічні деталі що роблять листівку особистою
+1. КОНКРЕТНІ образи та метафори з пісні (головний пріоритет!)
+2. Кольорову гаму що випливає з тексту
+3. Атмосферу та емоції пісні
+4. Персоналізацію під отримувача (якщо відомо)
 
 ОПИСУВАЙ:
-- Конкретні візуальні елементи (що САМЕ зображено)
-- Кольорову палітру що підходить отримувачу/приводу
-- Настрій та атмосферу
+- КОНКРЕТНІ візуальні елементи З ПІСНІ (сонце, квіти, море - те що є в тексті!)
+- Кольорову палітру що відповідає настрою пісні
+- Атмосферу та емоції
 - Унікальні деталі що роблять листівку персональною
 
 НЕ ОПИСУЙ:

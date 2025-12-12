@@ -31,6 +31,17 @@ interface UserContext {
   conversationSummary?: string;
 }
 
+interface SongImagery {
+  directImages?: string[];
+  metaphors?: string[];
+  colorMood?: string;
+  atmosphere?: string;
+  timeContext?: string;
+  personalObjects?: string[];
+  relationship?: string;
+  emotionalCore?: string;
+}
+
 interface FrontDesignStepProps {
   lyrics: string;
   initialData: FrontDesignData;
@@ -134,7 +145,16 @@ export function FrontDesignStep({
   const [newVariantDescription, setNewVariantDescription] = useState('');
   const [generationProgress, setGenerationProgress] = useState(0);
   const [currentTaskId, setCurrentTaskId] = useState<string | null>(null);
+  const [songImagery, setSongImagery] = useState<SongImagery | null>(null);
+  const [isExtractingImagery, setIsExtractingImagery] = useState(false);
   const pollingIntervalRef = useRef<number | null>(null);
+
+  // Extract song imagery first (before caption)
+  useEffect(() => {
+    if (lyrics && !songImagery && !isExtractingImagery) {
+      extractSongImagery();
+    }
+  }, [lyrics]);
 
   // Auto-generate caption for both modes (AI and photo)
   useEffect(() => {
@@ -150,12 +170,12 @@ export function FrontDesignStep({
     }
   }, [lyrics]);
 
-  // Auto-generate image description after caption is ready
+  // Auto-generate image description after caption and imagery are ready
   useEffect(() => {
-    if (lyrics && designData.caption && !imageDescription && selectedSource === 'ai-generation' && !isGeneratingDescription) {
+    if (lyrics && designData.caption && songImagery && !imageDescription && selectedSource === 'ai-generation' && !isGeneratingDescription) {
       generateImageDescription();
     }
-  }, [lyrics, designData.caption, selectedSource]);
+  }, [lyrics, designData.caption, songImagery, selectedSource]);
 
   // Switch to preview when image and caption are ready (only for AI generation)
   useEffect(() => {
@@ -228,6 +248,39 @@ export function FrontDesignStep({
     return undefined;
   };
 
+  // Extract song imagery from lyrics
+  const extractSongImagery = async () => {
+    if (!lyrics) return;
+    
+    setIsExtractingImagery(true);
+    try {
+      console.log('Extracting song imagery from lyrics...');
+      
+      const userContext = buildUserContext();
+      
+      const { data, error } = await supabase.functions.invoke('extract-song-imagery', {
+        body: { 
+          lyrics: lyrics,
+          userContext: userContext
+        }
+      });
+
+      if (error) {
+        console.error('Error extracting song imagery:', error);
+        return;
+      }
+
+      if (data?.imagery) {
+        console.log('Extracted song imagery:', data.imagery);
+        setSongImagery(data.imagery);
+      }
+    } catch (error) {
+      console.error('Failed to extract song imagery:', error);
+    } finally {
+      setIsExtractingImagery(false);
+    }
+  };
+
   const generateImageDescription = async () => {
     if (!lyrics || !designData.caption) return;
     
@@ -242,7 +295,8 @@ export function FrontDesignStep({
         body: { 
           lyrics: lyrics,
           caption: designData.caption,
-          userContext: userContext
+          userContext: userContext,
+          songImagery: songImagery
         }
       });
 
@@ -363,7 +417,8 @@ export function FrontDesignStep({
           caption: designData.caption,
           imageDescription: imageDescription,
           style: designData.style,
-          userContext: userContext
+          userContext: userContext,
+          songImagery: songImagery
         }
       });
 
@@ -494,7 +549,8 @@ export function FrontDesignStep({
         body: { 
           lyrics: lyrics,
           caption: designData.caption,
-          userContext: userContext
+          userContext: userContext,
+          songImagery: songImagery
         }
       });
 
