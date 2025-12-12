@@ -46,17 +46,24 @@ export function PricingSection() {
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto relative">
           <Card className="bg-card border-2 border-[#6A5ACD]/30 rounded-3xl shadow-lg overflow-hidden relative">
-            {/* Акційний бейдж */}
-            <div className="absolute top-6 right-6 z-10">
-              <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg animate-pulse">
+            {/* Акційний бейдж - тільки десктоп */}
+            <div className="absolute top-3 right-3 md:top-6 md:right-6 z-10 hidden md:block">
+              <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-3 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-bold shadow-lg animate-pulse">
                 🔥 Акційна ціна
               </div>
             </div>
 
-            <div className="p-8 lg:p-12">
+            <div className="p-6 md:p-8 lg:p-12">
               
               {/* Header - Centered */}
               <div className="text-center mb-8">
+                {/* Бейдж для мобільних - над заголовком */}
+                <div className="md:hidden mb-4 flex justify-center">
+                  <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg animate-pulse">
+                    🔥 Акційна ціна
+                  </div>
+                </div>
+                
                 <h2 className="font-baloo text-3xl md:text-4xl font-bold text-[#6A5ACD] mb-3">
                   Персональна музична листівка
                 </h2>
