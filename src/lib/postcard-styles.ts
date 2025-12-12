@@ -11,6 +11,147 @@ export interface PostcardStyle {
   colors: string[];
 }
 
+// Бібліотека унікальних елементів для кожного стилю
+export const STYLE_ELEMENTS: Record<StyleKey, {
+  decorations: string[];
+  subjects: string[];
+  backgrounds: string[];
+  moods: string[];
+  compositions: string[];
+}> = {
+  joyful: {
+    decorations: [
+      'colorful confetti and streamers',
+      'shiny party balloons',
+      'golden stars and sparkles',
+      'festive ribbons and bows',
+      'fireworks bursts',
+      'glitter effects',
+      'celebration banners'
+    ],
+    subjects: [
+      'cute cartoon cat celebrating',
+      'happy dancing bunny',
+      'cheerful little bird with party hat',
+      'adorable hedgehog with gift',
+      'playful puppy with balloons',
+      'smiling bear with cake',
+      'joyful owl with confetti'
+    ],
+    backgrounds: [
+      'vibrant gradient from yellow to coral',
+      'rainbow burst pattern',
+      'sunny sky with fluffy clouds',
+      'party pattern with dots and stars',
+      'warm sunset gradient',
+      'energetic swirl of bright colors'
+    ],
+    moods: ['energetic', 'festive', 'playful', 'cheerful', 'exciting', 'vibrant'],
+    compositions: [
+      'dynamic diagonal layout',
+      'burst from center',
+      'elements flowing from corner',
+      'circular arrangement around center',
+      'cascading from top'
+    ]
+  },
+  gentle: {
+    decorations: [
+      'delicate flower petals floating',
+      'soft butterflies',
+      'gentle feathers',
+      'small hearts',
+      'tender leaves and branches',
+      'soft clouds',
+      'tiny stars'
+    ],
+    subjects: [
+      'elegant roses bouquet',
+      'soft peonies arrangement',
+      'delicate cherry blossoms branch',
+      'gentle tulips',
+      'romantic lavender field',
+      'tender wildflowers',
+      'graceful orchids'
+    ],
+    backgrounds: [
+      'soft watercolor wash in pastels',
+      'misty morning atmosphere',
+      'dreamy clouds gradient',
+      'gentle pink to lavender blend',
+      'soft peach sunrise',
+      'ethereal light blue mist'
+    ],
+    moods: ['tender', 'romantic', 'peaceful', 'dreamy', 'serene', 'delicate'],
+    compositions: [
+      'elegant asymmetric arrangement',
+      'soft frame around edges',
+      'gentle flow from side',
+      'centered with breathing space',
+      'botanical corner arrangement'
+    ]
+  },
+  universal: {
+    decorations: [
+      'gentle leaves and vines',
+      'soft clouds',
+      'small birds',
+      'delicate stars',
+      'nature elements',
+      'warm light rays',
+      'peaceful water reflections'
+    ],
+    subjects: [
+      'cozy cottage in meadow',
+      'peaceful garden path',
+      'gentle hills at sunset',
+      'serene forest clearing',
+      'warm countryside scene',
+      'magical tree with lights',
+      'peaceful lake reflection'
+    ],
+    backgrounds: [
+      'Studio Ghibli sky with fluffy clouds',
+      'warm countryside sunset',
+      'peaceful meadow gradient',
+      'soft morning mist',
+      'golden hour lighting',
+      'nostalgic sepia-tinted scene'
+    ],
+    moods: ['nostalgic', 'warm', 'inviting', 'magical', 'cozy', 'peaceful'],
+    compositions: [
+      'balanced scenic view',
+      'depth with foreground interest',
+      'panoramic landscape',
+      'intimate close-up scene',
+      'layered atmospheric perspective'
+    ]
+  }
+};
+
+// Функція для отримання випадкового елемента
+function getRandomElement<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+// Функція для отримання випадкових елементів стилю
+export function getRandomStyleElements(style: StyleKey): {
+  decoration: string;
+  subject: string;
+  background: string;
+  mood: string;
+  composition: string;
+} {
+  const elements = STYLE_ELEMENTS[style];
+  return {
+    decoration: getRandomElement(elements.decorations),
+    subject: getRandomElement(elements.subjects),
+    background: getRandomElement(elements.backgrounds),
+    mood: getRandomElement(elements.moods),
+    composition: getRandomElement(elements.compositions)
+  };
+}
+
 export const POSTCARD_STYLES: Record<StyleKey, PostcardStyle> = {
   joyful: {
     id: 'joyful',

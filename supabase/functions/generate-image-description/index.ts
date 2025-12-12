@@ -8,6 +8,19 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// User context interface for personalization
+interface UserContext {
+  occasion?: string;
+  recipient?: {
+    name?: string;
+    relationship?: string;
+  };
+  sender?: {
+    name?: string;
+  };
+  conversationSummary?: string;
+}
+
 // Detect language from lyrics
 function detectLanguage(lyrics: string): 'Ukrainian' | 'Russian' | 'English' {
   const ukrainianMarkers = ['і', 'ї', 'є', 'ґ', 'тобі', 'мій', 'твій', 'щастя', 'доля', 'хай'];
@@ -31,6 +44,51 @@ function detectLanguage(lyrics: string): 'Ukrainian' | 'Russian' | 'English' {
   return 'English';
 }
 
+// Map occasion to visual themes
+function getOccasionTheme(occasion: string): string {
+  const occasionThemes: Record<string, string> = {
+    'birthday': 'святковий, з тортом, свічками, подарунками, веселий настрій',
+    'wedding': 'романтичний, з квітами, серцями, елегантний',
+    'anniversary': 'теплий, романтичний, ностальгічний',
+    'thank-you': 'теплий, вдячний, з квітами або серцями',
+    'congratulation': 'святковий, урочистий, з зірками і конфетті',
+    'love': 'романтичний, ніжний, з серцями і квітами',
+    'apology': 'ніжний, спокійний, делікатний',
+    'get-well': 'теплий, оптимістичний, з квітами і сонцем',
+    'holiday': 'святковий, яскравий, урочистий',
+    'new-year': 'зимовий, святковий, з ялинкою і сніжинками',
+    'christmas': 'зимовий, теплий, з ялинкою і подарунками',
+    'easter': 'весняний, з квітами і писанками',
+    'mothers-day': 'ніжний, з квітами, теплий',
+    'fathers-day': 'теплий, спокійний, з природою',
+    'valentines': 'романтичний, з серцями і трояндами'
+  };
+  
+  return occasionThemes[occasion] || 'теплий, універсальний';
+}
+
+// Map relationship to visual elements
+function getRelationshipElements(relationship: string): string {
+  const relationshipElements: Record<string, string> = {
+    'мама': 'ніжні квіти (троянди, півонії), материнська любов, теплі тони',
+    'тато': 'спокійна природа, сила, стабільність, земляні тони',
+    'бабуся': 'затишок, традиції, квіти, вишиванка',
+    'дідусь': 'мудрість, природа, спокій',
+    'дружина': 'романтика, троянди, елегантність, любов',
+    'чоловік': 'сила, підтримка, романтика',
+    'кохана': 'романтика, серця, троянди, ніжність',
+    'коханий': 'романтика, любов, серця',
+    'друг': 'веселощі, енергія, яскраві кольори',
+    'подруга': 'веселощі, квіти, яскраві кольори',
+    'сестра': 'близькість, веселощі, квіти',
+    'брат': 'підтримка, енергія, динаміка',
+    'дитина': 'казковість, яскравість, милі персонажі',
+    'колега': 'професійність, теплота, універсальність'
+  };
+  
+  return relationshipElements[relationship?.toLowerCase()] || 'теплі, дружні елементи';
+}
+
 serve(async (req) => {
   console.log('Generate image description function called');
   
@@ -40,8 +98,13 @@ serve(async (req) => {
   }
 
   try {
-    const { lyrics, caption } = await req.json();
-    console.log('Input received:', { lyrics: lyrics?.substring(0, 100), caption });
+    const { lyrics, caption, userContext } = await req.json();
+    console.log('Input received:', { 
+      lyricsLength: lyrics?.length,
+      caption,
+      hasUserContext: !!userContext,
+      userContext
+    });
 
     if (!openAIApiKey) {
       console.error('OpenAI API key not configured');
@@ -52,41 +115,75 @@ serve(async (req) => {
     const detectedLanguage = detectLanguage(lyrics);
     console.log('Detected language:', detectedLanguage);
 
+    // Build personalization context
+    let personalizationContext = '';
+    if (userContext) {
+      const parts: string[] = [];
+      
+      if (userContext.occasion) {
+        const occasionTheme = getOccasionTheme(userContext.occasion);
+        parts.push(`Привід: ${occasionTheme}`);
+      }
+      
+      if (userContext.recipient?.relationship) {
+        const relationshipElements = getRelationshipElements(userContext.recipient.relationship);
+        parts.push(`Для ${userContext.recipient.relationship}: ${relationshipElements}`);
+      }
+      
+      if (userContext.recipient?.name) {
+        parts.push(`Отримувач: ${userContext.recipient.name}`);
+      }
+      
+      if (userContext.conversationSummary) {
+        parts.push(`Додаткові деталі: ${userContext.conversationSummary}`);
+      }
+      
+      if (parts.length > 0) {
+        personalizationContext = `\n\nПЕРСОНАЛІЗАЦІЯ:\n${parts.join('\n')}`;
+      }
+    }
+
     const languageInstructions = {
       Ukrainian: 'КРИТИЧНО: Створи опис ВИКЛЮЧНО українською мовою. Використовуй українську лексику, граматику та правопис.',
       Russian: 'КРИТИЧНО: Создай описание ИСКЛЮЧИТЕЛЬНО на русском языке. Используй русскую лексику, грамматику и правописание.',
       English: 'CRITICAL: Create description EXCLUSIVELY in English language. Use English vocabulary, grammar and spelling.'
     };
 
-    const systemPrompt = `Ты создаешь простое описание дизайна открытки для пользователя на основе текста песни.
+    const systemPrompt = `Ти створюєш ПЕРСОНАЛІЗОВАНИЙ опис дизайну листівки на основі тексту пісні.
 
 ${languageInstructions[detectedLanguage]}
+${personalizationContext}
 
-Твоя задача - описать как будет выглядеть открытка простыми словами, чтобы пользователь понял нравится ему дизайн или нет.
+ТВОЯ ЗАДАЧА - створити УНІКАЛЬНИЙ опис що ВІДОБРАЖАЄ:
+1. Конкретного отримувача (якщо відомо)
+2. Привід (якщо відомо)
+3. Настрій та образи з пісні
+4. Специфічні деталі що роблять листівку особистою
 
-ОПИСЫВАЙ ТОЛЬКО:
-- Основные визуальные элементы (что изображено)
-- Цвета и настроение 
-- Общую композицию
+ОПИСУВАЙ:
+- Конкретні візуальні елементи (що САМЕ зображено)
+- Кольорову палітру що підходить отримувачу/приводу
+- Настрій та атмосферу
+- Унікальні деталі що роблять листівку персональною
 
-НЕ ОПИСЫВАЙ:
-- Технические детали (формат А6, техники рисования)
-- Текст или подписи на открытке
-- Процесс создания
+НЕ ОПИСУЙ:
+- Технічні деталі (формат, техніки)
+- Текст на листівці
 
-СТИЛИ:
-🎉 Радостный - яркие цвета, праздничные элементы, энергичное настроение
-🌸 Нежный - мягкие пастельные тона, воздушная композиция, спокойное настроение  
-🌿 Универсальный - природные элементы, сбалансированная композиция, теплое настроение
+ПРИКЛАДИ ПЕРСОНАЛІЗАЦІЇ:
+- Для мами → ніжні квіти, теплі рожево-персикові тони, затишна атмосфера
+- Для друга → яскраві кольори, динамічні елементи, веселий настрій
+- На день народження → святкові елементи, торт/кульки/подарунки
+- На подяку → теплі тони, квіти, серця
 
-Создай короткое описание (30-50 слов) на языке ${detectedLanguage}.`;
+Створи короткий але КОНКРЕТНИЙ опис (40-60 слів).`;
 
-    const userPrompt = `ТЕКСТ ПЕСНИ:
+    const userPrompt = `ТЕКСТ ПІСНІ:
 "${lyrics}"
 
-Создай простое описание дизайна открытки на основе настроения и образов из песни:`;
+Створи персоналізований опис дизайну листівки:`;
 
-    console.log('Calling OpenAI API...');
+    console.log('Calling OpenAI API with personalization context...');
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -100,8 +197,8 @@ ${languageInstructions[detectedLanguage]}
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
         ],
-        max_tokens: 200,
-        temperature: 0.7,
+        max_tokens: 250,
+        temperature: 0.8, // Increased for more variety
       }),
     });
 
@@ -115,6 +212,7 @@ ${languageInstructions[detectedLanguage]}
     console.log('OpenAI response received');
 
     const imageDescription = data.choices[0].message.content.trim();
+    console.log('Generated personalized description:', imageDescription);
 
     return new Response(JSON.stringify({ imageDescription }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

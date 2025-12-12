@@ -5,14 +5,120 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Style elements library for variety
+const STYLE_ELEMENTS = {
+  joyful: {
+    decorations: [
+      'colorful confetti and streamers',
+      'shiny party balloons',
+      'golden stars and sparkles',
+      'festive ribbons and bows',
+      'fireworks bursts',
+      'glitter effects'
+    ],
+    subjects: [
+      'cute cartoon cat celebrating',
+      'happy dancing bunny',
+      'cheerful little bird with party hat',
+      'adorable hedgehog with gift',
+      'playful puppy with balloons',
+      'smiling bear with cake'
+    ],
+    backgrounds: [
+      'vibrant gradient from yellow to coral',
+      'rainbow burst pattern',
+      'sunny sky with fluffy clouds',
+      'party pattern with dots and stars',
+      'warm sunset gradient'
+    ],
+    techniques: [
+      'Bold pop-art style with thick outlines',
+      'Vibrant flat 2D illustration',
+      'Playful cartoon aesthetic',
+      'Clean vector-style graphics'
+    ]
+  },
+  gentle: {
+    decorations: [
+      'delicate flower petals floating',
+      'soft butterflies',
+      'gentle feathers',
+      'small hearts',
+      'tender leaves and branches',
+      'soft clouds'
+    ],
+    subjects: [
+      'elegant roses bouquet',
+      'soft peonies arrangement',
+      'delicate cherry blossoms branch',
+      'gentle tulips',
+      'romantic lavender field',
+      'tender wildflowers'
+    ],
+    backgrounds: [
+      'soft watercolor wash in pastels',
+      'misty morning atmosphere',
+      'dreamy clouds gradient',
+      'gentle pink to lavender blend',
+      'soft peach sunrise'
+    ],
+    techniques: [
+      'Delicate watercolor technique with soft edges',
+      'Dreamy ethereal style',
+      'Soft pastel illustration',
+      'Romantic hand-painted aesthetic'
+    ]
+  },
+  universal: {
+    decorations: [
+      'gentle leaves and vines',
+      'soft clouds',
+      'small birds in flight',
+      'delicate stars',
+      'nature elements',
+      'warm light rays'
+    ],
+    subjects: [
+      'cozy cottage in meadow',
+      'peaceful garden path',
+      'gentle hills at golden hour',
+      'serene forest clearing',
+      'warm countryside scene',
+      'magical tree with soft lights'
+    ],
+    backgrounds: [
+      'Studio Ghibli sky with fluffy clouds',
+      'warm countryside sunset',
+      'peaceful meadow gradient',
+      'soft morning mist',
+      'golden hour lighting'
+    ],
+    techniques: [
+      'Studio Ghibli inspired illustration',
+      'Warm nostalgic anime style',
+      'Soft hand-painted aesthetic',
+      'Whimsical storybook illustration'
+    ]
+  }
+};
+
+function getRandomElement<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { caption, imageDescription, style } = await req.json();
-    console.log('Create postcard task called with:', { caption, imageDescription, style });
+    const { caption, imageDescription, style, userContext } = await req.json();
+    console.log('Create postcard task called with:', { 
+      caption, 
+      imageDescription: imageDescription?.substring(0, 100),
+      style,
+      hasUserContext: !!userContext
+    });
 
     if (!caption || !imageDescription) {
       throw new Error('Caption and imageDescription are required');
@@ -23,8 +129,8 @@ serve(async (req) => {
       throw new Error('KIE_API_KEY is not configured');
     }
 
-    const prompt = createPostcardPrompt(caption, imageDescription, style || 'universal');
-    console.log('Generated postcard prompt:', prompt);
+    const prompt = createPersonalizedPrompt(caption, imageDescription, style || 'universal', userContext);
+    console.log('Generated personalized prompt:', prompt.substring(0, 500));
 
     const taskId = await createImageTask(prompt, KIE_API_KEY);
     console.log('Task created with ID:', taskId);
@@ -77,7 +183,6 @@ async function createImageTask(prompt: string, apiKey: string): Promise<string> 
   const data = await response.json();
   console.log('Kie.ai API response:', JSON.stringify(data, null, 2));
   
-  // Response structure: { code: 200, msg: "success", data: { taskId: "..." } }
   const taskId = data?.data?.taskId;
   
   if (!taskId) {
@@ -88,22 +193,116 @@ async function createImageTask(prompt: string, apiKey: string): Promise<string> 
   return taskId;
 }
 
-function createPostcardPrompt(caption: string, imageDescription: string, style: string): string {
-  const styleModifiers = {
-    joyful: 'Bright, energetic, festive style with vivid colors, simple flat 2D graphics, cartoonish elements, celebration motifs',
-    gentle: 'Soft, delicate, tender style with pastel tones, simple flat 2D graphics, subtle ornaments, romantic elements',
-    universal: 'Versatile, balanced style with harmonious colors, simple flat 2D graphics, clean lines, elegant compositions'
+function createPersonalizedPrompt(
+  caption: string, 
+  imageDescription: string, 
+  style: string,
+  userContext?: any
+): string {
+  const styleKey = style as keyof typeof STYLE_ELEMENTS;
+  const elements = STYLE_ELEMENTS[styleKey] || STYLE_ELEMENTS.universal;
+  
+  // Get random elements for variety
+  const randomDecoration = getRandomElement(elements.decorations);
+  const randomBackground = getRandomElement(elements.backgrounds);
+  const randomTechnique = getRandomElement(elements.techniques);
+  
+  // Build style-specific prompt
+  const stylePrompts = {
+    joyful: `Create a vibrant, celebratory greeting card illustration.
+
+ARTISTIC STYLE:
+${randomTechnique}
+- Bright, saturated colors with high contrast
+- Simple, clear shapes with bold outlines
+- Flat color areas with minimal shading
+- Energetic and joyful mood
+- Modern festive aesthetic
+
+VISUAL ELEMENTS:
+- Main theme: ${imageDescription}
+- Decorations: ${randomDecoration}
+- Background: ${randomBackground}
+- Color palette: Warm yellows, coral pinks, turquoise, vibrant orange`,
+
+    gentle: `Create a delicate, tender greeting card illustration.
+
+ARTISTIC STYLE:
+${randomTechnique}
+- Soft, flowing brushstrokes with organic textures
+- Transparent color layers with subtle gradients
+- Light, airy composition with white space
+- Pastel and muted color palette
+- Romantic and dreamy atmosphere
+
+VISUAL ELEMENTS:
+- Main theme: ${imageDescription}
+- Decorations: ${randomDecoration}
+- Background: ${randomBackground}
+- Color palette: Soft pinks, lavender, peach, mint green`,
+
+    universal: `Create an elegant greeting card in Studio Ghibli style.
+
+ARTISTIC STYLE:
+${randomTechnique}
+- Soft, muted color palette with earthy pastels
+- Clean, gentle outlines with moderate line weight
+- Flat colors with minimal gradients
+- Natural elements and whimsical atmosphere
+- Warm, inviting mood
+
+VISUAL ELEMENTS:
+- Main theme: ${imageDescription}
+- Decorations: ${randomDecoration}
+- Background: ${randomBackground}
+- Color palette: Warm earth tones, soft greens, gentle blues, cream`
   };
 
-  const basePrompt = `Create a beautiful postcard design in A6 format (105x148mm, vertical orientation). ${styleModifiers[style] || styleModifiers.universal}`;
-  
-  const textRequirement = `The postcard MUST include the text "${caption}" prominently displayed in elegant, readable typography with good contrast against the background.`;
-  
-  const visualDescription = `Visual content: ${imageDescription}`;
-  
-  const composition = `Composition: Arrange elements to leave clear space for the text, ensuring readability. Use 2D flat illustration style, avoid 3D effects or photorealism.`;
-  
-  const technicalSpecs = `Technical requirements: High quality 2K resolution, PNG format, suitable for printing, vibrant but not oversaturated colors, clean and professional look.`;
+  const baseStylePrompt = stylePrompts[styleKey] || stylePrompts.universal;
 
-  return `${basePrompt}\n\n${textRequirement}\n\n${visualDescription}\n\n${composition}\n\n${technicalSpecs}`;
+  // Personalization based on user context
+  let personalizationSection = '';
+  if (userContext) {
+    const personalDetails: string[] = [];
+    
+    if (userContext.recipient?.relationship) {
+      personalDetails.push(`- This is for: ${userContext.recipient.relationship}`);
+    }
+    if (userContext.occasion) {
+      personalDetails.push(`- Occasion: ${userContext.occasion}`);
+    }
+    if (userContext.recipient?.name) {
+      personalDetails.push(`- Recipient: ${userContext.recipient.name}`);
+    }
+    
+    if (personalDetails.length > 0) {
+      personalizationSection = `\n\nPERSONALIZATION:\n${personalDetails.join('\n')}`;
+    }
+  }
+
+  // Text requirements - critical for Kie.ai
+  const textRequirements = `
+
+TEXT ON POSTCARD (CRITICAL):
+The postcard MUST prominently display this text: "${caption}"
+
+Typography requirements:
+- Font: Elegant, highly readable decorative or script font
+- Size: Large enough to be the focal point
+- Contrast: Strong contrast against background (white on dark OR dark on light)
+- Position: Centered or prominent placement, NOT hidden in decorations
+- Style: Match the overall artistic style of the illustration
+- The text should be clearly legible and beautiful`;
+
+  // Technical specifications
+  const technicalSpecs = `
+
+TECHNICAL REQUIREMENTS:
+- Format: Vertical A6 postcard (portrait orientation, 2:3 aspect ratio)
+- Resolution: High quality 2K for printing
+- Style: 2D flat illustration, NO 3D effects, NO photorealism
+- Composition: Leave clear space for text, avoid cluttered design
+- Quality: Print-ready, vibrant but not oversaturated colors`;
+
+  return `${baseStylePrompt}${personalizationSection}${textRequirements}${technicalSpecs}`;
 }

@@ -19,11 +19,29 @@ interface FrontDesignData {
   prompt: string;
 }
 
+interface UserContext {
+  occasion?: string;
+  recipient?: {
+    name?: string;
+    relationship?: string;
+  };
+  sender?: {
+    name?: string;
+  };
+  conversationSummary?: string;
+}
+
 interface FrontDesignStepProps {
   lyrics: string;
   initialData: FrontDesignData;
   onComplete: (data: FrontDesignData) => void;
   onBack: () => void;
+  pageData?: {
+    occasion?: string;
+    recipient?: string;
+    sender?: string;
+  };
+  chatMessages?: any[];
 }
 
 type ComponentState = 'editing' | 'preview';
@@ -92,7 +110,9 @@ export function FrontDesignStep({
   lyrics,
   initialData,
   onComplete,
-  onBack
+  onBack,
+  pageData,
+  chatMessages
 }: FrontDesignStepProps) {
   const [designData, setDesignData] = useState<FrontDesignData>({
     mode: 'ai-generation',
@@ -144,17 +164,85 @@ export function FrontDesignStep({
     }
   }, [designData.imageUrl, designData.caption, selectedSource, isGenerating]);
 
+  // Build user context from available data
+  const buildUserContext = (): UserContext => {
+    const context: UserContext = {};
+    
+    if (pageData?.occasion) {
+      context.occasion = pageData.occasion;
+    }
+    
+    if (pageData?.recipient) {
+      context.recipient = {
+        name: pageData.recipient,
+        relationship: detectRelationship(pageData.recipient, chatMessages)
+      };
+    }
+    
+    if (pageData?.sender) {
+      context.sender = {
+        name: pageData.sender
+      };
+    }
+    
+    // Extract summary from chat messages
+    if (chatMessages && chatMessages.length > 0) {
+      const userMessages = chatMessages
+        .filter((m: any) => m.sender === 'user')
+        .map((m: any) => m.content)
+        .slice(0, 3)
+        .join(' ');
+      if (userMessages.length > 0) {
+        context.conversationSummary = userMessages.substring(0, 200);
+      }
+    }
+    
+    return context;
+  };
+  
+  // Detect relationship from recipient name or chat
+  const detectRelationship = (recipient: string, messages?: any[]): string | undefined => {
+    const lowerRecipient = recipient.toLowerCase();
+    
+    const relationships = [
+      'мама', 'тато', 'бабуся', 'дідусь', 'сестра', 'брат',
+      'дружина', 'чоловік', 'кохана', 'коханий', 'друг', 'подруга'
+    ];
+    
+    for (const rel of relationships) {
+      if (lowerRecipient.includes(rel)) {
+        return rel;
+      }
+    }
+    
+    // Try to find in chat messages
+    if (messages) {
+      const allText = messages.map((m: any) => m.content).join(' ').toLowerCase();
+      for (const rel of relationships) {
+        if (allText.includes(rel)) {
+          return rel;
+        }
+      }
+    }
+    
+    return undefined;
+  };
+
   const generateImageDescription = async () => {
     if (!lyrics || !designData.caption) return;
     
     setIsGeneratingDescription(true);
     try {
-      console.log('Generating image description for lyrics and caption');
+      console.log('Generating personalized image description');
+      
+      const userContext = buildUserContext();
+      console.log('User context:', userContext);
       
       const { data, error } = await supabase.functions.invoke('generate-image-description', {
         body: { 
           lyrics: lyrics,
-          caption: designData.caption
+          caption: designData.caption,
+          userContext: userContext
         }
       });
 
@@ -164,7 +252,7 @@ export function FrontDesignStep({
       }
 
       if (data?.imageDescription) {
-        console.log('Generated image description:', data.imageDescription);
+        console.log('Generated personalized description:', data.imageDescription);
         const autoStyle = selectStyleFromDescription(data.imageDescription);
         setImageDescription(data.imageDescription);
         setDesignData(prev => ({ 
@@ -262,15 +350,20 @@ export function FrontDesignStep({
       console.log('Creating postcard generation task with:', {
         caption: designData.caption,
         imageDescription: imageDescription.substring(0, 100),
-        style: designData.style
+        style: designData.style,
+        hasUserContext: !!pageData
       });
+
+      // Build user context for personalization
+      const userContext = buildUserContext();
 
       // Step 1: Create the task
       const { data: taskData, error: taskError } = await supabase.functions.invoke('create-postcard-task', {
         body: {
           caption: designData.caption,
           imageDescription: imageDescription,
-          style: designData.style
+          style: designData.style,
+          userContext: userContext
         }
       });
 
@@ -395,10 +488,13 @@ export function FrontDesignStep({
     try {
       console.log('Generating new variant description for lyrics');
       
+      const userContext = buildUserContext();
+      
       const { data, error } = await supabase.functions.invoke('generate-image-description', {
         body: { 
           lyrics: lyrics,
-          caption: designData.caption
+          caption: designData.caption,
+          userContext: userContext
         }
       });
 
