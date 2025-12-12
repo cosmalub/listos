@@ -1,8 +1,8 @@
-import { Zap, Sparkles, RefreshCw, DollarSign } from "lucide-react";
+import { Zap, Sparkles, RefreshCw, DollarSign, LucideIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 interface BenefitCardProps {
-  icon: React.ReactNode;
+  icon: LucideIcon;
   title: string;
   description: string;
   comparison?: {
@@ -12,43 +12,45 @@ interface BenefitCardProps {
   bottomText?: string;
 }
 
-function BenefitCard({ icon, title, description, comparison, bottomText }: BenefitCardProps) {
+function BenefitCard({ icon: Icon, title, description, comparison, bottomText }: BenefitCardProps) {
   return (
     <Card className="border-2 border-[#B8B3FF]/40 hover:border-[#B8B3FF] transition-all hover:shadow-lg h-full">
-      <CardContent className="p-6">
+      <CardContent className="p-4 md:p-6">
         <div className="flex items-center gap-3 mb-4">
-          <div className="text-5xl">{icon}</div>
-          <h3 className="text-xl font-bold text-[#6A5ACD]">{title}</h3>
+          <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-[#6A5ACD] to-[#8A7CDD] rounded-xl flex items-center justify-center text-white flex-shrink-0">
+            <Icon className="w-5 h-5 md:w-6 md:h-6" />
+          </div>
+          <h3 className="text-base md:text-lg font-bold text-[#6A5ACD]">{title}</h3>
         </div>
         
-        <p className="text-[#6A5ACD]/80 leading-relaxed mb-4 whitespace-pre-line">{description}</p>
+        <p className="text-sm md:text-base text-[#6A5ACD]/80 leading-relaxed mb-4 whitespace-pre-line">{description}</p>
         
         {comparison && (
-          <div className="mt-6">
-            <p className="font-semibold text-[#6A5ACD] mb-3">{comparison.title}</p>
+          <div className="mt-4 md:mt-6">
+            <p className="font-semibold text-[#6A5ACD] mb-2 md:mb-3 text-sm md:text-base">{comparison.title}</p>
             <div className="space-y-2">
               {comparison.items.map((item, index) => (
                 <div
                   key={index}
-                  className={`p-3 rounded-lg border-2 ${
+                  className={`p-2 md:p-3 rounded-lg border-2 ${
                     item.isHighlight
                       ? 'bg-green-50 border-green-300'
                       : 'bg-gray-50 border-gray-200'
                   }`}
                 >
-                  <div className="flex items-center justify-between">
-                    <span className={`font-semibold ${item.isHighlight ? 'text-green-700' : 'text-gray-600'}`}>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className={`font-semibold text-xs md:text-sm ${item.isHighlight ? 'text-green-700' : 'text-gray-600'}`}>
                       {item.name}
                     </span>
                     <span className={item.isHighlight ? 'text-green-600' : 'text-red-500'}>
                       {item.isHighlight ? '✅' : '❌'}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between mt-1 text-sm">
-                    <span className={item.isHighlight ? 'text-green-600 font-bold' : 'text-gray-500'}>
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-1 gap-0.5 sm:gap-2">
+                    <span className={`text-xs md:text-sm ${item.isHighlight ? 'text-green-600 font-bold' : 'text-gray-500'}`}>
                       {item.price}
                     </span>
-                    <span className={item.isHighlight ? 'text-green-600 font-bold' : 'text-gray-500'}>
+                    <span className={`text-xs md:text-sm ${item.isHighlight ? 'text-green-600 font-bold' : 'text-gray-500'}`}>
                       {item.time}
                     </span>
                   </div>
@@ -59,7 +61,7 @@ function BenefitCard({ icon, title, description, comparison, bottomText }: Benef
         )}
         
         {bottomText && (
-          <p className="mt-4 text-[#6A5ACD] font-semibold text-center">{bottomText}</p>
+          <p className="mt-3 md:mt-4 text-sm md:text-base text-[#6A5ACD] font-semibold text-center">{bottomText}</p>
         )}
       </CardContent>
     </Card>
@@ -67,9 +69,9 @@ function BenefitCard({ icon, title, description, comparison, bottomText }: Benef
 }
 
 export function AiBenefitsSection() {
-  const benefits = [
+  const benefits: BenefitCardProps[] = [
     {
-      icon: "⚡️",
+      icon: Zap,
       title: "Швидко — за 30 секунд",
       description: `ШІ створює твою пісню за 30 секунд. Живі музиканти працюють тижнями. Студія звукозапису — місяцями.`,
       comparison: {
@@ -83,7 +85,7 @@ export function AiBenefitsSection() {
       bottomText: "Результат? Той самий професійний звук. Але у 1000 разів швидше і дешевше.",
     },
     {
-      icon: "✨",
+      icon: Sparkles,
       title: "Унікально — створює з нуля",
       description: `ШІ не копіює готові пісні. Він створює кожну музику з нуля — базуючись на твоїх словах, емоціях, історії.
 
@@ -91,7 +93,7 @@ export function AiBenefitsSection() {
       bottomText: "Твоя пісня — єдина у своєму роді. Унікальна. Як твої почуття.",
     },
     {
-      icon: "🔄",
+      icon: RefreshCw,
       title: "Необмежено — перегенеруй скільки хочеш",
       description: `ШІ не втомлюється. Живий музикант зробить 2-3 варіанти і скаже: "Вибирай з того, що є".
 
@@ -99,7 +101,7 @@ export function AiBenefitsSection() {
       bottomText: "Ти — режисер. ШІ — твій виконавець. Який слухається безмежно і не просить доплати.",
     },
     {
-      icon: "💰",
+      icon: DollarSign,
       title: "Доступно — ціна як у букету",
       description: `Студія звукозапису бере 40 000 грн за пісню. Живий музикант — 10 000 грн.
 
@@ -116,16 +118,16 @@ export function AiBenefitsSection() {
   ];
 
   return (
-    <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
+    <section className="py-12 md:py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-[#6A5ACD] mb-4">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center text-[#6A5ACD] mb-3 md:mb-4">
           Чому ШІ — це круто?
         </h2>
-        <p className="text-lg text-center text-[#6A5ACD]/80 mb-12 max-w-3xl mx-auto">
+        <p className="text-base md:text-lg text-center text-[#6A5ACD]/80 mb-8 md:mb-12 max-w-3xl mx-auto">
           Ми не приховуємо — наші пісні створює штучний інтелект. І ось чому це чудово:
         </p>
 
-        <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-4 md:gap-6 max-w-6xl mx-auto">
           {benefits.map((benefit, index) => (
             <BenefitCard key={index} {...benefit} />
           ))}
