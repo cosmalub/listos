@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Copy, Gift, ArrowRight, Loader2, AlertTriangle, Camera, CalendarPlus, Send } from "lucide-react";
+import { Copy, ArrowRight, Loader2, AlertTriangle, Camera, CalendarPlus, Send } from "lucide-react";
 import { Header } from "@/components/sections/header";
 import { Footer } from "@/components/sections/footer";
 import { supabase } from "@/integrations/supabase/client";
@@ -159,24 +159,21 @@ END:VCALENDAR`;
         <div className="max-w-2xl mx-auto text-center space-y-8">
           {/* Hero Section */}
           <div className="space-y-4 animate-fade-in">
-            <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-[#FFD1DC] to-[#E6E6FA] mb-4 shadow-lg animate-float">
-              <Gift className="w-12 h-12 text-[#6A5ACD]" />
-            </div>
-            <h1 className="text-4xl md:text-6xl font-bold text-[#6A5ACD] font-baloo">
+            <h1 className="text-3xl md:text-4xl font-bold text-[#6A5ACD] font-baloo">
               Дякуємо за замовлення! 🎉
             </h1>
-            <p className="text-xl md:text-2xl text-gray-700 font-baloo">
+            <p className="text-lg md:text-xl text-gray-700 font-baloo">
               Ось ваша персональна знижка на наступне замовлення ✨
             </p>
           </div>
 
           {/* Warning Block - Save Promo Code */}
-          <Card className="p-4 md:p-6 bg-amber-50 border-2 border-amber-300 rounded-xl animate-pulse-slow">
+          <Card className="p-4 md:p-6 bg-amber-50 border-2 border-amber-300 rounded-xl">
             <div className="flex items-start gap-3 text-left">
               <AlertTriangle className="w-6 h-6 text-amber-600 flex-shrink-0 mt-1" />
               <div>
                 <p className="font-bold text-amber-800 text-lg">
-                  ⚠️ Збережіть цей промокод!
+                  Збережіть цей промокод!
                 </p>
                 <p className="text-amber-700 text-sm mt-1">
                   Ця сторінка може бути недоступна пізніше. Скопіюйте код або зробіть скріншот прямо зараз!
@@ -253,21 +250,21 @@ END:VCALENDAR`;
 
           {/* Instructions */}
           <Card className="p-6 md:p-8 text-left bg-white/80 backdrop-blur-sm border-2 border-[#FFD1DC] rounded-2xl shadow-md hover:shadow-lg transition-all">
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-[#6A5ACD] font-baloo">
-              Як скористатися знижкою: 🎯
+            <h2 className="text-xl md:text-2xl font-bold mb-6 text-[#6A5ACD] font-baloo">
+              Як скористатися знижкою
             </h2>
             <ol className="space-y-4 text-gray-700">
               <li className="flex gap-3">
-                <span className="font-bold text-2xl text-[#6A5ACD] font-baloo min-w-[2rem]">1.</span>
-                <span className="text-lg">Оберіть новий дизайн листівки на головній сторінці</span>
+                <span className="font-bold text-lg text-[#6A5ACD] font-baloo min-w-[2rem]">1.</span>
+                <span className="text-base">Оберіть новий дизайн листівки на головній сторінці</span>
               </li>
               <li className="flex gap-3">
-                <span className="font-bold text-2xl text-[#6A5ACD] font-baloo min-w-[2rem]">2.</span>
-                <span className="text-lg">При оформленні замовлення введіть промокод <code className="bg-[#E6E6FA] px-3 py-1 rounded-lg text-[#6A5ACD] font-mono font-bold">{promoData.code}</code></span>
+                <span className="font-bold text-lg text-[#6A5ACD] font-baloo min-w-[2rem]">2.</span>
+                <span className="text-base">При оформленні замовлення введіть промокод <code className="bg-[#E6E6FA] px-3 py-1 rounded-lg text-[#6A5ACD] font-mono font-bold">{promoData.code}</code></span>
               </li>
               <li className="flex gap-3">
-                <span className="font-bold text-2xl text-[#6A5ACD] font-baloo min-w-[2rem]">3.</span>
-                <span className="text-lg">Отримайте знижку 25% на всю листівку 🎉</span>
+                <span className="font-bold text-lg text-[#6A5ACD] font-baloo min-w-[2rem]">3.</span>
+                <span className="text-base">Отримайте знижку 25% на всю листівку</span>
               </li>
             </ol>
           </Card>
