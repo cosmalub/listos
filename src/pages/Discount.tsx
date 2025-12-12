@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Copy, Gift, ArrowRight, Loader2 } from "lucide-react";
+import { Copy, Gift, ArrowRight, Loader2, AlertTriangle, Camera, CalendarPlus, Send } from "lucide-react";
 import { Header } from "@/components/sections/header";
 import { Footer } from "@/components/sections/footer";
 import { supabase } from "@/integrations/supabase/client";
@@ -53,8 +53,57 @@ const Discount = () => {
   const copyPromoCode = () => {
     if (promoData?.code) {
       navigator.clipboard.writeText(promoData.code);
-      toast.success("Промокод скопійовано!");
+      toast.success("Промокод скопійовано! ✅");
     }
+  };
+
+  const showScreenshotTip = () => {
+    toast.info(
+      "📱 iPhone: бокова + гучність\n📱 Android: живлення + гучність\n💻 Mac: Cmd+Shift+4\n💻 Windows: Win+Shift+S",
+      { duration: 8000 }
+    );
+  };
+
+  const addToCalendar = () => {
+    if (!promoData) return;
+    
+    const expiryDate = new Date(promoData.expiresAt);
+    const reminderDate = new Date(expiryDate.getTime() - 3 * 24 * 60 * 60 * 1000);
+    
+    const formatICSDate = (date: Date) => {
+      return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    };
+
+    const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Listosyk//Promo Reminder//UK
+BEGIN:VEVENT
+DTSTART:${formatICSDate(reminderDate)}
+DTEND:${formatICSDate(new Date(reminderDate.getTime() + 60 * 60 * 1000))}
+SUMMARY:🎁 Промокод Листосик закінчується через 3 дні!
+DESCRIPTION:Ваш промокод ${promoData.code} дає знижку 25%. Використайте на listosyk.com
+END:VEVENT
+END:VCALENDAR`;
+
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `listosyk-promo-${promoData.code}.ics`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    toast.success("Нагадування завантажено! Відкрийте файл, щоб додати в календар 📅");
+  };
+
+  const sendToTelegram = () => {
+    if (!promoData) return;
+    
+    const text = `🎁 Мій промокод Листосик: ${promoData.code}\n\nЗнижка 25% на наступну листівку!\n⏰ Дійсний до: ${formatExpiryDate(promoData.expiresAt)}\n\n🔗 listosyk.com`;
+    
+    window.open(`https://t.me/share/url?url=https://listosyk.com&text=${encodeURIComponent(text)}`, '_blank');
   };
 
   const formatExpiryDate = (dateString: string) => {
@@ -121,6 +170,21 @@ const Discount = () => {
             </p>
           </div>
 
+          {/* Warning Block - Save Promo Code */}
+          <Card className="p-4 md:p-6 bg-amber-50 border-2 border-amber-300 rounded-xl animate-pulse-slow">
+            <div className="flex items-start gap-3 text-left">
+              <AlertTriangle className="w-6 h-6 text-amber-600 flex-shrink-0 mt-1" />
+              <div>
+                <p className="font-bold text-amber-800 text-lg">
+                  ⚠️ Збережіть цей промокод!
+                </p>
+                <p className="text-amber-700 text-sm mt-1">
+                  Ця сторінка може бути недоступна пізніше. Скопіюйте код або зробіть скріншот прямо зараз!
+                </p>
+              </div>
+            </div>
+          </Card>
+
           {/* Promo Code Card */}
           <Card className="p-8 bg-gradient-to-br from-[#FFD1DC] via-[#E6E6FA] to-[#DDA0DD] border-2 border-[#6A5ACD]/30 rounded-2xl shadow-lg hover:shadow-xl transition-all backdrop-blur-sm animate-scale-in">
             <div className="space-y-6">
@@ -139,18 +203,50 @@ const Discount = () => {
                   <code className="text-3xl md:text-4xl font-mono font-bold text-[#6A5ACD] tracking-wider bg-[#E6E6FA]/50 px-4 py-2 rounded-lg">
                     {promoData.code}
                   </code>
-                  <Button
-                    onClick={copyPromoCode}
-                    variant="outline"
-                    size="icon"
-                    className="h-12 w-12 border-2 border-[#6A5ACD] text-[#6A5ACD] hover:bg-[#6A5ACD] hover:text-white transition-all"
-                  >
-                    <Copy className="h-5 w-5" />
-                  </Button>
                 </div>
                 <p className="text-sm text-gray-600">
                   ⏰ Дійсний до: {formatExpiryDate(promoData.expiresAt)}
                 </p>
+
+                {/* Save Buttons */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-4 border-t border-[#6A5ACD]/20">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={copyPromoCode}
+                    className="border-[#6A5ACD] text-[#6A5ACD] hover:bg-[#6A5ACD] hover:text-white"
+                  >
+                    <Copy className="w-4 h-4 mr-1" />
+                    Скопіювати
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={showScreenshotTip}
+                    className="border-[#6A5ACD] text-[#6A5ACD] hover:bg-[#6A5ACD] hover:text-white"
+                  >
+                    <Camera className="w-4 h-4 mr-1" />
+                    Скріншот
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={addToCalendar}
+                    className="border-[#6A5ACD] text-[#6A5ACD] hover:bg-[#6A5ACD] hover:text-white"
+                  >
+                    <CalendarPlus className="w-4 h-4 mr-1" />
+                    Календар
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={sendToTelegram}
+                    className="border-[#6A5ACD] text-[#6A5ACD] hover:bg-[#6A5ACD] hover:text-white"
+                  >
+                    <Send className="w-4 h-4 mr-1" />
+                    Telegram
+                  </Button>
+                </div>
               </div>
             </div>
           </Card>
