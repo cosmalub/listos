@@ -228,7 +228,7 @@ export default function OrderSuccess() {
               <Button
                 size="lg"
                 className="text-lg"
-                onClick={() => window.location.href = `/discount?ref=${orderId}`}
+                onClick={() => window.location.href = `/discount?ref=${orderData.pre_order_id}`}
               >
                 Отримати знижку 25% на наступне замовлення 🎁
               </Button>
