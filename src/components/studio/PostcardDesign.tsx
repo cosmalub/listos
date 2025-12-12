@@ -27,9 +27,15 @@ interface PostcardDesignProps {
   lyrics: string;
   onComplete: (designData: PostcardDesignData) => void;
   onBack: () => void;
+  pageData?: {
+    occasion?: string;
+    recipient?: string;
+    sender?: string;
+  };
+  chatMessages?: any[];
 }
 
-export function PostcardDesign({ lyrics, onComplete, onBack }: PostcardDesignProps) {
+export function PostcardDesign({ lyrics, onComplete, onBack, pageData, chatMessages }: PostcardDesignProps) {
   const [currentSubStep, setCurrentSubStep] = useState<'front' | 'back'>('front');
   const [designData, setDesignData] = useState<PostcardDesignData>({
     front: {
@@ -92,6 +98,8 @@ export function PostcardDesign({ lyrics, onComplete, onBack }: PostcardDesignPro
               initialData={designData.front}
               onComplete={handleFrontComplete}
               onBack={onBack}
+              pageData={pageData}
+              chatMessages={chatMessages}
             />
           </CardContent>
         </Card>

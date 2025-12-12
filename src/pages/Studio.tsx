@@ -595,6 +595,8 @@ const Studio = () => {
             lyrics={lyrics}
             onComplete={handlePostcardDesignComplete}
             onBack={() => setCurrentStep(3)}
+            pageData={pageData}
+            chatMessages={chatMessages}
           />
         );
       default:
