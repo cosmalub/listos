@@ -102,6 +102,18 @@ const STYLE_ELEMENTS = {
   }
 };
 
+// Song imagery interface
+interface SongImagery {
+  directImages?: string[];
+  metaphors?: string[];
+  colorMood?: string;
+  atmosphere?: string;
+  timeContext?: string;
+  personalObjects?: string[];
+  relationship?: string;
+  emotionalCore?: string;
+}
+
 function getRandomElement<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
@@ -112,12 +124,13 @@ serve(async (req) => {
   }
 
   try {
-    const { caption, imageDescription, style, userContext } = await req.json();
+    const { caption, imageDescription, style, userContext, songImagery } = await req.json();
     console.log('Create postcard task called with:', { 
       caption, 
       imageDescription: imageDescription?.substring(0, 100),
       style,
-      hasUserContext: !!userContext
+      hasUserContext: !!userContext,
+      hasSongImagery: !!songImagery
     });
 
     if (!caption || !imageDescription) {
@@ -129,7 +142,7 @@ serve(async (req) => {
       throw new Error('KIE_API_KEY is not configured');
     }
 
-    const prompt = createPersonalizedPrompt(caption, imageDescription, style || 'universal', userContext);
+    const prompt = createPersonalizedPrompt(caption, imageDescription, style || 'universal', userContext, songImagery);
     console.log('Generated personalized prompt:', prompt.substring(0, 500));
 
     const taskId = await createImageTask(prompt, KIE_API_KEY);
@@ -197,7 +210,8 @@ function createPersonalizedPrompt(
   caption: string, 
   imageDescription: string, 
   style: string,
-  userContext?: any
+  userContext?: any,
+  songImagery?: SongImagery
 ): string {
   const styleKey = style as keyof typeof STYLE_ELEMENTS;
   const elements = STYLE_ELEMENTS[styleKey] || STYLE_ELEMENTS.universal;
@@ -206,6 +220,38 @@ function createPersonalizedPrompt(
   const randomDecoration = getRandomElement(elements.decorations);
   const randomBackground = getRandomElement(elements.backgrounds);
   const randomTechnique = getRandomElement(elements.techniques);
+
+  // Build song imagery section
+  let songImagesSection = '';
+  if (songImagery) {
+    const imageryParts: string[] = [];
+    
+    if (songImagery.directImages?.length > 0) {
+      imageryParts.push(`IMAGES FROM SONG (MUST USE): ${songImagery.directImages.slice(0, 5).join(', ')}`);
+    }
+    if (songImagery.metaphors?.length > 0) {
+      imageryParts.push(`METAPHORS TO VISUALIZE: ${songImagery.metaphors.slice(0, 3).join(', ')}`);
+    }
+    if (songImagery.colorMood) {
+      imageryParts.push(`COLOR MOOD FROM SONG: ${songImagery.colorMood}`);
+    }
+    if (songImagery.atmosphere) {
+      imageryParts.push(`ATMOSPHERE: ${songImagery.atmosphere}`);
+    }
+    if (songImagery.timeContext) {
+      imageryParts.push(`TIME/SEASON CONTEXT: ${songImagery.timeContext}`);
+    }
+    if (songImagery.personalObjects?.length > 0) {
+      imageryParts.push(`PERSONAL OBJECTS TO INCLUDE: ${songImagery.personalObjects.slice(0, 3).join(', ')}`);
+    }
+    if (songImagery.emotionalCore) {
+      imageryParts.push(`EMOTIONAL CORE: ${songImagery.emotionalCore}`);
+    }
+    
+    if (imageryParts.length > 0) {
+      songImagesSection = `\n\nSONG-BASED PERSONALIZATION (CRITICAL - USE THESE ELEMENTS!):\n${imageryParts.join('\n')}`;
+    }
+  }
   
   // Build style-specific prompt
   const stylePrompts = {
@@ -223,7 +269,7 @@ VISUAL ELEMENTS:
 - Main theme: ${imageDescription}
 - Decorations: ${randomDecoration}
 - Background: ${randomBackground}
-- Color palette: Warm yellows, coral pinks, turquoise, vibrant orange`,
+- Color palette: ${songImagery?.colorMood || 'Warm yellows, coral pinks, turquoise, vibrant orange'}`,
 
     gentle: `Create a delicate, tender greeting card illustration.
 
@@ -239,7 +285,7 @@ VISUAL ELEMENTS:
 - Main theme: ${imageDescription}
 - Decorations: ${randomDecoration}
 - Background: ${randomBackground}
-- Color palette: Soft pinks, lavender, peach, mint green`,
+- Color palette: ${songImagery?.colorMood || 'Soft pinks, lavender, peach, mint green'}`,
 
     universal: `Create an elegant greeting card in Studio Ghibli style.
 
@@ -255,7 +301,7 @@ VISUAL ELEMENTS:
 - Main theme: ${imageDescription}
 - Decorations: ${randomDecoration}
 - Background: ${randomBackground}
-- Color palette: Warm earth tones, soft greens, gentle blues, cream`
+- Color palette: ${songImagery?.colorMood || 'Warm earth tones, soft greens, gentle blues, cream'}`
   };
 
   const baseStylePrompt = stylePrompts[styleKey] || stylePrompts.universal;
@@ -304,5 +350,5 @@ TECHNICAL REQUIREMENTS:
 - Composition: Leave clear space for text, avoid cluttered design
 - Quality: Print-ready, vibrant but not oversaturated colors`;
 
-  return `${baseStylePrompt}${personalizationSection}${textRequirements}${technicalSpecs}`;
+  return `${baseStylePrompt}${songImagesSection}${personalizationSection}${textRequirements}${technicalSpecs}`;
 }
