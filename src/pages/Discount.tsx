@@ -155,7 +155,7 @@ END:VCALENDAR`;
     <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] to-white/20">
       <Header />
       
-      <main className="container mx-auto px-4 py-16">
+      <main className="container mx-auto px-4 pt-24 pb-16">
         <div className="max-w-2xl mx-auto text-center space-y-8">
           {/* Hero Section */}
           <div className="space-y-4 animate-fade-in">
