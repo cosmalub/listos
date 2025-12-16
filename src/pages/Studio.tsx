@@ -197,7 +197,7 @@ const Studio = () => {
         console.error('Error analyzing lyrics:', error);
         toast.error('Помилка аналізу текстів');
         // Використовуємо універсальні стилі як запасний варіант
-        const fallbackStyles = ['pop-dance', 'acoustic-folk', 'soul-emotional']
+        const fallbackStyles = ['pop-dance', 'acoustic-folk', 'soul-emotional', 'romantic-ballad']
           .map(id => getStyleById(id))
           .filter(Boolean) as MusicStyle[];
         setRecommendedStyles(fallbackStyles);
@@ -422,7 +422,7 @@ const Studio = () => {
       }
       if (step >= 1.5 && recommendedStyles.length === 0) {
         // Auto-fill recommended styles
-        const fallbackStyles = ['pop-dance', 'acoustic-folk', 'soul-emotional']
+        const fallbackStyles = ['pop-dance', 'acoustic-folk', 'soul-emotional', 'romantic-ballad']
           .map(id => getStyleById(id))
           .filter(Boolean) as MusicStyle[];
         setRecommendedStyles(fallbackStyles);

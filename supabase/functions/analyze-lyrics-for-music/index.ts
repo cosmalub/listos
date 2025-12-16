@@ -107,7 +107,7 @@ serve(async (req) => {
         messages: [
           {
             role: 'user',
-            content: `Проаналізуй текст пісні та ОБЕРИ 3-5 найкращих стилів зі списку перевірених стилів для Suno.
+            content: `Проаналізуй текст пісні та ОБЕРИ РІВНО 4 найкращих стилів зі списку перевірених стилів для Suno.
 
 ТЕКСТ ПІСНІ:
 ${lyrics}
@@ -239,7 +239,7 @@ ${feedbackSection}
    - Від кого і кому (стать, відносини)
    - Настрій тексту (радісний, романтичний, емоційний, енергійний)
 
-2. **Обери 3-5 НАЙКРАЩИХ стилів** зі списку вище за критеріями:
+2. **Обери РІВНО 4 НАЙКРАЩИХ стилів** зі списку вище за критеріями:
    - Відповідність події та настрою
    - Рівень енергії (1-5)
    - Рівень романтичності (1-5)
@@ -259,7 +259,7 @@ ${feedbackSection}
 
 Поверни ТІЛЬКИ валідний JSON:
 {
-  "recommendedStyles": ["style-id-1", "style-id-2", "style-id-3"],
+  "recommendedStyles": ["style-id-1", "style-id-2", "style-id-3", "style-id-4"],
   "title": "Назва пісні",
   "vocalGender": "male" | "female",
   "styleWeight": 60,
@@ -296,8 +296,8 @@ ${feedbackSection}
     if (!analysis.recommendedStyles || !Array.isArray(analysis.recommendedStyles)) {
       throw new Error('recommendedStyles must be an array');
     }
-    if (analysis.recommendedStyles.length < 3 || analysis.recommendedStyles.length > 5) {
-      console.warn(`Expected 3-5 styles, got ${analysis.recommendedStyles.length}`);
+    if (analysis.recommendedStyles.length !== 4) {
+      console.warn(`Expected 4 styles, got ${analysis.recommendedStyles.length}`);
     }
     
     // Validate ranges
@@ -323,7 +323,7 @@ ${feedbackSection}
       JSON.stringify({ 
         error: error instanceof Error ? error.message : 'Unknown error',
         fallback: {
-          recommendedStyles: ['pop-dance', 'acoustic-folk', 'soul-emotional'],
+          recommendedStyles: ['pop-dance', 'acoustic-folk', 'soul-emotional', 'romantic-ballad'],
           title: 'Untitled',
           styleWeight: 50,
           weirdnessConstraint: 40,
