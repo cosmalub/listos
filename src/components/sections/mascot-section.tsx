@@ -149,7 +149,7 @@ export function MascotSection() {
                     <span className="font-semibold text-primary">А далі відбувається магія:</span> отримувач відкриває листівку → читає твої слова → сканує QR-код → і... звучить пісня, створена саме для нього.
                   </p>
                   <p className="text-muted-foreground mb-2">
-                    Фото з'являються. Анімація грає. Емоції переповнюють.
+                    Пісня звучить. Слова зворушують. Емоції переповнюють.
                   </p>
                   <p className="text-muted-foreground font-semibold mb-2">
                     <span className="text-primary">Мама плаче від радості. Коханий обіймає. Друг посміхається.</span>
