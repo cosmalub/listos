@@ -57,7 +57,7 @@ export function MascotSection() {
               Як це працює?
             </h2>
             <p className="text-lg text-center text-muted-foreground mb-12">
-              4 простих кроки — від покупки до готової листівки
+              3 простих кроки — від покупки до готової листівки
             </p>
 
             <div className="space-y-8">
@@ -71,10 +71,10 @@ export function MascotSection() {
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-primary mb-3">Крок 1: Купуєш доступ до студії</h3>
                   <p className="text-muted-foreground">
-                    Оплачуєш 399 грн → на твій email приходить посилання на студію.
+                    Оплачуєш 399 грн та вказуєш адресу доставки → на твій email приходить посилання на студію.
                   </p>
                   <p className="text-muted-foreground mt-2">
-                    Студія доступна <span className="font-semibold text-primary">24/7</span> — створюй, коли зручно! Ніхто не поганяє, ніхто не чекає. Твій темп, твій час.
+                    <span className="font-semibold text-primary">Доставка безкоштовна</span> по всій Україні. Студія доступна <span className="font-semibold text-primary">24/7</span> — створюй, коли зручно!
                   </p>
                 </div>
                 <div className="w-full md:w-auto flex-shrink-0">
@@ -132,7 +132,7 @@ export function MascotSection() {
                 </div>
               </div>
 
-              {/* Step 3: Замовляєш доставку */}
+              {/* Step 3: Отримуєш листівку */}
               <div className="flex flex-col md:flex-row gap-6 items-center bg-card rounded-2xl border-2 border-[#B8B3FF]/40 hover:border-[#B8B3FF] transition-all hover:shadow-lg p-6">
                 <div className="flex-shrink-0">
                   <div className="w-12 h-12 rounded-full bg-[#B8B3FF] flex items-center justify-center text-white text-2xl font-bold">
@@ -140,38 +140,9 @@ export function MascotSection() {
                   </div>
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-xl font-bold text-primary mb-3">Крок 3: Замовляєш доставку</h3>
+                  <h3 className="text-xl font-bold text-primary mb-3">Крок 3: Отримуєш листівку</h3>
                   <p className="text-muted-foreground mb-2">
-                    Коли пісня і дизайн готові — замовляєш доставку прямо у студії.
-                  </p>
-                  <p className="text-muted-foreground mb-2">Вказуєш:</p>
-                  <ul className="space-y-1 text-muted-foreground ml-4">
-                    <li>— ПІБ отримувача</li>
-                    <li>— Номер відділення Нової пошти</li>
-                    <li>— Коментар (якщо потрібно)</li>
-                  </ul>
-                  <p className="text-muted-foreground mt-3">
-                    <span className="font-semibold text-primary">Доставка безкоштовна</span> по всій Україні.
-                  </p>
-                </div>
-                <div className="w-full md:w-80 flex-shrink-0">
-                  <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-video flex items-center justify-center">
-                    <p className="text-muted-foreground text-sm">Форма замовлення</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Step 4: Отримуєш готову листівку */}
-              <div className="flex flex-col md:flex-row-reverse gap-6 items-center bg-card rounded-2xl border-2 border-[#E8B3FF]/40 hover:border-[#E8B3FF] transition-all hover:shadow-lg p-6">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-full bg-[#E8B3FF] flex items-center justify-center text-white text-2xl font-bold">
-                    4
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold text-primary mb-3">Крок 4: Отримуєш готову листівку</h3>
-                  <p className="text-muted-foreground mb-2">
-                    Листівка приїжджає за 1-2 дні.
+                    Листівка приїжджає <span className="font-semibold text-primary">Новою поштою за 1-2 дні</span>.
                   </p>
                   <p className="text-muted-foreground mb-3">
                     Відкриваєш → читаєш текст → сканінуєш QR-код на зворотній стороні → відкривається анімована сторінка з піснею.
