@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import postcardScanImage from "@/assets/postcard-scan.png";
 
 export function MascotSection() {
   return (
@@ -116,9 +117,11 @@ export function MascotSection() {
                   </p>
                 </div>
                 <div className="w-full md:w-80 flex-shrink-0">
-                  <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-video flex items-center justify-center">
-                    <p className="text-muted-foreground text-sm">Відео буде тут</p>
-                  </div>
+                  <img 
+                    src={postcardScanImage} 
+                    alt="Листівка з QR-кодом та смартфон, який сканує її" 
+                    className="rounded-lg aspect-square object-cover w-full shadow-lg"
+                  />
                 </div>
               </div>
 
