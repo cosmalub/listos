@@ -88,7 +88,7 @@ export function MascotSection() {
                       }
                     }}
                   >
-                    Купити доступ за 399 грн
+                    Купити доступ
                   </Button>
                 </div>
               </div>
