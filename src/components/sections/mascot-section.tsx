@@ -132,7 +132,7 @@ export function MascotSection() {
                 </div>
               </div>
 
-              {/* Step 3: Отримуєш листівку */}
+              {/* Step 3: Даруєш і дивишся на емоції */}
               <div className="flex flex-col md:flex-row gap-6 items-center bg-card rounded-2xl border-2 border-[#B8B3FF]/40 hover:border-[#B8B3FF] transition-all hover:shadow-lg p-6">
                 <div className="flex-shrink-0">
                   <div className="w-12 h-12 rounded-full bg-[#B8B3FF] flex items-center justify-center text-white text-2xl font-bold">
@@ -140,18 +140,16 @@ export function MascotSection() {
                   </div>
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-xl font-bold text-primary mb-3">Крок 3: Отримуєш листівку</h3>
+                  <h3 className="text-xl font-bold text-primary mb-3">Крок 3: Даруєш і дивишся на емоції</h3>
                   <p className="text-muted-foreground mb-2">
-                    Листівка приїжджає <span className="font-semibold text-primary">Новою поштою за 1-2 дні</span>.
+                    Листівка приїжджає <span className="font-semibold text-primary">Новою поштою за 1-2 дні</span>. 
+                    Ти отримуєш її та даруєш особливій людині.
                   </p>
                   <p className="text-muted-foreground mb-3">
-                    Відкриваєш → читаєш текст → сканінуєш QR-код на зворотній стороні → відкривається анімована сторінка з піснею.
-                  </p>
-                  <p className="text-muted-foreground font-semibold text-primary mb-2">
-                    І тут починається магія.
+                    <span className="font-semibold text-primary">А далі відбувається магія:</span> отримувач відкриває листівку → читає твої слова → сканує QR-код → і... звучить пісня, створена саме для нього.
                   </p>
                   <p className="text-muted-foreground mb-2">
-                    Пісня звучить. Фото з'являються. Емоції переповнюють.
+                    Фото з'являються. Анімація грає. Емоції переповнюють.
                   </p>
                   <p className="text-muted-foreground font-semibold mb-2">
                     <span className="text-primary">Мама плаче від радості. Коханий обіймає. Друг посміхається.</span>
