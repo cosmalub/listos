@@ -77,10 +77,19 @@ export function MascotSection() {
                     Студія доступна <span className="font-semibold text-primary">24/7</span> — створюй, коли зручно! Ніхто не поганяє, ніхто не чекає. Твій темп, твій час.
                   </p>
                 </div>
-                <div className="w-full md:w-80 flex-shrink-0">
-                  <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-video flex items-center justify-center">
-                    <p className="text-muted-foreground text-sm">Візуал буде тут</p>
-                  </div>
+                <div className="w-full md:w-auto flex-shrink-0">
+                  <Button 
+                    size="lg" 
+                    className="w-full md:w-auto bg-gradient-to-r from-[#B8B3FF] to-[#E8B3FF] hover:from-[#A8A3EF] hover:to-[#D8A3EF] text-white font-bold px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                    onClick={() => {
+                      const orderSection = document.getElementById('order-section');
+                      if (orderSection) {
+                        orderSection.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}
+                  >
+                    Купити доступ за 399 грн
+                  </Button>
                 </div>
               </div>
 
