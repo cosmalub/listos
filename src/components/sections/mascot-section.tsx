@@ -62,13 +62,8 @@ export function MascotSection() {
 
             <div className="space-y-8">
               {/* Step 1: Купуєш доступ */}
-              <div className="flex flex-col md:flex-row gap-6 items-center bg-card rounded-2xl border-2 border-[#B8B3FF]/40 hover:border-[#B8B3FF] transition-all hover:shadow-lg p-6">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-full bg-[#B8B3FF] flex items-center justify-center text-white text-2xl font-bold">
-                    1
-                  </div>
-                </div>
-                <div className="flex-1">
+              <div className="flex flex-col gap-6 bg-card rounded-2xl border-2 border-[#B8B3FF]/40 hover:border-[#B8B3FF] transition-all hover:shadow-lg p-6">
+                <div>
                   <h3 className="text-xl font-bold text-primary mb-3">Крок 1: Купуєш доступ до студії</h3>
                   <p className="text-muted-foreground">
                     Оплачуєш 399 грн та вказуєш адресу доставки → на твій email приходить посилання на студію.
@@ -77,10 +72,10 @@ export function MascotSection() {
                     <span className="font-semibold text-primary">Доставка безкоштовна</span> по всій Україні. Студія доступна <span className="font-semibold text-primary">24/7</span> — створюй, коли зручно!
                   </p>
                 </div>
-                <div className="w-full md:w-auto flex-shrink-0">
+                <div className="w-full flex justify-center">
                   <Button 
                     size="lg" 
-                    className="w-full md:w-auto bg-gradient-to-r from-[#B8B3FF] to-[#E8B3FF] hover:from-[#A8A3EF] hover:to-[#D8A3EF] text-white font-bold px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                    className="bg-gradient-to-r from-[#B8B3FF] to-[#E8B3FF] hover:from-[#A8A3EF] hover:to-[#D8A3EF] text-white font-bold px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105"
                     onClick={() => {
                       const orderSection = document.getElementById('order-section');
                       if (orderSection) {
@@ -94,12 +89,7 @@ export function MascotSection() {
               </div>
 
               {/* Step 2: Створюєш у студії */}
-              <div className="flex flex-col md:flex-row-reverse gap-6 items-center bg-card rounded-2xl border-2 border-[#E8B3FF]/40 hover:border-[#E8B3FF] transition-all hover:shadow-lg p-6">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-full bg-[#E8B3FF] flex items-center justify-center text-white text-2xl font-bold">
-                    2
-                  </div>
-                </div>
+              <div className="flex flex-col md:flex-row gap-6 items-center bg-card rounded-2xl border-2 border-[#E8B3FF]/40 hover:border-[#E8B3FF] transition-all hover:shadow-lg p-6">
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-primary mb-3">Крок 2: Створюєш пісню і дизайн у студії</h3>
                   <p className="text-muted-foreground mb-3">У зручній студії ти:</p>
@@ -134,11 +124,6 @@ export function MascotSection() {
 
               {/* Step 3: Даруєш і дивишся на емоції */}
               <div className="flex flex-col md:flex-row gap-6 items-center bg-card rounded-2xl border-2 border-[#B8B3FF]/40 hover:border-[#B8B3FF] transition-all hover:shadow-lg p-6">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-full bg-[#B8B3FF] flex items-center justify-center text-white text-2xl font-bold">
-                    3
-                  </div>
-                </div>
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-primary mb-3">Крок 3: Даруєш і дивишся на емоції</h3>
                   <p className="text-muted-foreground mb-2">
