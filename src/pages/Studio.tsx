@@ -72,6 +72,7 @@ const Studio = () => {
   const [recommendedStyles, setRecommendedStyles] = useState<MusicStyle[]>([]);
   const [selectedStyle, setSelectedStyle] = useState<MusicStyle | null>(null);
   const [isAnalyzingLyrics, setIsAnalyzingLyrics] = useState(false);
+  const [chatKey, setChatKey] = useState(0);
   const chatRef = useRef<ChatInterfaceRef>(null);
 
   // Load chat history from localStorage
@@ -468,6 +469,7 @@ const Studio = () => {
   const handleClearChatHistory = () => {
     localStorage.removeItem('studio-chat-messages');
     setChatMessages([]);
+    setChatKey(prev => prev + 1);
     toast.success('Історію чату очищено');
   };
 
@@ -495,6 +497,7 @@ const Studio = () => {
                 <TabsContent value="chat" className="flex-1">
                   <Card className="p-4 h-full">
                     <ChatInterface 
+                      key={chatKey}
                       ref={chatRef}
                       initialMessages={chatMessages}
                       onMessagesChange={setChatMessages}
