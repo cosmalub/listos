@@ -59,7 +59,7 @@ export default function OrderPending() {
     <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] via-[#F3D1FF]/30 to-white flex flex-col">
       <Header centerTitle="Заявка створена" hideNav />
       
-      <main className="flex-1 py-12 px-4">
+      <main className="flex-1 pt-20 pb-12 px-4">
         <div className="max-w-2xl mx-auto">
           {/* Success Header */}
           <div className="text-center mb-10">
