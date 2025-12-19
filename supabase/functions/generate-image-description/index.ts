@@ -56,49 +56,27 @@ function detectLanguage(lyrics: string): 'Ukrainian' | 'Russian' | 'English' {
   return 'English';
 }
 
-// Map occasion to visual themes
+// Map occasion to theme hint
 function getOccasionTheme(occasion: string): string {
   const occasionThemes: Record<string, string> = {
-    'birthday': 'святковий, з тортом, свічками, подарунками, веселий настрій',
-    'wedding': 'романтичний, з квітами, серцями, елегантний',
-    'anniversary': 'теплий, романтичний, ностальгічний',
-    'thank-you': 'теплий, вдячний, з квітами або серцями',
-    'congratulation': 'святковий, урочистий, з зірками і конфетті',
-    'love': 'романтичний, ніжний, з серцями і квітами',
-    'apology': 'ніжний, спокійний, делікатний',
-    'get-well': 'теплий, оптимістичний, з квітами і сонцем',
-    'holiday': 'святковий, яскравий, урочистий',
-    'new-year': 'зимовий, святковий, з ялинкою і сніжинками',
-    'christmas': 'зимовий, теплий, з ялинкою і подарунками',
-    'easter': 'весняний, з квітами і писанками',
-    'mothers-day': 'ніжний, з квітами, теплий',
-    'fathers-day': 'теплий, спокійний, з природою',
-    'valentines': 'романтичний, з серцями і трояндами'
+    'birthday': 'день народження, святкова радість',
+    'wedding': 'весілля, романтика, єднання',
+    'anniversary': 'річниця, спогади, любов',
+    'thank-you': 'вдячність, тепло, визнання',
+    'congratulation': 'привітання, досягнення, гордість',
+    'love': 'кохання, ніжність, пристрасть',
+    'apology': 'вибачення, каяття, примирення',
+    'get-well': 'одужання, підтримка, надія',
+    'holiday': 'свято, радість, традиції',
+    'new-year': 'новий рік, надії, початок',
+    'christmas': 'різдво, затишок, магія',
+    'easter': 'великдень, відродження, весна',
+    'mothers-day': 'день матері, любов, вдячність',
+    'fathers-day': 'день батька, повага, тепло',
+    'valentines': 'день закоханих, романтика, пристрасть'
   };
   
-  return occasionThemes[occasion] || 'теплий, універсальний';
-}
-
-// Map relationship to visual elements
-function getRelationshipElements(relationship: string): string {
-  const relationshipElements: Record<string, string> = {
-    'мама': 'ніжні квіти (троянди, півонії), материнська любов, теплі тони',
-    'тато': 'спокійна природа, сила, стабільність, земляні тони',
-    'бабуся': 'затишок, традиції, квіти, вишиванка',
-    'дідусь': 'мудрість, природа, спокій',
-    'дружина': 'романтика, троянди, елегантність, любов',
-    'чоловік': 'сила, підтримка, романтика',
-    'кохана': 'романтика, серця, троянди, ніжність',
-    'коханий': 'романтика, любов, серця',
-    'друг': 'веселощі, енергія, яскраві кольори',
-    'подруга': 'веселощі, квіти, яскраві кольори',
-    'сестра': 'близькість, веселощі, квіти',
-    'брат': 'підтримка, енергія, динаміка',
-    'дитина': 'казковість, яскравість, милі персонажі',
-    'колега': 'професійність, теплота, універсальність'
-  };
-  
-  return relationshipElements[relationship?.toLowerCase()] || 'теплі, дружні елементи';
+  return occasionThemes[occasion] || occasion;
 }
 
 serve(async (req) => {
@@ -129,108 +107,139 @@ serve(async (req) => {
     const detectedLanguage = detectLanguage(lyrics);
     console.log('Detected language:', detectedLanguage);
 
-    // Build personalization context
+    // Build personalization context - as a hint for image selection
     let personalizationContext = '';
     if (userContext) {
-      const parts: string[] = [];
-      
-      if (userContext.occasion) {
-        const occasionTheme = getOccasionTheme(userContext.occasion);
-        parts.push(`Привід: ${occasionTheme}`);
-      }
+      const hints: string[] = [];
       
       if (userContext.recipient?.relationship) {
-        const relationshipElements = getRelationshipElements(userContext.recipient.relationship);
-        parts.push(`Для ${userContext.recipient.relationship}: ${relationshipElements}`);
+        hints.push(`Це листівка для ${userContext.recipient.relationship}`);
+      }
+      if (userContext.occasion) {
+        hints.push(`Привід: ${getOccasionTheme(userContext.occasion)}`);
       }
       
-      if (userContext.recipient?.name) {
-        parts.push(`Отримувач: ${userContext.recipient.name}`);
-      }
-      
-      if (userContext.conversationSummary) {
-        parts.push(`Додаткові деталі: ${userContext.conversationSummary}`);
-      }
-      
-      if (parts.length > 0) {
-        personalizationContext = `\n\nПЕРСОНАЛІЗАЦІЯ:\n${parts.join('\n')}`;
+      if (hints.length > 0) {
+        personalizationContext = `
+────────────────────────
+КОНТЕКСТ ПЕРСОНАЛІЗАЦІЇ
+────────────────────────
+${hints.join('\n')}
+Використай це для вибору ГОЛОВНОГО ОБРАЗУ,
+але не ілюструй буквально — шукай метафору в пісні.`;
       }
     }
 
-    // Build song imagery context
+    // Build song imagery context - more poetic and focused
     let songImageryContext = '';
     if (songImagery) {
-      const imageryParts: string[] = [];
+      const parts: string[] = [];
       
       if (songImagery.directImages?.length > 0) {
-        imageryParts.push(`Образи з пісні: ${songImagery.directImages.join(', ')}`);
+        parts.push(`Візуальні образи з пісні: ${songImagery.directImages.join(', ')}`);
       }
       if (songImagery.metaphors?.length > 0) {
-        imageryParts.push(`Метафори: ${songImagery.metaphors.join(', ')}`);
+        parts.push(`Метафори для інтерпретації: ${songImagery.metaphors.join(', ')}`);
       }
       if (songImagery.colorMood) {
-        imageryParts.push(`Кольорова гама: ${songImagery.colorMood}`);
+        parts.push(`Кольоровий настрій: ${songImagery.colorMood}`);
       }
       if (songImagery.atmosphere) {
-        imageryParts.push(`Атмосфера: ${songImagery.atmosphere}`);
-      }
-      if (songImagery.timeContext) {
-        imageryParts.push(`Час/сезон: ${songImagery.timeContext}`);
-      }
-      if (songImagery.personalObjects?.length > 0) {
-        imageryParts.push(`Особисті деталі: ${songImagery.personalObjects.join(', ')}`);
+        parts.push(`Атмосфера: ${songImagery.atmosphere}`);
       }
       if (songImagery.emotionalCore) {
-        imageryParts.push(`Головна емоція: ${songImagery.emotionalCore}`);
+        parts.push(`Головна емоція: ${songImagery.emotionalCore}`);
       }
       
-      if (imageryParts.length > 0) {
-        songImageryContext = `\n\nОБРАЗИ З ПІСНІ (ВИКОРИСТОВУЙ ЦЕ!):\n${imageryParts.join('\n')}`;
+      if (parts.length > 0) {
+        songImageryContext = `
+────────────────────────
+ОБРАЗИ З ПІСНІ (ОБИРАЙ ГОЛОВНИЙ!)
+────────────────────────
+${parts.join('\n')}`;
       }
     }
 
     const languageInstructions = {
-      Ukrainian: 'КРИТИЧНО: Створи опис ВИКЛЮЧНО українською мовою. Використовуй українську лексику, граматику та правопис.',
-      Russian: 'КРИТИЧНО: Создай описание ИСКЛЮЧИТЕЛЬНО на русском языке. Используй русскую лексику, грамматику и правописание.',
-      English: 'CRITICAL: Create description EXCLUSIVELY in English language. Use English vocabulary, grammar and spelling.'
+      Ukrainian: 'Створи опис ВИКЛЮЧНО українською мовою.',
+      Russian: 'Создай описание ИСКЛЮЧИТЕЛЬНО на русском языке.',
+      English: 'Create description EXCLUSIVELY in English.'
     };
 
-    const systemPrompt = `Ти створюєш ПЕРСОНАЛІЗОВАНИЙ опис дизайну листівки на основі КОНКРЕТНИХ образів з пісні.
+    const systemPrompt = `Ти створюєш ПЕРСОНАЛІЗОВАНИЙ художній опис ілюстрації
+на основі ТЕКСТУ ПІСНІ, який подається на вхід.
 
-${languageInstructions[detectedLanguage]}
+ПІСНЯ Є ДЖЕРЕЛОМ ОБРАЗІВ ТА ЕМОЦІЙ, А НЕ ІНСТРУКЦІЄЮ
+ДЛЯ БУКВАЛЬНОГО ІЛЮСТРУВАННЯ РЯДКІВ.
+
+ТВОЯ ЗАДАЧА — створити УНІКАЛЬНИЙ, ВІЗУАЛЬНО КОНКРЕТНИЙ опис,
+який передає ОСОБИСТУ ІСТОРІЮ та НАСТРІЙ пісні.
+
+────────────────────────
+ОСНОВНІ ПРИНЦИПИ
+────────────────────────
+1. ОБЕРИ ОДИН ГОЛОВНИЙ ВІЗУАЛЬНИЙ ОБРАЗ
+   (ключову сцену або метафору з пісні).
+2. ОБЕРИ 1–2 ДРУГОРЯДНІ ОБРАЗИ
+   як атмосферні елементи (світло, простір, відчуття, фон).
+3. ДОПУСКАЙ ХУДОЖНЮ ІНТЕРПРЕТАЦІЮ МЕТАФОР,
+   але зберігай емоційну точність.
+
+────────────────────────
+ПРО ПЕРСОНАЖІВ
+────────────────────────
+Якщо пісня про РЕАЛЬНИХ ЛЮДЕЙ:
+– не зображай конкретну зовнішність, риси облич, вік або етнічність
+– персонажі мають бути СИМВОЛІЧНИМИ та УЗАГАЛЬНЕНИМИ
+  (силуети, світло, рух, присутність)
+– ілюстрація має відчуватися як ОСОБИСТА ІСТОРІЯ,
+  а не випадкова або стокова сцена
+– уникай типових, шаблонних образів людей
+
+────────────────────────
+ВІЗУАЛЬНИЙ СТИЛЬ
+────────────────────────
+– ілюстрація заповнює простір від краю до краю (full-bleed)
+– світлі «рамки» по краях — це АКВАРЕЛЬНЕ РОЗЧИНЕННЯ ФАРБИ,
+  художній ефект, ЧАСТИНА ЖИВОПИСУ,
+  а не папір, не край листа і не фон
+– відчуття живої, емоційної, поетичної сцени
 ${personalizationContext}
 ${songImageryContext}
 
-ТВОЯ ЗАДАЧА - створити УНІКАЛЬНИЙ опис що ВІДОБРАЖАЄ:
-1. КОНКРЕТНІ образи та метафори з пісні (головний пріоритет!)
-2. Кольорову гаму що випливає з тексту
-3. Атмосферу та емоції пісні
-4. Персоналізацію під отримувача (якщо відомо)
+────────────────────────
+ОПИСУЙ
+────────────────────────
+– конкретну візуальну сцену (де, що відбувається, між ким)
+– кольорову палітру, що логічно випливає з пісні
+– світло, простір, атмосферу
+– емоційний підтекст і відчуття близькості
+– персональну інтимність моменту
 
-ОПИСУВАЙ:
-- КОНКРЕТНІ візуальні елементи З ПІСНІ (сонце, квіти, море - те що є в тексті!)
-- Кольорову палітру що відповідає настрою пісні
-- Атмосферу та емоції
-- Унікальні деталі що роблять листівку персональною
+────────────────────────
+НЕ ОПИСУЙ
+────────────────────────
+– формат, розміри, друк
+– технічні параметри
+– мокапи, папір, тіні від об'єктів
+– текст, який буде написаний на ілюстрації
 
-НЕ ОПИСУЙ:
-- Технічні деталі (формат, техніки)
-- Текст на листівці
+────────────────────────
+ФОРМАТ ВІДПОВІДІ
+────────────────────────
+– короткий, поетичний, ВІЗУАЛЬНО КОНКРЕТНИЙ опис
+– 40–60 слів
+– без списків і пояснень
+– лише сам художній опис
 
-ПРИКЛАДИ ПЕРСОНАЛІЗАЦІЇ:
-- Для мами → ніжні квіти, теплі рожево-персикові тони, затишна атмосфера
-- Для друга → яскраві кольори, динамічні елементи, веселий настрій
-- На день народження → святкові елементи, торт/кульки/подарунки
-- На подяку → теплі тони, квіти, серця
-
-Створи короткий але КОНКРЕТНИЙ опис (40-60 слів).`;
+${languageInstructions[detectedLanguage]}`;
 
     const userPrompt = `ТЕКСТ ПІСНІ:
 "${lyrics}"
 
-Створи персоналізований опис дизайну листівки:`;
+Створи персоналізований художній опис ілюстрації:`;
 
-    console.log('Calling OpenAI API with personalization context...');
+    console.log('Calling OpenAI API with artistic prompt...');
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -244,8 +253,8 @@ ${songImageryContext}
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
         ],
-        max_tokens: 250,
-        temperature: 0.8, // Increased for more variety
+        max_tokens: 200,
+        temperature: 0.9,
       }),
     });
 
@@ -259,7 +268,7 @@ ${songImageryContext}
     console.log('OpenAI response received');
 
     const imageDescription = data.choices[0].message.content.trim();
-    console.log('Generated personalized description:', imageDescription);
+    console.log('Generated artistic description:', imageDescription);
 
     return new Response(JSON.stringify({ imageDescription }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
