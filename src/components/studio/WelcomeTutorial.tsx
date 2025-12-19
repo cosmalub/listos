@@ -81,11 +81,17 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
       console.log('Validation response:', data);
 
       if (data.valid) {
-        // Зберігаємо токен і preOrderId в sessionStorage
+        // ОЧИЩАЄМО ВСІ СТАРІ ДАНІ ПЕРЕД НОВИМ ЗАМОВЛЕННЯМ
+        localStorage.removeItem('studio-chat-messages');
+        sessionStorage.removeItem('studio-draft-data');
+        sessionStorage.removeItem('music-parameters');
+        sessionStorage.removeItem('studio-selected-music');
+        
+        // Зберігаємо новий токен і preOrderId
         sessionStorage.setItem('studio-access-token', accessToken.trim());
         sessionStorage.setItem('studio-pre-order-id', data.preOrderId);
         
-        console.log('Token validated successfully, stored in sessionStorage');
+        console.log('Token validated successfully, cleared old data, stored new token');
         
         toast.success(data.message || 'Код доступу підтверджено!');
         
@@ -114,11 +120,17 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
   };
 
   const handleDevSkip = () => {
+    // ОЧИЩАЄМО ВСІ СТАРІ ДАНІ
+    localStorage.removeItem('studio-chat-messages');
+    sessionStorage.removeItem('studio-draft-data');
+    sessionStorage.removeItem('music-parameters');
+    sessionStorage.removeItem('studio-selected-music');
+    
     // Імітуємо валідний токен для dev режиму
     sessionStorage.setItem('studio-access-token', 'dev-mode-token');
     sessionStorage.setItem('studio-pre-order-id', 'dev-mode-pre-order-id');
     
-    console.log('🔧 DEV MODE: Skipped token validation');
+    console.log('🔧 DEV MODE: Cleared old data, skipped token validation');
     toast.success('Dev mode: пропущено перевірку токена');
     
     onStart();
