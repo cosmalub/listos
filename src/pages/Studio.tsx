@@ -301,6 +301,17 @@ const Studio = () => {
   };
 
   const handleWelcomeStart = () => {
+    // Скидаємо всі стейти для нової сесії
+    setLyrics('');
+    setChatMessages([]);
+    setChatKey(prev => prev + 1);
+    setSelectedMusicVariant(null);
+    setSelectedStyle(null);
+    setRecommendedStyles([]);
+    setPageData(null);
+    setDesignData(null);
+    setHasUnconfirmedLyrics(false);
+    
     setShowWelcome(false);
     setCurrentStep(1);
     navigate('/studio?step=1');
