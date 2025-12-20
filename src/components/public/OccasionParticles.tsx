@@ -17,20 +17,21 @@ export const OccasionParticles: React.FC<OccasionParticlesProps> = ({
 
   // Initialize tsParticles engine once
   useEffect(() => {
-    console.log('OccasionParticles: Initializing tsParticles for occasion:', occasion);
+    console.log('OccasionParticles: Starting initialization for occasion:', occasion);
     initParticlesEngine(async (engine) => {
+      console.log('OccasionParticles: Loading slim engine...');
       await loadSlim(engine);
     }).then(() => {
-      console.log('OccasionParticles: tsParticles initialized successfully');
+      console.log('OccasionParticles: Engine initialized successfully!');
       setInit(true);
     }).catch((error) => {
-      console.error('OccasionParticles: Failed to initialize tsParticles:', error);
+      console.error('OccasionParticles: Failed to initialize engine:', error);
     });
-  }, [occasion]);
+  }, []);
 
   // Store container reference for potential interactions
   const particlesLoaded = async (container?: Container) => {
-    console.log('Particles loaded:', container?.id);
+    console.log('OccasionParticles: Particles loaded, container:', container?.id);
   };
 
   // Get config based on occasion
@@ -42,21 +43,31 @@ export const OccasionParticles: React.FC<OccasionParticlesProps> = ({
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setReducedMotion(mediaQuery.matches);
+    console.log('OccasionParticles: Reduced motion preference:', mediaQuery.matches);
     
     const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
     mediaQuery.addEventListener('change', handler);
     return () => mediaQuery.removeEventListener('change', handler);
   }, []);
 
-  // Don't render particles if user prefers reduced motion or not initialized
-  if (reducedMotion || !init) {
+  // Don't render particles if user prefers reduced motion
+  if (reducedMotion) {
+    console.log('OccasionParticles: Not rendering due to reduced motion preference');
     return null;
   }
+
+  // Show loading state while initializing
+  if (!init) {
+    console.log('OccasionParticles: Still initializing...');
+    return null;
+  }
+
+  console.log('OccasionParticles: Rendering particles for occasion:', occasion);
 
   return (
     <Particles
       id={`occasion-particles-${occasion}`}
-      className={`fixed inset-0 z-40 pointer-events-auto ${className}`}
+      className={className}
       particlesLoaded={particlesLoaded}
       options={config}
     />

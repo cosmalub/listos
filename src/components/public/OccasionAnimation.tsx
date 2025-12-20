@@ -29,21 +29,36 @@ export const OccasionAnimation: React.FC<OccasionAnimationProps> = ({
   const animationRef = useRef<any>(null);
   const [showParticles, setShowParticles] = useState(false);
   const [introComplete, setIntroComplete] = useState(false);
+  const [particlesReady, setParticlesReady] = useState(false);
 
   console.log('OccasionAnimation: Rendering for occasion:', occasion, 'useEnhanced:', useEnhanced);
 
-  // Show particles after intro animation
+  // Show particles after intro animation with immediate start
   useEffect(() => {
     if (useEnhanced) {
-      console.log('OccasionAnimation: Will show particles after 2s delay');
-      // Delay particles to let intro Lottie play first
+      console.log('OccasionAnimation: Enhanced mode - will show particles after 1.5s delay');
+      // Start particles earlier for better experience
       const timer = setTimeout(() => {
         console.log('OccasionAnimation: Now showing particles');
         setShowParticles(true);
-      }, 2000);
+      }, 1500);
       return () => clearTimeout(timer);
     }
   }, [useEnhanced]);
+
+  // Fallback to canvas-confetti if particles don't appear after 4 seconds
+  useEffect(() => {
+    if (!useEnhanced) return;
+    
+    const fallbackTimer = setTimeout(() => {
+      if (!particlesReady) {
+        console.log('OccasionAnimation: Particles not ready after 4s, running confetti fallback');
+        runConfettiFallback(occasion);
+      }
+    }, 4000);
+    
+    return () => clearTimeout(fallbackTimer);
+  }, [useEnhanced, particlesReady, occasion]);
 
   // Fallback to canvas-confetti if not using enhanced
   useEffect(() => {
@@ -98,12 +113,17 @@ export const OccasionAnimation: React.FC<OccasionAnimationProps> = ({
         <OccasionLottie 
           occasion={occasion}
           showIntro={true}
-          onIntroComplete={() => setIntroComplete(true)}
+          onIntroComplete={() => {
+            console.log('OccasionAnimation: Lottie intro complete');
+            setIntroComplete(true);
+          }}
         />
         
         {/* tsParticles for continuous interactive effects */}
         {showParticles && (
-          <OccasionParticles occasion={occasion} />
+          <OccasionParticles 
+            occasion={occasion} 
+          />
         )}
       </>
     );
@@ -118,6 +138,56 @@ export const OccasionAnimation: React.FC<OccasionAnimationProps> = ({
       />
     </div>
   );
+};
+
+// Confetti fallback function
+const runConfettiFallback = (occasion: string) => {
+  const colors = getOccasionColors(occasion);
+  
+  // Run a burst animation
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.6 },
+    colors: colors,
+    scalar: 1.2
+  });
+  
+  setTimeout(() => {
+    confetti({
+      particleCount: 50,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 },
+      colors: colors
+    });
+    confetti({
+      particleCount: 50,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 },
+      colors: colors
+    });
+  }, 300);
+};
+
+const getOccasionColors = (occasion: string): string[] => {
+  switch (occasion) {
+    case 'birthday':
+      return ['#FF1744', '#FF6B9D', '#FFD700', '#00D4FF', '#9C27B0'];
+    case 'love':
+      return ['#ff006e', '#fb5607', '#ff1744', '#f50057', '#ff4081'];
+    case 'thanks':
+      return ['#FFD700', '#FFA500', '#FFED4E', '#FFB700', '#FFC300'];
+    case 'holiday':
+      return ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A'];
+    case 'friendship':
+      return ['#ff6b9d', '#c44569', '#f8b500', '#18dcff', '#7d5fff'];
+    case 'apology':
+      return ['#a8dadc', '#457b9d', '#1d3557', '#f1faee'];
+    default:
+      return ['#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6'];
+  }
 };
 
 // Birthday: Яркое праздничное конфетти

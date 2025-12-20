@@ -25,7 +25,7 @@ export const OccasionLottie: React.FC<OccasionLottieProps> = ({
       console.log('OccasionLottie: Starting intro animation for', occasion);
       // Play intro animation for 2.5 seconds
       const timer = setTimeout(() => {
-        console.log('OccasionLottie: Intro complete, showing main animation');
+        console.log('OccasionLottie: Intro complete, transitioning to main animation');
         setIsIntroPlaying(false);
         setShowMainAnimation(true);
         onIntroComplete?.();
@@ -43,6 +43,7 @@ export const OccasionLottie: React.FC<OccasionLottieProps> = ({
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setReducedMotion(mediaQuery.matches);
+    console.log('OccasionLottie: Reduced motion preference:', mediaQuery.matches);
     
     const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
     mediaQuery.addEventListener('change', handler);
@@ -50,15 +51,16 @@ export const OccasionLottie: React.FC<OccasionLottieProps> = ({
   }, []);
 
   if (reducedMotion) {
+    console.log('OccasionLottie: Not rendering due to reduced motion preference');
     return null;
   }
 
   return (
     <>
-      {/* Intro burst animation */}
+      {/* Intro burst animation - LARGE and centered */}
       {isIntroPlaying && (
         <div className={`fixed inset-0 z-50 pointer-events-none flex items-center justify-center ${className}`}>
-          <div className="w-80 h-80 md:w-96 md:h-96 animate-scale-in">
+          <div className="w-[400px] h-[400px] md:w-[500px] md:h-[500px] lg:w-[600px] lg:h-[600px] animate-scale-in">
             <Lottie
               animationData={animationData}
               loop={false}
@@ -69,32 +71,46 @@ export const OccasionLottie: React.FC<OccasionLottieProps> = ({
         </div>
       )}
 
-      {/* Continuous background animations */}
+      {/* Continuous background animations - scattered around screen */}
       {showMainAnimation && (
         <div className={`fixed inset-0 z-30 pointer-events-none overflow-hidden ${className}`}>
-          {/* Multiple scattered Lottie animations */}
-          <div className="absolute top-10 left-10 w-16 h-16 opacity-40 animate-float-slow">
+          {/* Multiple scattered Lottie animations at different positions */}
+          <div className="absolute top-[5%] left-[5%] w-24 h-24 md:w-32 md:h-32 opacity-50 animate-float-slow">
             <Lottie
               animationData={animationData}
               loop={true}
               autoplay={true}
             />
           </div>
-          <div className="absolute top-20 right-20 w-20 h-20 opacity-30 animate-float-delayed">
+          <div className="absolute top-[10%] right-[10%] w-28 h-28 md:w-36 md:h-36 opacity-40 animate-float-delayed">
             <Lottie
               animationData={animationData}
               loop={true}
               autoplay={true}
             />
           </div>
-          <div className="absolute bottom-32 left-1/4 w-14 h-14 opacity-35 animate-float-slow">
+          <div className="absolute bottom-[25%] left-[15%] w-20 h-20 md:w-28 md:h-28 opacity-45 animate-float-slow">
             <Lottie
               animationData={animationData}
               loop={true}
               autoplay={true}
             />
           </div>
-          <div className="absolute bottom-20 right-1/3 w-18 h-18 opacity-25 animate-float-delayed">
+          <div className="absolute bottom-[15%] right-[20%] w-24 h-24 md:w-32 md:h-32 opacity-35 animate-float-delayed">
+            <Lottie
+              animationData={animationData}
+              loop={true}
+              autoplay={true}
+            />
+          </div>
+          <div className="absolute top-[40%] left-[3%] w-16 h-16 md:w-24 md:h-24 opacity-40 animate-float-slow">
+            <Lottie
+              animationData={animationData}
+              loop={true}
+              autoplay={true}
+            />
+          </div>
+          <div className="absolute top-[35%] right-[5%] w-18 h-18 md:w-26 md:h-26 opacity-35 animate-float-delayed">
             <Lottie
               animationData={animationData}
               loop={true}

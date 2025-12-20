@@ -2,25 +2,25 @@ import type { ISourceOptions } from "@tsparticles/engine";
 
 // Birthday: Festive colorful confetti with balloons
 export const birthdayConfig: ISourceOptions = {
-  fullScreen: { enable: false },
+  fullScreen: { enable: true, zIndex: 40 },
   background: { color: { value: "transparent" } },
   fpsLimit: 60,
   particles: {
-    number: { value: 50, density: { enable: true } },
+    number: { value: 80, density: { enable: true } },
     color: { value: ["#FF1744", "#FF6B9D", "#FFD700", "#00D4FF", "#9C27B0", "#FF9800"] },
     shape: { 
       type: ["circle", "square"],
     },
     opacity: { value: { min: 0.6, max: 1 } },
-    size: { value: { min: 4, max: 12 } },
+    size: { value: { min: 6, max: 16 } },
     move: {
       enable: true,
-      speed: { min: 2, max: 5 },
+      speed: { min: 3, max: 8 },
       direction: "bottom",
       random: true,
       straight: false,
       outModes: { default: "out", top: "none" },
-      gravity: { enable: true, acceleration: 2 }
+      gravity: { enable: true, acceleration: 3 }
     },
     rotate: {
       value: { min: 0, max: 360 },
@@ -29,8 +29,8 @@ export const birthdayConfig: ISourceOptions = {
     },
     wobble: {
       enable: true,
-      distance: 20,
-      speed: 10
+      distance: 25,
+      speed: 15
     },
     tilt: {
       enable: true,
@@ -45,14 +45,14 @@ export const birthdayConfig: ISourceOptions = {
       onHover: { enable: true, mode: "repulse" }
     },
     modes: {
-      push: { quantity: 10 },
+      push: { quantity: 15 },
       repulse: { distance: 100, duration: 0.4 }
     }
   },
   emitters: [
     {
       position: { x: 50, y: 0 },
-      rate: { delay: 0.3, quantity: 5 },
+      rate: { delay: 0.2, quantity: 8 },
       size: { width: 100, height: 10 }
     }
   ]
@@ -60,11 +60,11 @@ export const birthdayConfig: ISourceOptions = {
 
 // Love: Romantic floating hearts
 export const loveConfig: ISourceOptions = {
-  fullScreen: { enable: false },
+  fullScreen: { enable: true, zIndex: 40 },
   background: { color: { value: "transparent" } },
   fpsLimit: 60,
   particles: {
-    number: { value: 30, density: { enable: true } },
+    number: { value: 50, density: { enable: true } },
     color: { value: ["#ff006e", "#fb5607", "#ff1744", "#f50057", "#ff4081"] },
     shape: {
       type: "char",
@@ -76,11 +76,11 @@ export const loveConfig: ISourceOptions = {
         }
       }
     },
-    opacity: { value: { min: 0.5, max: 0.9 } },
-    size: { value: { min: 16, max: 32 } },
+    opacity: { value: { min: 0.6, max: 1 } },
+    size: { value: { min: 20, max: 40 } },
     move: {
       enable: true,
-      speed: { min: 1, max: 3 },
+      speed: { min: 2, max: 5 },
       direction: "top",
       random: true,
       straight: false,
@@ -88,8 +88,8 @@ export const loveConfig: ISourceOptions = {
     },
     wobble: {
       enable: true,
-      distance: 15,
-      speed: 5
+      distance: 20,
+      speed: 8
     }
   },
   interactivity: {
@@ -98,26 +98,26 @@ export const loveConfig: ISourceOptions = {
       onHover: { enable: true, mode: "bubble" }
     },
     modes: {
-      push: { quantity: 5 },
-      bubble: { distance: 150, size: 40, duration: 0.3 }
+      push: { quantity: 8 },
+      bubble: { distance: 150, size: 50, duration: 0.3 }
     }
   },
   emitters: [
     {
       position: { x: 50, y: 100 },
-      rate: { delay: 0.5, quantity: 2 },
-      size: { width: 80, height: 10 }
+      rate: { delay: 0.3, quantity: 4 },
+      size: { width: 100, height: 10 }
     }
   ]
 };
 
 // Thanks: Golden stars and sparkles
 export const thanksConfig: ISourceOptions = {
-  fullScreen: { enable: false },
+  fullScreen: { enable: true, zIndex: 40 },
   background: { color: { value: "transparent" } },
   fpsLimit: 60,
   particles: {
-    number: { value: 40, density: { enable: true } },
+    number: { value: 60, density: { enable: true } },
     color: { value: ["#FFD700", "#FFA500", "#FFED4E", "#FFB700", "#FFC300"] },
     shape: {
       type: "char",
@@ -130,13 +130,13 @@ export const thanksConfig: ISourceOptions = {
       }
     },
     opacity: { 
-      value: { min: 0.4, max: 1 },
+      value: { min: 0.5, max: 1 },
       animation: { enable: true, speed: 1, sync: false }
     },
-    size: { value: { min: 12, max: 24 } },
+    size: { value: { min: 16, max: 32 } },
     move: {
       enable: true,
-      speed: { min: 0.5, max: 2 },
+      speed: { min: 1, max: 3 },
       direction: "none",
       random: true,
       straight: false,
@@ -152,7 +152,7 @@ export const thanksConfig: ISourceOptions = {
       onHover: { enable: true, mode: "attract" }
     },
     modes: {
-      push: { quantity: 3 },
+      push: { quantity: 5 },
       attract: { distance: 200, duration: 0.4, factor: 3 }
     }
   }
@@ -160,33 +160,33 @@ export const thanksConfig: ISourceOptions = {
 
 // Congratulations: Fireworks effect
 export const congratulationsConfig: ISourceOptions = {
-  fullScreen: { enable: false },
+  fullScreen: { enable: true, zIndex: 40 },
   background: { color: { value: "transparent" } },
   fpsLimit: 60,
   particles: {
     number: { value: 0 },
     color: { value: ["#ffd700", "#ff6b6b", "#4ecdc4", "#45b7d1", "#f9ca24", "#9c27b0"] },
     shape: { type: ["circle", "star"] },
-    opacity: { value: { min: 0.3, max: 1 } },
-    size: { value: { min: 3, max: 8 } },
+    opacity: { value: { min: 0.4, max: 1 } },
+    size: { value: { min: 4, max: 10 } },
     move: {
       enable: true,
-      speed: { min: 5, max: 15 },
+      speed: { min: 8, max: 20 },
       direction: "none",
       random: true,
       straight: false,
       outModes: { default: "destroy" },
-      gravity: { enable: true, acceleration: 5 }
+      gravity: { enable: true, acceleration: 6 }
     },
     life: {
-      duration: { sync: false, value: 2 },
+      duration: { sync: false, value: 3 },
       count: 1
     }
   },
   emitters: [
     {
       position: { x: 50, y: 60 },
-      rate: { delay: 0.8, quantity: 30 },
+      rate: { delay: 0.5, quantity: 50 },
       size: { width: 0, height: 0 },
       life: { duration: 0.1 },
       particles: {
@@ -201,41 +201,41 @@ export const congratulationsConfig: ISourceOptions = {
 
 // Holiday: Snowflakes and festive elements
 export const holidayConfig: ISourceOptions = {
-  fullScreen: { enable: false },
+  fullScreen: { enable: true, zIndex: 40 },
   background: { color: { value: "transparent" } },
   fpsLimit: 60,
   particles: {
-    number: { value: 60, density: { enable: true } },
+    number: { value: 100, density: { enable: true } },
     color: { value: ["#ffffff", "#e3f2fd", "#bbdefb", "#90caf9"] },
     shape: {
       type: "char",
       options: {
         char: {
-          value: ["❄️", "❄", "✨", "⭐"],
+          value: ["❄️", "❄", "✨", "⭐", "🎄", "🎁"],
           font: "Segoe UI Emoji",
           weight: "400"
         }
       }
     },
-    opacity: { value: { min: 0.3, max: 0.8 } },
-    size: { value: { min: 10, max: 24 } },
+    opacity: { value: { min: 0.4, max: 0.9 } },
+    size: { value: { min: 14, max: 30 } },
     move: {
       enable: true,
-      speed: { min: 1, max: 3 },
+      speed: { min: 2, max: 5 },
       direction: "bottom",
       random: true,
       straight: false,
       outModes: { default: "out", top: "none" },
-      gravity: { enable: true, acceleration: 0.5 }
+      gravity: { enable: true, acceleration: 0.8 }
     },
     wobble: {
       enable: true,
-      distance: 30,
-      speed: 10
+      distance: 40,
+      speed: 15
     },
     rotate: {
       value: { min: 0, max: 360 },
-      animation: { enable: true, speed: 5 }
+      animation: { enable: true, speed: 8 }
     }
   },
   interactivity: {
@@ -244,7 +244,7 @@ export const holidayConfig: ISourceOptions = {
       onHover: { enable: true, mode: "slow" }
     },
     modes: {
-      push: { quantity: 5 },
+      push: { quantity: 8 },
       slow: { factor: 3, radius: 100 }
     }
   }
@@ -252,30 +252,30 @@ export const holidayConfig: ISourceOptions = {
 
 // Friendship: Rainbow sparkles
 export const friendshipConfig: ISourceOptions = {
-  fullScreen: { enable: false },
+  fullScreen: { enable: true, zIndex: 40 },
   background: { color: { value: "transparent" } },
   fpsLimit: 60,
   particles: {
-    number: { value: 45, density: { enable: true } },
+    number: { value: 70, density: { enable: true } },
     color: { value: ["#ff6b9d", "#c44569", "#f8b500", "#18dcff", "#7d5fff", "#ff9ff3"] },
     shape: {
       type: "char",
       options: {
         char: {
-          value: ["✨", "⭐", "💫", "🌈"],
+          value: ["✨", "⭐", "💫", "🌈", "💖"],
           font: "Segoe UI Emoji",
           weight: "400"
         }
       }
     },
     opacity: { 
-      value: { min: 0.5, max: 1 },
+      value: { min: 0.6, max: 1 },
       animation: { enable: true, speed: 0.5, sync: false }
     },
-    size: { value: { min: 14, max: 28 } },
+    size: { value: { min: 18, max: 36 } },
     move: {
       enable: true,
-      speed: { min: 1, max: 3 },
+      speed: { min: 2, max: 5 },
       direction: "none",
       random: true,
       straight: false,
@@ -291,7 +291,7 @@ export const friendshipConfig: ISourceOptions = {
       onHover: { enable: true, mode: "connect" }
     },
     modes: {
-      push: { quantity: 4 },
+      push: { quantity: 6 },
       connect: { distance: 80, radius: 120 }
     }
   }
@@ -299,21 +299,21 @@ export const friendshipConfig: ISourceOptions = {
 
 // Apology: Gentle, calming particles
 export const apologyConfig: ISourceOptions = {
-  fullScreen: { enable: false },
+  fullScreen: { enable: true, zIndex: 40 },
   background: { color: { value: "transparent" } },
   fpsLimit: 60,
   particles: {
-    number: { value: 25, density: { enable: true } },
+    number: { value: 40, density: { enable: true } },
     color: { value: ["#a8dadc", "#457b9d", "#1d3557", "#f1faee", "#81d4fa"] },
     shape: { type: "circle" },
     opacity: { 
-      value: { min: 0.2, max: 0.6 },
+      value: { min: 0.3, max: 0.7 },
       animation: { enable: true, speed: 0.3, sync: false }
     },
-    size: { value: { min: 4, max: 16 } },
+    size: { value: { min: 6, max: 20 } },
     move: {
       enable: true,
-      speed: { min: 0.3, max: 1 },
+      speed: { min: 0.5, max: 2 },
       direction: "none",
       random: true,
       straight: false,
@@ -321,8 +321,8 @@ export const apologyConfig: ISourceOptions = {
     },
     wobble: {
       enable: true,
-      distance: 10,
-      speed: 3
+      distance: 15,
+      speed: 5
     }
   },
   interactivity: {
@@ -331,7 +331,7 @@ export const apologyConfig: ISourceOptions = {
       onHover: { enable: true, mode: "grab" }
     },
     modes: {
-      push: { quantity: 2 },
+      push: { quantity: 4 },
       grab: { distance: 150, links: { opacity: 0.3 } }
     }
   }
@@ -339,18 +339,18 @@ export const apologyConfig: ISourceOptions = {
 
 // Default: Multi-color celebration
 export const defaultConfig: ISourceOptions = {
-  fullScreen: { enable: false },
+  fullScreen: { enable: true, zIndex: 40 },
   background: { color: { value: "transparent" } },
   fpsLimit: 60,
   particles: {
-    number: { value: 35, density: { enable: true } },
+    number: { value: 60, density: { enable: true } },
     color: { value: ["#8b5cf6", "#ec4899", "#f59e0b", "#10b981", "#3b82f6"] },
     shape: { type: ["circle", "square"] },
-    opacity: { value: { min: 0.4, max: 0.9 } },
-    size: { value: { min: 4, max: 12 } },
+    opacity: { value: { min: 0.5, max: 1 } },
+    size: { value: { min: 6, max: 16 } },
     move: {
       enable: true,
-      speed: { min: 1, max: 4 },
+      speed: { min: 2, max: 6 },
       direction: "none",
       random: true,
       straight: false,
@@ -367,13 +367,14 @@ export const defaultConfig: ISourceOptions = {
       onHover: { enable: true, mode: "repulse" }
     },
     modes: {
-      push: { quantity: 5 },
+      push: { quantity: 8 },
       repulse: { distance: 100, duration: 0.4 }
     }
   }
 };
 
 export const getParticleConfig = (occasion: string): ISourceOptions => {
+  console.log('getParticleConfig: Getting config for occasion:', occasion);
   switch (occasion) {
     case 'birthday':
       return birthdayConfig;
