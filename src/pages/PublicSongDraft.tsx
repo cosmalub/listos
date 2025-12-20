@@ -82,10 +82,7 @@ const PublicSongDraft = () => {
   const navigate = useNavigate();
   const [draftData, setDraftData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  const occasion = searchParams.get('occasion') || 'congratulations';
-  const recipient = searchParams.get('recipient') || 'Марії';
-  const sender = searchParams.get('sender') || 'Олексія';
+  const [showAnimations, setShowAnimations] = useState(false);
 
   // Load data from sessionStorage
   useEffect(() => {
@@ -100,7 +97,21 @@ const PublicSongDraft = () => {
       }
     }
     setIsLoading(false);
+    
+    // Delay animations to ensure page is mounted
+    const animTimer = setTimeout(() => {
+      setShowAnimations(true);
+    }, 300);
+    
+    return () => clearTimeout(animTimer);
   }, []);
+
+  // Get occasion from draftData first, then URL params, then default
+  const occasion = draftData?.occasion || searchParams.get('occasion') || 'congratulations';
+  const recipient = draftData?.recipient || searchParams.get('recipient') || 'Марії';
+  const sender = draftData?.sender || searchParams.get('sender') || 'Олексія';
+  
+  console.log('PublicSongDraft - occasion:', occasion, 'showAnimations:', showAnimations);
 
   // Get song data from sessionStorage or use fallback
   const lyrics = draftData?.lyrics || `Вірш 1:
@@ -141,7 +152,9 @@ const PublicSongDraft = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] via-white to-white">
       <OccasionBackground occasion={occasion} />
-      <OccasionAnimation occasion={occasion} duration={7000} />
+      {showAnimations && (
+        <OccasionAnimation occasion={occasion} duration={7000} />
+      )}
       
       {/* Header */}
       <Header centerTitle="Студія створення листівки" hideNav showMenu={false} />

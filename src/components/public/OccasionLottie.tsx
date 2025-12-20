@@ -18,10 +18,14 @@ export const OccasionLottie: React.FC<OccasionLottieProps> = ({
   const [isIntroPlaying, setIsIntroPlaying] = useState(showIntro);
   const [showMainAnimation, setShowMainAnimation] = useState(!showIntro);
 
+  console.log('OccasionLottie: Rendering for occasion:', occasion, 'showIntro:', showIntro, 'isIntroPlaying:', isIntroPlaying);
+
   useEffect(() => {
     if (showIntro) {
+      console.log('OccasionLottie: Starting intro animation for', occasion);
       // Play intro animation for 2.5 seconds
       const timer = setTimeout(() => {
+        console.log('OccasionLottie: Intro complete, showing main animation');
         setIsIntroPlaying(false);
         setShowMainAnimation(true);
         onIntroComplete?.();
@@ -29,7 +33,7 @@ export const OccasionLottie: React.FC<OccasionLottieProps> = ({
       
       return () => clearTimeout(timer);
     }
-  }, [showIntro, onIntroComplete]);
+  }, [showIntro, onIntroComplete, occasion]);
 
   const animationData = getLottieAnimation(occasion);
 

@@ -30,11 +30,15 @@ export const OccasionAnimation: React.FC<OccasionAnimationProps> = ({
   const [showParticles, setShowParticles] = useState(false);
   const [introComplete, setIntroComplete] = useState(false);
 
+  console.log('OccasionAnimation: Rendering for occasion:', occasion, 'useEnhanced:', useEnhanced);
+
   // Show particles after intro animation
   useEffect(() => {
     if (useEnhanced) {
+      console.log('OccasionAnimation: Will show particles after 2s delay');
       // Delay particles to let intro Lottie play first
       const timer = setTimeout(() => {
+        console.log('OccasionAnimation: Now showing particles');
         setShowParticles(true);
       }, 2000);
       return () => clearTimeout(timer);
