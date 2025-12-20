@@ -17,12 +17,16 @@ export const OccasionParticles: React.FC<OccasionParticlesProps> = ({
 
   // Initialize tsParticles engine once
   useEffect(() => {
+    console.log('OccasionParticles: Initializing tsParticles for occasion:', occasion);
     initParticlesEngine(async (engine) => {
       await loadSlim(engine);
     }).then(() => {
+      console.log('OccasionParticles: tsParticles initialized successfully');
       setInit(true);
+    }).catch((error) => {
+      console.error('OccasionParticles: Failed to initialize tsParticles:', error);
     });
-  }, []);
+  }, [occasion]);
 
   // Store container reference for potential interactions
   const particlesLoaded = async (container?: Container) => {
