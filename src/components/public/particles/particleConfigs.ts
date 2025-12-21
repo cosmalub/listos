@@ -6,37 +6,37 @@ export const birthdayConfig: ISourceOptions = {
   background: { color: { value: "transparent" } },
   fpsLimit: 60,
   particles: {
-    number: { value: 80, density: { enable: true } },
+    number: { value: 60, density: { enable: true } },
     color: { value: ["#FF1744", "#FF6B9D", "#FFD700", "#00D4FF", "#9C27B0", "#FF9800"] },
     shape: { 
       type: ["circle", "square"],
     },
     opacity: { value: { min: 0.6, max: 1 } },
-    size: { value: { min: 6, max: 16 } },
+    size: { value: { min: 8, max: 18 } },
     move: {
       enable: true,
-      speed: { min: 3, max: 8 },
+      speed: { min: 2, max: 5 }, // Slower
       direction: "bottom",
       random: true,
       straight: false,
       outModes: { default: "out", top: "none" },
-      gravity: { enable: true, acceleration: 3 }
+      gravity: { enable: true, acceleration: 1.5 } // Gentler gravity
     },
     rotate: {
       value: { min: 0, max: 360 },
       direction: "random",
-      animation: { enable: true, speed: 15 }
+      animation: { enable: true, speed: 10 }
     },
     wobble: {
       enable: true,
-      distance: 25,
-      speed: 15
+      distance: 30,
+      speed: 10
     },
     tilt: {
       enable: true,
       value: { min: 0, max: 360 },
       direction: "random",
-      animation: { enable: true, speed: 30 }
+      animation: { enable: true, speed: 20 }
     }
   },
   interactivity: {
@@ -45,51 +45,51 @@ export const birthdayConfig: ISourceOptions = {
       onHover: { enable: true, mode: "repulse" }
     },
     modes: {
-      push: { quantity: 15 },
+      push: { quantity: 10 },
       repulse: { distance: 100, duration: 0.4 }
     }
   },
   emitters: [
     {
       position: { x: 50, y: 0 },
-      rate: { delay: 0.2, quantity: 8 },
+      rate: { delay: 0.3, quantity: 5 },
       size: { width: 100, height: 10 }
     }
   ]
 };
 
-// Love: Romantic floating hearts
+// Love: Romantic floating hearts - ONLY HEARTS
 export const loveConfig: ISourceOptions = {
   fullScreen: { enable: true, zIndex: 40 },
   background: { color: { value: "transparent" } },
   fpsLimit: 60,
   particles: {
-    number: { value: 50, density: { enable: true } },
+    number: { value: 40, density: { enable: true } },
     color: { value: ["#ff006e", "#fb5607", "#ff1744", "#f50057", "#ff4081"] },
     shape: {
       type: "char",
       options: {
         char: {
-          value: ["❤️", "💕", "💖", "💗", "💘"],
+          value: ["❤️", "💕", "💖", "💗", "💘", "♥"],
           font: "Segoe UI Emoji",
           weight: "400"
         }
       }
     },
     opacity: { value: { min: 0.6, max: 1 } },
-    size: { value: { min: 20, max: 40 } },
+    size: { value: { min: 24, max: 48 } }, // Bigger hearts
     move: {
       enable: true,
-      speed: { min: 2, max: 5 },
-      direction: "top",
+      speed: { min: 1.5, max: 4 },
+      direction: "top", // Float up
       random: true,
       straight: false,
       outModes: { default: "out", bottom: "none" }
     },
     wobble: {
       enable: true,
-      distance: 20,
-      speed: 8
+      distance: 15,
+      speed: 6
     }
   },
   interactivity: {
@@ -98,14 +98,14 @@ export const loveConfig: ISourceOptions = {
       onHover: { enable: true, mode: "bubble" }
     },
     modes: {
-      push: { quantity: 8 },
-      bubble: { distance: 150, size: 50, duration: 0.3 }
+      push: { quantity: 5 },
+      bubble: { distance: 150, size: 60, duration: 0.3 }
     }
   },
   emitters: [
     {
       position: { x: 50, y: 100 },
-      rate: { delay: 0.3, quantity: 4 },
+      rate: { delay: 0.4, quantity: 3 },
       size: { width: 100, height: 10 }
     }
   ]
@@ -117,13 +117,13 @@ export const thanksConfig: ISourceOptions = {
   background: { color: { value: "transparent" } },
   fpsLimit: 60,
   particles: {
-    number: { value: 60, density: { enable: true } },
+    number: { value: 50, density: { enable: true } },
     color: { value: ["#FFD700", "#FFA500", "#FFED4E", "#FFB700", "#FFC300"] },
     shape: {
       type: "char",
       options: {
         char: {
-          value: ["⭐", "✨", "🌟", "💫"],
+          value: ["⭐", "✨", "🌟", "💫", "★"],
           font: "Segoe UI Emoji",
           weight: "400"
         }
@@ -133,10 +133,10 @@ export const thanksConfig: ISourceOptions = {
       value: { min: 0.5, max: 1 },
       animation: { enable: true, speed: 1, sync: false }
     },
-    size: { value: { min: 16, max: 32 } },
+    size: { value: { min: 18, max: 36 } },
     move: {
       enable: true,
-      speed: { min: 1, max: 3 },
+      speed: { min: 1, max: 2.5 },
       direction: "none",
       random: true,
       straight: false,
@@ -152,7 +152,7 @@ export const thanksConfig: ISourceOptions = {
       onHover: { enable: true, mode: "attract" }
     },
     modes: {
-      push: { quantity: 5 },
+      push: { quantity: 4 },
       attract: { distance: 200, duration: 0.4, factor: 3 }
     }
   }
@@ -199,43 +199,43 @@ export const congratulationsConfig: ISourceOptions = {
   ]
 };
 
-// Holiday: Snowflakes and festive elements
+// Holiday: Universal festive (NO snowflakes - works for any holiday)
 export const holidayConfig: ISourceOptions = {
   fullScreen: { enable: true, zIndex: 40 },
   background: { color: { value: "transparent" } },
   fpsLimit: 60,
   particles: {
-    number: { value: 100, density: { enable: true } },
-    color: { value: ["#ffffff", "#e3f2fd", "#bbdefb", "#90caf9"] },
+    number: { value: 70, density: { enable: true } },
+    color: { value: ["#FFD700", "#FF6B6B", "#4ECDC4", "#45B7D1", "#FFA07A", "#98D8C8", "#F7DC6F"] },
     shape: {
       type: "char",
       options: {
         char: {
-          value: ["❄️", "❄", "✨", "⭐", "🎄", "🎁"],
+          value: ["🎉", "🎊", "✨", "⭐", "🎈", "🎁"],
           font: "Segoe UI Emoji",
           weight: "400"
         }
       }
     },
-    opacity: { value: { min: 0.4, max: 0.9 } },
-    size: { value: { min: 14, max: 30 } },
+    opacity: { value: { min: 0.5, max: 0.9 } },
+    size: { value: { min: 16, max: 32 } },
     move: {
       enable: true,
-      speed: { min: 2, max: 5 },
+      speed: { min: 2, max: 4 },
       direction: "bottom",
       random: true,
       straight: false,
       outModes: { default: "out", top: "none" },
-      gravity: { enable: true, acceleration: 0.8 }
+      gravity: { enable: true, acceleration: 0.5 }
     },
     wobble: {
       enable: true,
-      distance: 40,
-      speed: 15
+      distance: 30,
+      speed: 12
     },
     rotate: {
       value: { min: 0, max: 360 },
-      animation: { enable: true, speed: 8 }
+      animation: { enable: true, speed: 6 }
     }
   },
   interactivity: {
@@ -244,25 +244,25 @@ export const holidayConfig: ISourceOptions = {
       onHover: { enable: true, mode: "slow" }
     },
     modes: {
-      push: { quantity: 8 },
+      push: { quantity: 6 },
       slow: { factor: 3, radius: 100 }
     }
   }
 };
 
-// Friendship: Rainbow sparkles
+// Friendship: Rainbow sparkles and stars
 export const friendshipConfig: ISourceOptions = {
   fullScreen: { enable: true, zIndex: 40 },
   background: { color: { value: "transparent" } },
   fpsLimit: 60,
   particles: {
-    number: { value: 70, density: { enable: true } },
-    color: { value: ["#ff6b9d", "#c44569", "#f8b500", "#18dcff", "#7d5fff", "#ff9ff3"] },
+    number: { value: 60, density: { enable: true } },
+    color: { value: ["#ff6b9d", "#c44569", "#f8b500", "#18dcff", "#7d5fff", "#ff9ff3", "#32ff7e"] },
     shape: {
       type: "char",
       options: {
         char: {
-          value: ["✨", "⭐", "💫", "🌈", "💖"],
+          value: ["✨", "⭐", "💫", "🌈", "💖", "★"],
           font: "Segoe UI Emoji",
           weight: "400"
         }
@@ -272,10 +272,10 @@ export const friendshipConfig: ISourceOptions = {
       value: { min: 0.6, max: 1 },
       animation: { enable: true, speed: 0.5, sync: false }
     },
-    size: { value: { min: 18, max: 36 } },
+    size: { value: { min: 20, max: 38 } },
     move: {
       enable: true,
-      speed: { min: 2, max: 5 },
+      speed: { min: 1.5, max: 4 },
       direction: "none",
       random: true,
       straight: false,
@@ -291,29 +291,29 @@ export const friendshipConfig: ISourceOptions = {
       onHover: { enable: true, mode: "connect" }
     },
     modes: {
-      push: { quantity: 6 },
+      push: { quantity: 5 },
       connect: { distance: 80, radius: 120 }
     }
   }
 };
 
-// Apology: Gentle, calming particles
+// Apology: Gentle, calming particles - very slow and soft
 export const apologyConfig: ISourceOptions = {
   fullScreen: { enable: true, zIndex: 40 },
   background: { color: { value: "transparent" } },
   fpsLimit: 60,
   particles: {
-    number: { value: 40, density: { enable: true } },
-    color: { value: ["#a8dadc", "#457b9d", "#1d3557", "#f1faee", "#81d4fa"] },
+    number: { value: 30, density: { enable: true } },
+    color: { value: ["#a8dadc", "#457b9d", "#81d4fa", "#b3e5fc", "#e1f5fe"] },
     shape: { type: "circle" },
     opacity: { 
-      value: { min: 0.3, max: 0.7 },
-      animation: { enable: true, speed: 0.3, sync: false }
+      value: { min: 0.3, max: 0.6 },
+      animation: { enable: true, speed: 0.2, sync: false }
     },
-    size: { value: { min: 6, max: 20 } },
+    size: { value: { min: 8, max: 24 } },
     move: {
       enable: true,
-      speed: { min: 0.5, max: 2 },
+      speed: { min: 0.3, max: 1 }, // Very slow
       direction: "none",
       random: true,
       straight: false,
@@ -321,8 +321,8 @@ export const apologyConfig: ISourceOptions = {
     },
     wobble: {
       enable: true,
-      distance: 15,
-      speed: 5
+      distance: 10,
+      speed: 3
     }
   },
   interactivity: {
@@ -331,8 +331,8 @@ export const apologyConfig: ISourceOptions = {
       onHover: { enable: true, mode: "grab" }
     },
     modes: {
-      push: { quantity: 4 },
-      grab: { distance: 150, links: { opacity: 0.3 } }
+      push: { quantity: 3 },
+      grab: { distance: 150, links: { opacity: 0.2 } }
     }
   }
 };
@@ -343,14 +343,14 @@ export const defaultConfig: ISourceOptions = {
   background: { color: { value: "transparent" } },
   fpsLimit: 60,
   particles: {
-    number: { value: 60, density: { enable: true } },
+    number: { value: 50, density: { enable: true } },
     color: { value: ["#8b5cf6", "#ec4899", "#f59e0b", "#10b981", "#3b82f6"] },
     shape: { type: ["circle", "square"] },
     opacity: { value: { min: 0.5, max: 1 } },
-    size: { value: { min: 6, max: 16 } },
+    size: { value: { min: 8, max: 18 } },
     move: {
       enable: true,
-      speed: { min: 2, max: 6 },
+      speed: { min: 1.5, max: 4 },
       direction: "none",
       random: true,
       straight: false,
@@ -358,7 +358,7 @@ export const defaultConfig: ISourceOptions = {
     },
     rotate: {
       value: { min: 0, max: 360 },
-      animation: { enable: true, speed: 10 }
+      animation: { enable: true, speed: 8 }
     }
   },
   interactivity: {
@@ -367,7 +367,7 @@ export const defaultConfig: ISourceOptions = {
       onHover: { enable: true, mode: "repulse" }
     },
     modes: {
-      push: { quantity: 8 },
+      push: { quantity: 6 },
       repulse: { distance: 100, duration: 0.4 }
     }
   }

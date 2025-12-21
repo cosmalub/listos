@@ -320,6 +320,7 @@ export const thanksInline = {
   ]
 };
 
+// Holiday: Universal festive confetti and stars (no snowflakes)
 export const holidayInline = {
   v: "5.7.4",
   fr: 60,
@@ -329,50 +330,66 @@ export const holidayInline = {
   h: 500,
   assets: [],
   layers: [
-    // Snowflakes and holiday elements
+    // Festive confetti and stars
     ...Array.from({ length: 15 }, (_, i) => ({
       ddd: 0,
       ind: i + 1,
       ty: 4,
-      nm: `snowflake-${i}`,
+      nm: `festive-${i}`,
       sr: 1,
       ks: {
         o: { a: 1, k: [
-          { t: i * 8, s: [0], e: [70] },
-          { t: 30 + i * 8, s: [70] }
+          { t: i * 6, s: [0], e: [90] },
+          { t: 25 + i * 6, s: [90], e: [90] },
+          { t: 150, s: [90], e: [0] },
+          { t: 180, s: [0] }
         ]},
         r: { 
           a: 1, 
           k: [
-            { t: 0, s: [0], e: [360] },
-            { t: 180, s: [360] }
+            { t: 0, s: [0], e: [360 + Math.random() * 180] },
+            { t: 180, s: [360 + Math.random() * 180] }
           ]
         },
         p: { 
           a: 1, 
           k: [
-            { t: 0, s: [50 + i * 30, -30, 0], e: [50 + i * 30 + (Math.random() - 0.5) * 50, 530, 0] },
-            { t: 180, s: [50 + i * 30 + (Math.random() - 0.5) * 50, 530, 0] }
+            { t: 0, s: [250 + (Math.random() - 0.5) * 150, 250, 0], e: [50 + i * 30, 500, 0] },
+            { t: 180, s: [50 + i * 30, 500, 0] }
           ]
         },
-        s: { a: 0, k: [40 + Math.random() * 30, 40 + Math.random() * 30, 100] }
+        s: { a: 0, k: [50 + Math.random() * 30, 50 + Math.random() * 30, 100] }
       },
       shapes: [
-        {
+        // Mix of stars and squares
+        i % 2 === 0 ? {
           ty: "sr",
           sy: 1,
           d: 1,
-          pt: { a: 0, k: 6 },
+          pt: { a: 0, k: 5 },
           p: { a: 0, k: [0, 0] },
           r: { a: 0, k: 0 },
-          ir: { a: 0, k: 10 },
+          ir: { a: 0, k: 8 },
           is: { a: 0, k: 0 },
-          or: { a: 0, k: 25 },
+          or: { a: 0, k: 20 },
           os: { a: 0, k: 0 }
+        } : {
+          ty: "rc",
+          d: 1,
+          s: { a: 0, k: [12, 12] },
+          p: { a: 0, k: [0, 0] },
+          r: { a: 0, k: 2 }
         },
         {
           ty: "fl",
-          c: { a: 0, k: [0.95, 0.97, 1, 1] },
+          c: { a: 0, k: [
+            [1, 0.84, 0, 1],      // Gold
+            [1, 0.42, 0.42, 1],   // Coral
+            [0.31, 0.8, 0.77, 1], // Teal
+            [0.27, 0.72, 0.82, 1], // Cyan
+            [1, 0.63, 0.48, 1],   // Peach
+            [0.6, 0.85, 0.78, 1]  // Mint
+          ][i % 6] },
           o: { a: 0, k: 100 }
         }
       ]
