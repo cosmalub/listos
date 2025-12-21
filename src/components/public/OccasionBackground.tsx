@@ -202,21 +202,22 @@ export const OccasionBackground: React.FC<OccasionBackgroundProps> = ({
         );
       }
       
-      // Holiday: snowflakes or flowers
+      // Holiday: Universal festive elements (no snowflakes)
       if (particleType === 'holiday') {
+        const festiveElements = ['🎉', '🎊', '✨', '⭐', '🎈'];
         return (
           <div
             key={i}
-            className="absolute text-cyan-300/70"
+            className="absolute"
             style={{
               left: `${left}%`,
               top: `${-10 + Math.random() * 20}%`,
-              fontSize: `${size}px`,
+              fontSize: `${size + 2}px`,
               animationDelay: `${delay}s`,
-              animation: `snowflake-fall ${duration}s linear infinite`
+              animation: `confetti-fall ${duration}s linear infinite`
             }}
           >
-            ❄
+            {festiveElements[Math.floor(Math.random() * festiveElements.length)]}
           </div>
         );
       }
