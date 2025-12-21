@@ -18,7 +18,6 @@ export const OccasionLottie: React.FC<OccasionLottieProps> = ({
   const [isIntroPlaying, setIsIntroPlaying] = useState(showIntro);
   const [showMainAnimation, setShowMainAnimation] = useState(!showIntro);
   const [animationData, setAnimationData] = useState<any>(null);
-  const [loadingFailed, setLoadingFailed] = useState(false);
 
   // Check for reduced motion preference
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -42,12 +41,11 @@ export const OccasionLottie: React.FC<OccasionLottieProps> = ({
         const response = await fetch(config.url);
         if (response.ok) {
           const data = await response.json();
-          console.log('OccasionLottie: Loaded animation from CDN:', config.url);
           setAnimationData(data);
           return;
         }
       } catch (e) {
-        console.log('OccasionLottie: Primary URL failed, trying fallback');
+        // Silent fallback
       }
 
       // Try fallback URL
@@ -56,19 +54,16 @@ export const OccasionLottie: React.FC<OccasionLottieProps> = ({
           const response = await fetch(config.fallbackUrl);
           if (response.ok) {
             const data = await response.json();
-            console.log('OccasionLottie: Loaded animation from fallback CDN:', config.fallbackUrl);
             setAnimationData(data);
             return;
           }
         } catch (e) {
-          console.log('OccasionLottie: Fallback URL also failed');
+          // Silent fallback
         }
       }
 
       // Use inline animation as final fallback
-      console.log('OccasionLottie: Using inline animation fallback');
       setAnimationData(getLottieAnimation(occasion));
-      setLoadingFailed(true);
     };
 
     loadAnimation();
@@ -76,32 +71,27 @@ export const OccasionLottie: React.FC<OccasionLottieProps> = ({
 
   useEffect(() => {
     if (showIntro && animationData) {
-      // Intro animation runs for 3 seconds (longer for visibility)
+      // Intro animation runs for 2.5 seconds
       const timer = setTimeout(() => {
         setIsIntroPlaying(false);
         setShowMainAnimation(true);
         onIntroComplete?.();
-      }, 3000);
+      }, 2500);
       
       return () => clearTimeout(timer);
     }
   }, [showIntro, onIntroComplete, animationData]);
 
-  if (reducedMotion) {
-    return null;
-  }
-
-  // Show nothing while loading
-  if (!animationData) {
+  if (reducedMotion || !animationData) {
     return null;
   }
 
   return (
     <>
-      {/* Intro burst animation - LARGE and centered */}
+      {/* Intro burst animation - standardized size */}
       {isIntroPlaying && (
         <div className={`fixed inset-0 z-50 pointer-events-none flex items-center justify-center ${className}`}>
-          <div className="w-[350px] h-[350px] sm:w-[450px] sm:h-[450px] md:w-[550px] md:h-[550px] lg:w-[650px] lg:h-[650px] animate-scale-in">
+          <div className="w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] md:w-[380px] md:h-[380px] animate-scale-in">
             <Lottie
               animationData={animationData}
               loop={false}
@@ -112,51 +102,21 @@ export const OccasionLottie: React.FC<OccasionLottieProps> = ({
         </div>
       )}
 
-      {/* Continuous background animations - scattered around screen */}
+      {/* Continuous background animations - standardized larger size */}
       {showMainAnimation && (
         <div className={`fixed inset-0 z-30 pointer-events-none overflow-hidden ${className}`}>
-          {/* Multiple scattered Lottie animations at different positions */}
-          <div className="absolute top-[5%] left-[5%] w-28 h-28 md:w-36 md:h-36 opacity-60 animate-float-slow">
-            <Lottie
-              animationData={animationData}
-              loop={true}
-              autoplay={true}
-            />
+          {/* Fewer, larger Lottie elements */}
+          <div className="absolute top-[8%] left-[8%] w-20 h-20 md:w-24 md:h-24 opacity-50 animate-float-slow">
+            <Lottie animationData={animationData} loop={true} autoplay={true} />
           </div>
-          <div className="absolute top-[10%] right-[10%] w-32 h-32 md:w-40 md:h-40 opacity-50 animate-float-delayed">
-            <Lottie
-              animationData={animationData}
-              loop={true}
-              autoplay={true}
-            />
+          <div className="absolute top-[12%] right-[12%] w-24 h-24 md:w-28 md:h-28 opacity-45 animate-float-delayed">
+            <Lottie animationData={animationData} loop={true} autoplay={true} />
           </div>
-          <div className="absolute bottom-[25%] left-[15%] w-24 h-24 md:w-32 md:h-32 opacity-55 animate-float-slow">
-            <Lottie
-              animationData={animationData}
-              loop={true}
-              autoplay={true}
-            />
+          <div className="absolute bottom-[20%] left-[10%] w-20 h-20 md:w-24 md:h-24 opacity-40 animate-float-slow">
+            <Lottie animationData={animationData} loop={true} autoplay={true} />
           </div>
-          <div className="absolute bottom-[15%] right-[20%] w-28 h-28 md:w-36 md:h-36 opacity-45 animate-float-delayed">
-            <Lottie
-              animationData={animationData}
-              loop={true}
-              autoplay={true}
-            />
-          </div>
-          <div className="absolute top-[40%] left-[3%] w-20 h-20 md:w-28 md:h-28 opacity-50 animate-float-slow">
-            <Lottie
-              animationData={animationData}
-              loop={true}
-              autoplay={true}
-            />
-          </div>
-          <div className="absolute top-[35%] right-[5%] w-24 h-24 md:w-32 md:h-32 opacity-45 animate-float-delayed">
-            <Lottie
-              animationData={animationData}
-              loop={true}
-              autoplay={true}
-            />
+          <div className="absolute bottom-[18%] right-[15%] w-22 h-22 md:w-26 md:h-26 opacity-35 animate-float-delayed">
+            <Lottie animationData={animationData} loop={true} autoplay={true} />
           </div>
         </div>
       )}

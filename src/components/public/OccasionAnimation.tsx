@@ -20,11 +20,16 @@ const starShape = confetti.shapeFromPath({
   matrix: [1, 0, 0, 1, 0, 0]
 });
 
-// Balloon shape
 const balloonShape = confetti.shapeFromPath({
   path: 'M50,0C22.4,0,0,22.4,0,50c0,22.4,15,42,36,48l14,22l14-22c21-6,36-25.6,36-48C100,22.4,77.6,0,50,0z',
   matrix: [0.015, 0, 0, 0.015, -0.75, -0.75]
 });
+
+// Determine which occasions should have tsParticles (only calm ones)
+const shouldShowParticles = (occasion: string): boolean => {
+  // Only show particles for calm/gentle occasions
+  return ['apology', 'thanks'].includes(occasion);
+};
 
 export const OccasionAnimation: React.FC<OccasionAnimationProps> = ({
   occasion,
@@ -34,12 +39,7 @@ export const OccasionAnimation: React.FC<OccasionAnimationProps> = ({
   const [showParticles, setShowParticles] = useState(false);
   const [showLottie, setShowLottie] = useState(true);
 
-  console.log('OccasionAnimation: Rendering with occasion:', occasion);
-
-  // Run unique confetti based on occasion
   useEffect(() => {
-    console.log('OccasionAnimation: Starting animation for:', occasion);
-    
     // Run initial burst
     runOccasionBurst(occasion);
 
@@ -49,11 +49,11 @@ export const OccasionAnimation: React.FC<OccasionAnimationProps> = ({
       runContinuousEffect(occasion);
     }, interval);
 
-    // Show particles after a delay
-    if (useEnhanced) {
+    // Show particles only for specific occasions
+    if (useEnhanced && shouldShowParticles(occasion)) {
       const particleTimer = setTimeout(() => {
         setShowParticles(true);
-      }, 1500);
+      }, 2000);
       
       return () => {
         clearInterval(continuousInterval);
@@ -74,32 +74,37 @@ export const OccasionAnimation: React.FC<OccasionAnimationProps> = ({
         <OccasionLottie 
           occasion={occasion}
           showIntro={true}
-          onIntroComplete={() => {
-            console.log('OccasionAnimation: Lottie intro complete');
-          }}
+          onIntroComplete={() => {}}
         />
       )}
       
-      {useEnhanced && showParticles && (
+      {/* Only show particles for calm occasions */}
+      {useEnhanced && showParticles && shouldShowParticles(occasion) && (
         <OccasionParticles occasion={occasion} />
       )}
     </>
   );
 };
 
-// Get interval based on occasion type
+// Get interval based on occasion type - SLOWER for all
 const getOccasionInterval = (occasion: string): number => {
   switch (occasion) {
     case 'birthday':
-      return 3000; // Slower, more relaxed
+      return 4500; // Much slower
     case 'love':
-      return 2500; // Hearts floating up gently
+      return 4000; // Slower hearts
     case 'apology':
-      return 5000; // Very gentle and calm
+      return 6000; // Very calm
     case 'thanks':
-      return 3500; // Golden sparkles
+      return 5000; // Golden sparkles
+    case 'congratulations':
+      return 3000; // Fireworks
+    case 'holiday':
+      return 4000;
+    case 'friendship':
+      return 4000;
     default:
-      return 2500;
+      return 4000;
   }
 };
 
@@ -161,124 +166,124 @@ const runContinuousEffect = (occasion: string) => {
   }
 };
 
-// ============= BIRTHDAY: Slow, colorful confetti rain with balloons =============
+// ============= BIRTHDAY: Slow, elegant confetti (NO particles) =============
 const runBirthdayBurst = () => {
   const colors = ['#FF1744', '#FF6B9D', '#FFD700', '#00D4FF', '#9C27B0', '#FF9800', '#4CAF50'];
   
-  // Central slow burst
+  // Single elegant central burst - slow and beautiful
   confetti({
-    particleCount: 80,
-    spread: 100,
-    startVelocity: 25, // Slower
+    particleCount: 60,
+    spread: 80,
+    startVelocity: 20, // Very slow
     origin: { x: 0.5, y: 0.5 },
     colors: colors,
-    shapes: [balloonShape, 'circle', 'square'],
-    scalar: 1.5, // Bigger
-    gravity: 0.5, // Slower fall
-    ticks: 300, // Visible longer
+    shapes: [balloonShape, 'circle'],
+    scalar: 1.8, // Bigger
+    gravity: 0.4, // Very slow fall
+    ticks: 400, // Visible very long
     drift: 0
   });
 
-  // Delayed side bursts
+  // Delayed gentle side bursts
   setTimeout(() => {
     confetti({
-      particleCount: 40,
+      particleCount: 25,
       angle: 60,
-      spread: 60,
-      startVelocity: 20,
-      origin: { x: 0, y: 0.7 },
+      spread: 50,
+      startVelocity: 15,
+      origin: { x: 0, y: 0.6 },
       colors: colors,
       shapes: ['circle', 'square'],
-      scalar: 1.3,
-      gravity: 0.4,
-      ticks: 250
+      scalar: 1.4,
+      gravity: 0.3,
+      ticks: 350
     });
     confetti({
-      particleCount: 40,
+      particleCount: 25,
       angle: 120,
-      spread: 60,
-      startVelocity: 20,
-      origin: { x: 1, y: 0.7 },
+      spread: 50,
+      startVelocity: 15,
+      origin: { x: 1, y: 0.6 },
       colors: colors,
       shapes: ['circle', 'square'],
-      scalar: 1.3,
-      gravity: 0.4,
-      ticks: 250
+      scalar: 1.4,
+      gravity: 0.3,
+      ticks: 350
     });
-  }, 300);
+  }, 500);
 };
 
 const runBirthdayContinuous = () => {
   const colors = ['#FF1744', '#FF6B9D', '#FFD700', '#00D4FF', '#9C27B0'];
   
-  // Gentle confetti rain from top
+  // Very gentle rain - few particles, slow
   confetti({
-    particleCount: 15,
-    spread: 120,
-    startVelocity: 10,
+    particleCount: 8, // Few particles
+    spread: 100,
+    startVelocity: 8, // Very slow
     origin: { x: Math.random(), y: 0 },
     colors: colors,
-    shapes: ['circle', 'square'],
-    scalar: 1.2,
-    gravity: 0.3,
-    ticks: 400,
-    drift: (Math.random() - 0.5) * 0.3
+    shapes: ['circle'],
+    scalar: 1.3,
+    gravity: 0.2, // Very slow fall
+    ticks: 500, // Very long visible
+    drift: (Math.random() - 0.5) * 0.2
   });
 };
 
-// ============= LOVE: Only hearts, floating upward =============
+// ============= LOVE: BIG hearts only, floating upward =============
 const runLoveBurst = () => {
-  const colors = ['#ff006e', '#ff1744', '#f50057', '#ff4081', '#e91e63', '#d81b60'];
+  const colors = ['#ff006e', '#ff1744', '#f50057', '#ff4081', '#e91e63'];
   
-  // Central heart burst
+  // Central big heart burst
   confetti({
-    particleCount: 60,
-    spread: 80,
-    startVelocity: 30,
+    particleCount: 40,
+    spread: 70,
+    startVelocity: 25,
     origin: { x: 0.5, y: 0.6 },
     colors: colors,
     shapes: [heartShape],
-    scalar: 2, // Big hearts
-    gravity: 0.6,
-    ticks: 250
+    scalar: 3.5, // VERY BIG hearts
+    gravity: 0.5,
+    ticks: 300
   });
 
-  // Hearts floating up from bottom
+  // Hearts floating up from bottom - staggered
   setTimeout(() => {
     for (let i = 0; i < 3; i++) {
       setTimeout(() => {
         confetti({
-          particleCount: 8,
-          spread: 40,
-          startVelocity: 35,
+          particleCount: 5,
+          spread: 30,
+          startVelocity: 20,
           origin: { x: 0.2 + i * 0.3, y: 1 },
           colors: colors,
           shapes: [heartShape],
-          scalar: 1.8,
-          gravity: -0.1, // Float up
-          ticks: 300,
+          scalar: 3, // Big hearts
+          gravity: -0.05, // Float up gently
+          ticks: 400,
           drift: 0
         });
-      }, i * 200);
+      }, i * 300);
     }
-  }, 400);
+  }, 600);
 };
 
 const runLoveContinuous = () => {
   const colors = ['#ff006e', '#ff1744', '#f50057', '#ff4081'];
   
-  // Hearts floating up
+  // Few big hearts floating up slowly
   confetti({
-    particleCount: 5,
-    spread: 30,
-    startVelocity: 25,
+    particleCount: 3, // Very few
+    spread: 25,
+    startVelocity: 15,
     origin: { x: Math.random(), y: 1 },
     colors: colors,
     shapes: [heartShape],
-    scalar: 1.5,
-    gravity: -0.05, // Gently float up
-    ticks: 350,
-    drift: (Math.random() - 0.5) * 0.2
+    scalar: 3, // BIG hearts
+    gravity: -0.03, // Gently float up
+    ticks: 500, // Very long visible
+    drift: (Math.random() - 0.5) * 0.1
   });
 };
 
@@ -288,51 +293,51 @@ const runThanksBurst = () => {
   
   // Star burst from center
   confetti({
-    particleCount: 70,
+    particleCount: 50,
     spread: 360,
-    startVelocity: 35,
+    startVelocity: 30,
     origin: { x: 0.5, y: 0.5 },
     colors: colors,
     shapes: [starShape],
-    scalar: 1.4,
-    gravity: 0.7,
-    ticks: 200
+    scalar: 1.6,
+    gravity: 0.6,
+    ticks: 250
   });
 
   // Golden sparkles
   setTimeout(() => {
     confetti({
-      particleCount: 50,
-      spread: 100,
-      startVelocity: 20,
+      particleCount: 35,
+      spread: 90,
+      startVelocity: 18,
       origin: { x: 0.5, y: 0.4 },
       colors: ['#FFD700', '#FFFFFF'],
       shapes: ['circle'],
-      scalar: 0.8,
-      gravity: 0.5,
-      ticks: 180
+      scalar: 1,
+      gravity: 0.4,
+      ticks: 220
     });
-  }, 200);
+  }, 300);
 };
 
 const runThanksContinuous = () => {
   const colors = ['#FFD700', '#FFA500', '#FFED4E'];
   
-  // Twinkling stars
+  // Gentle twinkling stars
   confetti({
-    particleCount: 8,
-    spread: 60,
-    startVelocity: 15,
-    origin: { x: Math.random(), y: Math.random() * 0.5 },
+    particleCount: 5,
+    spread: 50,
+    startVelocity: 12,
+    origin: { x: Math.random(), y: Math.random() * 0.4 },
     colors: colors,
     shapes: [starShape],
-    scalar: 1.2,
-    gravity: 0.4,
-    ticks: 200
+    scalar: 1.4,
+    gravity: 0.3,
+    ticks: 250
   });
 };
 
-// ============= CONGRATULATIONS: Fireworks and confetti =============
+// ============= CONGRATULATIONS: Fireworks =============
 const runCongratulationsBurst = () => {
   const colors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#9c27b0'];
   
@@ -346,17 +351,17 @@ const runCongratulationsBurst = () => {
   positions.forEach((pos, index) => {
     setTimeout(() => {
       confetti({
-        particleCount: 100,
+        particleCount: 80,
         spread: 360,
-        startVelocity: 45,
+        startVelocity: 40,
         origin: pos,
         colors: colors,
         shapes: [starShape, 'circle'],
-        scalar: 1.2,
-        gravity: 1,
-        ticks: 150
+        scalar: 1.3,
+        gravity: 0.9,
+        ticks: 180
       });
-    }, index * 150);
+    }, index * 200);
   });
 };
 
@@ -365,79 +370,79 @@ const runCongratulationsContinuous = () => {
   
   // Random firework
   confetti({
-    particleCount: 40,
+    particleCount: 35,
     spread: 360,
-    startVelocity: 35,
+    startVelocity: 30,
     origin: { x: Math.random(), y: 0.3 + Math.random() * 0.3 },
     colors: colors,
     shapes: [starShape, 'circle'],
-    scalar: 1,
-    gravity: 0.9,
-    ticks: 120
+    scalar: 1.1,
+    gravity: 0.8,
+    ticks: 150
   });
 };
 
-// ============= HOLIDAY: Universal festive (no snowflakes) =============
+// ============= HOLIDAY: Universal festive (geometric shapes, no emoji) =============
 const runHolidayBurst = () => {
   const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F'];
   
-  // Festive confetti burst
+  // Festive confetti burst with geometric shapes
   confetti({
-    particleCount: 100,
-    spread: 90,
-    startVelocity: 40,
+    particleCount: 70,
+    spread: 80,
+    startVelocity: 35,
     origin: { x: 0.5, y: 0.5 },
     colors: colors,
     shapes: [starShape, balloonShape, 'circle', 'square'],
-    scalar: 1.3,
-    gravity: 0.7,
-    ticks: 200
+    scalar: 1.5,
+    gravity: 0.6,
+    ticks: 250
   });
 
   // Streamers from sides
   setTimeout(() => {
     confetti({
-      particleCount: 30,
+      particleCount: 25,
       angle: 60,
-      spread: 45,
-      startVelocity: 35,
+      spread: 40,
+      startVelocity: 30,
       origin: { x: 0, y: 0.5 },
       colors: colors,
       shapes: ['square'],
-      scalar: 1.5,
-      gravity: 0.6,
-      ticks: 180
+      scalar: 1.6,
+      gravity: 0.5,
+      ticks: 220
     });
     confetti({
-      particleCount: 30,
+      particleCount: 25,
       angle: 120,
-      spread: 45,
-      startVelocity: 35,
+      spread: 40,
+      startVelocity: 30,
       origin: { x: 1, y: 0.5 },
       colors: colors,
       shapes: ['square'],
-      scalar: 1.5,
-      gravity: 0.6,
-      ticks: 180
+      scalar: 1.6,
+      gravity: 0.5,
+      ticks: 220
     });
-  }, 250);
+  }, 350);
 };
 
 const runHolidayContinuous = () => {
   const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A'];
   
-  // Festive particles
+  // Festive particles - geometric shapes only
   confetti({
-    particleCount: 20,
-    spread: 80,
-    startVelocity: 20,
+    particleCount: 12,
+    spread: 70,
+    startVelocity: 15,
     origin: { x: Math.random(), y: 0.1 },
     colors: colors,
-    shapes: [starShape, 'circle'],
-    scalar: 1.1,
-    gravity: 0.5,
-    ticks: 250,
-    drift: (Math.random() - 0.5) * 0.3
+    shapes: [starShape, 'circle', 'square'],
+    scalar: 1.3,
+    gravity: 0.4,
+    ticks: 300,
+    drift: (Math.random() - 0.5) * 0.2
   });
 };
 
@@ -447,31 +452,31 @@ const runFriendshipBurst = () => {
   
   // Rainbow burst
   confetti({
-    particleCount: 90,
-    spread: 100,
-    startVelocity: 35,
+    particleCount: 70,
+    spread: 90,
+    startVelocity: 30,
     origin: { x: 0.5, y: 0.5 },
     colors: colors,
     shapes: [starShape, heartShape, 'circle'],
-    scalar: 1.3,
-    gravity: 0.6,
-    ticks: 220
+    scalar: 1.5,
+    gravity: 0.5,
+    ticks: 270
   });
 
   // Sparkles
   setTimeout(() => {
     confetti({
-      particleCount: 40,
-      spread: 120,
-      startVelocity: 25,
+      particleCount: 30,
+      spread: 100,
+      startVelocity: 20,
       origin: { x: 0.5, y: 0.4 },
       colors: ['#FFFFFF', '#FFD700', '#ff9ff3'],
       shapes: ['circle'],
-      scalar: 0.7,
-      gravity: 0.4,
-      ticks: 180
+      scalar: 0.8,
+      gravity: 0.35,
+      ticks: 220
     });
-  }, 200);
+  }, 300);
 };
 
 const runFriendshipContinuous = () => {
@@ -479,69 +484,68 @@ const runFriendshipContinuous = () => {
   
   // Rainbow sparkles
   confetti({
-    particleCount: 12,
-    spread: 70,
-    startVelocity: 18,
+    particleCount: 8,
+    spread: 60,
+    startVelocity: 14,
     origin: { x: Math.random(), y: Math.random() * 0.4 },
     colors: colors,
     shapes: [starShape, 'circle'],
-    scalar: 1,
-    gravity: 0.5,
-    ticks: 200
+    scalar: 1.2,
+    gravity: 0.4,
+    ticks: 250
   });
 };
 
-// ============= APOLOGY: Gentle, calming, slow =============
+// ============= APOLOGY: Very gentle, calming =============
 const runApologyBurst = () => {
   const colors = ['#a8dadc', '#457b9d', '#81d4fa', '#b3e5fc', '#e1f5fe'];
   
   // Gentle soft burst
   confetti({
-    particleCount: 40,
-    spread: 80,
-    startVelocity: 15, // Very slow
+    particleCount: 30,
+    spread: 60,
+    startVelocity: 12,
     origin: { x: 0.5, y: 0.5 },
     colors: colors,
     shapes: ['circle'],
-    scalar: 1.4,
-    gravity: 0.3, // Floats slowly
-    ticks: 400, // Visible for long
-    drift: 0
+    scalar: 1.2,
+    gravity: 0.25,
+    ticks: 400
   });
 };
 
 const runApologyContinuous = () => {
-  const colors = ['#a8dadc', '#457b9d', '#81d4fa'];
+  const colors = ['#a8dadc', '#81d4fa', '#b3e5fc'];
   
-  // Very gentle floating circles
+  // Very gentle floating bubbles
   confetti({
-    particleCount: 5,
-    spread: 50,
-    startVelocity: 8,
-    origin: { x: Math.random(), y: Math.random() * 0.5 },
+    particleCount: 3,
+    spread: 40,
+    startVelocity: 6,
+    origin: { x: Math.random(), y: 1 },
     colors: colors,
     shapes: ['circle'],
-    scalar: 1.2,
-    gravity: 0.2,
-    ticks: 500,
-    drift: 0
+    scalar: 1.5,
+    gravity: -0.02, // Float up very slowly
+    ticks: 600,
+    drift: (Math.random() - 0.5) * 0.1
   });
 };
 
-// ============= DEFAULT: Multi-color celebration =============
+// ============= DEFAULT =============
 const runDefaultBurst = () => {
-  const colors = ['#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#ef4444'];
+  const colors = ['#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6'];
   
   confetti({
-    particleCount: 80,
-    spread: 90,
-    startVelocity: 35,
+    particleCount: 60,
+    spread: 80,
+    startVelocity: 30,
     origin: { x: 0.5, y: 0.5 },
     colors: colors,
     shapes: ['circle', 'square'],
-    scalar: 1.2,
-    gravity: 0.7,
-    ticks: 200
+    scalar: 1.3,
+    gravity: 0.5,
+    ticks: 250
   });
 };
 
@@ -549,15 +553,15 @@ const runDefaultContinuous = () => {
   const colors = ['#8b5cf6', '#ec4899', '#f59e0b', '#10b981'];
   
   confetti({
-    particleCount: 15,
+    particleCount: 10,
     spread: 60,
-    startVelocity: 20,
-    origin: { x: Math.random(), y: Math.random() * 0.3 },
+    startVelocity: 15,
+    origin: { x: Math.random(), y: 0.1 },
     colors: colors,
     shapes: ['circle', 'square'],
-    scalar: 1,
-    gravity: 0.6,
-    ticks: 180
+    scalar: 1.2,
+    gravity: 0.4,
+    ticks: 280
   });
 };
 

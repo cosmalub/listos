@@ -202,24 +202,70 @@ export const OccasionBackground: React.FC<OccasionBackgroundProps> = ({
         );
       }
       
-      // Holiday: Universal festive elements (no snowflakes)
+      // Holiday: Universal festive elements - geometric shapes (no emoji)
       if (particleType === 'holiday') {
-        const festiveElements = ['🎉', '🎊', '✨', '⭐', '🎈'];
-        return (
-          <div
-            key={i}
-            className="absolute"
-            style={{
-              left: `${left}%`,
-              top: `${-10 + Math.random() * 20}%`,
-              fontSize: `${size + 2}px`,
-              animationDelay: `${delay}s`,
-              animation: `confetti-fall ${duration}s linear infinite`
-            }}
-          >
-            {festiveElements[Math.floor(Math.random() * festiveElements.length)]}
-          </div>
-        );
+        const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8'];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const shapeType = i % 3;
+        
+        // Stars, circles, and squares - no emoji
+        if (shapeType === 0) {
+          // Star shape
+          return (
+            <div
+              key={i}
+              className="absolute"
+              style={{
+                left: `${left}%`,
+                top: `${-10 + Math.random() * 20}%`,
+                width: `${size}px`,
+                height: `${size}px`,
+                backgroundColor: color,
+                clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
+                animationDelay: `${delay}s`,
+                animation: `confetti-fall ${duration}s linear infinite`,
+                opacity: 0.8
+              }}
+            />
+          );
+        } else if (shapeType === 1) {
+          // Circle
+          return (
+            <div
+              key={i}
+              className="absolute rounded-full"
+              style={{
+                left: `${left}%`,
+                top: `${-10 + Math.random() * 20}%`,
+                width: `${size}px`,
+                height: `${size}px`,
+                backgroundColor: color,
+                animationDelay: `${delay}s`,
+                animation: `confetti-fall ${duration}s linear infinite`,
+                opacity: 0.75
+              }}
+            />
+          );
+        } else {
+          // Square / confetti
+          return (
+            <div
+              key={i}
+              className="absolute"
+              style={{
+                left: `${left}%`,
+                top: `${-10 + Math.random() * 20}%`,
+                width: `${size * 0.4}px`,
+                height: `${size}px`,
+                backgroundColor: color,
+                animationDelay: `${delay}s`,
+                animation: `confetti-fall ${duration}s linear infinite`,
+                transform: `rotate(${Math.random() * 360}deg)`,
+                opacity: 0.8
+              }}
+            />
+          );
+        }
       }
       
       // Default particles
