@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { CheckCircle, Info } from 'lucide-react';
+import { OccasionBackground } from '@/components/public/OccasionBackground';
 import { OccasionAnimation } from '@/components/public/OccasionAnimation';
 import { Header } from '@/components/sections/header';
 import { StepsHeader } from '@/components/studio/StepsHeader';
@@ -149,9 +150,10 @@ const PublicSongDraft = () => {
   }
 
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] via-white to-white">
+      <OccasionBackground occasion={occasion} />
       {showAnimations && (
-        <OccasionAnimation occasion={occasion} />
+        <OccasionAnimation occasion={occasion} duration={7000} />
       )}
       
       {/* Header */}
