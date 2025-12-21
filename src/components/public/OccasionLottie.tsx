@@ -102,20 +102,20 @@ export const OccasionLottie: React.FC<OccasionLottieProps> = ({
         </div>
       )}
 
-      {/* Continuous background animations - standardized larger size */}
+      {/* Continuous background animations - evenly distributed, standardized size */}
       {showMainAnimation && (
         <div className={`fixed inset-0 z-30 pointer-events-none overflow-hidden ${className}`}>
-          {/* Fewer, larger Lottie elements */}
-          <div className="absolute top-[8%] left-[8%] w-20 h-20 md:w-24 md:h-24 opacity-50 animate-float-slow">
+          {/* 4 corners + center - evenly distributed */}
+          <div className="absolute top-[15%] left-[10%] w-16 h-16 md:w-20 md:h-20 opacity-40 animate-float-slow">
             <Lottie animationData={animationData} loop={true} autoplay={true} />
           </div>
-          <div className="absolute top-[12%] right-[12%] w-24 h-24 md:w-28 md:h-28 opacity-45 animate-float-delayed">
+          <div className="absolute top-[15%] right-[10%] w-16 h-16 md:w-20 md:h-20 opacity-40 animate-float-delayed">
             <Lottie animationData={animationData} loop={true} autoplay={true} />
           </div>
-          <div className="absolute bottom-[20%] left-[10%] w-20 h-20 md:w-24 md:h-24 opacity-40 animate-float-slow">
+          <div className="absolute bottom-[30%] left-[12%] w-14 h-14 md:w-18 md:h-18 opacity-35 animate-float-slow">
             <Lottie animationData={animationData} loop={true} autoplay={true} />
           </div>
-          <div className="absolute bottom-[18%] right-[15%] w-22 h-22 md:w-26 md:h-26 opacity-35 animate-float-delayed">
+          <div className="absolute bottom-[30%] right-[12%] w-14 h-14 md:w-18 md:h-18 opacity-35 animate-float-delayed">
             <Lottie animationData={animationData} loop={true} autoplay={true} />
           </div>
         </div>

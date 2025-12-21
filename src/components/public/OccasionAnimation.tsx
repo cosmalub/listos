@@ -231,59 +231,67 @@ const runBirthdayContinuous = () => {
   });
 };
 
-// ============= LOVE: BIG hearts only, floating upward =============
+// ============= LOVE: Big hearts from CENTER, falling down beautifully =============
 const runLoveBurst = () => {
   const colors = ['#ff006e', '#ff1744', '#f50057', '#ff4081', '#e91e63'];
   
-  // Central big heart burst
+  // Central heart burst - FROM CENTER like other occasions
   confetti({
-    particleCount: 40,
-    spread: 70,
-    startVelocity: 25,
-    origin: { x: 0.5, y: 0.6 },
+    particleCount: 50,
+    spread: 80,
+    startVelocity: 30,
+    origin: { x: 0.5, y: 0.45 }, // CENTER of screen
     colors: colors,
     shapes: [heartShape],
-    scalar: 3.5, // VERY BIG hearts
+    scalar: 2.5, // Big but not crazy
     gravity: 0.5,
     ticks: 300
   });
 
-  // Hearts floating up from bottom - staggered
+  // Side bursts for symmetry
   setTimeout(() => {
-    for (let i = 0; i < 3; i++) {
-      setTimeout(() => {
-        confetti({
-          particleCount: 5,
-          spread: 30,
-          startVelocity: 20,
-          origin: { x: 0.2 + i * 0.3, y: 1 },
-          colors: colors,
-          shapes: [heartShape],
-          scalar: 3, // Big hearts
-          gravity: -0.05, // Float up gently
-          ticks: 400,
-          drift: 0
-        });
-      }, i * 300);
-    }
-  }, 600);
+    confetti({
+      particleCount: 20,
+      angle: 60,
+      spread: 50,
+      startVelocity: 25,
+      origin: { x: 0.1, y: 0.5 },
+      colors: colors,
+      shapes: [heartShape],
+      scalar: 2.2,
+      gravity: 0.4,
+      ticks: 280
+    });
+    confetti({
+      particleCount: 20,
+      angle: 120,
+      spread: 50,
+      startVelocity: 25,
+      origin: { x: 0.9, y: 0.5 },
+      colors: colors,
+      shapes: [heartShape],
+      scalar: 2.2,
+      gravity: 0.4,
+      ticks: 280
+    });
+  }, 400);
 };
 
 const runLoveContinuous = () => {
   const colors = ['#ff006e', '#ff1744', '#f50057', '#ff4081'];
   
-  // Few big hearts floating up slowly
+  // Hearts falling from top like rain - same as birthday style
   confetti({
-    particleCount: 3, // Very few
-    spread: 25,
-    startVelocity: 15,
-    origin: { x: Math.random(), y: 1 },
+    particleCount: 6,
+    spread: 60,
+    startVelocity: 10,
+    origin: { x: Math.random(), y: 0 }, // FROM TOP
     colors: colors,
     shapes: [heartShape],
-    scalar: 3, // BIG hearts
-    gravity: -0.03, // Gently float up
-    ticks: 500, // Very long visible
-    drift: (Math.random() - 0.5) * 0.1
+    scalar: 2.2, // Medium-big hearts
+    gravity: 0.3, // Fall down gently
+    ticks: 400,
+    drift: (Math.random() - 0.5) * 0.15
   });
 };
 
