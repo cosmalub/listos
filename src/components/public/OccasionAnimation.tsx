@@ -216,18 +216,20 @@ const runBirthdayBurst = () => {
 const runBirthdayContinuous = () => {
   const colors = ['#FF1744', '#FF6B9D', '#FFD700', '#00D4FF', '#9C27B0'];
   
-  // Very gentle rain - few particles, slow
+  // Mini-burst at random position (like mini-fireworks)
   confetti({
-    particleCount: 8, // Few particles
-    spread: 100,
-    startVelocity: 8, // Very slow
-    origin: { x: Math.random(), y: 0 },
+    particleCount: 10,
+    spread: 60,
+    startVelocity: 18,
+    origin: { 
+      x: 0.1 + Math.random() * 0.8,  // 10%-90% width
+      y: 0.2 + Math.random() * 0.4   // 20%-60% height
+    },
     colors: colors,
-    shapes: ['circle'],
-    scalar: 1.3,
-    gravity: 0.2, // Very slow fall
-    ticks: 500, // Very long visible
-    drift: (Math.random() - 0.5) * 0.2
+    shapes: [balloonShape, 'circle'],
+    scalar: 1.5,
+    gravity: 0.5,
+    ticks: 250
   });
 };
 
@@ -280,18 +282,20 @@ const runLoveBurst = () => {
 const runLoveContinuous = () => {
   const colors = ['#ff006e', '#ff1744', '#f50057', '#ff4081'];
   
-  // Hearts falling from top like rain - same as birthday style
+  // Mini-burst of hearts at random position
   confetti({
-    particleCount: 6,
-    spread: 60,
-    startVelocity: 10,
-    origin: { x: Math.random(), y: 0 }, // FROM TOP
+    particleCount: 8,
+    spread: 55,
+    startVelocity: 16,
+    origin: { 
+      x: 0.1 + Math.random() * 0.8,  // 10%-90% width
+      y: 0.2 + Math.random() * 0.4   // 20%-60% height
+    },
     colors: colors,
     shapes: [heartShape],
-    scalar: 2.2, // Medium-big hearts
-    gravity: 0.3, // Fall down gently
-    ticks: 400,
-    drift: (Math.random() - 0.5) * 0.15
+    scalar: 2.0,
+    gravity: 0.5,
+    ticks: 220
   });
 };
 
@@ -439,18 +443,20 @@ const runHolidayBurst = () => {
 const runHolidayContinuous = () => {
   const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A'];
   
-  // Festive particles - geometric shapes only
+  // Mini-burst of festive shapes at random position
   confetti({
-    particleCount: 12,
-    spread: 70,
-    startVelocity: 15,
-    origin: { x: Math.random(), y: 0.1 },
+    particleCount: 10,
+    spread: 60,
+    startVelocity: 18,
+    origin: { 
+      x: 0.1 + Math.random() * 0.8,  // 10%-90% width
+      y: 0.2 + Math.random() * 0.4   // 20%-60% height
+    },
     colors: colors,
     shapes: [starShape, 'circle', 'square'],
-    scalar: 1.3,
-    gravity: 0.4,
-    ticks: 300,
-    drift: (Math.random() - 0.5) * 0.2
+    scalar: 1.4,
+    gravity: 0.5,
+    ticks: 230
   });
 };
 

@@ -84,7 +84,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         valid: false,
-        error: error.message 
+        error: (error as Error).message 
       }),
       { 
         status: 400, 
