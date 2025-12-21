@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { OccasionBackground } from '@/components/public/OccasionBackground';
-import { Play, Pause, Volume2, Heart, Share2, Download } from 'lucide-react';
+import { OccasionAnimation } from '@/components/public/OccasionAnimation';
+import { Play, Pause, Heart, Share2, Download } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const demoData = {
@@ -69,7 +69,7 @@ export default function PublicSongTest() {
 
   return (
     <div className="min-h-screen relative">
-      <OccasionBackground occasion={demoData.occasion} />
+      <OccasionAnimation occasion={demoData.occasion} />
       
       <div className="relative z-10 container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto space-y-8">

@@ -88,17 +88,17 @@ export default function PublicSong() {
       <OccasionAnimation occasion={orderData.page_occasion} />
       
       <div className="relative z-10">
-        <div className="container mx-auto px-4 py-12">
-          <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-2xl p-8">
+        <div className="container mx-auto px-4 py-8 sm:py-12">
+          <div className="max-w-2xl mx-auto bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-6 sm:p-8">
             {/* Для кого / Від кого - НАД заголовком */}
             <div className="mb-4">
-              <p className="text-lg text-center font-baloo text-muted-foreground">
+              <p className="text-base sm:text-lg text-center font-baloo text-muted-foreground">
                 {locale[detectLanguage(orderData.lyrics || '')].for} {orderData.page_recipient} • {locale[detectLanguage(orderData.lyrics || '')].from} {orderData.page_sender}
               </p>
             </div>
 
             {/* Заголовок - используем caption с лицевой стороны или стандартный по событию */}
-            <h1 className="text-4xl font-bold font-baloo text-center mb-8">
+            <h1 className="text-2xl sm:text-4xl font-bold font-baloo text-center mb-6 sm:mb-8">
               {orderData.front_design_caption || (
                 <>
                   {orderData.page_occasion === 'birthday' && '🎂 З Днем Народження!'}
@@ -111,14 +111,15 @@ export default function PublicSong() {
                   {orderData.page_occasion === 'apology' && '💐 Вибач!'}
                   {orderData.page_occasion === 'love' && '❤️ Кохаю!'}
                   {orderData.page_occasion === 'friendship' && '🤝 Дружбі!'}
+                  {orderData.page_occasion === 'holiday' && '🎄 Зі святом!'}
                 </>
               )}
             </h1>
 
             {/* Аудио плеер */}
             {orderData.music_selected && orderData.music_audio_url && (
-              <div className="text-center mb-8">
-                <audio controls className="mx-auto w-full max-w-md">
+              <div className="text-center mb-6 sm:mb-8">
+                <audio controls className="mx-auto w-full max-w-md rounded-lg">
                   <source src={orderData.music_audio_url} type="audio/mpeg" />
                   {locale[detectLanguage(orderData.lyrics || '')].browserNotSupported}
                 </audio>
@@ -127,9 +128,9 @@ export default function PublicSong() {
 
             {/* Текст песни */}
             {orderData.lyrics && (
-              <div className="bg-gradient-to-r from-[hsl(var(--primary))]/10 to-[hsl(var(--secondary))]/10 rounded-lg p-6">
+              <div className="bg-gradient-to-r from-[hsl(var(--primary))]/10 to-[hsl(var(--secondary))]/10 rounded-xl p-4 sm:p-6">
                 <div 
-                  className="whitespace-pre-wrap text-center"
+                  className="whitespace-pre-wrap text-center text-sm sm:text-base leading-relaxed"
                   dangerouslySetInnerHTML={{
                     __html: (() => {
                       return orderData.lyrics
