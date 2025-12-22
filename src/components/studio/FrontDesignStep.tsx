@@ -652,6 +652,24 @@ export function FrontDesignStep({
           </div>
         </div>
 
+        {/* Frame toggle for photo mode */}
+        {designData.mode === 'photo' && (
+          <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg border">
+            <div className="flex-1">
+              <p className="font-medium text-sm">Додати рамку</p>
+              <p className="text-xs text-muted-foreground">
+                Елегантна золота рамка навколо фото
+              </p>
+            </div>
+            <Switch
+              checked={designData.useFrame || false}
+              onCheckedChange={(checked) => 
+                setDesignData(prev => ({ ...prev, useFrame: checked }))
+              }
+            />
+          </div>
+        )}
+
          {/* Action buttons */}
         <div className="space-y-3">
           {designData.mode === 'ai-generation' && (
