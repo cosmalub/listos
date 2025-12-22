@@ -44,6 +44,37 @@ function isLightColor(color: string): boolean {
   return luminance > 0.5;
 }
 
+// Split caption into lines with max 2-3 words per line
+function splitCaptionToLines(caption: string): string[] {
+  const words = caption.trim().split(/\s+/);
+  const lines: string[] = [];
+  
+  let i = 0;
+  while (i < words.length) {
+    // Take 2-3 words per line depending on word lengths
+    const remaining = words.length - i;
+    let wordsToTake = 2;
+    
+    // If we have 3-4 words left, split evenly
+    if (remaining === 3) {
+      wordsToTake = 2; // 2 + 1
+    } else if (remaining === 4) {
+      wordsToTake = 2; // 2 + 2
+    } else if (remaining <= 2) {
+      wordsToTake = remaining;
+    } else {
+      // Check if current words are short, can take 3
+      const nextThreeWords = words.slice(i, i + 3).join(' ');
+      wordsToTake = nextThreeWords.length <= 20 ? 3 : 2;
+    }
+    
+    lines.push(words.slice(i, i + wordsToTake).join(' '));
+    i += wordsToTake;
+  }
+  
+  return lines;
+}
+
 export function PostcardPreview({ frontData, backData, showFront = true, size = 'large' }: PostcardPreviewProps) {
   // Front side content
   const frontSide = (
@@ -65,12 +96,14 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
                 {frontData.caption && (
                   <div className="absolute bottom-3 left-0 right-0 px-2">
                     <div className="bg-black/60 backdrop-blur-sm py-2.5 px-3">
-                      <p className={cn(
+                      <div className={cn(
                         "text-white text-center font-bold uppercase leading-tight tracking-wide",
                         size === 'large' ? "text-base sm:text-lg md:text-xl" : "text-sm sm:text-base"
                       )}>
-                        {frontData.caption}
-                      </p>
+                        {splitCaptionToLines(frontData.caption).map((line, index) => (
+                          <div key={index}>{line}</div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 )}
