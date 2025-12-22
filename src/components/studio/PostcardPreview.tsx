@@ -50,8 +50,9 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
     <div id="postcard-front-preview" className="relative w-full h-full bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl overflow-hidden">
       {frontData.imageUrl ? (
         frontData.mode === 'photo' && frontData.frameEnabled ? (
-          // With frame - white border like a printed photo
-          <div className="w-full h-full bg-white p-3 sm:p-4 rounded-xl">
+          // With frame - thin white border like a printed photo
+          <div className="relative w-full h-full bg-white p-1 sm:p-1.5 rounded-xl">
+            {/* Photo container */}
             <div className="relative w-full h-full rounded-lg overflow-hidden">
               <img
                 src={frontData.imageUrl}
@@ -59,17 +60,10 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
                 className="w-full h-full object-cover"
               />
               
-              {/* Decorative frame overlay */}
-              <img 
-                src="/frames/elegant-frame.png" 
-                alt=""
-                className="absolute inset-0 w-full h-full object-fill pointer-events-none z-10" 
-              />
-              
               {/* Caption overlay */}
               {frontData.caption && (
-                <div className="absolute bottom-4 left-3 right-3 z-20">
-                  <div className="bg-black/60 backdrop-blur-sm rounded-lg py-2 px-3">
+                <div className="absolute bottom-3 left-2 right-2 z-20">
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg py-1.5 px-2">
                     <p className={cn(
                       "text-white text-center font-bold uppercase leading-snug",
                       size === 'large' ? "text-sm sm:text-base md:text-lg" : "text-xs md:text-sm"
@@ -80,6 +74,13 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
                 </div>
               )}
             </div>
+            
+            {/* Decorative frame overlay - extends over white border */}
+            <img 
+              src="/frames/elegant-frame.png" 
+              alt=""
+              className="absolute inset-0 w-full h-full object-fill pointer-events-none z-10" 
+            />
           </div>
         ) : (
           // Without frame - full bleed image
