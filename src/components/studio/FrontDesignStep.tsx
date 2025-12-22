@@ -3,7 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, Wand2, Loader2, RotateCcw, ArrowRight, Heart, Gift, MessageCircle, Info, RefreshCw } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { ArrowLeft, Wand2, Loader2, RotateCcw, ArrowRight, Heart, Gift, MessageCircle, Info, RefreshCw, Frame } from 'lucide-react';
 import { ImageUploader } from './ImageUploader';
 import { PostcardPreview } from './PostcardPreview';
 import { getStylePrompt, type StyleKey, POSTCARD_STYLES } from '@/lib/postcard-styles';
@@ -17,6 +18,7 @@ interface FrontDesignData {
   imageUrl: string | null;
   caption: string;
   prompt: string;
+  frameEnabled?: boolean;
 }
 
 interface UserContext {
@@ -131,6 +133,7 @@ export function FrontDesignStep({
     imageUrl: null,
     caption: '',
     prompt: '',
+    frameEnabled: true,
     ...initialData
   });
   const [isGenerating, setIsGenerating] = useState(false);
@@ -832,11 +835,27 @@ export function FrontDesignStep({
         )}
 
         {selectedSource === 'photo' && (
-          <div className="mt-6">
+          <div className="mt-6 space-y-4">
             <ImageUploader 
               onImageUpload={handleImageUpload} 
               isUploading={isUploading} 
             />
+            
+            {/* Frame toggle - show when image is uploaded */}
+            {designData.imageUrl && (
+              <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <Frame className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm">Святкова рамка</span>
+                </div>
+                <Switch
+                  checked={designData.frameEnabled ?? true}
+                  onCheckedChange={(checked) => 
+                    setDesignData(prev => ({ ...prev, frameEnabled: checked }))
+                  }
+                />
+              </div>
+            )}
           </div>
         )}
       </div>
