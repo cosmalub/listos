@@ -73,7 +73,7 @@ export async function preprocessImageToA6(imageUrl: string): Promise<string> {
   });
 }
 
-export async function composeFrontImageA6(imageUrl: string, caption: string): Promise<string> {
+export async function composeFrontImageA6(imageUrl: string, caption: string, frameEnabled: boolean = false): Promise<string> {
   const A6_WIDTH = 1240;
   const A6_HEIGHT = 1748;
   const MARGIN = 50;
@@ -142,63 +142,84 @@ export async function composeFrontImageA6(imageUrl: string, caption: string): Pr
       img.crossOrigin = 'anonymous';
     }
 
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = A6_WIDTH;
-      canvas.height = A6_HEIGHT;
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return reject(new Error('Canvas context unavailable'));
+    img.onload = async () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = A6_WIDTH;
+        canvas.height = A6_HEIGHT;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return reject(new Error('Canvas context unavailable'));
 
-      // Fill white background
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(0, 0, A6_WIDTH, A6_HEIGHT);
-
-      // object-cover drawing
-      const imgRatio = img.width / img.height;
-      const canvasRatio = A6_WIDTH / A6_HEIGHT;
-      let drawW: number, drawH: number, offX: number, offY: number;
-      if (imgRatio > canvasRatio) {
-        drawH = A6_HEIGHT;
-        drawW = img.width * (A6_HEIGHT / img.height);
-        offX = -(drawW - A6_WIDTH) / 2;
-        offY = 0;
-      } else {
-        drawW = A6_WIDTH;
-        drawH = img.height * (A6_WIDTH / img.width);
-        offX = 0;
-        offY = -(drawH - A6_HEIGHT) / 2;
-      }
-      ctx.drawImage(img, offX, offY, drawW, drawH);
-
-      // Caption overlay
-      const text = toUpper(caption || '');
-      if (text) {
-        const maxTextWidth = A6_WIDTH - (MARGIN + PAD_X) * 2;
-        const { lines, fontSize, lineHeight } = wrapText(ctx, text, maxTextWidth, MAX_LINES);
-        const textHeight = lines.length * lineHeight;
-
-        const rectW = maxTextWidth + PAD_X * 2;
-        const rectH = textHeight + PAD_Y * 2;
-        const rectX = MARGIN;
-        const rectY = A6_HEIGHT - BOTTOM_MARGIN - rectH;
-
-        ctx.fillStyle = 'rgba(0,0,0,0.6)';
-        ctx.fillRect(rectX, rectY, rectW, rectH);
-
+        // Fill white background
         ctx.fillStyle = '#FFFFFF';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        setFont(ctx, fontSize);
-        const centerX = rectX + rectW / 2;
-        let y = rectY + PAD_Y + lineHeight / 2;
+        ctx.fillRect(0, 0, A6_WIDTH, A6_HEIGHT);
 
-        for (const line of lines) {
-          ctx.fillText(line, centerX, y);
-          y += lineHeight;
+        // object-cover drawing
+        const imgRatio = img.width / img.height;
+        const canvasRatio = A6_WIDTH / A6_HEIGHT;
+        let drawW: number, drawH: number, offX: number, offY: number;
+        if (imgRatio > canvasRatio) {
+          drawH = A6_HEIGHT;
+          drawW = img.width * (A6_HEIGHT / img.height);
+          offX = -(drawW - A6_WIDTH) / 2;
+          offY = 0;
+        } else {
+          drawW = A6_WIDTH;
+          drawH = img.height * (A6_WIDTH / img.width);
+          offX = 0;
+          offY = -(drawH - A6_HEIGHT) / 2;
         }
-      }
+        ctx.drawImage(img, offX, offY, drawW, drawH);
 
-      resolve(canvas.toDataURL('image/png'));
+        // Draw frame overlay if enabled
+        if (frameEnabled) {
+          await new Promise<void>((resolveFrame) => {
+            const frameImg = new Image();
+            frameImg.crossOrigin = 'anonymous';
+            frameImg.onload = () => {
+              ctx.drawImage(frameImg, 0, 0, A6_WIDTH, A6_HEIGHT);
+              resolveFrame();
+            };
+            frameImg.onerror = () => {
+              console.warn('Failed to load frame image');
+              resolveFrame();
+            };
+            frameImg.src = '/frames/elegant-frame.png';
+          });
+        }
+
+        // Caption overlay
+        const text = toUpper(caption || '');
+        if (text) {
+          const maxTextWidth = A6_WIDTH - (MARGIN + PAD_X) * 2;
+          const { lines, fontSize, lineHeight } = wrapText(ctx, text, maxTextWidth, MAX_LINES);
+          const textHeight = lines.length * lineHeight;
+
+          const rectW = maxTextWidth + PAD_X * 2;
+          const rectH = textHeight + PAD_Y * 2;
+          const rectX = MARGIN;
+          const rectY = A6_HEIGHT - BOTTOM_MARGIN - rectH;
+
+          ctx.fillStyle = 'rgba(0,0,0,0.6)';
+          ctx.fillRect(rectX, rectY, rectW, rectH);
+
+          ctx.fillStyle = '#FFFFFF';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          setFont(ctx, fontSize);
+          const centerX = rectX + rectW / 2;
+          let y = rectY + PAD_Y + lineHeight / 2;
+
+          for (const line of lines) {
+            ctx.fillText(line, centerX, y);
+            y += lineHeight;
+          }
+        }
+
+        resolve(canvas.toDataURL('image/png'));
+      } catch (error) {
+        reject(error);
+      }
     };
 
     img.onerror = () => reject(new Error('Failed to load image'));

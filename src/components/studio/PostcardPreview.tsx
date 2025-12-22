@@ -12,6 +12,7 @@ interface FrontDesignData {
   imageUrl: string | null;
   caption: string;
   prompt: string;
+  frameEnabled?: boolean;
 }
 
 interface BackDesignData {
@@ -55,9 +56,19 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
             alt="Postcard design"
             className="w-full h-full object-cover"
           />
+          
+          {/* Frame overlay - only for photo mode with frameEnabled */}
+          {frontData.mode === 'photo' && frontData.frameEnabled && (
+            <img 
+              src="/frames/elegant-frame.png" 
+              alt=""
+              className="absolute inset-0 w-full h-full object-fill pointer-events-none z-10" 
+            />
+          )}
+          
           {/* Caption overlay - only for photo mode */}
           {frontData.caption && frontData.mode === 'photo' && (
-            <div className="absolute bottom-6 left-4 right-4">
+            <div className="absolute bottom-6 left-4 right-4 z-20">
               <div className="bg-black/60 backdrop-blur-sm rounded-lg py-3 px-4">
                 <p className={cn(
                   "text-white text-center font-bold uppercase leading-snug",
