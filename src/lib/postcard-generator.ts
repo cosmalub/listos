@@ -73,7 +73,7 @@ export async function preprocessImageToA6(imageUrl: string): Promise<string> {
   });
 }
 
-export async function composeFrontImageA6(imageUrl: string, caption: string, frameEnabled: boolean = false): Promise<string> {
+export async function composeFrontImageA6(imageUrl: string, caption: string): Promise<string> {
   const A6_WIDTH = 1240;
   const A6_HEIGHT = 1748;
   const MARGIN = 50;
@@ -154,14 +154,13 @@ export async function composeFrontImageA6(imageUrl: string, caption: string, fra
         ctx.fillStyle = '#FFFFFF';
         ctx.fillRect(0, 0, A6_WIDTH, A6_HEIGHT);
 
-        // Calculate photo area (with or without thin white border)
-        const BORDER_SIZE = frameEnabled ? 20 : 0; // Thin white border when frame enabled
-        const photoX = BORDER_SIZE;
-        const photoY = BORDER_SIZE;
-        const photoW = A6_WIDTH - BORDER_SIZE * 2;
-        const photoH = A6_HEIGHT - BORDER_SIZE * 2;
+        // Photo fills entire canvas
+        const photoX = 0;
+        const photoY = 0;
+        const photoW = A6_WIDTH;
+        const photoH = A6_HEIGHT;
 
-        // object-cover drawing within photo area
+        // object-cover drawing
         const imgRatio = img.width / img.height;
         const photoRatio = photoW / photoH;
         let drawW: number, drawH: number, offX: number, offY: number;
@@ -177,31 +176,8 @@ export async function composeFrontImageA6(imageUrl: string, caption: string, fra
           offY = photoY - (drawH - photoH) / 2;
         }
         
-        // Clip to photo area
-        ctx.save();
-        ctx.beginPath();
-        ctx.roundRect(photoX, photoY, photoW, photoH, frameEnabled ? 12 : 0);
-        ctx.clip();
+        // Draw image
         ctx.drawImage(img, offX, offY, drawW, drawH);
-        ctx.restore();
-
-        // Draw frame overlay if enabled - covers ENTIRE composition (white border + photo)
-        if (frameEnabled) {
-          await new Promise<void>((resolveFrame) => {
-            const frameImg = new Image();
-            frameImg.crossOrigin = 'anonymous';
-            frameImg.onload = () => {
-              // Draw frame on full canvas - covers entire composition
-              ctx.drawImage(frameImg, 0, 0, A6_WIDTH, A6_HEIGHT);
-              resolveFrame();
-            };
-            frameImg.onerror = () => {
-              console.warn('Failed to load frame image');
-              resolveFrame();
-            };
-            frameImg.src = '/frames/elegant-frame.png';
-          });
-        }
 
         // Caption overlay
         const text = toUpper(caption || '');
