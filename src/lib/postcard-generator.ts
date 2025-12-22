@@ -185,14 +185,14 @@ export async function composeFrontImageA6(imageUrl: string, caption: string, fra
         ctx.drawImage(img, offX, offY, drawW, drawH);
         ctx.restore();
 
-        // Draw frame overlay if enabled - inside photo area (not over white border)
+        // Draw frame overlay if enabled - covers ENTIRE composition (white border + photo)
         if (frameEnabled) {
           await new Promise<void>((resolveFrame) => {
             const frameImg = new Image();
             frameImg.crossOrigin = 'anonymous';
             frameImg.onload = () => {
-              // Draw frame inside photo area only
-              ctx.drawImage(frameImg, photoX, photoY, photoW, photoH);
+              // Draw frame on full canvas - covers entire composition
+              ctx.drawImage(frameImg, 0, 0, A6_WIDTH, A6_HEIGHT);
               resolveFrame();
             };
             frameImg.onerror = () => {
