@@ -53,35 +53,35 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
           {/* Photo with frame mode */}
           {frontData.mode === 'photo' && frontData.useFrame ? (
             <div className="relative w-full h-full bg-white">
-              {/* Photo inside frame area - positioned to fit within frame borders */}
-              <div className="absolute inset-[5%] top-[4%] bottom-[18%] overflow-hidden">
+              {/* Frame overlay - bottom layer for border design */}
+              <img
+                src="/frames/elegant-frame.png"
+                alt="Frame"
+                className="absolute inset-0 w-full h-full object-fill pointer-events-none z-0"
+              />
+              
+              {/* Photo inside frame area - fits within the inner rectangle of frame */}
+              <div className="absolute left-[5.5%] right-[5.5%] top-[3.5%] bottom-[3.5%] overflow-hidden">
                 <img
                   src={frontData.imageUrl}
                   alt="Postcard design"
                   className="w-full h-full object-cover"
                 />
-              </div>
-              
-              {/* Frame overlay */}
-              <img
-                src="/frames/elegant-frame.png"
-                alt="Frame"
-                className="absolute inset-0 w-full h-full object-fill pointer-events-none z-10"
-              />
-              
-              {/* Caption at bottom inside frame - white text on dark blurred background */}
-              {frontData.caption && (
-                <div className="absolute bottom-[4%] left-[6%] right-[6%] z-20">
-                  <div className="bg-black/50 backdrop-blur-sm rounded-lg py-3 px-4">
-                    <p className={cn(
-                      "text-white text-center font-bold uppercase leading-tight tracking-wide",
-                      size === 'large' ? "text-lg sm:text-xl md:text-2xl" : "text-base md:text-lg"
-                    )}>
-                      {frontData.caption}
-                    </p>
+                
+                {/* Caption overlay ON the photo - at bottom */}
+                {frontData.caption && (
+                  <div className="absolute bottom-4 left-3 right-3">
+                    <div className="bg-black/60 backdrop-blur-sm rounded-md py-2 px-3">
+                      <p className={cn(
+                        "text-white text-center font-bold uppercase leading-snug tracking-wide",
+                        size === 'large' ? "text-sm sm:text-base md:text-lg" : "text-xs sm:text-sm"
+                      )}>
+                        {frontData.caption}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           ) : (
             /* Regular photo mode without frame */
