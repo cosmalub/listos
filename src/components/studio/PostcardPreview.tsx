@@ -85,36 +85,37 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
           {frontData.mode === 'photo' && frontData.useFrame ? (
             <div className="relative w-full h-full bg-white">
               {/* Photo inside frame area - fits within the inner rectangle of frame */}
-              <div className="absolute left-[5.5%] right-[5.5%] top-[3.5%] bottom-[3.5%] overflow-hidden z-0">
+              <div className="absolute left-[5.5%] right-[5.5%] top-[3.5%] bottom-[3.5%] overflow-hidden" style={{ zIndex: 1 }}>
                 <img
                   src={frontData.imageUrl}
                   alt="Postcard design"
                   className="w-full h-full object-cover"
                 />
-                
-                {/* Caption overlay ON the photo - at bottom, full width of photo */}
-                {frontData.caption && (
-                  <div className="absolute bottom-3 left-0 right-0 px-2">
-                    <div className="bg-black/60 backdrop-blur-sm py-2.5 px-3">
-                      <div className={cn(
-                        "text-white text-center font-bold uppercase leading-tight tracking-wide",
-                        size === 'large' ? "text-base sm:text-lg md:text-xl" : "text-sm sm:text-base"
-                      )}>
-                        {splitCaptionToLines(frontData.caption).map((line, index) => (
-                          <div key={index}>{line}</div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
               
-              {/* Frame overlay - TOP layer over photo */}
+              {/* Frame overlay - on top of photo but below caption */}
               <img
                 src="/frames/elegant-frame.png"
                 alt="Frame"
-                className="absolute inset-0 w-full h-full object-fill pointer-events-none z-10"
+                className="absolute inset-0 w-full h-full object-fill pointer-events-none"
+                style={{ zIndex: 2 }}
               />
+              
+              {/* Caption overlay - at bottom, on top of everything */}
+              {frontData.caption && (
+                <div className="absolute bottom-[5%] left-[7%] right-[7%]" style={{ zIndex: 3 }}>
+                  <div className="bg-black/60 backdrop-blur-sm py-2.5 px-3">
+                    <div className={cn(
+                      "text-white text-center font-bold uppercase leading-tight tracking-wide",
+                      size === 'large' ? "text-base sm:text-lg md:text-xl" : "text-sm sm:text-base"
+                    )}>
+                      {splitCaptionToLines(frontData.caption).map((line, index) => (
+                        <div key={index}>{line}</div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             /* Regular photo mode without frame */
