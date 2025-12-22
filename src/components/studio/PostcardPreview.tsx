@@ -91,9 +91,9 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
                 className="absolute object-cover"
                 style={{ 
                   zIndex: 1,
-                  left: '4.8%',
+                  left: '5.2%',
                   top: '3.5%',
-                  width: '90.4%',
+                  width: '90%',
                   height: '93.5%'
                 }}
               />
@@ -108,7 +108,7 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
               
               {/* Caption overlay - at bottom, on top of everything */}
               {frontData.caption && (
-                <div className="absolute bottom-[4.5%] left-[4.8%] right-[4.8%]" style={{ zIndex: 3 }}>
+                <div className="absolute bottom-[4.5%] left-[5.2%] right-[4.8%]" style={{ zIndex: 3 }}>
                   <div className="bg-black/60 backdrop-blur-sm py-2.5 px-3">
                     <div className={cn(
                       "text-white text-center font-bold uppercase leading-tight tracking-wide",
