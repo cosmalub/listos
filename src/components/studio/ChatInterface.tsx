@@ -25,29 +25,13 @@ interface ChatInterfaceProps {
   onMessagesChange?: (messages: Message[]) => void;
   onLyricsGenerated: (lyrics: string) => void;
   onConfirmLyrics?: (lyrics: string) => void;
-  onEditLyrics?: () => void;
 }
-
-const hintChips = [
-  'Романтична листівка для коханої на День народження',
-  'Весела пісня для дитини на випускний',
-  'Подяка другу за підтримку',
-  'Листівка мамі на 8 березня',
-];
-
-const refineChips = [
-  'Зробити веселіше',
-  'Додати більше рими',
-  'Більше емоцій',
-  'Простіше слова'
-];
 
 export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({ 
   initialMessages,
   onMessagesChange,
   onLyricsGenerated, 
-  onConfirmLyrics,
-  onEditLyrics 
+  onConfirmLyrics
 }, ref) => {
   const [messages, setMessages] = useState<Message[]>(() => {
     if (initialMessages && initialMessages.length > 0) {
@@ -164,9 +148,6 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
     handleSendMessage(refinement, true);
   };
 
-  const handleGeneralFeedback = () => {
-    setNewMessage('Щось не так з цим текстом, можеш переробити?');
-  };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -266,60 +247,16 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
                     </p>
                   </div>
                   
-                   {/* Lyrics action buttons */}
-                   {hasLyrics && !isEditing && (
-                     <div className="space-y-3 mt-4 pt-4">
-                      {/* Quick refine options */}
-                      <div className="space-y-2">
-                        <p className="text-xs text-muted-foreground">Швидко покращити:</p>
-                        <div className="flex flex-wrap gap-2">
-                          {refineChips.map((chip) => (
-                            <button
-                              key={chip}
-                              onClick={() => handleRefineClick(chip)}
-                              className="px-3 py-1 text-xs rounded-full bg-secondary hover:bg-secondary/80 transition-colors"
-                            >
-                              {chip}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* General feedback and actions */}
-                      <div className="flex flex-wrap gap-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={handleGeneralFeedback}
-                          className="text-xs"
-                        >
-                          Щось не так?
-                        </Button>
-                        {onEditLyrics && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={onEditLyrics}
-                            className="text-xs"
-                          >
-                            Детальне редагування
-                          </Button>
-                        )}
-                        {onConfirmLyrics && (
-                          <Button
-                            size="sm"
-                            onClick={() => onConfirmLyrics(extractLyricsFromMessage(message.content) || '')}
-                            className="text-xs bg-primary text-primary-foreground hover:bg-primary/90"
-                          >
-                            Підтвердити і далі →
-                          </Button>
-                        )}
-                      </div>
-                      
-                      <p className="text-xs text-muted-foreground">
-                        Листосик допоможе вам покращити пісню, просто скажіть що хочете змінити
-                      </p>
-                    </div>
+                   {/* Confirm button after lyrics */}
+                   {hasLyrics && !isEditing && onConfirmLyrics && (
+                     <div className="mt-4">
+                       <Button
+                         onClick={() => onConfirmLyrics(extractLyricsFromMessage(message.content) || '')}
+                         className="bg-primary text-primary-foreground hover:bg-primary/90"
+                       >
+                         Підтвердити і далі →
+                       </Button>
+                     </div>
                   )}
                   
                   {/* Edit mode buttons */}

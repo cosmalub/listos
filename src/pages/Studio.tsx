@@ -6,9 +6,7 @@ import { ArrowLeft, CheckCircle, Circle, Settings, Trash, Loader2 } from 'lucide
 const DEV_MODE = import.meta.env.DEV;
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ChatInterface, ChatInterfaceRef } from '@/components/studio/ChatInterface';
-import { LyricsDraft } from '@/components/studio/LyricsDraft';
 import { MusicGeneration } from '@/components/studio/MusicGeneration';
 import { MusicStyleSelector } from '@/components/studio/MusicStyleSelector';
 import { PageCaptionStep } from '@/components/studio/PageCaptionStep';
@@ -62,8 +60,6 @@ const Studio = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0); // Start with welcome tutorial
   const [lyrics, setLyrics] = useState('');
-  const [activeTab, setActiveTab] = useState('chat');
-  const [hasUnconfirmedLyrics, setHasUnconfirmedLyrics] = useState(false);
   const [selectedMusicVariant, setSelectedMusicVariant] = useState<any>(null);
   const [pageData, setPageData] = useState<any>(null);
   const [designData, setDesignData] = useState<any>(null);
@@ -106,7 +102,6 @@ const Studio = () => {
         // Restore lyrics if not already set
         if (parsed.lyrics && !lyrics) {
           setLyrics(parsed.lyrics);
-          setHasUnconfirmedLyrics(false);
         }
         
         // Restore selectedMusicVariant if not already set
@@ -181,7 +176,6 @@ const Studio = () => {
 
   const handleLyricsConfirmed = async (confirmedLyrics: string) => {
     setLyrics(confirmedLyrics);
-    setHasUnconfirmedLyrics(false);
     
     // Переходимо на крок 1.5 та показуємо лоадер
     setIsAnalyzingLyrics(true);
@@ -234,23 +228,8 @@ const Studio = () => {
 
   const handleLyricsGenerated = (generatedLyrics: string) => {
     setLyrics(generatedLyrics);
-    setHasUnconfirmedLyrics(true);
-    // Auto-switch to draft tab after lyrics generation
-    setActiveTab('draft');
   };
 
-  const handleRequestEdit = (editText: string) => {
-    // Compose full message with current lyrics context
-    const currentLyrics = lyrics.trim();
-    const composedMessage = currentLyrics ? 
-      `${editText}\n\nПоточний текст пісні:\n\`\`\`LYRICS\n${currentLyrics}\n\`\`\`` : 
-      editText;
-    
-    setActiveTab('chat');
-    setTimeout(() => {
-      chatRef.current?.prefillAndSend(composedMessage);
-    }, 100);
-  };
 
   const handleStyleSelected = async (style: MusicStyle) => {
     setSelectedStyle(style);
@@ -310,7 +289,6 @@ const Studio = () => {
     setRecommendedStyles([]);
     setPageData(null);
     setDesignData(null);
-    setHasUnconfirmedLyrics(false);
     
     setShowWelcome(false);
     setCurrentStep(1);
@@ -420,7 +398,6 @@ const Studio = () => {
   const fillTestData = () => {
     setLyrics(TEST_DATA.lyrics);
     setSelectedMusicVariant(TEST_DATA.musicVariant);
-    setHasUnconfirmedLyrics(false);
     toast.success('Тестові дані заповнені');
   };
 
@@ -430,7 +407,6 @@ const Studio = () => {
       // Auto-fill missing data for higher steps
       if (step >= 1.5 && !lyrics) {
         setLyrics(TEST_DATA.lyrics);
-        setHasUnconfirmedLyrics(false);
       }
       if (step >= 1.5 && recommendedStyles.length === 0) {
         // Auto-fill recommended styles
@@ -493,64 +469,16 @@ const Studio = () => {
       case 1:
         return (
           <div className="h-full">
-            {/* Unified tabbed layout for both desktop and mobile */}
-            <div className="h-full relative">
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
-                <TabsList className="grid w-full grid-cols-2 mb-4">
-                  <TabsTrigger value="chat">Чат</TabsTrigger>
-                  <TabsTrigger value="draft" className="relative">
-                    Чернетка
-                    {hasUnconfirmedLyrics && currentStep === 1 && (
-                      <span className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full"></span>
-                    )}
-                  </TabsTrigger>
-                </TabsList>
-                <TabsContent value="chat" className="flex-1">
-                  <Card className="p-4 h-full">
-                    <ChatInterface 
-                      key={chatKey}
-                      ref={chatRef}
-                      initialMessages={chatMessages}
-                      onMessagesChange={setChatMessages}
-                      onLyricsGenerated={handleLyricsGenerated}
-                      onConfirmLyrics={handleLyricsConfirmed}
-                      onEditLyrics={() => setActiveTab('draft')}
-                    />
-                  </Card>
-                </TabsContent>
-                <TabsContent value="draft" className="flex-1">
-                  <Card className="p-4 h-full">
-                    <LyricsDraft 
-                      lyrics={lyrics} 
-                      onConfirm={handleLyricsConfirmed}
-                      onRequestEdit={handleRequestEdit}
-                    />
-                  </Card>
-                </TabsContent>
-              </Tabs>
-
-              {/* Bottom CTA panel for all screen sizes */}
-              {activeTab === 'chat' && hasUnconfirmedLyrics && currentStep === 1 && (
-                <div className="fixed bottom-4 left-4 right-4 md:left-1/2 md:right-auto md:transform md:-translate-x-1/2 md:w-96 bg-background border border-border rounded-lg p-3 shadow-lg flex gap-2 z-10">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={() => setActiveTab('draft')}
-                    className="flex-1"
-                  >
-                    Редагувати
-                  </Button>
-                  <Button 
-                    size="sm" 
-                    onClick={() => handleLyricsConfirmed(lyrics)}
-                    disabled={isAnalyzingLyrics}
-                    className="flex-1"
-                  >
-                    {isAnalyzingLyrics ? 'Аналізую...' : 'Підтвердити і далі'}
-                  </Button>
-                </div>
-              )}
-            </div>
+            <Card className="p-4 h-full">
+              <ChatInterface 
+                key={chatKey}
+                ref={chatRef}
+                initialMessages={chatMessages}
+                onMessagesChange={setChatMessages}
+                onLyricsGenerated={handleLyricsGenerated}
+                onConfirmLyrics={handleLyricsConfirmed}
+              />
+            </Card>
           </div>
         );
       case 1.5:
