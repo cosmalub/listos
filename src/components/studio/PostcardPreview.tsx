@@ -53,28 +53,21 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
           {/* Photo with frame mode */}
           {frontData.mode === 'photo' && frontData.useFrame ? (
             <div className="relative w-full h-full bg-white">
-              {/* Frame overlay - bottom layer for border design */}
-              <img
-                src="/frames/elegant-frame.png"
-                alt="Frame"
-                className="absolute inset-0 w-full h-full object-fill pointer-events-none z-0"
-              />
-              
               {/* Photo inside frame area - fits within the inner rectangle of frame */}
-              <div className="absolute left-[5.5%] right-[5.5%] top-[3.5%] bottom-[3.5%] overflow-hidden">
+              <div className="absolute left-[5.5%] right-[5.5%] top-[3.5%] bottom-[3.5%] overflow-hidden z-0">
                 <img
                   src={frontData.imageUrl}
                   alt="Postcard design"
                   className="w-full h-full object-cover"
                 />
                 
-                {/* Caption overlay ON the photo - at bottom */}
+                {/* Caption overlay ON the photo - at bottom, full width of photo */}
                 {frontData.caption && (
-                  <div className="absolute bottom-4 left-3 right-3">
-                    <div className="bg-black/60 backdrop-blur-sm rounded-md py-2 px-3">
+                  <div className="absolute bottom-3 left-0 right-0 px-2">
+                    <div className="bg-black/60 backdrop-blur-sm py-2.5 px-3">
                       <p className={cn(
-                        "text-white text-center font-bold uppercase leading-snug tracking-wide",
-                        size === 'large' ? "text-sm sm:text-base md:text-lg" : "text-xs sm:text-sm"
+                        "text-white text-center font-bold uppercase leading-tight tracking-wide",
+                        size === 'large' ? "text-base sm:text-lg md:text-xl" : "text-sm sm:text-base"
                       )}>
                         {frontData.caption}
                       </p>
@@ -82,6 +75,13 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
                   </div>
                 )}
               </div>
+              
+              {/* Frame overlay - TOP layer over photo */}
+              <img
+                src="/frames/elegant-frame.png"
+                alt="Frame"
+                className="absolute inset-0 w-full h-full object-fill pointer-events-none z-10"
+              />
             </div>
           ) : (
             /* Regular photo mode without frame */
