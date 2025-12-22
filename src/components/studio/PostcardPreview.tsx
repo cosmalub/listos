@@ -180,8 +180,9 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
                     isLightColor(backData.selectedColor) ? "text-gray-900" : "text-white"
                   )}
                   style={{ 
-                    fontFamily: "'Bebas Neue', sans-serif",
-                    fontSize: '14px'
+                    fontFamily: "'Bebas Neue Cyrillic', 'Bebas Neue', sans-serif",
+                    fontSize: '14px',
+                    textTransform: 'uppercase'
                   }}
                 >
                   {backData.personalMessage}
