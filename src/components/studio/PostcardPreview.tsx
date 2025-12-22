@@ -1,6 +1,4 @@
 import React from 'react';
-import { Badge } from '@/components/ui/badge';
-import { Postcard3D } from '@/components/postcards/Postcard3D';
 import { QrCode, Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { StyleKey } from '@/lib/postcard-styles';
@@ -257,14 +255,8 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
   );
 
   return (
-    <div className="w-full h-full">
-      <Postcard3D
-        front={frontSide}
-        back={backSide}
-        orientation="portrait"
-        className="w-full h-full"
-        initialTilt={{ x: -5, y: showFront ? 5 : 185 }}
-      />
+    <div className="w-full aspect-[3/4]">
+      {showFront ? frontSide : backSide}
     </div>
   );
 }
