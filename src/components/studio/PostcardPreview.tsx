@@ -174,11 +174,16 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
           <div className="flex-1 flex items-center justify-center px-4">
             {backData.personalMessage ? (
               <div className="text-center max-w-sm">
-                <p className={cn(
-                  "leading-snug font-medium",
-                  isLightColor(backData.selectedColor) ? "text-gray-900" : "text-white",
-                  size === 'large' ? "text-base" : "text-sm"
-                )}>
+                <p 
+                  className={cn(
+                    "leading-snug",
+                    isLightColor(backData.selectedColor) ? "text-gray-900" : "text-white"
+                  )}
+                  style={{ 
+                    fontFamily: "'Bebas Neue', sans-serif",
+                    fontSize: '14px'
+                  }}
+                >
                   {backData.personalMessage}
                 </p>
               </div>
