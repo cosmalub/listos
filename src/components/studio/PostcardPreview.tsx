@@ -52,12 +52,19 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
         frontData.mode === 'photo' && frontData.frameEnabled ? (
           // With frame - thin white border like a printed photo
           <div className="relative w-full h-full bg-white p-1 sm:p-1.5 rounded-xl">
-            {/* Photo container */}
+            {/* Photo container with frame inside */}
             <div className="relative w-full h-full rounded-lg overflow-hidden">
               <img
                 src={frontData.imageUrl}
                 alt="Postcard design"
                 className="w-full h-full object-cover"
+              />
+              
+              {/* Decorative frame overlay - inside photo container */}
+              <img 
+                src="/frames/elegant-frame.png" 
+                alt=""
+                className="absolute inset-0 w-full h-full object-fill pointer-events-none z-10" 
               />
               
               {/* Caption overlay */}
@@ -74,13 +81,6 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
                 </div>
               )}
             </div>
-            
-            {/* Decorative frame overlay - extends over white border */}
-            <img 
-              src="/frames/elegant-frame.png" 
-              alt=""
-              className="absolute inset-0 w-full h-full object-fill pointer-events-none z-10" 
-            />
           </div>
         ) : (
           // Without frame - full bleed image
