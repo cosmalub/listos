@@ -83,19 +83,26 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
         <>
           {/* Photo with frame mode */}
           {frontData.mode === 'photo' && frontData.useFrame ? (
-            <div className="relative w-full h-full bg-white">
-              {/* Photo inside frame area - fits within the inner rectangle of frame */}
-              <div className="absolute left-[5.5%] right-[5.5%] top-[3.5%] bottom-[3.5%] overflow-hidden" style={{ zIndex: 1 }}>
-                <img
-                  src={frontData.imageUrl}
-                  alt="Postcard design"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              
-              {/* Frame overlay - on top of photo but below caption */}
+            <div className="relative w-full h-full bg-white overflow-hidden">
+              {/* Photo as background - inside frame area */}
               <img
-                src="/frames/elegant-frame.png"
+                src={frontData.imageUrl}
+                alt="Postcard design"
+                className="absolute object-cover"
+                style={{ 
+                  zIndex: 1,
+                  left: '5.5%',
+                  right: '5.5%',
+                  top: '3.5%',
+                  bottom: '3.5%',
+                  width: '89%',
+                  height: '93%'
+                }}
+              />
+              
+              {/* Frame overlay - on top of photo */}
+              <img
+                src="/frames/elegant-frame.png?v=3"
                 alt="Frame"
                 className="absolute inset-0 w-full h-full object-fill pointer-events-none"
                 style={{ zIndex: 2 }}
