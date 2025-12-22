@@ -150,7 +150,6 @@ export function FrontDesignStep({
   const [currentTaskId, setCurrentTaskId] = useState<string | null>(null);
   const [songImagery, setSongImagery] = useState<SongImagery | null>(null);
   const [isExtractingImagery, setIsExtractingImagery] = useState(false);
-  const [isGeneratingFrame, setIsGeneratingFrame] = useState(false);
   const pollingIntervalRef = useRef<number | null>(null);
 
   // Extract song imagery first (before caption)
@@ -598,50 +597,6 @@ export function FrontDesignStep({
   };
 
 
-  // Generate decorative frame using Gemini AI
-  const handleGenerateFrame = async () => {
-    if (!designData.imageUrl) {
-      toast.error('Спочатку завантажте фото');
-      return;
-    }
-
-    setIsGeneratingFrame(true);
-    try {
-      console.log('Generating AI frame for photo...');
-      toast.info('Генерую декоративну рамку...');
-
-      const { data, error } = await supabase.functions.invoke('generate-photo-frame', {
-        body: {
-          imageUrl: designData.imageUrl,
-          occasion: pageData?.occasion,
-          recipientName: pageData?.recipient
-        }
-      });
-
-      if (error) {
-        console.error('Error generating frame:', error);
-        throw new Error(error.message || 'Помилка генерації рамки');
-      }
-
-      if (data?.framedImageUrl) {
-        console.log('Frame generated successfully');
-        setDesignData(prev => ({
-          ...prev,
-          imageUrl: data.framedImageUrl,
-          frameEnabled: false // Disable static frame since AI generated it
-        }));
-        toast.success('Рамку успішно згенеровано!');
-      } else {
-        throw new Error('Не вдалося отримати зображення з рамкою');
-      }
-    } catch (error) {
-      console.error('Failed to generate frame:', error);
-      toast.error('Помилка генерації рамки: ' + error.message);
-    } finally {
-      setIsGeneratingFrame(false);
-    }
-  };
-
   const handleComplete = () => {
     if (!designData.imageUrl || !designData.caption) {
       toast.error('Додайте зображення та підпис');
@@ -888,42 +843,17 @@ export function FrontDesignStep({
             
             {/* AI Frame Generation - show when image is uploaded */}
             {designData.imageUrl && (
-              <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <Frame className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-sm">Декоративна рамка</span>
-                  </div>
-                  <Switch
-                    checked={designData.frameEnabled ?? true}
-                    onCheckedChange={(checked) => 
-                      setDesignData(prev => ({ ...prev, frameEnabled: checked }))
-                    }
-                  />
+              <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <Frame className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm">Декоративна рамка</span>
                 </div>
-                
-                {/* AI Frame Generation Button */}
-                <Button
-                  variant="outline"
-                  onClick={handleGenerateFrame}
-                  disabled={isGeneratingFrame}
-                  className="w-full"
-                >
-                  {isGeneratingFrame ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Генерую AI рамку...
-                    </>
-                  ) : (
-                    <>
-                      <Wand2 className="w-4 h-4 mr-2" />
-                      ✨ Згенерувати AI рамку
-                    </>
-                  )}
-                </Button>
-                <p className="text-xs text-muted-foreground text-center">
-                  AI створить унікальну декоративну рамку навколо вашого фото
-                </p>
+                <Switch
+                  checked={designData.frameEnabled ?? true}
+                  onCheckedChange={(checked) => 
+                    setDesignData(prev => ({ ...prev, frameEnabled: checked }))
+                  }
+                />
               </div>
             )}
           </div>
