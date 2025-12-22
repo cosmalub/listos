@@ -44,6 +44,27 @@ function isLightColor(color: string): boolean {
   return luminance > 0.5;
 }
 
+// Split message into paragraphs (by double newline or after first sentence)
+function splitMessageToParagraphs(message: string): string[] {
+  // First try to split by double newline
+  if (message.includes('\n\n')) {
+    return message.split('\n\n').map(p => p.trim()).filter(p => p.length > 0);
+  }
+  
+  // Otherwise split after first sentence (ends with . or ! or ?)
+  const sentences = message.split(/(?<=[.!?])\s+/);
+  if (sentences.length >= 2) {
+    // First paragraph: first 1-2 sentences, rest in second
+    const firstParagraph = sentences.slice(0, 2).join(' ');
+    const secondParagraph = sentences.slice(2).join(' ');
+    if (secondParagraph.length > 0) {
+      return [firstParagraph, secondParagraph];
+    }
+  }
+  
+  return [message];
+}
+
 // Split caption into lines with max 2-3 words per line
 function splitCaptionToLines(caption: string): string[] {
   const words = caption.trim().split(/\s+/);
@@ -171,22 +192,27 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
           style={{ backgroundColor: backData.selectedColor }}
         >
           {/* Personal message - takes most space */}
-          <div className="flex-1 flex items-center justify-center px-4">
+          <div className="flex-1 flex items-center justify-center px-2">
             {backData.personalMessage ? (
-              <div className="text-center max-w-sm">
-                <p 
-                  className={cn(
-                    "leading-snug",
-                    isLightColor(backData.selectedColor) ? "text-gray-900" : "text-white"
-                  )}
-                  style={{ 
-                    fontFamily: "'Bebas Neue Cyrillic', 'Bebas Neue', sans-serif",
-                    fontSize: '14px',
-                    textTransform: 'uppercase'
-                  }}
-                >
-                  {backData.personalMessage}
-                </p>
+              <div className="text-center max-w-[200px]">
+                {splitMessageToParagraphs(backData.personalMessage).map((paragraph, index) => (
+                  <p 
+                    key={index}
+                    className={cn(
+                      "leading-snug",
+                      isLightColor(backData.selectedColor) ? "text-gray-900" : "text-white",
+                      index > 0 && "mt-3"
+                    )}
+                    style={{ 
+                      fontFamily: "'Bebas Neue Cyrillic', 'Bebas Neue', sans-serif",
+                      fontSize: '14px',
+                      fontWeight: 'bold',
+                      textTransform: 'uppercase'
+                    }}
+                  >
+                    {paragraph}
+                  </p>
+                ))}
               </div>
             ) : (
               <p className={cn(
