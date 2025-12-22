@@ -50,6 +50,3 @@ verify_jwt = false
 
 [functions.extract-song-imagery]
 verify_jwt = false
-
-[functions.generate-frame]
-verify_jwt = false
