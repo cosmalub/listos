@@ -154,22 +154,36 @@ export async function composeFrontImageA6(imageUrl: string, caption: string, fra
         ctx.fillStyle = '#FFFFFF';
         ctx.fillRect(0, 0, A6_WIDTH, A6_HEIGHT);
 
-        // object-cover drawing
+        // Calculate photo area (with or without white border)
+        const BORDER_SIZE = frameEnabled ? 50 : 0; // White border when frame enabled
+        const photoX = BORDER_SIZE;
+        const photoY = BORDER_SIZE;
+        const photoW = A6_WIDTH - BORDER_SIZE * 2;
+        const photoH = A6_HEIGHT - BORDER_SIZE * 2;
+
+        // object-cover drawing within photo area
         const imgRatio = img.width / img.height;
-        const canvasRatio = A6_WIDTH / A6_HEIGHT;
+        const photoRatio = photoW / photoH;
         let drawW: number, drawH: number, offX: number, offY: number;
-        if (imgRatio > canvasRatio) {
-          drawH = A6_HEIGHT;
-          drawW = img.width * (A6_HEIGHT / img.height);
-          offX = -(drawW - A6_WIDTH) / 2;
-          offY = 0;
+        if (imgRatio > photoRatio) {
+          drawH = photoH;
+          drawW = img.width * (photoH / img.height);
+          offX = photoX - (drawW - photoW) / 2;
+          offY = photoY;
         } else {
-          drawW = A6_WIDTH;
-          drawH = img.height * (A6_WIDTH / img.width);
-          offX = 0;
-          offY = -(drawH - A6_HEIGHT) / 2;
+          drawW = photoW;
+          drawH = img.height * (photoW / img.width);
+          offX = photoX;
+          offY = photoY - (drawH - photoH) / 2;
         }
+        
+        // Clip to photo area
+        ctx.save();
+        ctx.beginPath();
+        ctx.roundRect(photoX, photoY, photoW, photoH, frameEnabled ? 20 : 0);
+        ctx.clip();
         ctx.drawImage(img, offX, offY, drawW, drawH);
+        ctx.restore();
 
         // Draw frame overlay if enabled
         if (frameEnabled) {
@@ -177,7 +191,8 @@ export async function composeFrontImageA6(imageUrl: string, caption: string, fra
             const frameImg = new Image();
             frameImg.crossOrigin = 'anonymous';
             frameImg.onload = () => {
-              ctx.drawImage(frameImg, 0, 0, A6_WIDTH, A6_HEIGHT);
+              // Draw frame within the photo area
+              ctx.drawImage(frameImg, photoX, photoY, photoW, photoH);
               resolveFrame();
             };
             frameImg.onerror = () => {

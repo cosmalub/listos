@@ -49,37 +49,62 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
   const frontSide = (
     <div id="postcard-front-preview" className="relative w-full h-full bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl overflow-hidden">
       {frontData.imageUrl ? (
-        <>
-          {/* Generated/uploaded image */}
-          <img
-            src={frontData.imageUrl}
-            alt="Postcard design"
-            className="w-full h-full object-cover"
-          />
-          
-          {/* Frame overlay - only for photo mode with frameEnabled */}
-          {frontData.mode === 'photo' && frontData.frameEnabled && (
-            <img 
-              src="/frames/elegant-frame.png" 
-              alt=""
-              className="absolute inset-0 w-full h-full object-fill pointer-events-none z-10" 
-            />
-          )}
-          
-          {/* Caption overlay - only for photo mode */}
-          {frontData.caption && frontData.mode === 'photo' && (
-            <div className="absolute bottom-6 left-4 right-4 z-20">
-              <div className="bg-black/60 backdrop-blur-sm rounded-lg py-3 px-4">
-                <p className={cn(
-                  "text-white text-center font-bold uppercase leading-snug",
-                  size === 'large' ? "text-base sm:text-lg md:text-xl" : "text-sm md:text-base"
-                )}>
-                  {frontData.caption}
-                </p>
-              </div>
+        frontData.mode === 'photo' && frontData.frameEnabled ? (
+          // With frame - white border like a printed photo
+          <div className="w-full h-full bg-white p-3 sm:p-4 rounded-xl">
+            <div className="relative w-full h-full rounded-lg overflow-hidden">
+              <img
+                src={frontData.imageUrl}
+                alt="Postcard design"
+                className="w-full h-full object-cover"
+              />
+              
+              {/* Decorative frame overlay */}
+              <img 
+                src="/frames/elegant-frame.png" 
+                alt=""
+                className="absolute inset-0 w-full h-full object-fill pointer-events-none z-10" 
+              />
+              
+              {/* Caption overlay */}
+              {frontData.caption && (
+                <div className="absolute bottom-4 left-3 right-3 z-20">
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg py-2 px-3">
+                    <p className={cn(
+                      "text-white text-center font-bold uppercase leading-snug",
+                      size === 'large' ? "text-sm sm:text-base md:text-lg" : "text-xs md:text-sm"
+                    )}>
+                      {frontData.caption}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
-          )}
-        </>
+          </div>
+        ) : (
+          // Without frame - full bleed image
+          <>
+            <img
+              src={frontData.imageUrl}
+              alt="Postcard design"
+              className="w-full h-full object-cover"
+            />
+            
+            {/* Caption overlay - only for photo mode */}
+            {frontData.caption && frontData.mode === 'photo' && (
+              <div className="absolute bottom-6 left-4 right-4 z-20">
+                <div className="bg-black/60 backdrop-blur-sm rounded-lg py-3 px-4">
+                  <p className={cn(
+                    "text-white text-center font-bold uppercase leading-snug",
+                    size === 'large' ? "text-base sm:text-lg md:text-xl" : "text-sm md:text-base"
+                  )}>
+                    {frontData.caption}
+                  </p>
+                </div>
+              </div>
+            )}
+          </>
+        )
       ) : (
         /* Placeholder when no image */
         <div className="flex flex-col items-center justify-center h-full p-6 text-center space-y-4">
