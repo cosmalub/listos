@@ -154,8 +154,8 @@ export async function composeFrontImageA6(imageUrl: string, caption: string, fra
         ctx.fillStyle = '#FFFFFF';
         ctx.fillRect(0, 0, A6_WIDTH, A6_HEIGHT);
 
-        // Calculate photo area (with or without white border)
-        const BORDER_SIZE = frameEnabled ? 50 : 0; // White border when frame enabled
+        // Calculate photo area (with or without thin white border)
+        const BORDER_SIZE = frameEnabled ? 20 : 0; // Thin white border when frame enabled
         const photoX = BORDER_SIZE;
         const photoY = BORDER_SIZE;
         const photoW = A6_WIDTH - BORDER_SIZE * 2;
@@ -180,19 +180,19 @@ export async function composeFrontImageA6(imageUrl: string, caption: string, fra
         // Clip to photo area
         ctx.save();
         ctx.beginPath();
-        ctx.roundRect(photoX, photoY, photoW, photoH, frameEnabled ? 20 : 0);
+        ctx.roundRect(photoX, photoY, photoW, photoH, frameEnabled ? 12 : 0);
         ctx.clip();
         ctx.drawImage(img, offX, offY, drawW, drawH);
         ctx.restore();
 
-        // Draw frame overlay if enabled
+        // Draw frame overlay if enabled - covers entire canvas including white border
         if (frameEnabled) {
           await new Promise<void>((resolveFrame) => {
             const frameImg = new Image();
             frameImg.crossOrigin = 'anonymous';
             frameImg.onload = () => {
-              // Draw frame within the photo area
-              ctx.drawImage(frameImg, photoX, photoY, photoW, photoH);
+              // Draw frame over entire canvas (including white border)
+              ctx.drawImage(frameImg, 0, 0, A6_WIDTH, A6_HEIGHT);
               resolveFrame();
             };
             frameImg.onerror = () => {
