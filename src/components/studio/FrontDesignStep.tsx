@@ -18,6 +18,7 @@ interface FrontDesignData {
   imageUrl: string | null;
   caption: string;
   prompt: string;
+  useFrame?: boolean;
 }
 
 interface UserContext {
@@ -132,6 +133,7 @@ export function FrontDesignStep({
     imageUrl: null,
     caption: '',
     prompt: '',
+    useFrame: false,
     ...initialData
   });
   const [isGenerating, setIsGenerating] = useState(false);
@@ -839,6 +841,23 @@ export function FrontDesignStep({
               isUploading={isUploading} 
             />
             
+            {/* Frame option */}
+            {designData.imageUrl && (
+              <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg border">
+                <div className="flex-1">
+                  <p className="font-medium text-sm">Додати рамку</p>
+                  <p className="text-xs text-muted-foreground">
+                    Елегантна золота рамка навколо фото
+                  </p>
+                </div>
+                <Switch
+                  checked={designData.useFrame || false}
+                  onCheckedChange={(checked) => 
+                    setDesignData(prev => ({ ...prev, useFrame: checked }))
+                  }
+                />
+              </div>
+            )}
           </div>
         )}
       </div>

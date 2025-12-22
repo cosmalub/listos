@@ -12,6 +12,7 @@ interface FrontDesignData {
   imageUrl: string | null;
   caption: string;
   prompt: string;
+  useFrame?: boolean;
 }
 
 interface BackDesignData {
@@ -49,24 +50,62 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
     <div id="postcard-front-preview" className="relative w-full h-full bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl overflow-hidden">
       {frontData.imageUrl ? (
         <>
-          <img
-            src={frontData.imageUrl}
-            alt="Postcard design"
-            className="w-full h-full object-cover"
-          />
-          
-          {/* Caption overlay - only for photo mode */}
-          {frontData.caption && frontData.mode === 'photo' && (
-            <div className="absolute bottom-6 left-4 right-4 z-20">
-              <div className="bg-black/60 backdrop-blur-sm rounded-lg py-3 px-4">
-                <p className={cn(
-                  "text-white text-center font-bold uppercase leading-snug",
-                  size === 'large' ? "text-base sm:text-lg md:text-xl" : "text-sm md:text-base"
-                )}>
-                  {frontData.caption}
-                </p>
+          {/* Photo with frame mode */}
+          {frontData.mode === 'photo' && frontData.useFrame ? (
+            <div className="relative w-full h-full bg-white">
+              {/* Photo inside frame area - positioned to fit within frame borders */}
+              <div className="absolute inset-[5%] top-[4%] bottom-[18%] overflow-hidden">
+                <img
+                  src={frontData.imageUrl}
+                  alt="Postcard design"
+                  className="w-full h-full object-cover"
+                />
               </div>
+              
+              {/* Frame overlay */}
+              <img
+                src="/frames/elegant-frame.png"
+                alt="Frame"
+                className="absolute inset-0 w-full h-full object-fill pointer-events-none z-10"
+              />
+              
+              {/* Caption at bottom inside frame - white text on dark blurred background */}
+              {frontData.caption && (
+                <div className="absolute bottom-[4%] left-[6%] right-[6%] z-20">
+                  <div className="bg-black/50 backdrop-blur-sm rounded-lg py-3 px-4">
+                    <p className={cn(
+                      "text-white text-center font-bold uppercase leading-tight tracking-wide",
+                      size === 'large' ? "text-lg sm:text-xl md:text-2xl" : "text-base md:text-lg"
+                    )}>
+                      {frontData.caption}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
+          ) : (
+            /* Regular photo mode without frame */
+            <>
+              <img
+                src={frontData.imageUrl}
+                alt="Postcard design"
+                className="w-full h-full object-cover"
+              />
+              
+              {/* Caption overlay - only for photo mode without frame */}
+              {frontData.caption && frontData.mode === 'photo' && (
+                <div className="absolute bottom-6 left-4 right-4 z-20">
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg py-3 px-4">
+                    <p className={cn(
+                      "text-white text-center font-bold uppercase leading-snug",
+                      size === 'large' ? "text-base sm:text-lg md:text-xl" : "text-sm md:text-base"
+                    )}>
+                      {frontData.caption}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </>
       ) : (
