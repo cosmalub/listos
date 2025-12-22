@@ -92,9 +92,7 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
                 style={{ 
                   zIndex: 1,
                   left: '5.5%',
-                  right: '5.5%',
                   top: '3.5%',
-                  bottom: '3.5%',
                   width: '89%',
                   height: '93%'
                 }}
