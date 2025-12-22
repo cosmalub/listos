@@ -4,7 +4,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Progress } from '@/components/ui/progress';
 import { Switch } from '@/components/ui/switch';
-import { ArrowLeft, Wand2, Loader2, RotateCcw, ArrowRight, Heart, Gift, MessageCircle, Info, RefreshCw, Frame } from 'lucide-react';
+import { ArrowLeft, Wand2, Loader2, RotateCcw, ArrowRight, Heart, Gift, MessageCircle, Info, RefreshCw } from 'lucide-react';
 import { ImageUploader } from './ImageUploader';
 import { PostcardPreview } from './PostcardPreview';
 import { getStylePrompt, type StyleKey, POSTCARD_STYLES } from '@/lib/postcard-styles';
@@ -18,7 +18,6 @@ interface FrontDesignData {
   imageUrl: string | null;
   caption: string;
   prompt: string;
-  frameEnabled?: boolean;
 }
 
 interface UserContext {
@@ -133,7 +132,6 @@ export function FrontDesignStep({
     imageUrl: null,
     caption: '',
     prompt: '',
-    frameEnabled: true,
     ...initialData
   });
   const [isGenerating, setIsGenerating] = useState(false);
@@ -841,21 +839,6 @@ export function FrontDesignStep({
               isUploading={isUploading} 
             />
             
-            {/* AI Frame Generation - show when image is uploaded */}
-            {designData.imageUrl && (
-              <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                <div className="flex items-center gap-2">
-                  <Frame className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-sm">Декоративна рамка</span>
-                </div>
-                <Switch
-                  checked={designData.frameEnabled ?? true}
-                  onCheckedChange={(checked) => 
-                    setDesignData(prev => ({ ...prev, frameEnabled: checked }))
-                  }
-                />
-              </div>
-            )}
           </div>
         )}
       </div>
