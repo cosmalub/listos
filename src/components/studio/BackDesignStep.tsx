@@ -166,15 +166,6 @@ export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, o
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <Button variant="outline" onClick={onBack} className="flex items-center gap-2">
-          <ArrowLeft className="w-4 h-4" />
-          До лицьової сторони
-        </Button>
-        <div /> {/* For spacing */}
-      </div>
-
       {/* Color Selection */}
       <Card>
         <CardHeader>
@@ -272,9 +263,12 @@ export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, o
         </CardContent>
       </Card>
 
-
-      {/* Complete Button */}
-      <div className="flex justify-end">
+      {/* Navigation Buttons */}
+      <div className="flex justify-between">
+        <Button variant="outline" onClick={onBack} className="flex items-center gap-2">
+          <ArrowLeft className="w-4 h-4" />
+          До лицьової сторони
+        </Button>
         <Button
           onClick={handleComplete}
           disabled={!isComplete}
