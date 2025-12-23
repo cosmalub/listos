@@ -29,6 +29,7 @@ interface BackDesignStepProps {
   onComplete: (data: BackDesignData) => void;
   onBack: () => void;
   onDataChange?: (data: BackDesignData) => void;
+  onGeneratingChange?: (isGenerating: boolean) => void;
 }
 
 // Helper function to extract dominant colors from front design
@@ -86,11 +87,16 @@ async function generatePersonalMessage(caption: string, lyrics: string): Promise
   }
 }
 
-export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, onBack, onDataChange }: BackDesignStepProps) {
+export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, onBack, onDataChange, onGeneratingChange }: BackDesignStepProps) {
   const [backData, setBackData] = useState<BackDesignData>(initialData);
   const [isGeneratingMessage, setIsGeneratingMessage] = useState(false);
   const [dominantColors, setDominantColors] = useState<string[]>(FALLBACK_COLORS);
   const [isLoadingColors, setIsLoadingColors] = useState(true);
+
+  // Notify parent about generating state
+  useEffect(() => {
+    onGeneratingChange?.(isGeneratingMessage);
+  }, [isGeneratingMessage]);
 
   // Update parent component with live changes
   const updateBackData = (newData: BackDesignData) => {

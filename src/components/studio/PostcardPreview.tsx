@@ -1,5 +1,5 @@
 import React from 'react';
-import { QrCode, Heart } from 'lucide-react';
+import { QrCode, Heart, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { StyleKey } from '@/lib/postcard-styles';
 import QRCode from 'react-qr-code';
@@ -23,6 +23,7 @@ interface PostcardPreviewProps {
   backData: BackDesignData;
   showFront?: boolean;
   size?: 'large' | 'compact';
+  isGeneratingMessage?: boolean;
 }
 
 // Helper function to determine if color is light or dark
@@ -94,7 +95,7 @@ function splitCaptionToLines(caption: string): string[] {
   return lines;
 }
 
-export function PostcardPreview({ frontData, backData, showFront = true, size = 'large' }: PostcardPreviewProps) {
+export function PostcardPreview({ frontData, backData, showFront = true, size = 'large', isGeneratingMessage = false }: PostcardPreviewProps) {
   // Front side content
   const frontSide = (
     <div id="postcard-front-preview" className="relative w-full h-full bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl overflow-hidden">
@@ -191,7 +192,20 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
         >
           {/* Personal message - takes most space */}
           <div className="flex-1 flex items-center justify-center px-2">
-            {backData.personalMessage ? (
+            {isGeneratingMessage ? (
+              <div className="flex flex-col items-center gap-2">
+                <Loader2 className={cn(
+                  "h-6 w-6 animate-spin",
+                  isLightColor(backData.selectedColor) ? "text-gray-900/70" : "text-white/70"
+                )} />
+                <p className={cn(
+                  "text-xs text-center",
+                  isLightColor(backData.selectedColor) ? "text-gray-900/70" : "text-white/70"
+                )}>
+                  Генеруємо підпис...
+                </p>
+              </div>
+            ) : backData.personalMessage ? (
               <div className="text-center max-w-[200px]">
                 {splitMessageToParagraphs(backData.personalMessage).map((paragraph, index) => (
                   <p 

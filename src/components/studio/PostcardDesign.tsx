@@ -39,6 +39,7 @@ interface PostcardDesignProps {
 export function PostcardDesign({ lyrics, onComplete, onBack, pageData, chatMessages }: PostcardDesignProps) {
   const [currentSubStep, setCurrentSubStep] = useState<'front' | 'back'>('front');
   const [previewShowFront, setPreviewShowFront] = useState(false);
+  const [isGeneratingMessage, setIsGeneratingMessage] = useState(false);
   const [designData, setDesignData] = useState<PostcardDesignData>({
     front: {
       mode: 'ai-generation',
@@ -127,6 +128,7 @@ export function PostcardDesign({ lyrics, onComplete, onBack, pageData, chatMessa
                   backData={designData.back}
                   showFront={previewShowFront}
                   size="compact"
+                  isGeneratingMessage={isGeneratingMessage}
                 />
               </div>
             </CardContent>
@@ -142,6 +144,7 @@ export function PostcardDesign({ lyrics, onComplete, onBack, pageData, chatMessa
                 onComplete={handleBackComplete}
                 onBack={handleBackToFront}
                 onDataChange={(newBackData) => setDesignData(prev => ({ ...prev, back: newBackData }))}
+                onGeneratingChange={setIsGeneratingMessage}
               />
             </CardContent>
           </Card>
