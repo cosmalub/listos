@@ -128,7 +128,12 @@ export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, o
       setIsGeneratingMessage(true);
       generatePersonalMessage(frontDesign.caption, lyrics)
         .then((generatedMessage) => {
-          updateBackData({ ...backData, personalMessage: generatedMessage });
+          // Use functional update to get the latest state (preserves selectedColor)
+          setBackData(prev => {
+            const newData = { ...prev, personalMessage: generatedMessage };
+            onDataChange?.(newData);
+            return newData;
+          });
         })
         .finally(() => {
           setIsGeneratingMessage(false);
@@ -144,7 +149,12 @@ export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, o
     setIsGeneratingMessage(true);
     try {
       const newMessage = await generatePersonalMessage(frontDesign.caption, lyrics);
-      updateBackData({ ...backData, personalMessage: newMessage });
+      // Use functional update to preserve selectedColor
+      setBackData(prev => {
+        const newData = { ...prev, personalMessage: newMessage };
+        onDataChange?.(newData);
+        return newData;
+      });
     } catch (error) {
       console.error('Failed to regenerate message:', error);
     } finally {
