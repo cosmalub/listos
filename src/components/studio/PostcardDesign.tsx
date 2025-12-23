@@ -38,6 +38,7 @@ interface PostcardDesignProps {
 
 export function PostcardDesign({ lyrics, onComplete, onBack, pageData, chatMessages }: PostcardDesignProps) {
   const [currentSubStep, setCurrentSubStep] = useState<'front' | 'back'>('front');
+  const [previewShowFront, setPreviewShowFront] = useState(false);
   const [designData, setDesignData] = useState<PostcardDesignData>({
     front: {
       mode: 'ai-generation',
@@ -113,15 +114,18 @@ export function PostcardDesign({ lyrics, onComplete, onBack, pageData, chatMessa
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium">Превью листівки</CardTitle>
               <p className="text-xs text-muted-foreground mt-2">
-                💡 Двічі клікніть на листівку, щоб перевернути і побачити лицьову сторону
+                💡 Двічі клікніть на листівку, щоб перевернути і побачити {previewShowFront ? 'зворотню' : 'лицьову'} сторону
               </p>
             </CardHeader>
             <CardContent className="p-6">
-              <div className="max-w-xs mx-auto">
+              <div 
+                className="max-w-xs mx-auto cursor-pointer select-none"
+                onDoubleClick={() => setPreviewShowFront(!previewShowFront)}
+              >
                 <PostcardPreview
                   frontData={designData.front}
                   backData={designData.back}
-                  showFront={false}
+                  showFront={previewShowFront}
                   size="compact"
                 />
               </div>
