@@ -618,12 +618,6 @@ export function FrontDesignStep({
             </div>
             <div className="space-y-3">
               <div className="flex flex-wrap gap-3">
-                <Button onClick={handleAcceptVariant} size="sm">
-                  Утвердити і згенерувати
-                </Button>
-                <Button variant="outline" onClick={handleRejectVariant} size="sm">
-                  Відхилити
-                </Button>
                 <Button variant="outline" onClick={handleCreateVariant} size="sm" disabled={isGeneratingNewVariant}>
                   {isGeneratingNewVariant ? (
                     <>
@@ -631,8 +625,11 @@ export function FrontDesignStep({
                       Генерую...
                     </>
                   ) : (
-                    'Ще варіант'
+                    'Перегенерувати опис'
                   )}
+                </Button>
+                <Button onClick={handleAcceptVariant} size="sm">
+                  Утвердити і згенерувати
                 </Button>
               </div>
               
