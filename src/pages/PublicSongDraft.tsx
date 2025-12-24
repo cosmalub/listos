@@ -3,7 +3,6 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { CheckCircle, Info } from 'lucide-react';
-import { OccasionBackground } from '@/components/public/OccasionBackground';
 import { OccasionAnimation } from '@/components/public/OccasionAnimation';
 import { Header } from '@/components/sections/header';
 import { StepsHeader } from '@/components/studio/StepsHeader';
@@ -82,7 +81,6 @@ const PublicSongDraft = () => {
   const navigate = useNavigate();
   const [draftData, setDraftData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [showAnimations, setShowAnimations] = useState(false);
 
   // Load data from sessionStorage
   useEffect(() => {
@@ -97,13 +95,6 @@ const PublicSongDraft = () => {
       }
     }
     setIsLoading(false);
-    
-    // Delay animations to ensure page is mounted
-    const animTimer = setTimeout(() => {
-      setShowAnimations(true);
-    }, 300);
-    
-    return () => clearTimeout(animTimer);
   }, []);
 
   // Get occasion from draftData first, then URL params, then default
@@ -111,7 +102,7 @@ const PublicSongDraft = () => {
   const recipient = draftData?.recipient || searchParams.get('recipient') || 'Марії';
   const sender = draftData?.sender || searchParams.get('sender') || 'Олексія';
   
-  console.log('PublicSongDraft - occasion:', occasion, 'showAnimations:', showAnimations);
+  console.log('PublicSongDraft - occasion:', occasion);
 
   // Get song data from sessionStorage or use fallback
   const lyrics = draftData?.lyrics || `Вірш 1:
@@ -150,11 +141,9 @@ const PublicSongDraft = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] via-white to-white">
-      <OccasionBackground occasion={occasion} />
-      {showAnimations && (
-        <OccasionAnimation occasion={occasion} duration={7000} />
-      )}
+    <div className="min-h-screen">
+      {/* OccasionAnimation includes static background + intro ritual animation */}
+      <OccasionAnimation occasion={occasion} ritualDuration={8000} />
       
       {/* Header */}
       <Header centerTitle="Студія створення листівки" hideNav showMenu={false} />

@@ -85,11 +85,12 @@ export default function PublicSong() {
 
   return (
     <div className="min-h-screen relative">
-      <OccasionAnimation occasion={orderData.page_occasion} />
+      {/* Intro ritual animation (8 seconds) + static background */}
+      <OccasionAnimation occasion={orderData.page_occasion} ritualDuration={8000} />
       
       <div className="relative z-10">
         <div className="container mx-auto px-4 py-12">
-          <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-2xl p-8">
+          <div className="max-w-4xl mx-auto bg-white/95 backdrop-blur-sm rounded-lg shadow-2xl p-8">
             {/* Для кого / Від кого - НАД заголовком */}
             <div className="mb-4">
               <p className="text-lg text-center font-baloo text-muted-foreground">
