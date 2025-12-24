@@ -92,7 +92,6 @@ async function createImageTask(prompt: string, apiKey: string): Promise<string> 
 }
 
 function createPostcardPrompt(caption: string, imageDescription: string, style: string): string {
-  // Style-specific watercolor techniques
   const styleConfig: Record<string, { palette: string; mood: string }> = {
     joyful: {
       palette: 'vibrant warm colors — coral, golden yellow, turquoise accents',
@@ -117,8 +116,9 @@ ${imageDescription}
 ────────────────────────
 СТИЛЬ
 ────────────────────────
-– full-bleed акварельна ілюстрація
-– м'які краї з розчиненням фарби (художній ефект, не рамка)
+– ілюстрація ПОВНІСТЮ заповнює ВЕСЬ ПРОСТІР від краю до краю (full-bleed)
+– БЕЗ білих країв, БЕЗ розмитих границь, БЕЗ акварельного розчинення по краях
+– зображення має ЧІТКО торкатися ВСІХ ЧОТИРЬОХ КРАЇВ формату
 – поетична, емоційна сцена
 – персонажі символічні (силуети, світло, рух)
 – настрій: ${config.mood}
@@ -138,6 +138,7 @@ ${imageDescription}
 ────────────────────────
 – вертикальний A6 (2:3 aspect ratio)
 – 2D ілюстрація, без 3D ефектів
-– готовий до друку
-– NO photorealism, NO stock imagery`;
+– готовий до друку на весь формат (без полів)
+– NO photorealism, NO stock imagery
+– CRITICAL: artwork must touch ALL FOUR EDGES with ZERO white margins`;
 }
