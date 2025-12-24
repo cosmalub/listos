@@ -4,7 +4,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Progress } from '@/components/ui/progress';
 import { Switch } from '@/components/ui/switch';
-import { ArrowLeft, Wand2, Loader2, RotateCcw, ArrowRight, Heart, Gift, MessageCircle, Info, RefreshCw } from 'lucide-react';
+import { ArrowLeft, Wand2, Loader2, RotateCcw, ArrowRight, Heart, Gift, MessageCircle, Info, RefreshCw, Image as ImageIcon } from 'lucide-react';
 import { ImageUploader } from './ImageUploader';
 import { PostcardPreview } from './PostcardPreview';
 import { getStylePrompt, type StyleKey, POSTCARD_STYLES } from '@/lib/postcard-styles';
@@ -616,23 +616,49 @@ export function FrontDesignStep({
             <div className="p-3 bg-background rounded border text-sm">
               {newVariantDescription}
             </div>
-            <div className="flex gap-3">
-              <Button onClick={handleAcceptVariant} size="sm">
-                Утвердити і згенерувати
-              </Button>
-              <Button variant="outline" onClick={handleRejectVariant} size="sm">
-                Відхилити
-              </Button>
-              <Button variant="outline" onClick={handleCreateVariant} size="sm" disabled={isGeneratingNewVariant}>
-                {isGeneratingNewVariant ? (
-                  <>
-                    <Loader2 className="w-3 h-3 mr-1 animate-spin" />
-                    Генерую...
-                  </>
-                ) : (
-                  'Ще варіант'
-                )}
-              </Button>
+            <div className="space-y-3">
+              <div className="flex flex-wrap gap-3">
+                <Button onClick={handleAcceptVariant} size="sm">
+                  Утвердити і згенерувати
+                </Button>
+                <Button variant="outline" onClick={handleRejectVariant} size="sm">
+                  Відхилити
+                </Button>
+                <Button variant="outline" onClick={handleCreateVariant} size="sm" disabled={isGeneratingNewVariant}>
+                  {isGeneratingNewVariant ? (
+                    <>
+                      <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                      Генерую...
+                    </>
+                  ) : (
+                    'Ще варіант'
+                  )}
+                </Button>
+              </div>
+              
+              {/* Alternative: switch to photo upload */}
+              <div className="border-t pt-3">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => {
+                    setShowVariantDescription(false);
+                    setDesignData(prev => ({
+                      ...prev,
+                      imageUrl: '',
+                      mode: undefined,
+                      prompt: '',
+                      style: undefined
+                    }));
+                    setCurrentState('editing');
+                    setSelectedSource('photo');
+                  }}
+                  className="w-full text-muted-foreground hover:text-foreground"
+                >
+                  <ImageIcon className="w-4 h-4 mr-2" />
+                  Або завантажити своє фото замість AI
+                </Button>
+              </div>
             </div>
           </div>
         )}
