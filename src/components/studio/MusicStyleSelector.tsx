@@ -64,28 +64,6 @@ export const MusicStyleSelector: React.FC<MusicStyleSelectorProps> = ({
         </div>
       )}
 
-      {/* Переключення між рекомендованими та всіма стилями */}
-      <div className="flex justify-center">
-        <Button
-          variant={showAllStyles ? 'outline' : 'ghost'}
-          onClick={() => setShowAllStyles(!showAllStyles)}
-          className="gap-2"
-          size="sm"
-        >
-          {showAllStyles ? (
-            <>
-              <ChevronUp className="w-4 h-4" />
-              Показати рекомендовані
-            </>
-          ) : (
-            <>
-              <ChevronDown className="w-4 h-4" />
-              Переглянути всі стилі ({MUSIC_STYLES.length})
-            </>
-          )}
-        </Button>
-      </div>
-
       {/* Категорії (тільки для всіх стилів) */}
       {showAllStyles && (
         <Card>
@@ -184,6 +162,30 @@ export const MusicStyleSelector: React.FC<MusicStyleSelectorProps> = ({
           );
         })}
       </div>
+
+      {/* Переключення між рекомендованими та всіма стилями (під списком стилів) */}
+      {recommendedStyles.length > 0 && (
+        <div className="flex justify-center">
+          <Button
+            variant={showAllStyles ? 'outline' : 'ghost'}
+            onClick={() => setShowAllStyles(!showAllStyles)}
+            className="gap-2"
+            size="sm"
+          >
+            {showAllStyles ? (
+              <>
+                <ChevronUp className="w-4 h-4" />
+                Показати рекомендовані
+              </>
+            ) : (
+              <>
+                <ChevronDown className="w-4 h-4" />
+                Переглянути всі стилі ({MUSIC_STYLES.length})
+              </>
+            )}
+          </Button>
+        </div>
+      )}
 
       {/* Пояснення, якщо немає рекомендацій */}
       {!showAllStyles && recommendedStyles.length === 0 && (
