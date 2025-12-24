@@ -98,7 +98,7 @@ function splitCaptionToLines(caption: string): string[] {
 export function PostcardPreview({ frontData, backData, showFront = true, size = 'large', isGeneratingMessage = false }: PostcardPreviewProps) {
   // Front side content
   const frontSide = (
-    <div id="postcard-front-preview" className="relative w-full h-full bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl overflow-hidden">
+    <div id="postcard-front-preview" className="relative w-full h-full bg-white rounded-xl overflow-hidden shadow-lg ring-1 ring-black/10">
       {frontData.imageUrl ? (
         <>
           {/* Photo with frame mode */}
