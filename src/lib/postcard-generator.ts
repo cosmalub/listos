@@ -218,14 +218,33 @@ export async function composeFrontImageA6(imageUrl: string, caption: string): Pr
   });
 }
 
+// Split message into paragraphs - same logic as PostcardPreview
+function splitMessageToParagraphs(message: string): string[] {
+  if (message.includes('\n\n')) {
+    return message.split('\n\n').map(p => p.trim()).filter(p => p.length > 0);
+  }
+  
+  const sentences = message.split(/(?<=[.!?])\s+/);
+  if (sentences.length >= 2) {
+    const firstParagraph = sentences.slice(0, 2).join(' ');
+    const secondParagraph = sentences.slice(2).join(' ');
+    if (secondParagraph.length > 0) {
+      return [firstParagraph, secondParagraph];
+    }
+  }
+  
+  return [message];
+}
+
 export async function composeBackImageA6(opts: { color: string; message: string; qrUrl: string }): Promise<string> {
   const { color, message, qrUrl } = opts;
   const A6_WIDTH = 1240;
   const A6_HEIGHT = 1748;
   const PAD = 100;
   const INITIAL = 64;
-  const MIN = 32;
+  const MIN = 28;
   const LINE_H = 1.25;
+  const PARAGRAPH_GAP = 40; // Gap between paragraphs like in preview
 
   const isLight = (hex: string) => {
     const h = hex.replace('#', '');
@@ -246,37 +265,32 @@ export async function composeBackImageA6(opts: { color: string; message: string;
   const textColor = isLight(color || '#FFFFFF') ? '#111111' : '#FFFFFF';
   const maxWidth = A6_WIDTH - PAD * 2;
 
-  const words = (message || '').trim().split(/\s+/);
-  let fontSize = INITIAL;
-  let lines: string[] = [];
-  let lineHeight = 0;
-
+  // Split into paragraphs first (like in preview)
+  const paragraphs = splitMessageToParagraphs((message || '').trim());
+  
   function setFont(size: number) {
-    ctx.font = `500 ${size}px Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif`;
+    ctx.font = `bold ${size}px Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif`;
   }
 
-  while (fontSize >= MIN) {
+  // Wrap text for a single paragraph
+  function wrapParagraph(text: string, fontSize: number): string[] {
     setFont(fontSize);
-    const lh = Math.round(fontSize * LINE_H);
-    const tmp: string[] = [];
+    const words = text.split(/\s+/);
+    const lines: string[] = [];
     let cur = '';
+    
     for (const w of words) {
       const test = cur ? cur + ' ' + w : w;
       if (ctx.measureText(test).width <= maxWidth) {
         cur = test;
       } else {
-        if (cur) tmp.push(cur);
+        if (cur) lines.push(cur);
         cur = w;
       }
     }
-    if (cur) tmp.push(cur);
-
-    if (tmp.length <= 12) {
-      lines = tmp;
-      lineHeight = lh;
-      break;
-    }
-    fontSize -= 2;
+    if (cur) lines.push(cur);
+    
+    return lines;
   }
 
   // QR Code dimensions
@@ -286,19 +300,52 @@ export async function composeBackImageA6(opts: { color: string; message: string;
   const qrBoxSize = QR_SIZE + QR_PADDING * 2;
 
   // Calculate available height for text (excluding QR code area)
-  const availableHeightForText = A6_HEIGHT - QR_BOTTOM_MARGIN - qrBoxSize - 40; // 40 - spacing between text and QR
+  const availableHeightForText = A6_HEIGHT - QR_BOTTOM_MARGIN - qrBoxSize - 80;
+
+  // Find the right font size that fits all paragraphs
+  let fontSize = INITIAL;
+  let allParagraphLines: string[][] = [];
+  let lineHeight = 0;
+
+  while (fontSize >= MIN) {
+    lineHeight = Math.round(fontSize * LINE_H);
+    allParagraphLines = paragraphs.map(p => wrapParagraph(p.toUpperCase(), fontSize));
+    
+    const totalLines = allParagraphLines.reduce((sum, lines) => sum + lines.length, 0);
+    const totalHeight = totalLines * lineHeight + (allParagraphLines.length - 1) * PARAGRAPH_GAP;
+    
+    if (totalHeight <= availableHeightForText) {
+      break;
+    }
+    fontSize -= 2;
+  }
 
   ctx.fillStyle = textColor;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   setFont(fontSize);
 
-  const totalH = lines.length * lineHeight;
+  // Calculate total height of all text
+  const totalLines = allParagraphLines.reduce((sum, lines) => sum + lines.length, 0);
+  const totalH = totalLines * lineHeight + (allParagraphLines.length - 1) * PARAGRAPH_GAP;
+  
+  // Start Y position (centered in available space)
   let y = (availableHeightForText - totalH) / 2 + lineHeight / 2;
   const centerX = A6_WIDTH / 2;
-  for (const line of lines) {
-    ctx.fillText(line, centerX, y);
-    y += lineHeight;
+
+  // Draw each paragraph with gap between them
+  for (let pIdx = 0; pIdx < allParagraphLines.length; pIdx++) {
+    const lines = allParagraphLines[pIdx];
+    
+    for (const line of lines) {
+      ctx.fillText(line, centerX, y);
+      y += lineHeight;
+    }
+    
+    // Add paragraph gap after each paragraph except the last
+    if (pIdx < allParagraphLines.length - 1) {
+      y += PARAGRAPH_GAP;
+    }
   }
 
   // Generate QR code as data URL
