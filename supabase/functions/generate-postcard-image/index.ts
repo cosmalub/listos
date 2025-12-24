@@ -79,8 +79,9 @@ async function createImageTask(prompt: string): Promise<string> {
       model: 'nano-banana-pro',
       input: {
         prompt: prompt,
-        aspect_ratio: '2:3',    // Portrait format for A6 postcard
-        resolution: '2K',        // Medium resolution
+        negative_prompt: 'white borders, fading edges, soft margins, white background, vignette, watercolor bleeding, unfinished edges, blank edges, white corners',
+        aspect_ratio: '2:3',
+        resolution: '2K',
         output_format: 'png'
       }
     })
@@ -167,9 +168,9 @@ function createPostcardPrompt(caption: string, imageDescription: string, style: 
   
   // Style modifiers - all styles must fill entire canvas edge-to-edge
   const styleModifiers = {
-    joyful: `Bright, energetic, festive style with vivid colors, simple flat 2D graphics, cartoonish elements, celebration motifs like confetti or stars. The illustration MUST fill the entire canvas edge-to-edge with NO white borders or fading edges. `,
-    gentle: `Soft watercolor style with delicate brush strokes, pastel and muted color palette, dreamy artistic look. The illustration MUST fill the entire canvas edge-to-edge with NO white borders, NO fading edges, NO color bleeding at margins. `,
-    universal: `Studio Ghibli style with soft pastel tones, natural elements like clouds, trees, flowers, landscapes, whimsical and dreamy atmosphere, balanced composition with warm mood. The illustration MUST fill the entire canvas edge-to-edge with NO white borders or blank margins. `
+    joyful: `Bright, energetic, festive style with vivid colors, simple flat 2D graphics, cartoonish elements, celebration motifs like confetti or stars. HARD EDGES - illustration MUST extend fully to all four canvas edges. `,
+    gentle: `Soft gouache painting style with delicate brush strokes, pastel and muted color palette, dreamy artistic look. HARD EDGES - illustration MUST extend fully to all four canvas edges with no fading, no white borders. `,
+    universal: `Studio Ghibli style with soft pastel tones, natural elements like clouds, trees, flowers, landscapes, whimsical and dreamy atmosphere. HARD EDGES - illustration MUST extend fully to all four canvas edges. `
   };
 
   // Determine style
@@ -184,7 +185,7 @@ function createPostcardPrompt(caption: string, imageDescription: string, style: 
   const compositionRequirements = `The design should be centered, leave space for the text, and maintain good visual balance. `;
   
   // Technical requirements  
-  const technicalRequirements = `High quality illustration, professional postcard design, suitable for printing. CRITICAL: The artwork MUST completely fill all four edges of the canvas - no white margins, no fading borders, no blank spaces at any edge. `;
+  const technicalRequirements = `High quality illustration, professional postcard design for edge-to-edge printing. ABSOLUTELY CRITICAL: Artwork must have HARD EDGES touching all four sides with ZERO white margins, ZERO fading, ZERO blank spaces. Every pixel at every edge must contain artwork. `;
 
   return basePrompt + styleModifiers[styleKey] + textRequirements + imageDescription + '. ' + compositionRequirements + technicalRequirements;
 }
