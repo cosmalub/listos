@@ -145,11 +145,13 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
           ) : (
             /* Regular photo mode without frame */
             <>
-              <img
-                src={frontData.imageUrl}
-                alt="Postcard design"
-                className="w-full h-full object-cover"
-              />
+              <div className="w-full h-full p-1">
+                <img
+                  src={frontData.imageUrl}
+                  alt="Postcard design"
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              </div>
               
               {/* Caption overlay - only for photo mode without frame */}
               {frontData.caption && frontData.mode === 'photo' && (
