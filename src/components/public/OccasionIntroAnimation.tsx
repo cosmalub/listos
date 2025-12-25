@@ -9,262 +9,307 @@ interface OccasionIntroAnimationProps {
 /**
  * OccasionIntroAnimation
  * 
- * A SINGLE animation that plays during the intro ritual phase.
+ * Elegant, mobile-first animations for the intro ritual phase.
  * 
  * Design principles:
- * - ONE burst at the start, not continuous effects
- * - Large, slow, confident movements
- * - Calm and respectful, not chaotic
- * - Completely stops when ritual ends
- * - Never distracts from music/lyrics
+ * - Quality > quantity - fewer, larger, slower elements
+ * - Mobile-first - all motion from center, nothing cropped
+ * - Birthday/Congratulations use confetti (2-3 waves from center)
+ * - Love/Thanks/Apology use CSS glow effects (no particles)
+ * - Smooth fade-out in last 30% of ritual
+ * - Complete unmount after ritual ends
  */
 export const OccasionIntroAnimation: React.FC<OccasionIntroAnimationProps> = ({
   occasion
 }) => {
-  const { isRitualActive, ritualProgress } = useIntroRitual();
+  const { isRitualActive, ritualProgress, ritualDuration } = useIntroRitual();
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const confettiInstanceRef = useRef<confetti.CreateTypes | null>(null);
   const hasPlayedRef = useRef(false);
   const [opacity, setOpacity] = useState(1);
+  
+  // Glow animation state for non-confetti occasions
+  const [glowScale, setGlowScale] = useState(1);
+  const [glowOpacity, setGlowOpacity] = useState(0);
 
-  // Play the single intro animation once
+  // Determine if this occasion uses confetti or glow
+  const usesConfetti = occasion === 'birthday' || occasion === 'congratulations' || occasion === 'friendship';
+
+  // Create and manage canvas for confetti
   useEffect(() => {
-    if (hasPlayedRef.current || !isRitualActive) return;
+    if (!usesConfetti || !isRitualActive) return;
+
+    // Create dedicated canvas
+    const canvas = document.createElement('canvas');
+    canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50;';
+    document.body.appendChild(canvas);
+    canvasRef.current = canvas;
+
+    // Create confetti instance with resize and worker
+    confettiInstanceRef.current = confetti.create(canvas, {
+      resize: true,
+      useWorker: true
+    });
+
+    return () => {
+      // Clean up canvas and confetti instance
+      if (confettiInstanceRef.current) {
+        confettiInstanceRef.current.reset();
+        confettiInstanceRef.current = null;
+      }
+      if (canvasRef.current && canvasRef.current.parentNode) {
+        canvasRef.current.parentNode.removeChild(canvasRef.current);
+        canvasRef.current = null;
+      }
+    };
+  }, [usesConfetti, isRitualActive]);
+
+  // Play confetti animation (Birthday/Congratulations/Friendship)
+  useEffect(() => {
+    if (!usesConfetti || hasPlayedRef.current || !isRitualActive || !confettiInstanceRef.current) return;
     hasPlayedRef.current = true;
 
-    // Small delay for page to settle
-    const timer = setTimeout(() => {
-      playIntroAnimation(occasion);
-    }, 300);
+    const fireConfetti = confettiInstanceRef.current;
+    
+    if (occasion === 'birthday' || occasion === 'congratulations') {
+      playCelebrationWaves(fireConfetti, ritualDuration);
+    } else if (occasion === 'friendship') {
+      playFriendshipWaves(fireConfetti, ritualDuration);
+    }
+  }, [occasion, usesConfetti, isRitualActive, ritualDuration]);
 
-    return () => clearTimeout(timer);
-  }, [occasion, isRitualActive]);
+  // Glow breathing animation for Love/Thanks/Apology
+  useEffect(() => {
+    if (usesConfetti || !isRitualActive) return;
 
-  // Fade out as ritual ends
+    // Fade in glow
+    const fadeInTimer = setTimeout(() => setGlowOpacity(1), 100);
+
+    // Breathing animation
+    let animationFrame: number;
+    const startTime = Date.now();
+    
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const breathCycle = Math.sin(elapsed / 2000) * 0.5 + 0.5; // 0-1, 4s cycle
+      
+      if (occasion === 'love') {
+        setGlowScale(1 + breathCycle * 0.15); // 1.0 - 1.15
+      } else if (occasion === 'thanks') {
+        setGlowScale(1 + breathCycle * 0.08); // 1.0 - 1.08 (subtle)
+      } else if (occasion === 'apology') {
+        // Almost no motion for apology
+        setGlowScale(1 + breathCycle * 0.03); // 1.0 - 1.03
+      } else {
+        setGlowScale(1 + breathCycle * 0.1);
+      }
+      
+      animationFrame = requestAnimationFrame(animate);
+    };
+    
+    animationFrame = requestAnimationFrame(animate);
+
+    return () => {
+      clearTimeout(fadeInTimer);
+      cancelAnimationFrame(animationFrame);
+    };
+  }, [occasion, usesConfetti, isRitualActive]);
+
+  // Fade out in last 30% of ritual
   useEffect(() => {
     if (ritualProgress > 0.7) {
-      // Start fading out in the last 30% of the ritual
       const fadeProgress = (ritualProgress - 0.7) / 0.3;
       setOpacity(1 - fadeProgress);
+      setGlowOpacity(1 - fadeProgress);
     }
   }, [ritualProgress]);
 
-  // Don't render anything after ritual ends
+  // Don't render after ritual ends
   if (!isRitualActive) {
     return null;
   }
 
+  // Confetti occasions: canvas handles rendering
+  if (usesConfetti) {
+    return null;
+  }
+
+  // Glow-based occasions: render CSS glow element
   return (
     <div 
-      className="fixed inset-0 z-40 pointer-events-none"
+      className="fixed inset-0 z-40 pointer-events-none flex items-center justify-center"
       style={{ opacity }}
       aria-hidden="true"
-    />
+    >
+      {occasion === 'love' && (
+        <div
+          className="absolute rounded-full"
+          style={{
+            width: '60vmin',
+            height: '60vmin',
+            background: 'radial-gradient(circle, rgba(255,0,110,0.25) 0%, rgba(255,23,68,0.15) 40%, rgba(245,0,87,0.05) 70%, transparent 100%)',
+            transform: `scale(${glowScale})`,
+            opacity: glowOpacity,
+            transition: 'opacity 1.5s ease-out',
+            filter: 'blur(20px)',
+          }}
+        />
+      )}
+      
+      {occasion === 'thanks' && (
+        <div
+          className="absolute rounded-full"
+          style={{
+            width: '50vmin',
+            height: '50vmin',
+            background: 'radial-gradient(circle, rgba(255,215,0,0.2) 0%, rgba(255,165,0,0.12) 40%, rgba(255,183,0,0.04) 70%, transparent 100%)',
+            transform: `scale(${glowScale})`,
+            opacity: glowOpacity,
+            transition: 'opacity 1.5s ease-out',
+            filter: 'blur(25px)',
+          }}
+        />
+      )}
+      
+      {occasion === 'apology' && (
+        <div
+          className="absolute rounded-full"
+          style={{
+            width: '40vmin',
+            height: '40vmin',
+            background: 'radial-gradient(circle, rgba(129,212,250,0.15) 0%, rgba(179,229,252,0.08) 50%, transparent 100%)',
+            transform: `scale(${glowScale})`,
+            opacity: glowOpacity * 0.7, // Even more subtle
+            transition: 'opacity 2s ease-out',
+            filter: 'blur(30px)',
+          }}
+        />
+      )}
+      
+      {/* Default glow for unknown occasions */}
+      {!['love', 'thanks', 'apology'].includes(occasion) && (
+        <div
+          className="absolute rounded-full"
+          style={{
+            width: '50vmin',
+            height: '50vmin',
+            background: 'radial-gradient(circle, rgba(139,92,246,0.2) 0%, rgba(236,72,153,0.1) 50%, transparent 100%)',
+            transform: `scale(${glowScale})`,
+            opacity: glowOpacity,
+            transition: 'opacity 1.5s ease-out',
+            filter: 'blur(25px)',
+          }}
+        />
+      )}
+    </div>
   );
 };
 
 /**
- * Single, elegant intro animations per occasion
- * These run ONCE and are designed to feel like a brief moment of magic
- */
-const playIntroAnimation = (occasion: string) => {
-  // Check for reduced motion preference
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return;
-  }
-
-  switch (occasion) {
-    case 'birthday':
-    case 'congratulations':
-      playWarmCelebration();
-      break;
-    case 'love':
-      playIntimateHeart();
-      break;
-    case 'thanks':
-      playGentleGlow();
-      break;
-    case 'apology':
-      playSoftFade();
-      break;
-    case 'friendship':
-      playWarmSparkle();
-      break;
-    default:
-      playDefaultGlow();
-  }
-};
-
-/**
  * Birthday / Congratulations
- * Feeling: warm joy, attention, celebration without chaos
- * Single elegant burst from center, slow falling
+ * 2-3 elegant waves from center over 8-10 seconds
+ * No side bursts, mobile-friendly
  */
-const playWarmCelebration = () => {
+const playCelebrationWaves = (fire: confetti.CreateTypes, duration: number) => {
   const colors = ['#FF6B9D', '#FFD700', '#9C27B0', '#4CAF50', '#00D4FF'];
   
-  // One central burst - slow and graceful
-  confetti({
-    particleCount: 50,
-    spread: 100,
-    startVelocity: 25,
-    origin: { x: 0.5, y: 0.45 },
-    colors: colors,
-    shapes: ['circle'],
-    scalar: 1.8,
-    gravity: 0.4,
-    ticks: 300,
-    drift: 0,
-    decay: 0.94
-  });
-
-  // Delayed soft side accents
+  // Wave 1: Initial burst (300ms delay)
   setTimeout(() => {
-    confetti({
-      particleCount: 20,
-      angle: 60,
+    fire({
+      particleCount: 30,
+      spread: 70,
+      startVelocity: 20,
+      origin: { x: 0.5, y: 0.4 },
+      colors,
+      shapes: ['circle'],
+      scalar: 2.0,
+      gravity: 0.35,
+      ticks: 350,
+      drift: 0,
+      decay: 0.93
+    });
+  }, 300);
+
+  // Wave 2: Second gentle burst (2.5s)
+  setTimeout(() => {
+    fire({
+      particleCount: 25,
       spread: 60,
       startVelocity: 18,
-      origin: { x: 0.1, y: 0.5 },
-      colors: colors,
+      origin: { x: 0.5, y: 0.45 },
+      colors,
       shapes: ['circle'],
-      scalar: 1.4,
-      gravity: 0.35,
-      ticks: 280
+      scalar: 1.8,
+      gravity: 0.3,
+      ticks: 320,
+      drift: 0,
+      decay: 0.92
     });
-    confetti({
-      particleCount: 20,
-      angle: 120,
-      spread: 60,
-      startVelocity: 18,
-      origin: { x: 0.9, y: 0.5 },
-      colors: colors,
-      shapes: ['circle'],
-      scalar: 1.4,
-      gravity: 0.35,
-      ticks: 280
-    });
-  }, 400);
-};
+  }, 2500);
 
-/**
- * Love / Confession
- * Feeling: intimacy, vulnerability, pause
- * Single heart-shaped burst, breathing motion
- */
-const playIntimateHeart = () => {
-  const colors = ['#ff006e', '#ff1744', '#f50057', '#ff4081'];
-  
-  // Heart shape for confetti
-  const heartShape = confetti.shapeFromPath({
-    path: 'M167.5,80.5c0,0-21.5-22.5-43-22.5c-21.5,0-41.5,22.5-41.5,22.5s-20-22.5-41.5-22.5S0,80.5,0,80.5s0,43,83.5,112.5C167,163,167.5,80.5,167.5,80.5z',
-    matrix: [0.03, 0, 0, 0.03, -2.5, -2.5]
-  });
-
-  // Single central burst of hearts - slow and gentle
-  confetti({
-    particleCount: 35,
-    spread: 80,
-    startVelocity: 20,
-    origin: { x: 0.5, y: 0.45 },
-    colors: colors,
-    shapes: [heartShape],
-    scalar: 2.2,
-    gravity: 0.45,
-    ticks: 320,
-    drift: 0
-  });
-};
-
-/**
- * Thanks
- * Feeling: calm warmth, appreciation
- * Soft golden shimmer from center
- */
-const playGentleGlow = () => {
-  const colors = ['#FFD700', '#FFA500', '#FFED4E', '#FFB700'];
-  
-  // Star shape
-  const starShape = confetti.shapeFromPath({
-    path: 'M0,-15L4.5,-4.5L15,-3L7.5,3L9,15L0,9L-9,15L-7.5,3L-15,-3L-4.5,-4.5Z',
-    matrix: [1, 0, 0, 1, 0, 0]
-  });
-
-  // Gentle star burst - fewer particles, slower
-  confetti({
-    particleCount: 30,
-    spread: 70,
-    startVelocity: 15,
-    origin: { x: 0.5, y: 0.5 },
-    colors: colors,
-    shapes: [starShape, 'circle'],
-    scalar: 1.5,
-    gravity: 0.35,
-    ticks: 350
-  });
-};
-
-/**
- * Apology
- * Feeling: silence, sincerity, respect
- * Very minimal - just a soft fade effect, almost nothing
- */
-const playSoftFade = () => {
-  const colors = ['#a8dadc', '#81d4fa', '#b3e5fc', '#e1f5fe'];
-  
-  // Very subtle, almost invisible particles
-  confetti({
-    particleCount: 15,
-    spread: 50,
-    startVelocity: 8,
-    origin: { x: 0.5, y: 0.5 },
-    colors: colors,
-    shapes: ['circle'],
-    scalar: 1.0,
-    gravity: 0.2,
-    ticks: 400,
-    drift: 0
-  });
+  // Wave 3: Final soft burst (5s) - only if duration allows
+  if (duration >= 7000) {
+    setTimeout(() => {
+      fire({
+        particleCount: 20,
+        spread: 50,
+        startVelocity: 15,
+        origin: { x: 0.5, y: 0.5 },
+        colors,
+        shapes: ['circle'],
+        scalar: 1.6,
+        gravity: 0.25,
+        ticks: 280,
+        drift: 0,
+        decay: 0.91
+      });
+    }, 5000);
+  }
 };
 
 /**
  * Friendship
- * Feeling: shared warmth, connection
- * Gentle rainbow-tinted sparkle
+ * Single elegant wave with rainbow colors
+ * Reduced particles, center origin
  */
-const playWarmSparkle = () => {
+const playFriendshipWaves = (fire: confetti.CreateTypes, duration: number) => {
   const colors = ['#ff6b9d', '#7d5fff', '#18dcff', '#32ff7e', '#f8b500'];
   
-  // Gentle mixed sparkle
-  confetti({
-    particleCount: 35,
-    spread: 80,
-    startVelocity: 18,
-    origin: { x: 0.5, y: 0.5 },
-    colors: colors,
-    shapes: ['circle'],
-    scalar: 1.4,
-    gravity: 0.4,
-    ticks: 300
-  });
-};
+  // Single gentle wave
+  setTimeout(() => {
+    fire({
+      particleCount: 25,
+      spread: 65,
+      startVelocity: 16,
+      origin: { x: 0.5, y: 0.45 },
+      colors,
+      shapes: ['circle'],
+      scalar: 1.6,
+      gravity: 0.35,
+      ticks: 300,
+      drift: 0,
+      decay: 0.92
+    });
+  }, 400);
 
-/**
- * Default
- * Simple, understated glow
- */
-const playDefaultGlow = () => {
-  const colors = ['#8b5cf6', '#ec4899', '#f59e0b'];
-  
-  confetti({
-    particleCount: 30,
-    spread: 70,
-    startVelocity: 15,
-    origin: { x: 0.5, y: 0.5 },
-    colors: colors,
-    shapes: ['circle'],
-    scalar: 1.3,
-    gravity: 0.4,
-    ticks: 280
-  });
+  // Second subtle wave
+  if (duration >= 6000) {
+    setTimeout(() => {
+      fire({
+        particleCount: 18,
+        spread: 55,
+        startVelocity: 14,
+        origin: { x: 0.5, y: 0.5 },
+        colors,
+        shapes: ['circle'],
+        scalar: 1.4,
+        gravity: 0.3,
+        ticks: 260,
+        drift: 0,
+        decay: 0.91
+      });
+    }, 3500);
+  }
 };
 
 export default OccasionIntroAnimation;
