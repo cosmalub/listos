@@ -150,53 +150,70 @@ function Postcard3D({ frontImage, backImage, isFlipped }: { frontImage: string; 
   const [frontTexture, setFrontTexture] = useState<THREE.Texture | null>(null)
   const [backTexture, setBackTexture] = useState<THREE.Texture | null>(null)
 
-  useEffect(() => {
-    const textureLoader = new THREE.TextureLoader()
-    
-    // Create placeholder textures with gradients
+  const createPlaceholderTexture = (side: 'front' | 'back') => {
     const canvas = document.createElement('canvas')
     canvas.width = 256
-    canvas.height = 358  // Approximate postcard ratio
+    canvas.height = 358
     const ctx = canvas.getContext('2d')
     
     if (ctx) {
-      // Front texture with gradient
-      const frontGradient = ctx.createLinearGradient(0, 0, 0, canvas.height)
-      frontGradient.addColorStop(0, '#6A5ACD')
-      frontGradient.addColorStop(1, '#8A7CDD')
-      ctx.fillStyle = frontGradient
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-      
-      // Add text
-      ctx.fillStyle = 'white'
-      ctx.font = 'bold 24px Arial'
-      ctx.textAlign = 'center'
-      ctx.fillText('Музична', canvas.width / 2, canvas.height / 2 - 20)
-      ctx.fillText('Листівка', canvas.width / 2, canvas.height / 2 + 20)
-      
-      const frontTex = new THREE.CanvasTexture(canvas)
-      setFrontTexture(frontTex)
-      
-      // Back texture  
-      ctx.fillStyle = '#f8f9fa'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-      ctx.strokeStyle = '#6A5ACD'
-      ctx.lineWidth = 2
-      ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40)
-      
-      ctx.fillStyle = '#6A5ACD'
-      ctx.font = '16px Arial'
-      ctx.textAlign = 'left'
-      ctx.fillText('Особисте повідомлення', 30, 50)
-      ctx.font = '14px Arial'
-      ctx.fillStyle = '#666'
-      ctx.fillText('Тут буде тепле побажання,', 30, 80)
-      ctx.fillText('спогади або зізнання —', 30, 100)
-      ctx.fillText('все, що зробить подарунок', 30, 120)
-      ctx.fillText('по-справжньому неповторним.', 30, 140)
-      
-      const backTex = new THREE.CanvasTexture(canvas)
-      setBackTexture(backTex)
+      if (side === 'front') {
+        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height)
+        gradient.addColorStop(0, '#6A5ACD')
+        gradient.addColorStop(1, '#8A7CDD')
+        ctx.fillStyle = gradient
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+        ctx.fillStyle = 'white'
+        ctx.font = 'bold 24px Arial'
+        ctx.textAlign = 'center'
+        ctx.fillText('Музична', canvas.width / 2, canvas.height / 2 - 20)
+        ctx.fillText('Листівка', canvas.width / 2, canvas.height / 2 + 20)
+      } else {
+        ctx.fillStyle = '#f8f9fa'
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+        ctx.strokeStyle = '#6A5ACD'
+        ctx.lineWidth = 2
+        ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40)
+        ctx.fillStyle = '#6A5ACD'
+        ctx.font = '16px Arial'
+        ctx.textAlign = 'left'
+        ctx.fillText('Особисте повідомлення', 30, 50)
+      }
+    }
+    return new THREE.CanvasTexture(canvas)
+  }
+
+  useEffect(() => {
+    const textureLoader = new THREE.TextureLoader()
+    
+    // Load front texture
+    if (frontImage && frontImage.startsWith('/')) {
+      textureLoader.load(
+        frontImage,
+        (texture) => {
+          texture.colorSpace = THREE.SRGBColorSpace
+          setFrontTexture(texture)
+        },
+        undefined,
+        () => setFrontTexture(createPlaceholderTexture('front'))
+      )
+    } else {
+      setFrontTexture(createPlaceholderTexture('front'))
+    }
+    
+    // Load back texture
+    if (backImage && backImage.startsWith('/')) {
+      textureLoader.load(
+        backImage,
+        (texture) => {
+          texture.colorSpace = THREE.SRGBColorSpace
+          setBackTexture(texture)
+        },
+        undefined,
+        () => setBackTexture(createPlaceholderTexture('back'))
+      )
+    } else {
+      setBackTexture(createPlaceholderTexture('back'))
     }
 
     return () => {
@@ -312,14 +329,14 @@ const postcardExamples = [
     id: 1, 
     title: "Вітання з днем народження", 
     description: "Музична листівка для мами.", 
-    frontImage: "/images/postcards/example-front.jpg", 
-    backImage: "/images/postcards/example-back.jpg", 
+    frontImage: "/examples/stepan-front.png", 
+    backImage: "/examples/stepan-back.png", 
     songTitle: "З днем народження, мамо", 
-    artist: "Від Ані", 
-    audioSrc: "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//OEAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAEAAABIADAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV6urq6urq6urq6urq6urq6urq6urq6urq6v////////////////////////////////8AAAAATGF2YzU4LjU0AAAAAAAAAAAAAAAAJAAAAAAAAAAAASDs90hvAAAAAAAAAAAAAAAAAAAA//OCEAAADwAABHiAAATgsAAhXiAAEaQhEIRAQYgcEKIoDAgCA",
-    customerStory: "Діти створили пісню, де згадали всі імена членів родини — маму, тата, братів, сестер. Додали фрази: \"Ти завжди поруч\", \"Дякуємо за все\", \"Ми любимо тебе\".",
-    customerReaction: "Мама розплакалась на святкуванні. Гості були вражені. Листівку зберігає на комоді і показує всім друзям.",
-    customerName: "Олена, 48 років",
+    artist: "Від Степана", 
+    audioSrc: "/audio/stepan-birthday.mp3",
+    customerStory: "Степан створив пісню для своєї мами Галини на день народження. У пісні він подякував за турботу, любов і підтримку, згадав дитинство, безсонні ночі та моменти, коли мама завжди була поруч.",
+    customerReaction: "Мама була дуже зворушена подарунком. Слухала пісню кілька разів і зберігає листівку вдома як пам'ять.",
+    customerName: "Степан, 29 років",
     customerLocation: "Київ",
     rating: 5
   },
