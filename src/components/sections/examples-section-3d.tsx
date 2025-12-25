@@ -158,7 +158,7 @@ function PostcardImage({ src, alt }: { src: string; alt: string }) {
     <img 
       src={src} 
       alt={alt} 
-      className="w-full h-full object-cover"
+      className="w-full h-full object-contain bg-white"
       onError={() => setHasError(true)}
     />
   )
@@ -323,7 +323,7 @@ export default function ExamplesSection3D() {
                             front={<PostcardImage src={postcard.frontImage} alt="Лицева сторона" />}
                             back={<PostcardImage src={postcard.backImage} alt="Зворотна сторона" />}
                             orientation="portrait"
-                            className="h-[320px]"
+                            className="w-full max-w-[280px] mx-auto"
                             initialTilt={{ x: 0, y: 5 }}
                             maxTilt={{ x: 8, y: 15 }}
                           />
