@@ -10,40 +10,40 @@ interface OccasionIntroAnimationProps {
 // CUSTOM SHAPES - Symbolic emotional language
 // ============================================================
 
-// Heart shape for Love - the universal symbol of love (LARGER - 18% scale)
+// Heart shape for Love - MUCH LARGER for visibility
 const heartShape = confetti.shapeFromPath({
   path: 'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z',
-  matrix: [0.18, 0, 0, 0.18, -2.2, -2.0]
+  matrix: [0.28, 0, 0, 0.28, -3.4, -3.2]
 });
 
-// Teardrop shape for Apology - fragile, honest, vulnerable (LARGER)
+// Teardrop shape for Apology - MUCH LARGER for visibility
 const teardropShape = confetti.shapeFromPath({
   path: 'M12 2C12 2 4 10 4 14.5C4 18.64 7.58 22 12 22C16.42 22 20 18.64 20 14.5C20 10 12 2 12 2Z',
-  matrix: [0.16, 0, 0, 0.19, -1.9, -2.1]
+  matrix: [0.26, 0, 0, 0.30, -3.1, -3.6]
 });
 
-// Star shape for Birthday/Thanks - celebratory, warm (LARGER)
+// Star shape for Birthday/Thanks - LARGER
 const starShape = confetti.shapeFromPath({
   path: 'M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z',
-  matrix: [0.16, 0, 0, 0.16, -1.9, -1.8]
+  matrix: [0.24, 0, 0, 0.24, -2.9, -2.8]
 });
 
-// Spark/diamond shape for Thanks - warm gratitude (LARGER)
+// Spark/diamond shape for Thanks - LARGER
 const sparkShape = confetti.shapeFromPath({
   path: 'M12 2L14 10L22 12L14 14L12 22L10 14L2 12L10 10L12 2Z',
-  matrix: [0.14, 0, 0, 0.14, -1.7, -1.7]
+  matrix: [0.22, 0, 0, 0.22, -2.6, -2.6]
 });
 
-// Rounded square for Friendship - friendly, approachable (LARGER)
+// Rounded square for Friendship - LARGER
 const roundedSquareShape = confetti.shapeFromPath({
   path: 'M4 8C4 5.79 5.79 4 8 4H16C18.21 4 20 5.79 20 8V16C20 18.21 18.21 20 16 20H8C5.79 20 4 18.21 4 16V8Z',
-  matrix: [0.16, 0, 0, 0.16, -1.9, -1.9]
+  matrix: [0.22, 0, 0, 0.22, -2.6, -2.6]
 });
 
-// Snowflake for Holiday (LARGER)
+// Snowflake for Holiday - LARGER
 const snowflakeShape = confetti.shapeFromPath({
   path: 'M12 2V22M2 12H22M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07',
-  matrix: [0.14, 0, 0, 0.14, -1.7, -1.7]
+  matrix: [0.20, 0, 0, 0.20, -2.4, -2.4]
 });
 
 // ============================================================
@@ -87,9 +87,9 @@ export const OccasionIntroAnimation: React.FC<OccasionIntroAnimationProps> = ({
   const { isRitualActive, ritualDuration } = useIntroRitual();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const confettiInstanceRef = useRef<confetti.CreateTypes | null>(null);
-  const hasPlayedRef = useRef(false);
 
-  // Create and manage single canvas for ALL occasions
+  // SINGLE useEffect - create canvas, confetti instance, and play animation together
+  // This fixes the race condition where animation tried to run before confetti was ready
   useEffect(() => {
     if (!isRitualActive) return;
 
@@ -100,55 +100,47 @@ export const OccasionIntroAnimation: React.FC<OccasionIntroAnimationProps> = ({
     canvasRef.current = canvas;
 
     // Create confetti instance with resize and worker
-    confettiInstanceRef.current = confetti.create(canvas, {
+    const confettiInstance = confetti.create(canvas, {
       resize: true,
       useWorker: true
     });
+    confettiInstanceRef.current = confettiInstance;
 
-    return () => {
-      // Clean up canvas and confetti instance
-      if (confettiInstanceRef.current) {
-        confettiInstanceRef.current.reset();
-        confettiInstanceRef.current = null;
-      }
-      if (canvasRef.current && canvasRef.current.parentNode) {
-        canvasRef.current.parentNode.removeChild(canvasRef.current);
-        canvasRef.current = null;
-      }
-    };
-  }, [isRitualActive]);
-
-  // Play particle animation for ANY occasion
-  useEffect(() => {
-    if (hasPlayedRef.current || !isRitualActive || !confettiInstanceRef.current) return;
-    hasPlayedRef.current = true;
-
-    const fire = confettiInstanceRef.current;
-    
+    // IMMEDIATELY play animation after confetti is ready
     switch (occasion) {
       case 'birthday':
       case 'congratulations':
-        playCelebrationScene(fire, ritualDuration);
+        playCelebrationScene(confettiInstance, ritualDuration);
         break;
       case 'love':
-        playLoveScene(fire, ritualDuration);
+        playLoveScene(confettiInstance, ritualDuration);
         break;
       case 'thanks':
-        playThanksScene(fire, ritualDuration);
+        playThanksScene(confettiInstance, ritualDuration);
         break;
       case 'apology':
-        playApologyScene(fire, ritualDuration);
+        playApologyScene(confettiInstance, ritualDuration);
         break;
       case 'friendship':
-        playFriendshipScene(fire, ritualDuration);
+        playFriendshipScene(confettiInstance, ritualDuration);
         break;
       case 'holiday':
-        playHolidayScene(fire, ritualDuration);
+        playHolidayScene(confettiInstance, ritualDuration);
         break;
       default:
-        playDefaultScene(fire, ritualDuration);
+        playDefaultScene(confettiInstance, ritualDuration);
     }
-  }, [occasion, isRitualActive, ritualDuration]);
+
+    return () => {
+      // Clean up canvas and confetti instance
+      confettiInstance.reset();
+      if (canvas.parentNode) {
+        canvas.parentNode.removeChild(canvas);
+      }
+      canvasRef.current = null;
+      confettiInstanceRef.current = null;
+    };
+  }, [isRitualActive, occasion, ritualDuration]);
 
   // Canvas handles all rendering - no JSX needed
   return null;
@@ -286,18 +278,18 @@ const playLoveScene = (fire: confetti.CreateTypes, duration: number) => {
   const shapes = [heartShape]; // HEARTS ONLY
   const { scalarMultiplier, particleMultiplier, velocityMultiplier } = getAdaptiveParams();
   
-  // === WAVE 1: Initial burst (0.3s) - Big romantic hearts ===
+  // === WAVE 1: Initial burst (0.3s) - BIG romantic hearts ===
   setTimeout(() => {
     fire({
-      particleCount: Math.round(25 * particleMultiplier),
-      spread: 90,
-      startVelocity: 20 * velocityMultiplier,
+      particleCount: Math.round(30 * particleMultiplier),
+      spread: 100,
+      startVelocity: 22 * velocityMultiplier,
       origin: { x: 0.5, y: 0.4 },
       colors,
       shapes,
-      scalar: 4.5 * scalarMultiplier,
-      gravity: 0.25,
-      ticks: 600,
+      scalar: 5.5 * scalarMultiplier,
+      gravity: 0.18,
+      ticks: 700,
       drift: 0,
       decay: 0.96
     });
@@ -306,51 +298,51 @@ const playLoveScene = (fire: confetti.CreateTypes, duration: number) => {
   // === WAVE 2: Expanding love (1.5s) ===
   setTimeout(() => {
     fire({
-      particleCount: Math.round(20 * particleMultiplier),
-      spread: 100,
-      startVelocity: 18 * velocityMultiplier,
+      particleCount: Math.round(25 * particleMultiplier),
+      spread: 110,
+      startVelocity: 20 * velocityMultiplier,
       origin: { x: 0.5, y: 0.4 },
       colors,
       shapes,
-      scalar: 4.0 * scalarMultiplier,
-      gravity: 0.2,
-      ticks: 580,
+      scalar: 5.0 * scalarMultiplier,
+      gravity: 0.15,
+      ticks: 680,
       drift: 0,
-      decay: 0.95
+      decay: 0.96
     });
   }, 1500);
 
   // === WAVE 3: Continuing romance (3s) ===
   setTimeout(() => {
     fire({
-      particleCount: Math.round(18 * particleMultiplier),
-      spread: 85,
-      startVelocity: 15 * velocityMultiplier,
+      particleCount: Math.round(20 * particleMultiplier),
+      spread: 95,
+      startVelocity: 17 * velocityMultiplier,
       origin: { x: 0.5, y: 0.4 },
       colors,
       shapes,
-      scalar: 3.5 * scalarMultiplier,
-      gravity: 0.18,
-      ticks: 560,
-      drift: 0,
-      decay: 0.95
-    });
-  }, 3000);
-
-  // === WAVE 4: Gentle decay (4.5s) ===
-  setTimeout(() => {
-    fire({
-      particleCount: Math.round(14 * particleMultiplier),
-      spread: 70,
-      startVelocity: 12 * velocityMultiplier,
-      origin: { x: 0.5, y: 0.4 },
-      colors,
-      shapes,
-      scalar: 3.2 * scalarMultiplier,
-      gravity: 0.15,
+      scalar: 4.5 * scalarMultiplier,
+      gravity: 0.12,
       ticks: 650,
       drift: 0,
       decay: 0.96
+    });
+  }, 3000);
+
+  // === WAVE 4: Gentle flow (4.5s) ===
+  setTimeout(() => {
+    fire({
+      particleCount: Math.round(16 * particleMultiplier),
+      spread: 80,
+      startVelocity: 14 * velocityMultiplier,
+      origin: { x: 0.5, y: 0.4 },
+      colors,
+      shapes,
+      scalar: 4.0 * scalarMultiplier,
+      gravity: 0.10,
+      ticks: 720,
+      drift: 0,
+      decay: 0.97
     });
   }, 4500);
 
@@ -358,15 +350,15 @@ const playLoveScene = (fire: confetti.CreateTypes, duration: number) => {
   if (duration >= 8000) {
     setTimeout(() => {
       fire({
-        particleCount: Math.round(10 * particleMultiplier),
-        spread: 55,
-        startVelocity: 10 * velocityMultiplier,
+        particleCount: Math.round(12 * particleMultiplier),
+        spread: 65,
+        startVelocity: 11 * velocityMultiplier,
         origin: { x: 0.5, y: 0.4 },
         colors,
         shapes,
-        scalar: 2.8 * scalarMultiplier,
-        gravity: 0.12,
-        ticks: 700,
+        scalar: 3.5 * scalarMultiplier,
+        gravity: 0.08,
+        ticks: 780,
         drift: 0,
         decay: 0.97
       });
@@ -377,15 +369,15 @@ const playLoveScene = (fire: confetti.CreateTypes, duration: number) => {
   if (duration >= 10000) {
     setTimeout(() => {
       fire({
-        particleCount: Math.round(6 * particleMultiplier),
-        spread: 45,
-        startVelocity: 8 * velocityMultiplier,
+        particleCount: Math.round(8 * particleMultiplier),
+        spread: 50,
+        startVelocity: 9 * velocityMultiplier,
         origin: { x: 0.5, y: 0.4 },
         colors,
         shapes,
-        scalar: 2.5 * scalarMultiplier,
-        gravity: 0.1,
-        ticks: 750,
+        scalar: 3.0 * scalarMultiplier,
+        gravity: 0.06,
+        ticks: 850,
         drift: 0,
         decay: 0.98
       });
@@ -505,59 +497,95 @@ const playApologyScene = (fire: confetti.CreateTypes, duration: number) => {
   const shapes = [teardropShape];
   const { scalarMultiplier, particleMultiplier, velocityMultiplier } = getAdaptiveParams();
   
-  // === WAVE 1: Gentle burst (0.4s) ===
+  // === WAVE 1: Gentle burst (0.4s) - LARGER PARTICLES ===
   setTimeout(() => {
     fire({
-      particleCount: Math.round(15 * particleMultiplier),
-      spread: 60,
-      startVelocity: 12 * velocityMultiplier,
+      particleCount: Math.round(22 * particleMultiplier),
+      spread: 75,
+      startVelocity: 14 * velocityMultiplier,
       origin: { x: 0.5, y: 0.4 },
       colors,
       shapes,
-      scalar: 3.5 * scalarMultiplier,
-      gravity: 0.18,
-      ticks: 650,
+      scalar: 5.5 * scalarMultiplier,
+      gravity: 0.12,
+      ticks: 700,
       drift: 0,
       decay: 0.97
     });
   }, 400);
 
-  // === WAVE 2: Quiet presence (2.5s) ===
+  // === WAVE 2: Quiet presence (2s) ===
   setTimeout(() => {
     fire({
-      particleCount: Math.round(12 * particleMultiplier),
-      spread: 50,
+      particleCount: Math.round(18 * particleMultiplier),
+      spread: 65,
+      startVelocity: 12 * velocityMultiplier,
+      origin: { x: 0.5, y: 0.4 },
+      colors,
+      shapes,
+      scalar: 5.0 * scalarMultiplier,
+      gravity: 0.10,
+      ticks: 750,
+      drift: 0,
+      decay: 0.97
+    });
+  }, 2000);
+
+  // === WAVE 3: Contemplative (3.8s) ===
+  setTimeout(() => {
+    fire({
+      particleCount: Math.round(15 * particleMultiplier),
+      spread: 55,
       startVelocity: 10 * velocityMultiplier,
       origin: { x: 0.5, y: 0.4 },
       colors,
       shapes,
-      scalar: 3.0 * scalarMultiplier,
-      gravity: 0.15,
-      ticks: 700,
+      scalar: 4.5 * scalarMultiplier,
+      gravity: 0.08,
+      ticks: 800,
       drift: 0,
-      decay: 0.97
+      decay: 0.98
     });
-  }, 2500);
+  }, 3800);
 
-  // === WAVE 3: Contemplative (4.5s) ===
+  // === WAVE 4: Lingering (5.5s) ===
   setTimeout(() => {
     fire({
-      particleCount: Math.round(10 * particleMultiplier),
-      spread: 45,
+      particleCount: Math.round(12 * particleMultiplier),
+      spread: 50,
       startVelocity: 8 * velocityMultiplier,
       origin: { x: 0.5, y: 0.4 },
       colors,
       shapes,
-      scalar: 2.6 * scalarMultiplier,
-      gravity: 0.12,
-      ticks: 750,
+      scalar: 4.0 * scalarMultiplier,
+      gravity: 0.07,
+      ticks: 850,
       drift: 0,
       decay: 0.98
     });
-  }, 4500);
+  }, 5500);
 
-  // === WAVE 4: Lingering (6.5s) ===
+  // === WAVE 5: Gentle fade (7s) ===
   if (duration >= 8000) {
+    setTimeout(() => {
+      fire({
+        particleCount: Math.round(10 * particleMultiplier),
+        spread: 45,
+        startVelocity: 7 * velocityMultiplier,
+        origin: { x: 0.5, y: 0.4 },
+        colors,
+        shapes,
+        scalar: 3.5 * scalarMultiplier,
+        gravity: 0.06,
+        ticks: 900,
+        drift: 0,
+        decay: 0.98
+      });
+    }, 7000);
+  }
+
+  // === WAVE 6: Final silence (8.5s) ===
+  if (duration >= 10000) {
     setTimeout(() => {
       fire({
         particleCount: Math.round(8 * particleMultiplier),
@@ -566,28 +594,9 @@ const playApologyScene = (fire: confetti.CreateTypes, duration: number) => {
         origin: { x: 0.5, y: 0.4 },
         colors,
         shapes,
-        scalar: 2.3 * scalarMultiplier,
-        gravity: 0.1,
-        ticks: 800,
-        drift: 0,
-        decay: 0.98
-      });
-    }, 6500);
-  }
-
-  // === WAVE 5: Final silence (8.5s) ===
-  if (duration >= 10000) {
-    setTimeout(() => {
-      fire({
-        particleCount: Math.round(5 * particleMultiplier),
-        spread: 35,
-        startVelocity: 5 * velocityMultiplier,
-        origin: { x: 0.5, y: 0.4 },
-        colors,
-        shapes,
-        scalar: 2.0 * scalarMultiplier,
-        gravity: 0.08,
-        ticks: 850,
+        scalar: 3.0 * scalarMultiplier,
+        gravity: 0.05,
+        ticks: 950,
         drift: 0,
         decay: 0.99
       });
