@@ -93,9 +93,9 @@ export const OccasionIntroAnimation: React.FC<OccasionIntroAnimationProps> = ({
   useEffect(() => {
     if (!isRitualActive) return;
 
-    // Create dedicated full-screen canvas
+    // Create dedicated full-screen canvas with opacity transition support
     const canvas = document.createElement('canvas');
-    canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50;';
+    canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50;opacity:1;';
     document.body.appendChild(canvas);
     canvasRef.current = canvas;
 
@@ -131,7 +131,18 @@ export const OccasionIntroAnimation: React.FC<OccasionIntroAnimationProps> = ({
         playDefaultScene(confettiInstance, ritualDuration);
     }
 
+    // ====== SMOOTH FADE-OUT in the last 3 seconds ======
+    const fadeStartTime = Math.max(0, ritualDuration - 3000);
+    const fadeTimeout = setTimeout(() => {
+      if (canvas) {
+        canvas.style.transition = 'opacity 3s ease-out';
+        canvas.style.opacity = '0';
+      }
+    }, fadeStartTime);
+
     return () => {
+      // Clean up fade timeout
+      clearTimeout(fadeTimeout);
       // Clean up canvas and confetti instance
       confettiInstance.reset();
       if (canvas.parentNode) {
