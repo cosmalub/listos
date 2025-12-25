@@ -143,7 +143,7 @@ const PublicSongDraft = () => {
   return (
     <div className="min-h-screen">
       {/* OccasionAnimation includes static background + intro ritual animation */}
-      <OccasionAnimation occasion={occasion} ritualDuration={8000} />
+      <OccasionAnimation occasion={occasion} ritualDuration={10000} />
       
       {/* Header */}
       <Header centerTitle="Студія створення листівки" hideNav showMenu={false} />
