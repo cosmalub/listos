@@ -22,16 +22,16 @@ const teardropShape = confetti.shapeFromPath({
   matrix: [0.26, 0, 0, 0.30, -3.1, -3.6]
 });
 
-// Star shape for Birthday/Thanks - LARGER
+// Star shape for Birthday/Thanks - MUCH LARGER for visibility
 const starShape = confetti.shapeFromPath({
   path: 'M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z',
-  matrix: [0.24, 0, 0, 0.24, -2.9, -2.8]
+  matrix: [0.34, 0, 0, 0.34, -4.1, -4.0]
 });
 
-// Spark/diamond shape for Thanks - LARGER
+// Spark/diamond shape for Thanks - MUCH LARGER for visibility
 const sparkShape = confetti.shapeFromPath({
   path: 'M12 2L14 10L22 12L14 14L12 22L10 14L2 12L10 10L12 2Z',
-  matrix: [0.22, 0, 0, 0.22, -2.6, -2.6]
+  matrix: [0.32, 0, 0, 0.32, -3.8, -3.8]
 });
 
 // Rounded square for Friendship - LARGER
@@ -278,37 +278,37 @@ const playLoveScene = (fire: confetti.CreateTypes, duration: number) => {
   const shapes = [heartShape]; // HEARTS ONLY
   const { scalarMultiplier, particleMultiplier, velocityMultiplier } = getAdaptiveParams();
   
-  // === WAVE 1: Initial burst (0.3s) - BIG romantic hearts ===
+  // === WAVE 1: Initial burst (0.3s) - Hearts fall DOWN romantically ===
   setTimeout(() => {
     fire({
-      particleCount: Math.round(30 * particleMultiplier),
-      spread: 100,
-      startVelocity: 22 * velocityMultiplier,
-      origin: { x: 0.5, y: 0.4 },
+      particleCount: Math.round(28 * particleMultiplier),
+      spread: 90,
+      startVelocity: 16 * velocityMultiplier,
+      origin: { x: 0.5, y: 0.35 },
       colors,
       shapes,
       scalar: 5.5 * scalarMultiplier,
-      gravity: 0.18,
-      ticks: 700,
+      gravity: 0.50,
+      ticks: 500,
       drift: 0,
-      decay: 0.96
+      decay: 0.94
     });
   }, 300);
 
   // === WAVE 2: Expanding love (1.5s) ===
   setTimeout(() => {
     fire({
-      particleCount: Math.round(25 * particleMultiplier),
-      spread: 110,
-      startVelocity: 20 * velocityMultiplier,
-      origin: { x: 0.5, y: 0.4 },
+      particleCount: Math.round(24 * particleMultiplier),
+      spread: 100,
+      startVelocity: 14 * velocityMultiplier,
+      origin: { x: 0.5, y: 0.35 },
       colors,
       shapes,
       scalar: 5.0 * scalarMultiplier,
-      gravity: 0.15,
-      ticks: 680,
+      gravity: 0.45,
+      ticks: 480,
       drift: 0,
-      decay: 0.96
+      decay: 0.94
     });
   }, 1500);
 
@@ -316,16 +316,16 @@ const playLoveScene = (fire: confetti.CreateTypes, duration: number) => {
   setTimeout(() => {
     fire({
       particleCount: Math.round(20 * particleMultiplier),
-      spread: 95,
-      startVelocity: 17 * velocityMultiplier,
-      origin: { x: 0.5, y: 0.4 },
+      spread: 85,
+      startVelocity: 12 * velocityMultiplier,
+      origin: { x: 0.5, y: 0.35 },
       colors,
       shapes,
       scalar: 4.5 * scalarMultiplier,
-      gravity: 0.12,
-      ticks: 650,
+      gravity: 0.42,
+      ticks: 460,
       drift: 0,
-      decay: 0.96
+      decay: 0.94
     });
   }, 3000);
 
@@ -333,16 +333,16 @@ const playLoveScene = (fire: confetti.CreateTypes, duration: number) => {
   setTimeout(() => {
     fire({
       particleCount: Math.round(16 * particleMultiplier),
-      spread: 80,
-      startVelocity: 14 * velocityMultiplier,
-      origin: { x: 0.5, y: 0.4 },
+      spread: 75,
+      startVelocity: 10 * velocityMultiplier,
+      origin: { x: 0.5, y: 0.35 },
       colors,
       shapes,
       scalar: 4.0 * scalarMultiplier,
-      gravity: 0.10,
-      ticks: 720,
+      gravity: 0.38,
+      ticks: 500,
       drift: 0,
-      decay: 0.97
+      decay: 0.95
     });
   }, 4500);
 
@@ -352,15 +352,15 @@ const playLoveScene = (fire: confetti.CreateTypes, duration: number) => {
       fire({
         particleCount: Math.round(12 * particleMultiplier),
         spread: 65,
-        startVelocity: 11 * velocityMultiplier,
-        origin: { x: 0.5, y: 0.4 },
+        startVelocity: 8 * velocityMultiplier,
+        origin: { x: 0.5, y: 0.35 },
         colors,
         shapes,
         scalar: 3.5 * scalarMultiplier,
-        gravity: 0.08,
-        ticks: 780,
+        gravity: 0.35,
+        ticks: 520,
         drift: 0,
-        decay: 0.97
+        decay: 0.95
       });
     }, 6500);
   }
@@ -371,15 +371,15 @@ const playLoveScene = (fire: confetti.CreateTypes, duration: number) => {
       fire({
         particleCount: Math.round(8 * particleMultiplier),
         spread: 50,
-        startVelocity: 9 * velocityMultiplier,
-        origin: { x: 0.5, y: 0.4 },
+        startVelocity: 6 * velocityMultiplier,
+        origin: { x: 0.5, y: 0.35 },
         colors,
         shapes,
         scalar: 3.0 * scalarMultiplier,
-        gravity: 0.06,
-        ticks: 850,
+        gravity: 0.32,
+        ticks: 550,
         drift: 0,
-        decay: 0.98
+        decay: 0.96
       });
     }, 8000);
   }
@@ -396,35 +396,35 @@ const playThanksScene = (fire: confetti.CreateTypes, duration: number) => {
   const shapes = [starShape, sparkShape];
   const { scalarMultiplier, particleMultiplier, velocityMultiplier } = getAdaptiveParams();
   
-  // === WAVE 1: Warm burst (0.25s) ===
+  // === WAVE 1: Warm burst (0.25s) - LARGER STARS ===
   setTimeout(() => {
     fire({
-      particleCount: Math.round(35 * particleMultiplier),
-      spread: 85,
-      startVelocity: 26 * velocityMultiplier,
-      origin: { x: 0.5, y: 0.4 },
+      particleCount: Math.round(40 * particleMultiplier),
+      spread: 90,
+      startVelocity: 28 * velocityMultiplier,
+      origin: { x: 0.5, y: 0.35 },
       colors,
       shapes,
-      scalar: 3.2 * scalarMultiplier,
-      gravity: 0.45,
-      ticks: 480,
+      scalar: 4.5 * scalarMultiplier,
+      gravity: 0.55,
+      ticks: 450,
       drift: 0,
-      decay: 0.94
+      decay: 0.93
     });
   }, 250);
 
   // === WAVE 2: Golden shimmer (1.5s) ===
   setTimeout(() => {
     fire({
-      particleCount: Math.round(28 * particleMultiplier),
-      spread: 75,
-      startVelocity: 22 * velocityMultiplier,
-      origin: { x: 0.5, y: 0.4 },
+      particleCount: Math.round(32 * particleMultiplier),
+      spread: 80,
+      startVelocity: 24 * velocityMultiplier,
+      origin: { x: 0.5, y: 0.35 },
       colors,
       shapes,
-      scalar: 2.8 * scalarMultiplier,
-      gravity: 0.38,
-      ticks: 450,
+      scalar: 4.0 * scalarMultiplier,
+      gravity: 0.50,
+      ticks: 420,
       drift: 0,
       decay: 0.93
     });
@@ -433,15 +433,15 @@ const playThanksScene = (fire: confetti.CreateTypes, duration: number) => {
   // === WAVE 3: Continuing warmth (3s) ===
   setTimeout(() => {
     fire({
-      particleCount: Math.round(22 * particleMultiplier),
-      spread: 65,
-      startVelocity: 18 * velocityMultiplier,
-      origin: { x: 0.5, y: 0.4 },
+      particleCount: Math.round(26 * particleMultiplier),
+      spread: 70,
+      startVelocity: 20 * velocityMultiplier,
+      origin: { x: 0.5, y: 0.35 },
       colors,
       shapes,
-      scalar: 2.4 * scalarMultiplier,
-      gravity: 0.3,
-      ticks: 500,
+      scalar: 3.5 * scalarMultiplier,
+      gravity: 0.45,
+      ticks: 450,
       drift: 0,
       decay: 0.94
     });
@@ -451,17 +451,17 @@ const playThanksScene = (fire: confetti.CreateTypes, duration: number) => {
   if (duration >= 8000) {
     setTimeout(() => {
       fire({
-        particleCount: Math.round(16 * particleMultiplier),
-        spread: 55,
-        startVelocity: 14 * velocityMultiplier,
-        origin: { x: 0.5, y: 0.4 },
+        particleCount: Math.round(20 * particleMultiplier),
+        spread: 60,
+        startVelocity: 16 * velocityMultiplier,
+        origin: { x: 0.5, y: 0.35 },
         colors,
         shapes,
-        scalar: 2.0 * scalarMultiplier,
-        gravity: 0.25,
-        ticks: 550,
+        scalar: 3.0 * scalarMultiplier,
+        gravity: 0.40,
+        ticks: 480,
         drift: 0,
-        decay: 0.95
+        decay: 0.94
       });
     }, 5000);
   }
@@ -470,17 +470,17 @@ const playThanksScene = (fire: confetti.CreateTypes, duration: number) => {
   if (duration >= 10000) {
     setTimeout(() => {
       fire({
-        particleCount: Math.round(10 * particleMultiplier),
-        spread: 45,
-        startVelocity: 10 * velocityMultiplier,
-        origin: { x: 0.5, y: 0.4 },
+        particleCount: Math.round(14 * particleMultiplier),
+        spread: 50,
+        startVelocity: 12 * velocityMultiplier,
+        origin: { x: 0.5, y: 0.35 },
         colors,
         shapes,
-        scalar: 1.7 * scalarMultiplier,
-        gravity: 0.2,
-        ticks: 600,
+        scalar: 2.5 * scalarMultiplier,
+        gravity: 0.35,
+        ticks: 500,
         drift: 0,
-        decay: 0.96
+        decay: 0.95
       });
     }, 7000);
   }
@@ -497,20 +497,20 @@ const playApologyScene = (fire: confetti.CreateTypes, duration: number) => {
   const shapes = [teardropShape];
   const { scalarMultiplier, particleMultiplier, velocityMultiplier } = getAdaptiveParams();
   
-  // === WAVE 1: Gentle burst (0.4s) - LARGER PARTICLES ===
+  // === WAVE 1: Gentle tears falling (0.4s) - tears fall DOWN like rain ===
   setTimeout(() => {
     fire({
-      particleCount: Math.round(22 * particleMultiplier),
-      spread: 75,
-      startVelocity: 14 * velocityMultiplier,
-      origin: { x: 0.5, y: 0.4 },
+      particleCount: Math.round(20 * particleMultiplier),
+      spread: 70,
+      startVelocity: 8 * velocityMultiplier,
+      origin: { x: 0.5, y: 0.25 },
       colors,
       shapes,
       scalar: 5.5 * scalarMultiplier,
-      gravity: 0.12,
-      ticks: 700,
+      gravity: 0.55,
+      ticks: 450,
       drift: 0,
-      decay: 0.97
+      decay: 0.94
     });
   }, 400);
 
@@ -519,15 +519,15 @@ const playApologyScene = (fire: confetti.CreateTypes, duration: number) => {
     fire({
       particleCount: Math.round(18 * particleMultiplier),
       spread: 65,
-      startVelocity: 12 * velocityMultiplier,
-      origin: { x: 0.5, y: 0.4 },
+      startVelocity: 7 * velocityMultiplier,
+      origin: { x: 0.5, y: 0.25 },
       colors,
       shapes,
       scalar: 5.0 * scalarMultiplier,
-      gravity: 0.10,
-      ticks: 750,
+      gravity: 0.50,
+      ticks: 480,
       drift: 0,
-      decay: 0.97
+      decay: 0.94
     });
   }, 2000);
 
@@ -536,15 +536,15 @@ const playApologyScene = (fire: confetti.CreateTypes, duration: number) => {
     fire({
       particleCount: Math.round(15 * particleMultiplier),
       spread: 55,
-      startVelocity: 10 * velocityMultiplier,
-      origin: { x: 0.5, y: 0.4 },
+      startVelocity: 6 * velocityMultiplier,
+      origin: { x: 0.5, y: 0.25 },
       colors,
       shapes,
       scalar: 4.5 * scalarMultiplier,
-      gravity: 0.08,
-      ticks: 800,
+      gravity: 0.45,
+      ticks: 500,
       drift: 0,
-      decay: 0.98
+      decay: 0.95
     });
   }, 3800);
 
@@ -553,15 +553,15 @@ const playApologyScene = (fire: confetti.CreateTypes, duration: number) => {
     fire({
       particleCount: Math.round(12 * particleMultiplier),
       spread: 50,
-      startVelocity: 8 * velocityMultiplier,
-      origin: { x: 0.5, y: 0.4 },
+      startVelocity: 5 * velocityMultiplier,
+      origin: { x: 0.5, y: 0.25 },
       colors,
       shapes,
       scalar: 4.0 * scalarMultiplier,
-      gravity: 0.07,
-      ticks: 850,
+      gravity: 0.42,
+      ticks: 520,
       drift: 0,
-      decay: 0.98
+      decay: 0.95
     });
   }, 5500);
 
@@ -571,15 +571,15 @@ const playApologyScene = (fire: confetti.CreateTypes, duration: number) => {
       fire({
         particleCount: Math.round(10 * particleMultiplier),
         spread: 45,
-        startVelocity: 7 * velocityMultiplier,
-        origin: { x: 0.5, y: 0.4 },
+        startVelocity: 4 * velocityMultiplier,
+        origin: { x: 0.5, y: 0.25 },
         colors,
         shapes,
         scalar: 3.5 * scalarMultiplier,
-        gravity: 0.06,
-        ticks: 900,
+        gravity: 0.38,
+        ticks: 550,
         drift: 0,
-        decay: 0.98
+        decay: 0.96
       });
     }, 7000);
   }
@@ -590,15 +590,15 @@ const playApologyScene = (fire: confetti.CreateTypes, duration: number) => {
       fire({
         particleCount: Math.round(8 * particleMultiplier),
         spread: 40,
-        startVelocity: 6 * velocityMultiplier,
-        origin: { x: 0.5, y: 0.4 },
+        startVelocity: 4 * velocityMultiplier,
+        origin: { x: 0.5, y: 0.25 },
         colors,
         shapes,
         scalar: 3.0 * scalarMultiplier,
-        gravity: 0.05,
-        ticks: 950,
+        gravity: 0.35,
+        ticks: 580,
         drift: 0,
-        decay: 0.99
+        decay: 0.96
       });
     }, 8500);
   }
