@@ -1,13 +1,10 @@
 import React, { useState, useRef, useEffect, forwardRef } from "react"
-import { Canvas } from "@react-three/fiber"
-import { PresentationControls, Environment } from "@react-three/drei"
-import { Play, Pause, RotateCw, ArrowLeft, ArrowRight, Star } from "lucide-react"
-import * as THREE from "three"
+import { Play, Pause, ArrowLeft, ArrowRight, Star } from "lucide-react"
 import { cn } from "@/lib/utils"
 import useEmblaCarousel from "embla-carousel-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-
+import { Postcard3D } from "@/components/postcards/Postcard3D"
 // --- Carousel Component (adapted from embla) ---
 type CarouselApi = any
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
@@ -145,98 +142,25 @@ const CarouselNext = forwardRef<HTMLButtonElement, React.ComponentProps<typeof B
 })
 CarouselNext.displayName = "CarouselNext"
 
-// --- 3D Postcard Component ---
-function Postcard3D({ frontImage, backImage, isFlipped }: { frontImage: string; backImage: string; isFlipped: boolean }) {
-  const [frontTexture, setFrontTexture] = useState<THREE.Texture | null>(null)
-  const [backTexture, setBackTexture] = useState<THREE.Texture | null>(null)
-
-  const createPlaceholderTexture = (side: 'front' | 'back') => {
-    const canvas = document.createElement('canvas')
-    canvas.width = 256
-    canvas.height = 358
-    const ctx = canvas.getContext('2d')
-    
-    if (ctx) {
-      if (side === 'front') {
-        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height)
-        gradient.addColorStop(0, '#6A5ACD')
-        gradient.addColorStop(1, '#8A7CDD')
-        ctx.fillStyle = gradient
-        ctx.fillRect(0, 0, canvas.width, canvas.height)
-        ctx.fillStyle = 'white'
-        ctx.font = 'bold 24px Arial'
-        ctx.textAlign = 'center'
-        ctx.fillText('Музична', canvas.width / 2, canvas.height / 2 - 20)
-        ctx.fillText('Листівка', canvas.width / 2, canvas.height / 2 + 20)
-      } else {
-        ctx.fillStyle = '#f8f9fa'
-        ctx.fillRect(0, 0, canvas.width, canvas.height)
-        ctx.strokeStyle = '#6A5ACD'
-        ctx.lineWidth = 2
-        ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40)
-        ctx.fillStyle = '#6A5ACD'
-        ctx.font = '16px Arial'
-        ctx.textAlign = 'left'
-        ctx.fillText('Особисте повідомлення', 30, 50)
-      }
-    }
-    return new THREE.CanvasTexture(canvas)
+// --- Postcard Image Component ---
+function PostcardImage({ src, alt }: { src: string; alt: string }) {
+  const [hasError, setHasError] = useState(false)
+  
+  if (hasError || !src || !src.startsWith('/')) {
+    return (
+      <div className="w-full h-full bg-gradient-to-b from-primary/20 to-primary/40 flex items-center justify-center">
+        <span className="text-primary font-medium">{alt}</span>
+      </div>
+    )
   }
-
-  useEffect(() => {
-    const textureLoader = new THREE.TextureLoader()
-    
-    // Load front texture
-    if (frontImage && frontImage.startsWith('/')) {
-      textureLoader.load(
-        frontImage,
-        (texture) => {
-          texture.colorSpace = THREE.SRGBColorSpace
-          setFrontTexture(texture)
-        },
-        undefined,
-        () => setFrontTexture(createPlaceholderTexture('front'))
-      )
-    } else {
-      setFrontTexture(createPlaceholderTexture('front'))
-    }
-    
-    // Load back texture
-    if (backImage && backImage.startsWith('/')) {
-      textureLoader.load(
-        backImage,
-        (texture) => {
-          texture.colorSpace = THREE.SRGBColorSpace
-          setBackTexture(texture)
-        },
-        undefined,
-        () => setBackTexture(createPlaceholderTexture('back'))
-      )
-    } else {
-      setBackTexture(createPlaceholderTexture('back'))
-    }
-
-    return () => {
-      frontTexture?.dispose()
-      backTexture?.dispose()
-    }
-  }, [frontImage, backImage])
-
+  
   return (
-    <group rotation={[0, isFlipped ? Math.PI : 0, 0]}>
-      <mesh position={[0, 0, 0.01]}>
-        <planeGeometry args={[1.5, 2.1]} />
-        {frontTexture && <meshStandardMaterial map={frontTexture} />}
-      </mesh>
-      <mesh position={[0, 0, -0.01]} rotation={[0, Math.PI, 0]}>
-        <planeGeometry args={[1.5, 2.1]} />
-        {backTexture && <meshStandardMaterial map={backTexture} />}
-      </mesh>
-      <mesh position={[0, 0, 0]}>
-        <boxGeometry args={[1.52, 2.12, 0.02]} />
-        <meshStandardMaterial color="#FFFFFF" />
-      </mesh>
-    </group>
+    <img 
+      src={src} 
+      alt={alt} 
+      className="w-full h-full object-cover"
+      onError={() => setHasError(true)}
+    />
   )
 }
 
@@ -373,8 +297,6 @@ const postcardExamples = [
 ]
 
 export default function ExamplesSection3D() {
-  const [isFlipped, setIsFlipped] = useState(false)
-
   return (
     <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
@@ -396,34 +318,15 @@ export default function ExamplesSection3D() {
                         <h3 className="text-xl font-bold mb-2 text-[#6A5ACD]">{postcard.title}</h3>
                         <p className="text-[#6A5ACD]/80 mb-4">{postcard.description}</p>
                         
-                        <div className="relative h-[300px] bg-gradient-to-b from-[#6A5ACD]/10 to-[#6A5ACD]/20 rounded-lg mb-4">
-                          <Button 
-                            variant="outline" 
-                            size="icon" 
-                            className="absolute top-2 right-2 z-10 bg-white/80 hover:bg-white border-[#6A5ACD]/30" 
-                            onClick={() => setIsFlipped(!isFlipped)}
-                          >
-                            <RotateCw size={18} />
-                          </Button>
-                          <Canvas dpr={[1, 2]} camera={{ fov: 45, position: [0, 0, 3] }}>
-                            <color attach="background" args={["transparent"]} />
-                            <ambientLight intensity={0.5} />
-                            <directionalLight position={[10, 10, 5]} intensity={1} />
-                            <PresentationControls 
-                              global 
-                              zoom={0.8} 
-                              rotation={[0, 0, 0]} 
-                              polar={[-Math.PI / 4, Math.PI / 4]} 
-                              azimuth={[-Math.PI / 4, Math.PI / 4]}
-                            >
-                              <Postcard3D 
-                                frontImage={postcard.frontImage} 
-                                backImage={postcard.backImage} 
-                                isFlipped={isFlipped} 
-                              />
-                            </PresentationControls>
-                            <Environment preset="city" />
-                          </Canvas>
+                        <div className="mb-4">
+                          <Postcard3D
+                            front={<PostcardImage src={postcard.frontImage} alt="Лицева сторона" />}
+                            back={<PostcardImage src={postcard.backImage} alt="Зворотна сторона" />}
+                            orientation="portrait"
+                            className="h-[320px]"
+                            initialTilt={{ x: 0, y: 5 }}
+                            maxTilt={{ x: 8, y: 15 }}
+                          />
                         </div>
                         
                         <AudioPlayer 
