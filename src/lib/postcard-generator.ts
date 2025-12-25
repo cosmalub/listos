@@ -241,10 +241,10 @@ export async function composeBackImageA6(opts: { color: string; message: string;
   const A6_WIDTH = 1240;
   const A6_HEIGHT = 1748;
   const PAD = 100;
-  const INITIAL = 64;
-  const MIN = 28;
-  const LINE_H = 1.25;
-  const PARAGRAPH_GAP = 40; // Gap between paragraphs like in preview
+  const INITIAL = 75;  // Proportional to preview (14px × 5.2 scale factor)
+  const MIN = 40;
+  const LINE_H = 1.2;  // Bebas Neue is more compact
+  const PARAGRAPH_GAP = 62; // Gap between paragraphs (12px × 5.2 scale factor)
 
   const isLight = (hex: string) => {
     const h = hex.replace('#', '');
@@ -269,7 +269,7 @@ export async function composeBackImageA6(opts: { color: string; message: string;
   const paragraphs = splitMessageToParagraphs((message || '').trim());
   
   function setFont(size: number) {
-    ctx.font = `bold ${size}px Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif`;
+    ctx.font = `bold ${size}px "Bebas Neue Cyrillic", "Bebas Neue", sans-serif`;
   }
 
   // Wrap text for a single paragraph
