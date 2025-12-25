@@ -268,120 +268,78 @@ const playCelebrationScene = (fire: confetti.CreateTypes, duration: number) => {
 };
 
 /**
- * Love - HEARTS ONLY - intimate power
+ * Love - HEARTS ONLY - romantic whirlwind effect
  * Shapes: heartShape ONLY - no circles allowed
- * Feeling: Intimate power, heartfelt, romantic
- * Reduced count, increased size, slow velocity
+ * Feeling: Romantic whirlwind, hearts scattering beautifully
+ * Multiple origin points with drift for swirling effect
  */
 const playLoveScene = (fire: confetti.CreateTypes, duration: number) => {
   const colors = ['#FF006E', '#FF1744', '#F50057', '#FF4081', '#E91E63', '#FF80AB'];
   const shapes = [heartShape]; // HEARTS ONLY
   const { scalarMultiplier, particleMultiplier, velocityMultiplier } = getAdaptiveParams();
   
-  // === WAVE 1: Initial burst (0.3s) - Hearts fall DOWN romantically ===
-  setTimeout(() => {
-    fire({
-      particleCount: Math.round(28 * particleMultiplier),
-      spread: 90,
-      startVelocity: 16 * velocityMultiplier,
-      origin: { x: 0.5, y: 0.35 },
-      colors,
-      shapes,
-      scalar: 5.5 * scalarMultiplier,
-      gravity: 0.50,
-      ticks: 500,
-      drift: 0,
-      decay: 0.94
-    });
-  }, 300);
-
-  // === WAVE 2: Expanding love (1.5s) ===
-  setTimeout(() => {
-    fire({
-      particleCount: Math.round(24 * particleMultiplier),
-      spread: 100,
-      startVelocity: 14 * velocityMultiplier,
-      origin: { x: 0.5, y: 0.35 },
-      colors,
-      shapes,
-      scalar: 5.0 * scalarMultiplier,
-      gravity: 0.45,
-      ticks: 480,
-      drift: 0,
-      decay: 0.94
-    });
-  }, 1500);
-
-  // === WAVE 3: Continuing romance (3s) ===
-  setTimeout(() => {
-    fire({
-      particleCount: Math.round(20 * particleMultiplier),
-      spread: 85,
-      startVelocity: 12 * velocityMultiplier,
-      origin: { x: 0.5, y: 0.35 },
-      colors,
-      shapes,
-      scalar: 4.5 * scalarMultiplier,
-      gravity: 0.42,
-      ticks: 460,
-      drift: 0,
-      decay: 0.94
-    });
-  }, 3000);
-
-  // === WAVE 4: Gentle flow (4.5s) ===
-  setTimeout(() => {
-    fire({
-      particleCount: Math.round(16 * particleMultiplier),
-      spread: 75,
-      startVelocity: 10 * velocityMultiplier,
-      origin: { x: 0.5, y: 0.35 },
-      colors,
-      shapes,
-      scalar: 4.0 * scalarMultiplier,
-      gravity: 0.38,
-      ticks: 500,
-      drift: 0,
-      decay: 0.95
-    });
-  }, 4500);
-
-  // === WAVE 5: Soft ending (6.5s) ===
-  if (duration >= 8000) {
+  // Helper function for firing hearts from multiple origins
+  const fireHeartWave = (delay: number, intensity: number) => {
     setTimeout(() => {
+      // Left side - hearts drift left-down
       fire({
-        particleCount: Math.round(12 * particleMultiplier),
-        spread: 65,
-        startVelocity: 8 * velocityMultiplier,
-        origin: { x: 0.5, y: 0.35 },
+        particleCount: Math.round(12 * intensity * particleMultiplier),
+        spread: 100,
+        startVelocity: 22 * velocityMultiplier,
+        origin: { x: 0.3, y: 0.35 },
         colors,
         shapes,
-        scalar: 3.5 * scalarMultiplier,
-        gravity: 0.35,
+        scalar: 5.5 * scalarMultiplier,
+        gravity: 0.45,
+        ticks: 500,
+        drift: -0.8,
+        decay: 0.94
+      });
+      
+      // Center - hearts fall down with wider spread
+      fire({
+        particleCount: Math.round(14 * intensity * particleMultiplier),
+        spread: 120,
+        startVelocity: 24 * velocityMultiplier,
+        origin: { x: 0.5, y: 0.30 },
+        colors,
+        shapes,
+        scalar: 6.0 * scalarMultiplier,
+        gravity: 0.50,
         ticks: 520,
         drift: 0,
-        decay: 0.95
+        decay: 0.94
       });
-    }, 6500);
-  }
-
-  // === WAVE 6: Final whisper (8s) ===
-  if (duration >= 10000) {
-    setTimeout(() => {
+      
+      // Right side - hearts drift right-down
       fire({
-        particleCount: Math.round(8 * particleMultiplier),
-        spread: 50,
-        startVelocity: 6 * velocityMultiplier,
-        origin: { x: 0.5, y: 0.35 },
+        particleCount: Math.round(12 * intensity * particleMultiplier),
+        spread: 100,
+        startVelocity: 22 * velocityMultiplier,
+        origin: { x: 0.7, y: 0.35 },
         colors,
         shapes,
-        scalar: 3.0 * scalarMultiplier,
-        gravity: 0.32,
-        ticks: 550,
-        drift: 0,
-        decay: 0.96
+        scalar: 5.5 * scalarMultiplier,
+        gravity: 0.45,
+        ticks: 500,
+        drift: 0.8,
+        decay: 0.94
       });
-    }, 8000);
+    }, delay);
+  };
+  
+  // === 6 waves creating romantic whirlwind effect ===
+  fireHeartWave(300, 1.0);    // Wave 1: Full intensity burst
+  fireHeartWave(1500, 0.9);   // Wave 2: Continuing romance
+  fireHeartWave(2800, 0.85);  // Wave 3: Flowing hearts
+  fireHeartWave(4200, 0.75);  // Wave 4: Gentle flow
+  
+  if (duration >= 8000) {
+    fireHeartWave(5600, 0.6); // Wave 5: Soft ending
+  }
+  
+  if (duration >= 10000) {
+    fireHeartWave(7200, 0.45); // Wave 6: Final whisper
   }
 };
 
