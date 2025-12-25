@@ -487,120 +487,81 @@ const playThanksScene = (fire: confetti.CreateTypes, duration: number) => {
 };
 
 /**
- * Apology - TEARDROPS - fragile honesty
+ * Apology - GENTLE RAIN OF TEARS
  * Shapes: teardropShape ONLY - fragile, vulnerable, honest
- * Feeling: Sincerity, vulnerability, gentle presence
- * Very few particles, slow movement, must feel fragile not decorative
+ * Feeling: Sincerity, vulnerability, gentle presence like soft rain
+ * Particles fall from TOP across full screen width
  */
 const playApologyScene = (fire: confetti.CreateTypes, duration: number) => {
   const colors = ['#81D4FA', '#4FC3F7', '#29B6F6', '#B3E5FC', '#E1F5FE', '#80DEEA'];
   const shapes = [teardropShape];
   const { scalarMultiplier, particleMultiplier, velocityMultiplier } = getAdaptiveParams();
   
-  // === WAVE 1: Gentle tears falling (0.4s) - tears fall DOWN like rain ===
-  setTimeout(() => {
-    fire({
-      particleCount: Math.round(20 * particleMultiplier),
-      spread: 70,
-      startVelocity: 8 * velocityMultiplier,
-      origin: { x: 0.5, y: 0.25 },
-      colors,
-      shapes,
-      scalar: 5.5 * scalarMultiplier,
-      gravity: 0.55,
-      ticks: 450,
-      drift: 0,
-      decay: 0.94
-    });
-  }, 400);
-
-  // === WAVE 2: Quiet presence (2s) ===
-  setTimeout(() => {
-    fire({
-      particleCount: Math.round(18 * particleMultiplier),
-      spread: 65,
-      startVelocity: 7 * velocityMultiplier,
-      origin: { x: 0.5, y: 0.25 },
-      colors,
-      shapes,
-      scalar: 5.0 * scalarMultiplier,
-      gravity: 0.50,
-      ticks: 480,
-      drift: 0,
-      decay: 0.94
-    });
-  }, 2000);
-
-  // === WAVE 3: Contemplative (3.8s) ===
-  setTimeout(() => {
-    fire({
-      particleCount: Math.round(15 * particleMultiplier),
-      spread: 55,
-      startVelocity: 6 * velocityMultiplier,
-      origin: { x: 0.5, y: 0.25 },
-      colors,
-      shapes,
-      scalar: 4.5 * scalarMultiplier,
-      gravity: 0.45,
-      ticks: 500,
-      drift: 0,
-      decay: 0.95
-    });
-  }, 3800);
-
-  // === WAVE 4: Lingering (5.5s) ===
-  setTimeout(() => {
-    fire({
-      particleCount: Math.round(12 * particleMultiplier),
-      spread: 50,
-      startVelocity: 5 * velocityMultiplier,
-      origin: { x: 0.5, y: 0.25 },
-      colors,
-      shapes,
-      scalar: 4.0 * scalarMultiplier,
-      gravity: 0.42,
-      ticks: 520,
-      drift: 0,
-      decay: 0.95
-    });
-  }, 5500);
-
-  // === WAVE 5: Gentle fade (7s) ===
-  if (duration >= 8000) {
+  // Helper function to fire a rain wave across the screen
+  const fireRainWave = (delay: number, intensity: number) => {
     setTimeout(() => {
+      // Left side
       fire({
-        particleCount: Math.round(10 * particleMultiplier),
+        particleCount: Math.round(8 * intensity * particleMultiplier),
         spread: 45,
-        startVelocity: 4 * velocityMultiplier,
-        origin: { x: 0.5, y: 0.25 },
+        startVelocity: 5 * velocityMultiplier,
+        origin: { x: 0.25, y: 0.05 },
         colors,
         shapes,
-        scalar: 3.5 * scalarMultiplier,
-        gravity: 0.38,
-        ticks: 550,
-        drift: 0,
+        scalar: 4.5 * scalarMultiplier,
+        gravity: 0.65,
+        ticks: 600,
+        angle: 90,
+        drift: 0.5,
         decay: 0.96
       });
-    }, 7000);
-  }
-
-  // === WAVE 6: Final silence (8.5s) ===
-  if (duration >= 10000) {
-    setTimeout(() => {
+      
+      // Center
       fire({
-        particleCount: Math.round(8 * particleMultiplier),
-        spread: 40,
-        startVelocity: 4 * velocityMultiplier,
-        origin: { x: 0.5, y: 0.25 },
+        particleCount: Math.round(10 * intensity * particleMultiplier),
+        spread: 50,
+        startVelocity: 6 * velocityMultiplier,
+        origin: { x: 0.5, y: 0.05 },
         colors,
         shapes,
-        scalar: 3.0 * scalarMultiplier,
-        gravity: 0.35,
-        ticks: 580,
+        scalar: 5.0 * scalarMultiplier,
+        gravity: 0.70,
+        ticks: 600,
+        angle: 90,
         drift: 0,
         decay: 0.96
       });
-    }, 8500);
+      
+      // Right side
+      fire({
+        particleCount: Math.round(8 * intensity * particleMultiplier),
+        spread: 45,
+        startVelocity: 5 * velocityMultiplier,
+        origin: { x: 0.75, y: 0.05 },
+        colors,
+        shapes,
+        scalar: 4.5 * scalarMultiplier,
+        gravity: 0.65,
+        ticks: 600,
+        angle: 90,
+        drift: -0.5,
+        decay: 0.96
+      });
+    }, delay);
+  };
+  
+  // 6 waves of gentle rain across duration
+  fireRainWave(300, 1.0);
+  fireRainWave(1800, 0.9);
+  fireRainWave(3300, 0.85);
+  fireRainWave(4800, 0.75);
+  
+  if (duration >= 8000) {
+    fireRainWave(6300, 0.6);
+  }
+  
+  if (duration >= 10000) {
+    fireRainWave(7800, 0.45);
   }
 };
 
