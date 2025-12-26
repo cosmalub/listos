@@ -4,6 +4,7 @@ import { BenefitsSection } from "@/components/sections/benefits-section";
 import { ComparisonSection } from "@/components/sections/comparison-section";
 import { MascotSection } from "@/components/sections/mascot-section";
 import ExamplesSection3D from "@/components/sections/examples-section-3d";
+import { MomentsGallerySection } from "@/components/sections/moments-gallery-section";
 import { PricingSection } from "@/components/sections/pricing-section";
 import { ReviewsSection } from "@/components/sections/reviews-section";
 import { AiBenefitsSection } from "@/components/sections/ai-benefits-section";
@@ -33,6 +34,9 @@ const Index = () => {
       </section>
       <section id="examples">
         <ExamplesSection3D />
+      </section>
+      <section id="moments-gallery">
+        <MomentsGallerySection />
       </section>
       <section id="reviews">
         <ReviewsSection />
