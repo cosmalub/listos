@@ -19,7 +19,7 @@ import { StepExplanation } from '@/components/studio/StepExplanation';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { MusicStyle, MUSIC_STYLES, getStyleById } from '@/lib/music-styles';
-import { composeFrontImageA6, composeBackImageA6, preprocessImageToA6 } from '@/lib/postcard-generator';
+import { composeFrontImageA6, composeBackImageA6, preprocessImageToA6, captureElement } from '@/lib/postcard-generator';
 
 const steps = [
   { id: 1, title: 'Створення слів', description: 'Створюємо слова для пісні' },
@@ -337,29 +337,61 @@ const Studio = () => {
       const qrUrl = `https://listos.app/s/song/${orderId}`;
       console.log('QR URL generated:', qrUrl);
 
-      // Compose front image using Canvas
-      let frontImageBase64;
-      if (postcardDesignData.front.mode === 'photo' && postcardDesignData.front.imageUrl) {
-        frontImageBase64 = await composeFrontImageA6(
-          postcardDesignData.front.imageUrl,
-          postcardDesignData.front.caption || '',
-          postcardDesignData.front.useFrame || false
-        );
-        console.log('Front image composed to A6 format with caption overlay');
-      } else if (postcardDesignData.front.imageUrl) {
-        frontImageBase64 = await preprocessImageToA6(postcardDesignData.front.imageUrl);
-        console.log('Front image preprocessed to A6 format');
-      } else {
-        throw new Error('Front image URL is missing');
-      }
+      // Create offscreen container for capturing previews
+      const offscreenContainer = document.createElement('div');
+      offscreenContainer.style.cssText = 'position: fixed; left: -9999px; top: 0; width: 320px; pointer-events: none;';
+      document.body.appendChild(offscreenContainer);
 
-      // Compose back image using Canvas with CORRECT QR code
-      const backImageBase64 = await composeBackImageA6({
-        color: postcardDesignData.back.selectedColor || '#FFFFFF',
-        message: postcardDesignData.back.personalMessage || '',
-        qrUrl: qrUrl
-      });
-      console.log('Back image composed to A6 format with QR code');
+      // Import React and ReactDOM for rendering
+      const { createRoot } = await import('react-dom/client');
+      const { PostcardPreview } = await import('@/components/studio/PostcardPreview');
+
+      // Helper to render and capture a preview
+      const capturePreview = async (showFront: boolean, qrUrlForCapture?: string): Promise<string> => {
+        return new Promise((resolve, reject) => {
+          const wrapper = document.createElement('div');
+          wrapper.style.cssText = 'width: 320px;';
+          offscreenContainer.appendChild(wrapper);
+
+          const root = createRoot(wrapper);
+          root.render(
+            React.createElement(PostcardPreview, {
+              frontData: postcardDesignData.front,
+              backData: postcardDesignData.back,
+              showFront,
+              size: 'compact',
+              qrUrl: qrUrlForCapture,
+            })
+          );
+
+          // Wait for render + images to load
+          setTimeout(async () => {
+            try {
+              // Scale up for print quality (320px * 4 = 1280px, close to A6 1240px)
+              const base64 = await captureElement(wrapper, 4);
+              root.unmount();
+              wrapper.remove();
+              resolve(base64);
+            } catch (err) {
+              root.unmount();
+              wrapper.remove();
+              reject(err);
+            }
+          }, 500);
+        });
+      };
+
+      // Capture front and back previews
+      console.log('Capturing front preview...');
+      const frontImageBase64 = await capturePreview(true);
+      console.log('Front preview captured');
+
+      console.log('Capturing back preview with QR...');
+      const backImageBase64 = await capturePreview(false, qrUrl);
+      console.log('Back preview captured');
+
+      // Cleanup
+      offscreenContainer.remove();
 
       // PHASE 2: Finalize order with images
       console.log('Phase 2: Finalizing order with images...');
