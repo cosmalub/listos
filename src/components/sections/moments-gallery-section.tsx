@@ -56,8 +56,8 @@ export function MomentsGallerySection() {
 
   return (
     <section className="py-16 md:py-20 bg-white relative overflow-hidden">
+      {/* Заголовок */}
       <div className="container mx-auto px-4 relative z-10">
-        {/* Заголовок */}
         <div className="text-center mb-12 md:mb-16">
           {/* Головний заголовок */}
           <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
@@ -95,14 +95,17 @@ export function MomentsGallerySection() {
             <span className="text-primary ml-1">✨</span>
           </p>
         </div>
+      </div>
 
+      {/* Галерея на всю ширину екрану */}
+      <div className="relative">
+        {/* Градієнти затухання - фіксовані по краях */}
+        <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 lg:w-24 bg-gradient-to-r from-white to-transparent z-20 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 lg:w-24 bg-gradient-to-l from-white to-transparent z-20 pointer-events-none" />
+        
         {/* Перший ряд галереї - рух вліво */}
-        <div className="relative mb-6 md:mb-8 -mx-4 md:mx-0">
-          {/* Градієнти для плавного затухання по краях */}
-          <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 lg:w-48 bg-gradient-to-r from-white via-white/80 to-transparent z-20 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 lg:w-48 bg-gradient-to-l from-white via-white/80 to-transparent z-20 pointer-events-none" />
-          
-          <div className="flex gap-4 md:gap-6 animate-scroll-left hover:[animation-play-state:paused] px-4 md:px-0">
+        <div className="mb-6 md:mb-8">
+          <div className="flex gap-4 md:gap-6 animate-scroll-left hover:[animation-play-state:paused]">
             {firstRow.map((image, index) => (
               <GalleryImage key={`row1-${index}`} {...image} />
             ))}
@@ -111,20 +114,18 @@ export function MomentsGallerySection() {
 
         {/* Другий ряд галереї - рух вправо */}
         {secondRow.length > 0 && (
-          <div className="relative -mx-4 md:mx-0">
-            {/* Градієнти для плавного затухання по краях */}
-            <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 lg:w-48 bg-gradient-to-r from-white via-white/80 to-transparent z-20 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 lg:w-48 bg-gradient-to-l from-white via-white/80 to-transparent z-20 pointer-events-none" />
-            
-            <div className="flex gap-4 md:gap-6 animate-scroll-right hover:[animation-play-state:paused] px-4 md:px-0">
+          <div>
+            <div className="flex gap-4 md:gap-6 animate-scroll-right hover:[animation-play-state:paused]">
               {secondRow.map((image, index) => (
                 <GalleryImage key={`row2-${index}`} {...image} />
               ))}
             </div>
           </div>
         )}
+      </div>
 
-        {/* Інтерактивна підказка */}
+      {/* Інтерактивна підказка */}
+      <div className="container mx-auto px-4">
         <div className="text-center mt-10 md:mt-14">
           <p className="inline-flex items-center gap-3 text-sm text-muted-foreground/70">
             <span className="w-1.5 h-1.5 bg-primary/40 rounded-full animate-pulse" />
