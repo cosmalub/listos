@@ -294,6 +294,21 @@ const postcardExamples = [
     customerLocation: "Львів",
     rating: 5
   },
+  { 
+    id: 4, 
+    title: "Освідчення в коханні", 
+    description: "Романтична музична листівка для коханої.", 
+    frontImage: "/examples/nastya-front.png", 
+    backImage: "/examples/nastya-back.png", 
+    songTitle: "Моя Настя", 
+    artist: "Від Дмитра", 
+    audioSrc: "/audio/nastya-love.mp3",
+    customerStory: "Дмитро створив цю пісню для своєї коханої Насті, щоб передати свої почуття і сказати, як багато вона для нього означає. У пісні він говорить про близькість, тепло і щастя бути разом.",
+    customerReaction: "Настя була дуже зворушена подарунком. Сказала, що це один із найтепліших і найщиріших моментів у їхніх стосунках.",
+    customerName: "Дмитро, 27 років",
+    customerLocation: "Київ",
+    rating: 5
+  },
 ]
 
 export default function ExamplesSection3D() {
