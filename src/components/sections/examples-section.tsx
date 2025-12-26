@@ -40,6 +40,14 @@ export function ExamplesSection() {
       author: "Від Олега",
       audioUrl: "/audio/thanks-sample.mp3",
     },
+    {
+      title: "Моя Настя",
+      occasion: "Освідчення в коханні",
+      author: "Від Дмитра",
+      audioUrl: "/audio/nastya-love.mp3",
+      frontImg: "/examples/nastya-front.png",
+      backImg: "/examples/nastya-back.png",
+    },
   ];
 
   // Один общий аудио-плеер
