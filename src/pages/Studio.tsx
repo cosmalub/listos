@@ -334,7 +334,7 @@ const Studio = () => {
       console.log('Order created with ID:', orderId);
 
       // Generate QR code URL with correct orderId
-      const qrUrl = `https://listos.app/s/song/${orderId}`;
+      const qrUrl = `https://lystosyk.com/s/song/${orderId}`;
       console.log('QR URL generated:', qrUrl);
 
       // Create offscreen container for capturing previews
