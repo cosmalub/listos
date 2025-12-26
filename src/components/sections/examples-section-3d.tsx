@@ -294,6 +294,21 @@ const postcardExamples = [
     customerLocation: "Харків",
     rating: 5
   },
+  { 
+    id: 4, 
+    title: "З днем народження, вчителю", 
+    description: "Музична листівка для вчителя від учня.", 
+    frontImage: "/examples/teacher-front.png", 
+    backImage: "/examples/teacher-back.png", 
+    songTitle: "Дякую за науку і підтримку", 
+    artist: "Від учня", 
+    audioSrc: "/audio/teacher-birthday.mp3",
+    customerStory: "Учень створив музичну листівку для своєї вчительки Олени Петрівни на день народження, щоб подякувати за знання, терпіння і підтримку. У пісні — повага, вдячність і теплі слова, сказані просто і щиро.",
+    customerReaction: "Олені Петрівні було приємно отримати такий подарунок. Вона сказала, що це було дуже несподівано і зворушливо, і залишила листівку на пам'ять.",
+    customerName: "Учень, 12 років",
+    customerLocation: "Львів",
+    rating: 5
+  },
 ]
 
 export default function ExamplesSection3D() {
