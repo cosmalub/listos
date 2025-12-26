@@ -1,7 +1,6 @@
-import * as React from "react"
-import { ChevronDown } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { Button } from "@/components/ui/button";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { SectionHeader } from "@/components/ui/section-header";
 
 // FAQ data
 const faqs = [
@@ -97,25 +96,13 @@ const faqs = [
 
 Ми впевнені в якості — тому даємо повну гарантію.`,
   },
-]
-
-// Create Postcard Button Component
-function CreatePostcardButton() {
-  return (
-    <Button
-      className="text-lg px-8 py-6 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold"
-      onClick={() => window.location.href = '/order'}
-    >
-      🎵 Створити листівку
-    </Button>
-  )
-}
+];
 
 export default function FaqAndCtaSections() {
   return (
     <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4 max-w-3xl">
-        <h2 className="text-3xl font-bold mb-12 text-center text-[#6A5ACD] font-baloo">Часті запитання</h2>
+        <SectionHeader title="Часті запитання" size="md" />
 
         <Accordion type="single" collapsible className="w-full mb-12">
           {faqs.map((faq, index) => (
@@ -128,12 +115,10 @@ export default function FaqAndCtaSections() {
 
         {/* CTA після FAQ */}
         <div className="mt-16 bg-gradient-to-br from-[#F8F7FF] to-white border-2 border-[#B8B3FF]/40 rounded-3xl p-8 text-center shadow-lg hover:border-[#B8B3FF] transition-all">
-          <h3 className="text-2xl font-bold text-[#6A5ACD] mb-6">
-            Усі питання закриті — створюю пісню!
-          </h3>
-          
+          <h3 className="text-2xl font-bold text-[#6A5ACD] mb-6">Усі питання закриті — створюю пісню!</h3>
+
           <Button
-            onClick={() => window.location.href = '/order'}
+            onClick={() => (window.location.href = "/order")}
             className="text-lg px-12 py-7 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold mb-6"
           >
             🎵 Усі питання закриті — замовляю!
@@ -158,5 +143,5 @@ export default function FaqAndCtaSections() {
         </div>
       </div>
     </section>
-  )
+  );
 }

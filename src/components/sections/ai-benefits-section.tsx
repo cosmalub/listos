@@ -1,5 +1,6 @@
 import { Zap, Sparkles, RefreshCw, DollarSign, LucideIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { SectionHeader } from "@/components/ui/section-header";
 
 interface BenefitCardProps {
   icon: LucideIcon;
@@ -22,9 +23,9 @@ function BenefitCard({ icon: Icon, title, description, comparison, bottomText }:
           </div>
           <h3 className="text-base md:text-lg font-bold text-[#6A5ACD]">{title}</h3>
         </div>
-        
+
         <p className="text-sm md:text-base text-[#6A5ACD]/80 leading-relaxed mb-4 whitespace-pre-line">{description}</p>
-        
+
         {comparison && (
           <div className="mt-4 md:mt-6">
             <p className="font-semibold text-[#6A5ACD] mb-2 md:mb-3 text-sm md:text-base">{comparison.title}</p>
@@ -33,24 +34,24 @@ function BenefitCard({ icon: Icon, title, description, comparison, bottomText }:
                 <div
                   key={index}
                   className={`p-2 md:p-3 rounded-lg border-2 ${
-                    item.isHighlight
-                      ? 'bg-green-50 border-green-300'
-                      : 'bg-gray-50 border-gray-200'
+                    item.isHighlight ? "bg-green-50 border-green-300" : "bg-gray-50 border-gray-200"
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className={`font-semibold text-xs md:text-sm ${item.isHighlight ? 'text-green-700' : 'text-gray-600'}`}>
+                    <span
+                      className={`font-semibold text-xs md:text-sm ${item.isHighlight ? "text-green-700" : "text-gray-600"}`}
+                    >
                       {item.name}
                     </span>
-                    <span className={item.isHighlight ? 'text-green-600' : 'text-red-500'}>
-                      {item.isHighlight ? '✅' : '❌'}
+                    <span className={item.isHighlight ? "text-green-600" : "text-red-500"}>
+                      {item.isHighlight ? "✅" : "❌"}
                     </span>
                   </div>
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-1 gap-0.5 sm:gap-2">
-                    <span className={`text-xs md:text-sm ${item.isHighlight ? 'text-green-600 font-bold' : 'text-gray-500'}`}>
+                    <span className={`text-xs md:text-sm ${item.isHighlight ? "text-green-600 font-bold" : "text-gray-500"}`}>
                       {item.price}
                     </span>
-                    <span className={`text-xs md:text-sm ${item.isHighlight ? 'text-green-600 font-bold' : 'text-gray-500'}`}>
+                    <span className={`text-xs md:text-sm ${item.isHighlight ? "text-green-600 font-bold" : "text-gray-500"}`}>
                       {item.time}
                     </span>
                   </div>
@@ -59,7 +60,7 @@ function BenefitCard({ icon: Icon, title, description, comparison, bottomText }:
             </div>
           </div>
         )}
-        
+
         {bottomText && (
           <p className="mt-3 md:mt-4 text-sm md:text-base text-[#6A5ACD] font-semibold text-center">{bottomText}</p>
         )}
@@ -120,12 +121,11 @@ export function AiBenefitsSection() {
   return (
     <section className="py-12 md:py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center text-[#6A5ACD] mb-3 md:mb-4">
-          Чому ШІ — це круто?
-        </h2>
-        <p className="text-base md:text-lg text-center text-[#6A5ACD]/80 mb-8 md:mb-12 max-w-3xl mx-auto">
-          Ми не приховуємо — наші пісні створює штучний інтелект. І ось чому це чудово:
-        </p>
+        <SectionHeader
+          title="Чому ШІ — це круто?"
+          subtitle="Ми не приховуємо — наші пісні створює штучний інтелект. І ось чому це чудово"
+          size="md"
+        />
 
         <div className="grid md:grid-cols-2 gap-4 md:gap-6 max-w-6xl mx-auto">
           {benefits.map((benefit, index) => (

@@ -1,3 +1,5 @@
+import { SectionHeader } from "@/components/ui/section-header";
+
 // Data for the situations
 const commonSituations = [
   {
@@ -35,11 +37,13 @@ export function BenefitsSection() {
   return (
     <section className="py-12 -mt-8 bg-gradient-to-b from-white/20 to-white relative z-10">
       <div className="container mx-auto px-4">
-        <h2 className="text-2xl font-medium mt-8 mb-8 text-center text-[#6A5ACD] max-w-3xl mx-auto">
-          Коли стандартні слова безсилі, допоможе
-          <br />
-          особиста листівка з піснею — ось як саме:
-        </h2>
+        <SectionHeader
+          title="Коли стандартні слова безсилі"
+          titleSecondLine="допоможе листівка з піснею"
+          subtitle="Ось як саме вона працює"
+          size="md"
+          className="mt-8"
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
           {commonSituations.map((situation, index) => (

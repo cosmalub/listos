@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import { SectionHeader } from "@/components/ui/section-header";
 
 interface ComparisonRowProps {
   standard: {
@@ -88,14 +89,11 @@ export function ComparisonSection() {
   return (
     <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#6A5ACD] mb-4">
-            Чому Листосик краще?
-          </h2>
-          <p className="text-lg text-[#6A5ACD]/70 max-w-2xl mx-auto">
-            Порівняй зі звичайними подарунками
-          </p>
-        </div>
+        <SectionHeader
+          title="Чому Листосик краще?"
+          subtitle="Порівняй зі звичайними подарунками"
+          size="md"
+        />
 
         <div className="max-w-4xl mx-auto space-y-6 mb-12">
           {comparisons.map((comparison, index) => (
