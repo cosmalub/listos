@@ -567,6 +567,7 @@ const Studio = () => {
             lyrics={lyrics}
             musicVariant={selectedMusicVariant}
             designData={designData}
+            chatMessages={chatMessages}
             onComplete={handlePageCaptionComplete}
           />
         );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,7 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { FileText, Info, ArrowRight } from 'lucide-react';
+import { FileText, Info, ArrowRight, Loader2 } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 interface PageCaptionData {
   occasion: string;
@@ -18,6 +19,7 @@ interface PageCaptionStepProps {
   lyrics: string;
   musicVariant: any;
   designData: any;
+  chatMessages?: any[];
   onComplete: (data: PageCaptionData) => void;
 }
 
@@ -37,6 +39,7 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
   lyrics,
   musicVariant,
   designData,
+  chatMessages,
   onComplete
 }) => {
   const navigate = useNavigate();
@@ -45,6 +48,40 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
     recipient: '',
     sender: ''
   });
+  const [isLoadingMetadata, setIsLoadingMetadata] = useState(true);
+
+  // Auto-fill form based on chat history
+  useEffect(() => {
+    const extractMetadata = async () => {
+      if (!chatMessages || chatMessages.length === 0) {
+        setIsLoadingMetadata(false);
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase.functions.invoke('extract-page-metadata', {
+          body: { chatMessages, lyrics }
+        });
+
+        if (error) {
+          console.error('Error extracting metadata:', error);
+        } else if (data) {
+          console.log('Extracted metadata:', data);
+          setFormData(prev => ({
+            occasion: data.occasion || prev.occasion,
+            recipient: data.recipient || prev.recipient,
+            sender: data.sender || prev.sender
+          }));
+        }
+      } catch (error) {
+        console.error('Failed to extract metadata:', error);
+      } finally {
+        setIsLoadingMetadata(false);
+      }
+    };
+
+    extractMetadata();
+  }, [chatMessages, lyrics]);
 
   const handleInputChange = (field: keyof PageCaptionData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -73,6 +110,22 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
   };
 
   const isFormValid = formData.occasion && formData.recipient && formData.sender;
+
+  // Show loading state while extracting metadata
+  if (isLoadingMetadata) {
+    return (
+      <div className="space-y-6 max-w-4xl mx-auto">
+        <Card>
+          <CardContent className="p-8 text-center">
+            <div className="flex flex-col items-center space-y-4">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <p className="text-muted-foreground">Заповнюємо форму на основі вашої розмови...</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
