@@ -381,11 +381,16 @@ const Studio = () => {
         });
       };
 
-      // Capture front and back previews
-      console.log('Capturing front preview...');
-      const frontImageBase64 = await capturePreview(true);
-      console.log('Front preview captured');
+      // FRONT: Use Canvas-based composeFrontImageA6 (original method)
+      console.log('Composing front image...');
+      const frontImageBase64 = await composeFrontImageA6(
+        postcardDesignData.front.imageUrl,
+        postcardDesignData.front.caption,
+        postcardDesignData.front.useFrame
+      );
+      console.log('Front image composed');
 
+      // BACK: Use DOM capture (keeps preview look exactly)
       console.log('Capturing back preview with QR...');
       const backImageBase64 = await capturePreview(false, qrUrl);
       console.log('Back preview captured');
