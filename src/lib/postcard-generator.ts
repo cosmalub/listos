@@ -1,9 +1,9 @@
 import html2canvas from 'html2canvas';
 import QRCode from 'qrcode';
 
-export async function captureElement(element: HTMLElement): Promise<string> {
+export async function captureElement(element: HTMLElement, scale: number = 2): Promise<string> {
   const canvas = await html2canvas(element, {
-    scale: 2, // High quality
+    scale,
     useCORS: true,
     allowTaint: true,
     backgroundColor: null,

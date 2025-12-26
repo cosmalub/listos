@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { QrCode, Heart, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { StyleKey } from '@/lib/postcard-styles';
@@ -24,6 +24,7 @@ interface PostcardPreviewProps {
   showFront?: boolean;
   size?: 'large' | 'compact';
   isGeneratingMessage?: boolean;
+  qrUrl?: string;
 }
 
 // Helper function to determine if color is light or dark
@@ -112,7 +113,7 @@ function splitCaptionTo2Lines(caption: string): string[] {
   ].filter(line => line.length > 0);
 }
 
-export function PostcardPreview({ frontData, backData, showFront = true, size = 'large', isGeneratingMessage = false }: PostcardPreviewProps) {
+export const PostcardPreview = forwardRef<HTMLDivElement, PostcardPreviewProps>(({ frontData, backData, showFront = true, size = 'large', isGeneratingMessage = false, qrUrl }, ref) => {
   // Front side content
   const frontSide = (
     <div id="postcard-front-preview" className="relative w-full h-full bg-white rounded-xl overflow-hidden shadow-lg ring-1 ring-black/10">
@@ -264,7 +265,7 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
               )}
             >
               <QRCode
-                value="https://listos.app/postcard/sample"
+                value={qrUrl || "https://listos.app/postcard/sample"}
                 size={size === 'large' ? 104 : 72}
                 level="M"
                 className="w-full h-full"
@@ -288,8 +289,10 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
   );
 
   return (
-    <div className="w-full aspect-[3/4]">
+    <div ref={ref} className="w-full aspect-[3/4]">
       {showFront ? frontSide : backSide}
     </div>
   );
-}
+});
+
+PostcardPreview.displayName = 'PostcardPreview';
