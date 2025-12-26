@@ -300,13 +300,37 @@ function splitMessageToParagraphs(message: string): string[] {
 
 export async function composeBackImageA6(opts: { color: string; message: string; qrUrl: string }): Promise<string> {
   const { color, message, qrUrl } = opts;
+  
+  // A6 print dimensions
   const A6_WIDTH = 1240;
   const A6_HEIGHT = 1748;
-  const PAD = 100;
-  const INITIAL = 54;  // ~14px in preview (320px -> 1240px = 3.875x scale)
-  const MIN = 32;
-  const LINE_H = 1.2;
-  const PARAGRAPH_GAP = 46; // ~12px scaled
+  
+  // Preview reference values (from PostcardPreview.tsx)
+  // Container: max-w-xs = 320px, Text: max-w-[200px], p-6 = 24px, font-size: 14px
+  // QR compact: w-24 h-24 = 96px, p-3 = 12px, pb-4 = 16px
+  const PREVIEW_W = 320;
+  const PREVIEW_TEXT_MAX = 200;
+  const PREVIEW_FONT = 14;
+  const PREVIEW_LINE_H = 1.375; // leading-snug
+  const PREVIEW_PARAGRAPH_GAP = 12; // mt-3 = 0.75rem = 12px
+  const PREVIEW_QR_BOX = 96;
+  const PREVIEW_QR_PAD = 12; // p-3
+  const PREVIEW_QR_PB = 16; // pb-4
+  const PREVIEW_PAD = 24; // p-6
+  
+  // Scale factor from preview to A6
+  const SCALE = A6_WIDTH / PREVIEW_W; // ~3.875
+  
+  // Scaled values
+  const FONT_SIZE = Math.round(PREVIEW_FONT * SCALE); // ~54px
+  const MIN_FONT = Math.round(10 * SCALE); // ~39px for very long texts
+  const TEXT_MAX_WIDTH = Math.round(PREVIEW_TEXT_MAX * SCALE); // ~775px
+  const PARAGRAPH_GAP = Math.round(PREVIEW_PARAGRAPH_GAP * SCALE); // ~46px
+  const PAD = Math.round(PREVIEW_PAD * SCALE); // ~93px
+  const QR_BOX_SIZE = Math.round(PREVIEW_QR_BOX * SCALE); // ~372px
+  const QR_PAD = Math.round(PREVIEW_QR_PAD * SCALE); // ~47px
+  const QR_PB = Math.round(PREVIEW_QR_PB * SCALE); // ~62px
+  const QR_SIZE = QR_BOX_SIZE - QR_PAD * 2; // ~278px
 
   const isLight = (hex: string) => {
     const h = hex.replace('#', '');
@@ -325,7 +349,6 @@ export async function composeBackImageA6(opts: { color: string; message: string;
   ctx.fillRect(0, 0, A6_WIDTH, A6_HEIGHT);
 
   const textColor = isLight(color || '#FFFFFF') ? '#111111' : '#FFFFFF';
-  const maxWidth = A6_WIDTH - PAD * 2;
 
   // Split into paragraphs first (like in preview)
   const paragraphs = splitMessageToParagraphs((message || '').trim());
@@ -334,7 +357,14 @@ export async function composeBackImageA6(opts: { color: string; message: string;
     ctx.font = `bold ${size}px "Bebas Neue Cyrillic", "Bebas Neue", sans-serif`;
   }
 
-  // Wrap text for a single paragraph
+  // Ensure font is loaded before measuring
+  try {
+    await document.fonts.load(`bold ${FONT_SIZE}px "Bebas Neue Cyrillic"`);
+  } catch (e) {
+    console.warn('Font loading failed, using fallback');
+  }
+
+  // Wrap text for a single paragraph with max width matching preview
   function wrapParagraph(text: string, fontSize: number): string[] {
     setFont(fontSize);
     const words = text.split(/\s+/);
@@ -343,7 +373,7 @@ export async function composeBackImageA6(opts: { color: string; message: string;
     
     for (const w of words) {
       const test = cur ? cur + ' ' + w : w;
-      if (ctx.measureText(test).width <= maxWidth) {
+      if (ctx.measureText(test).width <= TEXT_MAX_WIDTH) {
         cur = test;
       } else {
         if (cur) lines.push(cur);
@@ -355,22 +385,21 @@ export async function composeBackImageA6(opts: { color: string; message: string;
     return lines;
   }
 
-  // QR Code dimensions
-  const QR_SIZE = 300;
-  const QR_PADDING = 24;
-  const QR_BOTTOM_MARGIN = 64;
-  const qrBoxSize = QR_SIZE + QR_PADDING * 2;
-
-  // Calculate available height for text (excluding QR code area)
-  const availableHeightForText = A6_HEIGHT - QR_BOTTOM_MARGIN - qrBoxSize - 80;
+  // QR code positioning (from bottom)
+  const qrBoxY = A6_HEIGHT - PAD - QR_PB - QR_BOX_SIZE;
+  
+  // Calculate available height for text (from top padding to above QR)
+  const textAreaTop = PAD;
+  const textAreaBottom = qrBoxY - PAD;
+  const availableHeightForText = textAreaBottom - textAreaTop;
 
   // Find the right font size that fits all paragraphs
-  let fontSize = INITIAL;
+  let fontSize = FONT_SIZE;
   let allParagraphLines: string[][] = [];
   let lineHeight = 0;
 
-  while (fontSize >= MIN) {
-    lineHeight = Math.round(fontSize * LINE_H);
+  while (fontSize >= MIN_FONT) {
+    lineHeight = Math.round(fontSize * PREVIEW_LINE_H);
     allParagraphLines = paragraphs.map(p => wrapParagraph(p.toUpperCase(), fontSize));
     
     const totalLines = allParagraphLines.reduce((sum, lines) => sum + lines.length, 0);
@@ -391,8 +420,8 @@ export async function composeBackImageA6(opts: { color: string; message: string;
   const totalLines = allParagraphLines.reduce((sum, lines) => sum + lines.length, 0);
   const totalH = totalLines * lineHeight + (allParagraphLines.length - 1) * PARAGRAPH_GAP;
   
-  // Start Y position (centered in available space)
-  let y = (availableHeightForText - totalH) / 2 + lineHeight / 2;
+  // Center text vertically in available space
+  let y = textAreaTop + (availableHeightForText - totalH) / 2 + lineHeight / 2;
   const centerX = A6_WIDTH / 2;
 
   // Draw each paragraph with gap between them
@@ -420,11 +449,11 @@ export async function composeBackImageA6(opts: { color: string; message: string;
     }
   });
 
-  // Draw white rounded box for QR
-  const qrBoxX = (A6_WIDTH - qrBoxSize) / 2;
-  const qrBoxY = A6_HEIGHT - QR_BOTTOM_MARGIN - qrBoxSize;
+  // Draw white rounded box for QR centered horizontally
+  const qrBoxX = (A6_WIDTH - QR_BOX_SIZE) / 2;
   ctx.fillStyle = '#FFFFFF';
-  ctx.roundRect(qrBoxX, qrBoxY, qrBoxSize, qrBoxSize, 12);
+  ctx.beginPath();
+  ctx.roundRect(qrBoxX, qrBoxY, QR_BOX_SIZE, QR_BOX_SIZE, 12 * SCALE / 4);
   ctx.fill();
 
   // Draw QR code
@@ -433,7 +462,7 @@ export async function composeBackImageA6(opts: { color: string; message: string;
     qrImg.onload = () => resolve();
     qrImg.src = qrDataUrl;
   });
-  ctx.drawImage(qrImg, qrBoxX + QR_PADDING, qrBoxY + QR_PADDING, QR_SIZE, QR_SIZE);
+  ctx.drawImage(qrImg, qrBoxX + QR_PAD, qrBoxY + QR_PAD, QR_SIZE, QR_SIZE);
 
   return canvas.toDataURL('image/png');
 }
