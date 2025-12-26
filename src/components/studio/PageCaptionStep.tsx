@@ -49,6 +49,7 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
     sender: ''
   });
   const [isLoadingMetadata, setIsLoadingMetadata] = useState(true);
+  const [wasAutoFilled, setWasAutoFilled] = useState(false);
 
   // Auto-fill form based on chat history
   useEffect(() => {
@@ -67,6 +68,10 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
           console.error('Error extracting metadata:', error);
         } else if (data) {
           console.log('Extracted metadata:', data);
+          const hasAnyData = data.occasion || data.recipient || data.sender;
+          if (hasAnyData) {
+            setWasAutoFilled(true);
+          }
           setFormData(prev => ({
             occasion: data.occasion || prev.occasion,
             recipient: data.recipient || prev.recipient,
@@ -129,6 +134,14 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
+      {wasAutoFilled && (
+        <Alert className="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
+          <Info className="h-4 w-4 text-blue-500" />
+          <AlertDescription className="text-blue-700 dark:text-blue-300">
+            Ми автоматично заповнили форму на основі вашої розмови. Ви можете змінити будь-які поля.
+          </AlertDescription>
+        </Alert>
+      )}
       <Card>
         <CardHeader>
           <CardTitle>Інформація про сторінку</CardTitle>
