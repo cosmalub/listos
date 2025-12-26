@@ -95,6 +95,23 @@ function splitCaptionToLines(caption: string): string[] {
   return lines;
 }
 
+// Split caption into exactly 2 lines (for photo mode with frame)
+function splitCaptionTo2Lines(caption: string): string[] {
+  const words = caption.trim().split(/\s+/);
+  
+  if (words.length <= 1) {
+    return [caption.trim()];
+  }
+  
+  // Split words roughly in half
+  const midPoint = Math.ceil(words.length / 2);
+  
+  return [
+    words.slice(0, midPoint).join(' '),
+    words.slice(midPoint).join(' ')
+  ].filter(line => line.length > 0);
+}
+
 export function PostcardPreview({ frontData, backData, showFront = true, size = 'large', isGeneratingMessage = false }: PostcardPreviewProps) {
   // Front side content
   const frontSide = (
@@ -118,29 +135,29 @@ export function PostcardPreview({ frontData, backData, showFront = true, size = 
                 }}
               />
               
-              {/* Frame overlay - on top of photo */}
-              <img
-                src="/frames/elegant-frame.png?v=5"
-                alt="Frame"
-                className="absolute inset-0 w-full h-full object-fill pointer-events-none"
-                style={{ zIndex: 2 }}
-              />
-              
-              {/* Caption overlay - at bottom, on top of everything */}
+              {/* Caption overlay - under the frame */}
               {frontData.caption && (
-                <div className="absolute bottom-[4.5%] left-[5.2%] right-[4.8%]" style={{ zIndex: 3 }}>
+                <div className="absolute bottom-[4.5%] left-[5.2%] right-[4.8%]" style={{ zIndex: 2 }}>
                   <div className="bg-black/60 backdrop-blur-sm py-2.5 px-3">
                     <div className={cn(
                       "text-white text-center font-bold uppercase leading-tight tracking-wide",
                       size === 'large' ? "text-base sm:text-lg md:text-xl" : "text-sm sm:text-base"
                     )}>
-                      {splitCaptionToLines(frontData.caption).map((line, index) => (
+                      {splitCaptionTo2Lines(frontData.caption).map((line, index) => (
                         <div key={index}>{line}</div>
                       ))}
                     </div>
                   </div>
                 </div>
               )}
+              
+              {/* Frame overlay - on top of everything */}
+              <img
+                src="/frames/elegant-frame.png?v=5"
+                alt="Frame"
+                className="absolute inset-0 w-full h-full object-fill pointer-events-none"
+                style={{ zIndex: 3 }}
+              />
             </div>
           ) : (
             /* Regular photo mode without frame */
