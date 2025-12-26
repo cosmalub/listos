@@ -342,7 +342,8 @@ const Studio = () => {
       if (postcardDesignData.front.mode === 'photo' && postcardDesignData.front.imageUrl) {
         frontImageBase64 = await composeFrontImageA6(
           postcardDesignData.front.imageUrl,
-          postcardDesignData.front.caption || ''
+          postcardDesignData.front.caption || '',
+          postcardDesignData.front.useFrame || false
         );
         console.log('Front image composed to A6 format with caption overlay');
       } else if (postcardDesignData.front.imageUrl) {

@@ -73,7 +73,11 @@ export async function preprocessImageToA6(imageUrl: string): Promise<string> {
   });
 }
 
-export async function composeFrontImageA6(imageUrl: string, caption: string): Promise<string> {
+export async function composeFrontImageA6(
+  imageUrl: string, 
+  caption: string,
+  useFrame: boolean = false
+): Promise<string> {
   const A6_WIDTH = 1240;
   const A6_HEIGHT = 1748;
   const MARGIN = 50;
@@ -85,10 +89,27 @@ export async function composeFrontImageA6(imageUrl: string, caption: string): Pr
   const MIN_FONT = 45;
   const LINE_HEIGHT_RATIO = 1.15;
 
+  // Frame insets (matching CSS: left 5.2%, top 3.5%, width 90%, height 93.5%)
+  const FRAME_LEFT = Math.round(A6_WIDTH * 0.052);
+  const FRAME_TOP = Math.round(A6_HEIGHT * 0.035);
+  const FRAME_WIDTH = Math.round(A6_WIDTH * 0.90);
+  const FRAME_HEIGHT = Math.round(A6_HEIGHT * 0.935);
+
   const toUpper = (t: string) => (t || '').trim().toUpperCase();
   const setFont = (ctx: CanvasRenderingContext2D, size: number) => {
     ctx.font = `bold ${size}px Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif`;
   };
+
+  // Split caption to exactly 2 lines (for frame mode)
+  function splitTo2Lines(text: string): string[] {
+    const words = text.trim().split(/\s+/);
+    if (words.length <= 1) return [text.trim()];
+    const mid = Math.ceil(words.length / 2);
+    return [
+      words.slice(0, mid).join(' '),
+      words.slice(mid).join(' ')
+    ].filter(l => l.length > 0);
+  }
 
   function wrapText(
     ctx: CanvasRenderingContext2D,
@@ -154,13 +175,13 @@ export async function composeFrontImageA6(imageUrl: string, caption: string): Pr
         ctx.fillStyle = '#FFFFFF';
         ctx.fillRect(0, 0, A6_WIDTH, A6_HEIGHT);
 
-        // Photo fills entire canvas
-        const photoX = 0;
-        const photoY = 0;
-        const photoW = A6_WIDTH;
-        const photoH = A6_HEIGHT;
+        // Determine photo area based on frame mode
+        const photoX = useFrame ? FRAME_LEFT : 0;
+        const photoY = useFrame ? FRAME_TOP : 0;
+        const photoW = useFrame ? FRAME_WIDTH : A6_WIDTH;
+        const photoH = useFrame ? FRAME_HEIGHT : A6_HEIGHT;
 
-        // object-cover drawing
+        // object-cover drawing within photo area
         const imgRatio = img.width / img.height;
         const photoRatio = photoW / photoH;
         let drawW: number, drawH: number, offX: number, offY: number;
@@ -175,21 +196,50 @@ export async function composeFrontImageA6(imageUrl: string, caption: string): Pr
           offX = photoX;
           offY = photoY - (drawH - photoH) / 2;
         }
+
+        // Clip to photo area if using frame
+        if (useFrame) {
+          ctx.save();
+          ctx.beginPath();
+          ctx.rect(photoX, photoY, photoW, photoH);
+          ctx.clip();
+        }
         
         // Draw image
         ctx.drawImage(img, offX, offY, drawW, drawH);
+        
+        if (useFrame) {
+          ctx.restore();
+        }
 
         // Caption overlay
         const text = toUpper(caption || '');
         if (text) {
-          const maxTextWidth = A6_WIDTH - (MARGIN + PAD_X) * 2;
-          const { lines, fontSize, lineHeight } = wrapText(ctx, text, maxTextWidth, MAX_LINES);
+          const captionMargin = useFrame ? FRAME_LEFT : MARGIN;
+          const maxTextWidth = (useFrame ? FRAME_WIDTH : A6_WIDTH) - PAD_X * 2;
+          
+          // Use 2-line split for frame mode, regular wrap otherwise
+          let lines: string[];
+          let fontSize: number;
+          let lineHeight: number;
+          
+          if (useFrame) {
+            lines = splitTo2Lines(text);
+            fontSize = 72; // Fixed size for frame mode
+            lineHeight = Math.round(fontSize * LINE_HEIGHT_RATIO);
+            setFont(ctx, fontSize);
+          } else {
+            const wrapped = wrapText(ctx, text, maxTextWidth, MAX_LINES);
+            lines = wrapped.lines;
+            fontSize = wrapped.fontSize;
+            lineHeight = wrapped.lineHeight;
+          }
+          
           const textHeight = lines.length * lineHeight;
-
           const rectW = maxTextWidth + PAD_X * 2;
           const rectH = textHeight + PAD_Y * 2;
-          const rectX = MARGIN;
-          const rectY = A6_HEIGHT - BOTTOM_MARGIN - rectH;
+          const rectX = captionMargin;
+          const rectY = (useFrame ? FRAME_TOP + FRAME_HEIGHT : A6_HEIGHT) - BOTTOM_MARGIN - rectH;
 
           ctx.fillStyle = 'rgba(0,0,0,0.6)';
           ctx.fillRect(rectX, rectY, rectW, rectH);
@@ -205,6 +255,18 @@ export async function composeFrontImageA6(imageUrl: string, caption: string): Pr
             ctx.fillText(line, centerX, y);
             y += lineHeight;
           }
+        }
+
+        // Draw frame overlay on top if useFrame
+        if (useFrame) {
+          const frameImg = new Image();
+          frameImg.crossOrigin = 'anonymous';
+          await new Promise<void>((res, rej) => {
+            frameImg.onload = () => res();
+            frameImg.onerror = () => rej(new Error('Failed to load frame'));
+            frameImg.src = '/frames/elegant-frame.png';
+          });
+          ctx.drawImage(frameImg, 0, 0, A6_WIDTH, A6_HEIGHT);
         }
 
         resolve(canvas.toDataURL('image/png'));
@@ -241,10 +303,10 @@ export async function composeBackImageA6(opts: { color: string; message: string;
   const A6_WIDTH = 1240;
   const A6_HEIGHT = 1748;
   const PAD = 100;
-  const INITIAL = 75;  // Proportional to preview (14px × 5.2 scale factor)
-  const MIN = 40;
-  const LINE_H = 1.2;  // Bebas Neue is more compact
-  const PARAGRAPH_GAP = 62; // Gap between paragraphs (12px × 5.2 scale factor)
+  const INITIAL = 54;  // ~14px in preview (320px -> 1240px = 3.875x scale)
+  const MIN = 32;
+  const LINE_H = 1.2;
+  const PARAGRAPH_GAP = 46; // ~12px scaled
 
   const isLight = (hex: string) => {
     const h = hex.replace('#', '');
