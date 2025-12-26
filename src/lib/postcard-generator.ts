@@ -308,9 +308,10 @@ export async function composeBackImageA6(opts: { color: string; message: string;
   // Preview reference values (from PostcardPreview.tsx)
   // Container: max-w-xs = 320px, Text: max-w-[200px], p-6 = 24px, font-size: 14px
   // QR compact: w-24 h-24 = 96px, p-3 = 12px, pb-4 = 16px
+  // Note: Reduced from 14 to 11 to match Canva output size
   const PREVIEW_W = 320;
   const PREVIEW_TEXT_MAX = 200;
-  const PREVIEW_FONT = 14;
+  const PREVIEW_FONT = 11;
   const PREVIEW_LINE_H = 1.375; // leading-snug
   const PREVIEW_PARAGRAPH_GAP = 12; // mt-3 = 0.75rem = 12px
   const PREVIEW_QR_BOX = 96;
