@@ -38,11 +38,12 @@ export function BenefitsSection() {
     <section className="py-12 -mt-8 bg-gradient-to-b from-white/20 to-white relative z-10">
       <div className="container mx-auto px-4">
         <SectionHeader
-          title="Коли стандартні слова безсилі"
-          titleSecondLine="допоможе листівка з піснею"
-          subtitle="Ось як саме вона працює"
+          title="Моменти, коли потрібно"
+          titleSecondLine="щось особливе"
+          subtitle=""
           size="md"
           className="mt-8"
+          showUnderline={false}
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">

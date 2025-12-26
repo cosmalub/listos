@@ -6,6 +6,7 @@ interface SectionHeaderProps {
   titleSecondLine?: string;
   className?: string;
   size?: "sm" | "md" | "lg";
+  showUnderline?: boolean;
 }
 
 export function SectionHeader({ 
@@ -13,7 +14,8 @@ export function SectionHeader({
   subtitle, 
   titleSecondLine,
   className,
-  size = "md" 
+  size = "md",
+  showUnderline = true
 }: SectionHeaderProps) {
   const sizeClasses = {
     sm: "text-xl md:text-2xl lg:text-3xl",
@@ -44,22 +46,24 @@ export function SectionHeader({
                 {titleSecondLine}
               </span>
               {/* Декоративна лінія під текстом */}
-              <svg className="absolute -bottom-1 left-0 w-full h-2" viewBox="0 0 200 12" fill="none" preserveAspectRatio="none">
-                <path 
-                  d="M2 8C30 4 60 2 100 4C140 6 170 8 198 4" 
-                  stroke={`url(#${gradientId})`}
-                  strokeWidth="3" 
-                  strokeLinecap="round"
-                  className="animate-pulse"
-                />
-                <defs>
-                  <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.3" />
-                    <stop offset="50%" stopColor="hsl(var(--accent))" stopOpacity="0.8" />
-                    <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.3" />
-                  </linearGradient>
-                </defs>
-              </svg>
+              {showUnderline && (
+                <svg className="absolute -bottom-1 left-0 w-full h-2" viewBox="0 0 200 12" fill="none" preserveAspectRatio="none">
+                  <path 
+                    d="M2 8C30 4 60 2 100 4C140 6 170 8 198 4" 
+                    stroke={`url(#${gradientId})`}
+                    strokeWidth="3" 
+                    strokeLinecap="round"
+                    className="animate-pulse"
+                  />
+                  <defs>
+                    <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.3" />
+                      <stop offset="50%" stopColor="hsl(var(--accent))" stopOpacity="0.8" />
+                      <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.3" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              )}
             </span>
           </>
         )}
