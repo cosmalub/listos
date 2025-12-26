@@ -279,6 +279,21 @@ const postcardExamples = [
     customerLocation: "Київ",
     rating: 5
   },
+  { 
+    id: 3, 
+    title: "Вибачення", 
+    description: "Музична листівка, щоб попросити пробачення.", 
+    frontImage: "/examples/maria-front.png", 
+    backImage: "/examples/maria-back.png", 
+    songTitle: "Вибач мені, Маріє", 
+    artist: "Від Дмитра", 
+    audioSrc: "/audio/maria-apology.mp3",
+    customerStory: "Дмитро створив цю пісню для Марії, щоб чесно попросити вибачення. Без виправдань і гучних слів — просто визнати помилку і сказати, що йому справді шкода.",
+    customerReaction: "Марія сказала, що їй було важливо почути ці слова саме так — спокійно і щиро. Пісня допомогла почати розмову.",
+    customerName: "Дмитро, 31 рік",
+    customerLocation: "Харків",
+    rating: 5
+  },
 ]
 
 export default function ExamplesSection3D() {
