@@ -55,50 +55,31 @@ export function MomentsGallerySection() {
   const secondRow = [...galleryImages.slice(midPoint), ...galleryImages.slice(midPoint)];
 
   return (
-    <section className="py-20 md:py-28 bg-gradient-to-b from-background via-secondary/20 to-background relative overflow-hidden">
-      {/* Декоративні елементи фону */}
-      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-accent/8 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2 pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 w-[800px] h-[800px] bg-gradient-radial from-primary/3 to-transparent rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-      
-      {/* Декоративні точки */}
-      <div className="absolute top-20 left-10 w-3 h-3 bg-primary/30 rounded-full animate-pulse" />
-      <div className="absolute top-40 right-20 w-2 h-2 bg-accent/40 rounded-full animate-pulse delay-300" />
-      <div className="absolute bottom-32 left-1/4 w-2 h-2 bg-primary/20 rounded-full animate-pulse delay-700" />
-      
+    <section className="py-16 md:py-20 bg-white relative overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
         {/* Заголовок */}
-        <div className="text-center mb-14 md:mb-20">
-          {/* Badge */}
-          <div className="inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-sm text-primary px-5 py-2.5 rounded-full text-sm font-medium mb-8 border border-primary/10 shadow-sm">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
-            </span>
-            Реальні історії наших клієнтів
-          </div>
-          
+        <div className="text-center mb-12 md:mb-16">
           {/* Головний заголовок */}
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
             <span className="bg-gradient-to-r from-primary via-primary/90 to-primary bg-clip-text text-transparent">
               Моменти, для яких створюють
             </span>
             <br className="hidden sm:block" />
-            <span className="relative inline-block mt-2 md:mt-4">
+            <span className="relative inline-block mt-1 md:mt-2">
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 разом з Листосиком
               </span>
               {/* Декоративна лінія під текстом */}
-              <svg className="absolute -bottom-1 md:-bottom-2 left-0 w-full h-3" viewBox="0 0 200 12" fill="none" preserveAspectRatio="none">
+              <svg className="absolute -bottom-1 left-0 w-full h-2" viewBox="0 0 200 12" fill="none" preserveAspectRatio="none">
                 <path 
                   d="M2 8C30 4 60 2 100 4C140 6 170 8 198 4" 
-                  stroke="url(#gradient)" 
+                  stroke="url(#gradient-line)" 
                   strokeWidth="3" 
                   strokeLinecap="round"
                   className="animate-pulse"
                 />
                 <defs>
-                  <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <linearGradient id="gradient-line" x1="0%" y1="0%" x2="100%" y2="0%">
                     <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.3" />
                     <stop offset="50%" stopColor="hsl(var(--accent))" stopOpacity="0.8" />
                     <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.3" />
@@ -109,9 +90,8 @@ export function MomentsGallerySection() {
           </h2>
           
           {/* Підзаголовок */}
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mt-8">
-            Кожна листівка — це унікальна історія кохання, дружби та вдячності. 
-            <span className="hidden md:inline"> Подивіться, які моменти наші клієнти перетворили на незабутні спогади</span>
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed mt-6">
+            Кожна листівка — це унікальна історія кохання, дружби та вдячності
             <span className="text-primary ml-1">✨</span>
           </p>
         </div>
@@ -119,8 +99,8 @@ export function MomentsGallerySection() {
         {/* Перший ряд галереї - рух вліво */}
         <div className="relative mb-6 md:mb-8 -mx-4 md:mx-0">
           {/* Градієнти для плавного затухання по краях */}
-          <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 lg:w-48 bg-gradient-to-r from-background via-background/80 to-transparent z-20 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 lg:w-48 bg-gradient-to-l from-background via-background/80 to-transparent z-20 pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 lg:w-48 bg-gradient-to-r from-white via-white/80 to-transparent z-20 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 lg:w-48 bg-gradient-to-l from-white via-white/80 to-transparent z-20 pointer-events-none" />
           
           <div className="flex gap-4 md:gap-6 animate-scroll-left hover:[animation-play-state:paused] px-4 md:px-0">
             {firstRow.map((image, index) => (
@@ -133,8 +113,8 @@ export function MomentsGallerySection() {
         {secondRow.length > 0 && (
           <div className="relative -mx-4 md:mx-0">
             {/* Градієнти для плавного затухання по краях */}
-            <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 lg:w-48 bg-gradient-to-r from-background via-background/80 to-transparent z-20 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 lg:w-48 bg-gradient-to-l from-background via-background/80 to-transparent z-20 pointer-events-none" />
+            <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 lg:w-48 bg-gradient-to-r from-white via-white/80 to-transparent z-20 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 lg:w-48 bg-gradient-to-l from-white via-white/80 to-transparent z-20 pointer-events-none" />
             
             <div className="flex gap-4 md:gap-6 animate-scroll-right hover:[animation-play-state:paused] px-4 md:px-0">
               {secondRow.map((image, index) => (
@@ -145,8 +125,8 @@ export function MomentsGallerySection() {
         )}
 
         {/* Інтерактивна підказка */}
-        <div className="text-center mt-12 md:mt-16">
-          <p className="inline-flex items-center gap-3 text-sm text-muted-foreground/80 bg-secondary/30 px-6 py-3 rounded-full border border-primary/5">
+        <div className="text-center mt-10 md:mt-14">
+          <p className="inline-flex items-center gap-3 text-sm text-muted-foreground/70">
             <span className="w-1.5 h-1.5 bg-primary/40 rounded-full animate-pulse" />
             Наведіть на картку, щоб зупинити прокрутку
             <span className="w-1.5 h-1.5 bg-accent/40 rounded-full animate-pulse delay-500" />
