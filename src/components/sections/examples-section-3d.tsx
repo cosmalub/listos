@@ -309,6 +309,21 @@ const postcardExamples = [
     customerLocation: "Львів",
     rating: 5
   },
+  { 
+    id: 5, 
+    title: "Дякую, бабусю", 
+    description: "Музична листівка для бабусі від онука.", 
+    frontImage: "/examples/grandma-front.png", 
+    backImage: "/examples/grandma-back.png", 
+    songTitle: "Для тебе, бабусю", 
+    artist: "Від онука", 
+    audioSrc: "/audio/grandma-thanks.mp3",
+    customerStory: "Онук створив музичну листівку для своєї бабусі, щоб подякувати за турботу, тепло і любов, які вона дарувала йому з дитинства. У пісні — спогади, вдячність і дуже особисті слова.",
+    customerReaction: "Вона слухала пісню мовчки, а потім просто обійняла онука",
+    customerName: "онук, 15 років",
+    customerLocation: "Тернопіль",
+    rating: 5
+  },
 ]
 
 export default function ExamplesSection3D() {
