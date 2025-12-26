@@ -1,114 +1,115 @@
-import { ArrowRight } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { SectionHeader } from "@/components/ui/section-header";
 
-interface ComparisonRowProps {
-  standard: {
-    icon: string;
-    title: string;
-    subtitle: string;
-  };
-  listosyk: {
-    icon: string;
-    title: string;
-    subtitle: string;
-  };
+interface ComparisonItemProps {
+  icon: string;
+  text: string;
+  isPositive?: boolean;
 }
 
-function ComparisonRow({ standard, listosyk }: ComparisonRowProps) {
+function ComparisonItem({ icon, text, isPositive = false }: ComparisonItemProps) {
   return (
-    <div className="grid md:grid-cols-[1fr_auto_1fr] gap-4 items-center">
-      {/* Стандартний подарунок */}
-      <div className="bg-white border border-gray-200 rounded-2xl p-5 hover:border-gray-300 transition-all">
-        <div className="flex items-center gap-3 mb-2">
-          <span className="text-3xl">{standard.icon}</span>
-          <h4 className="font-bold text-gray-700">{standard.title}</h4>
-        </div>
-        <p className="text-sm text-gray-500 ml-12">{standard.subtitle}</p>
-      </div>
-
-      {/* Стрілка */}
-      <div className="hidden md:flex items-center justify-center">
-        <ArrowRight className="w-6 h-6 text-[#6A5ACD]/40" />
-      </div>
-      <div className="md:hidden flex items-center justify-center -my-2">
-        <ArrowRight className="w-6 h-6 text-[#6A5ACD]/40 rotate-90" />
-      </div>
-
-      {/* Listosyk */}
-      <div className="bg-gradient-to-br from-[#F8F7FF] to-white border border-[#B8B3FF]/50 rounded-2xl p-5 hover:border-[#B8B3FF] hover:shadow-sm transition-all">
-        <div className="flex items-center gap-3 mb-2">
-          <span className="text-3xl">{listosyk.icon}</span>
-          <h4 className="font-bold text-[#6A5ACD]">{listosyk.title}</h4>
-        </div>
-        <p className="text-sm text-[#6A5ACD]/70 ml-12">{listosyk.subtitle}</p>
-      </div>
+    <div className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
+      isPositive 
+        ? "bg-gradient-to-r from-[#F8F7FF] to-white" 
+        : "bg-gray-50"
+    }`}>
+      <span className="text-2xl flex-shrink-0">{icon}</span>
+      <span className={`text-sm md:text-base ${isPositive ? "text-[#6A5ACD]" : "text-gray-600"}`}>
+        {text}
+      </span>
     </div>
   );
 }
 
 export function ComparisonSection() {
-  const comparisons = [
-    {
-      standard: {
-        icon: "💐",
-        title: "Букет квітів (500 грн)",
-        subtitle: "Завяне через тиждень",
-      },
-      listosyk: {
-        icon: "🎵",
-        title: "Пісня + листівка",
-        subtitle: "Залишиться назавжди",
-      },
-    },
-    {
-      standard: {
-        icon: "⏰",
-        title: "Купити в магазині",
-        subtitle: "Година на пошуки, стандартна листівка",
-      },
-      listosyk: {
-        icon: "⚡️",
-        title: "Створити онлайн",
-        subtitle: "10 хвилин, унікальна листівка з піснею",
-      },
-    },
-    {
-      standard: {
-        icon: "😐",
-        title: "Звичайна реакція",
-        subtitle: "\"Дякую\" — забуде через тиждень",
-      },
-      listosyk: {
-        icon: "😭",
-        title: "Емоційна реакція",
-        subtitle: "\"Я плачу\" — запам'ятає назавжди",
-      },
-    },
+  const standardItems = [
+    { icon: "💐", text: "Квіти зів'януть через тиждень" },
+    { icon: "🎁", text: "Стандартна листівка — забудеться" },
+    { icon: "⏰", text: "Години на пошуки в магазинах" },
+    { icon: "😐", text: "Реакція: «Дякую» і все" },
+    { icon: "💸", text: "Гроші витрачені — емоцій мало" },
+  ];
+
+  const listosykItems = [
+    { icon: "🎵", text: "Пісня залишиться назавжди" },
+    { icon: "💜", text: "Унікальна листівка — тільки для неї/нього" },
+    { icon: "⚡", text: "Створення за 10 хвилин онлайн" },
+    { icon: "😭", text: "Реакція: «Я плачу від щастя!»" },
+    { icon: "✨", text: "Емоції на все життя" },
   ];
 
   return (
     <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
         <SectionHeader
-          title="Чому Листосик краще?"
-          subtitle="Порівняй зі звичайними подарунками"
+          title="А тепер"
+          titleSecondLine="порівняй"
+          subtitle=""
           size="md"
+          showUnderline={false}
         />
 
-        <div className="max-w-4xl mx-auto space-y-6 mb-12">
-          {comparisons.map((comparison, index) => (
-            <ComparisonRow key={index} {...comparison} />
-          ))}
-        </div>
+        <div className="max-w-5xl mx-auto relative">
+          {/* Два стовпці */}
+          <div className="grid md:grid-cols-2 gap-6 md:gap-10">
+            
+            {/* Ліва колонка - Звичайно */}
+            <div className="relative">
+              {/* Заголовок колонки */}
+              <div className="flex items-center justify-center gap-2 mb-6">
+                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                  <X className="w-5 h-5 text-gray-500" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-500">Звичайно</h3>
+              </div>
+              
+              {/* Картка */}
+              <div className="bg-white border-2 border-gray-200 rounded-3xl p-5 md:p-6 space-y-3 h-full">
+                {standardItems.map((item, index) => (
+                  <ComparisonItem key={index} {...item} />
+                ))}
+              </div>
+            </div>
 
-        {/* Висновок */}
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-white rounded-3xl border border-[#B8B3FF]/30 p-8 text-center shadow-sm">
-            <p className="text-lg text-[#6A5ACD]/80 mb-3">
-              Стандартні подарунки — це витрати.
-            </p>
-            <p className="text-2xl font-bold text-[#6A5ACD]">
-              Листосик — це інвестиція в емоції 💜
+            {/* Права колонка - З Листосиком */}
+            <div className="relative">
+              {/* Заголовок колонки */}
+              <div className="flex items-center justify-center gap-2 mb-6">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] flex items-center justify-center">
+                  <Check className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="text-xl font-bold bg-gradient-to-r from-[#6A5ACD] to-[#9F8FEF] bg-clip-text text-transparent">
+                  З Листосиком
+                </h3>
+              </div>
+              
+              {/* Картка */}
+              <div className="bg-gradient-to-br from-[#F8F7FF] via-white to-[#F3EEFF] border-2 border-[#B8B3FF]/50 rounded-3xl p-5 md:p-6 space-y-3 h-full shadow-lg shadow-[#B8B3FF]/20">
+                {listosykItems.map((item, index) => (
+                  <ComparisonItem key={index} {...item} isPositive />
+                ))}
+                
+                {/* Акцентна мітка */}
+                <div className="absolute -top-3 -right-3 bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg animate-pulse">
+                  ✨ Вау-ефект
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* VS елемент для десктопу */}
+          <div className="hidden md:flex absolute left-1/2 top-[calc(50%-20px)] -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
+            <div className="w-16 h-16 rounded-full bg-white border-4 border-[#B8B3FF]/40 flex items-center justify-center shadow-2xl">
+              <span className="text-[#6A5ACD] font-black text-xl">VS</span>
+            </div>
+          </div>
+
+          {/* Висновок */}
+          <div className="mt-10 md:mt-12 text-center">
+            <p className="text-lg md:text-xl text-[#6A5ACD] font-medium">
+              Обирай емоції, а не просто подарунок 
+              <span className="ml-2">💜</span>
             </p>
           </div>
         </div>
