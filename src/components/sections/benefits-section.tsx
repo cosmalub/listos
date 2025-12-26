@@ -38,8 +38,7 @@ export function BenefitsSection() {
     <section className="py-12 -mt-8 bg-gradient-to-b from-white/20 to-white relative z-10">
       <div className="container mx-auto px-4">
         <SectionHeader
-          title="Моменти, коли потрібно"
-          titleSecondLine="щось особливе"
+          title="Знайомо?"
           subtitle=""
           size="md"
           className="mt-8"
