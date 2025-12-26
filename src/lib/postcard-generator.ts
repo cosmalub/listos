@@ -76,7 +76,8 @@ export async function preprocessImageToA6(imageUrl: string): Promise<string> {
 export async function composeFrontImageA6(
   imageUrl: string, 
   caption: string,
-  useFrame: boolean = false
+  useFrame: boolean = false,
+  mode: 'photo' | 'ai-generation' = 'photo'
 ): Promise<string> {
   const A6_WIDTH = 1240;
   const A6_HEIGHT = 1748;
@@ -212,9 +213,9 @@ export async function composeFrontImageA6(
           ctx.restore();
         }
 
-        // Caption overlay
+        // Caption overlay - only for photo mode, AI-generated images already have text
         const text = toUpper(caption || '');
-        if (text) {
+        if (text && mode === 'photo') {
           const captionMargin = useFrame ? FRAME_LEFT : MARGIN;
           const maxTextWidth = (useFrame ? FRAME_WIDTH : A6_WIDTH) - PAD_X * 2;
           

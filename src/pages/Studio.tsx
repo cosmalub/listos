@@ -386,7 +386,8 @@ const Studio = () => {
       const frontImageBase64 = await composeFrontImageA6(
         postcardDesignData.front.imageUrl,
         postcardDesignData.front.caption,
-        postcardDesignData.front.useFrame
+        postcardDesignData.front.useFrame,
+        postcardDesignData.front.mode
       );
       console.log('Front image composed');
 
