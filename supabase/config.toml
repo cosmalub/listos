@@ -53,3 +53,6 @@ verify_jwt = false
 
 [functions.generate-photo-frame]
 verify_jwt = false
+
+[functions.extract-page-metadata]
+verify_jwt = false
