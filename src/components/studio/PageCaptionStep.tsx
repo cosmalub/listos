@@ -49,7 +49,7 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
     sender: ''
   });
   const [isLoadingMetadata, setIsLoadingMetadata] = useState(true);
-  const [wasAutoFilled, setWasAutoFilled] = useState(false);
+  const [autoFillStatus, setAutoFillStatus] = useState<'none' | 'partial' | 'full'>('none');
 
   // Auto-fill form based on chat history
   useEffect(() => {
@@ -68,9 +68,11 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
           console.error('Error extracting metadata:', error);
         } else if (data) {
           console.log('Extracted metadata:', data);
-          const hasAnyData = data.occasion || data.recipient || data.sender;
-          if (hasAnyData) {
-            setWasAutoFilled(true);
+          const filledFields = [data.occasion, data.recipient, data.sender].filter(Boolean);
+          if (filledFields.length === 3) {
+            setAutoFillStatus('full');
+          } else if (filledFields.length > 0) {
+            setAutoFillStatus('partial');
           }
           setFormData(prev => ({
             occasion: data.occasion || prev.occasion,
@@ -94,8 +96,8 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
 
 
   const handleComplete = () => {
-    if (!formData.occasion || !formData.recipient || !formData.sender) {
-      alert('Будь ласка, заповніть всі поля');
+    if (!formData.occasion) {
+      alert('Будь ласка, оберіть нагоду');
       return;
     }
     
@@ -110,11 +112,18 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
     
     sessionStorage.setItem('studio-draft-data', JSON.stringify(draftData));
     
-    // Navigate to draft page for editing
-    navigate(`/s/draft?occasion=${formData.occasion}&recipient=${encodeURIComponent(formData.recipient)}&sender=${encodeURIComponent(formData.sender)}`);
+    // Navigate to draft page - only add params if filled
+    let url = `/s/draft?occasion=${formData.occasion}`;
+    if (formData.recipient) {
+      url += `&recipient=${encodeURIComponent(formData.recipient)}`;
+    }
+    if (formData.sender) {
+      url += `&sender=${encodeURIComponent(formData.sender)}`;
+    }
+    navigate(url);
   };
 
-  const isFormValid = formData.occasion && formData.recipient && formData.sender;
+  const isFormValid = !!formData.occasion;
 
   // Show loading state while extracting metadata
   if (isLoadingMetadata) {
@@ -134,11 +143,14 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
-      {wasAutoFilled && (
+      {autoFillStatus !== 'none' && (
         <Alert className="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
           <Info className="h-4 w-4 text-blue-500" />
           <AlertDescription className="text-blue-700 dark:text-blue-300">
-            Ми автоматично заповнили форму на основі вашої розмови. Ви можете змінити будь-які поля.
+            {autoFillStatus === 'full' 
+              ? "Ми автоматично заповнили форму на основі вашої розмови. Ви можете змінити будь-які поля."
+              : "Ми автоматично заповнили деякі поля на основі вашої розмови. Перевірте та за бажанням доповніть решту."
+            }
           </AlertDescription>
         </Alert>
       )}
@@ -164,10 +176,10 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
             </Select>
           </div>
 
-          {/* Recipient and Sender */}
+          {/* Recipient and Sender - optional */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="recipient">Кому *</Label>
+              <Label htmlFor="recipient">Кому <span className="text-muted-foreground text-sm">(необов'язково)</span></Label>
               <Input
                 id="recipient"
                 value={formData.recipient}
@@ -176,7 +188,7 @@ export const PageCaptionStep: React.FC<PageCaptionStepProps> = ({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="sender">Від кого *</Label>
+              <Label htmlFor="sender">Від кого <span className="text-muted-foreground text-sm">(необов'язково)</span></Label>
               <Input
                 id="sender"
                 value={formData.sender}

@@ -98,9 +98,9 @@ const PublicSongDraft = () => {
   }, []);
 
   // Get occasion from draftData first, then URL params, then default
-  const occasion = draftData?.occasion || searchParams.get('occasion') || 'congratulations';
-  const recipient = draftData?.recipient || searchParams.get('recipient') || 'Марії';
-  const sender = draftData?.sender || searchParams.get('sender') || 'Олексія';
+  const occasion = draftData?.pageInfo?.occasion || draftData?.occasion || searchParams.get('occasion') || 'congratulations';
+  const recipient = draftData?.pageInfo?.recipient || draftData?.recipient || searchParams.get('recipient') || '';
+  const sender = draftData?.pageInfo?.sender || draftData?.sender || searchParams.get('sender') || '';
   
   console.log('PublicSongDraft - occasion:', occasion);
 
@@ -171,12 +171,16 @@ const PublicSongDraft = () => {
 
           {/* Song Card */}
           <div className="bg-white/95 backdrop-blur-sm rounded-lg shadow-2xl p-8">
-            {/* Для кого / Від кого — НАД заголовком */}
-            <div className="mb-4">
-              <p className="text-lg text-center font-baloo text-muted-foreground">
-                {locale[language].for} {recipient} • {locale[language].from} {sender}
-              </p>
-            </div>
+            {/* Для кого / Від кого — НАД заголовком (тільки якщо є дані) */}
+            {(recipient || sender) && (
+              <div className="mb-4">
+                <p className="text-lg text-center font-baloo text-muted-foreground">
+                  {recipient && <>{locale[language].for} {recipient}</>}
+                  {recipient && sender && ' • '}
+                  {sender && <>{locale[language].from} {sender}</>}
+                </p>
+              </div>
+            )}
 
             {/* Заголовок */}
             <h1 className="text-4xl font-bold font-baloo text-center mb-8">
