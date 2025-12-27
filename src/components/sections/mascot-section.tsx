@@ -74,8 +74,8 @@ export function MascotSection() {
                   </p>
                 </div>
                 <div className="w-full flex justify-center">
-                  <Button 
-                    size="lg" 
+                  <Button
+                    size="lg"
                     className="bg-gradient-to-r from-[#B8B3FF] to-[#E8B3FF] hover:from-[#A8A3EF] hover:to-[#D8A3EF] text-white font-bold px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105"
                     onClick={() => {
                       const orderSection = document.getElementById('order-section');
@@ -118,7 +118,7 @@ export function MascotSection() {
                 </div>
                 <div className="w-full md:w-80 flex-shrink-0">
                   <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg aspect-video flex items-center justify-center border-2 border-dashed border-[#E8B3FF]/30">
-                    <p className="text-muted-foreground text-sm">Тут буде відео</p>
+                    <p className="text-muted-foreground text-sm font-bold">ТУТ БУДЕ ВІДЕО (ПЕРЕВІРКА)</p>
                   </div>
                 </div>
               </div>
@@ -126,16 +126,16 @@ export function MascotSection() {
               {/* Step 3: Даруєш і дивишся на емоції */}
               <div className="flex flex-col md:flex-row gap-6 items-center bg-card rounded-2xl border-2 border-[#B8B3FF]/40 hover:border-[#B8B3FF] transition-all hover:shadow-lg p-6">
                 <div className="w-full md:w-80 flex-shrink-0">
-                  <img 
-                    src={postcardScanImage} 
-                    alt="Листівка з QR-кодом та смартфон, який сканує її" 
+                  <img
+                    src={postcardScanImage}
+                    alt="Листівка з QR-кодом та смартфон, який сканує її"
                     className="rounded-lg aspect-square object-cover w-full shadow-lg"
                   />
                 </div>
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-primary mb-3">Крок 3: Даруєш і дивишся на емоції</h3>
                   <p className="text-muted-foreground mb-2">
-                    Листівка приїжджає <span className="font-semibold text-primary">Новою поштою за 1-2 дні</span>. 
+                    Листівка приїжджає <span className="font-semibold text-primary">Новою поштою за 1-2 дні</span>.
                     Ти отримуєш її та даруєш особливій людині.
                   </p>
                   <p className="text-muted-foreground mb-3">
