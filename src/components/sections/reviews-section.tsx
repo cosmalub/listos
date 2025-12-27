@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { SectionHeader } from "@/components/ui/section-header";
 
 interface ReviewScreenshotProps {
@@ -47,45 +46,11 @@ export function ReviewsSection() {
         </div>
 
         {/* Другий ряд - рух вправо */}
-        <div className="relative mb-16">
+        <div className="relative">
           <div className="flex gap-5 animate-scroll-right">
             {secondRow.map((review, index) => (
               <ReviewScreenshot key={`row2-${index}`} {...review} />
             ))}
-          </div>
-        </div>
-
-        {/* CTA після відгуків */}
-        <div className="max-w-3xl mx-auto">
-          <div className="bg-card rounded-3xl border-2 border-primary/30 hover:border-primary/50 transition-all hover:shadow-lg p-8 text-center">
-            <Button
-              onClick={() => (window.location.href = "/order")}
-              className="text-lg px-10 py-7 rounded-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold mb-6"
-            >
-              🎵 Я теж хочу такий подарунок!
-            </Button>
-
-            <div className="space-y-3 text-muted-foreground">
-              <div className="flex items-center justify-center gap-2">
-                <span className="text-xl">💝</span>
-                <span className="text-sm md:text-base">Понад 500 створених емоційних історій</span>
-              </div>
-
-              <div className="flex items-center justify-center gap-2">
-                <span className="text-xl">🔄</span>
-                <span className="text-sm md:text-base">Клієнти замовляють знову — для мами, тата, коханих</span>
-              </div>
-
-              <div className="flex items-center justify-center gap-2">
-                <span className="text-xl">⚡️</span>
-                <span className="text-sm md:text-base">Студія настільки проста, що справишся за 10 хвилин</span>
-              </div>
-
-              <div className="flex items-center justify-center gap-2">
-                <span className="text-xl">🚚</span>
-                <span className="text-sm md:text-base">Безкоштовна доставка Новою поштою за 1-2 дні</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
