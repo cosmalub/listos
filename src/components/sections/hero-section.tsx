@@ -1,5 +1,6 @@
 import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useOrderDialog } from "@/components/order/OrderDialogContext";
 
 interface ReviewBubbleProps {
   name: string;
@@ -96,6 +97,7 @@ function CustomerCounter() {
 }
 
 export function HeroSection() {
+  const { openOrderDialog } = useOrderDialog();
   return (
       
       <section className="relative py-16 md:py-24 overflow-hidden bg-gradient-to-b from-[#FFD1DC] to-white/20">
@@ -175,7 +177,7 @@ export function HeroSection() {
 
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button 
-                onClick={() => window.location.href = '/order'}
+                onClick={openOrderDialog}
                 className="text-lg px-8 py-6 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold"
               >
                 🎵 Почати створення

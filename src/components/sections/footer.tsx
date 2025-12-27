@@ -1,4 +1,8 @@
+import { useOrderDialog } from "@/components/order/OrderDialogContext";
+
 export function Footer() {
+  const { openOrderDialog } = useOrderDialog();
+  
   return (
     <footer className="py-16 bg-gradient-to-b from-white to-[#B8B3FF]">
       <div className="container mx-auto px-4">
@@ -20,7 +24,14 @@ export function Footer() {
                   <li><a href="#" className="text-sm text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Доставка та оплата</a></li>
                   <li><a href="#" className="text-sm text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Політика конфіденційності</a></li>
                   <li><a href="#" className="text-sm text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Умови користування</a></li>
-                  <li><a href="/order" className="text-sm text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Створити листівку</a></li>
+                  <li>
+                    <button 
+                      onClick={openOrderDialog}
+                      className="text-sm text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors"
+                    >
+                      Створити листівку
+                    </button>
+                  </li>
                 </ul>
               </div>
 
