@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Music, Shield, Phone, MessageCircle, Loader2, CreditCard, Link2, Palette, Truck, ChevronRight } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Shield, Phone, MessageCircle, Loader2, ChevronDown } from "lucide-react";
 import { Header } from "@/components/sections/header";
 import { Footer } from "@/components/sections/footer";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 export default function Order() {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ export default function Order() {
     discountPercent?: number;
   } | null>(null);
   const [validatingPromo, setValidatingPromo] = useState(false);
+  const [showPromoField, setShowPromoField] = useState(false);
 
   const validatePromoCode = async () => {
     if (!formData.promoCode.trim()) {
@@ -106,70 +108,25 @@ export default function Order() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const steps = [
-    { icon: CreditCard, title: "Оплачуєте замовлення", desc: "Безпечна оплата через LiqPay" },
-    { icon: Link2, title: "Отримуєте посилання", desc: "На студію створення з ШІ" },
-    { icon: Palette, title: "Створюєте листівку", desc: "З допомогою ШІ за вашими побажаннями" },
-    { icon: Truck, title: "Отримуєте готову листівку", desc: "Безкоштовна доставка Новою Поштою" }
-  ];
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] via-[#F3D1FF]/30 to-white">
       <Header centerTitle="Замовлення" hideNav={false} showMenu={true} />
       
       <div className="py-8 pt-24">
-        <div className="container mx-auto px-4 max-w-3xl">
+        <div className="container mx-auto px-4 max-w-xl">
           {/* Заголовок */}
-          <div className="text-center mb-10">
-            <h1 className="font-baloo font-bold text-2xl md:text-3xl text-[#6A5ACD] mb-3">
+          <div className="text-center mb-8">
+            <h1 className="font-baloo font-bold text-2xl md:text-3xl text-[#6A5ACD] mb-2">
               Оформлення замовлення
             </h1>
-            <p className="text-[#6A5ACD]/70 max-w-xl mx-auto">
-              Створіть особисту пісню та отримайте готову листівку за 1–2 дні
+            <p className="text-[#6A5ACD]/70">
+              Заповни форму — і перейдеш до створення листівки
             </p>
           </div>
 
-          {/* Як це працює */}
-          <Card className="mb-8 border border-[#E5E0FF] shadow-sm">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base font-semibold text-[#6A5ACD]">
-                Як це працює
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:flex md:items-start md:justify-between gap-4">
-                {steps.map((item, index) => {
-                  const Icon = item.icon;
-                  return (
-                    <div key={index} className="flex items-start md:flex-1">
-                      <div className="text-center flex-1">
-                        <div className="w-10 h-10 mx-auto mb-2 rounded-full bg-[#6A5ACD]/10 flex items-center justify-center">
-                          <Icon className="w-5 h-5 text-[#6A5ACD]" />
-                        </div>
-                        <p className="text-sm font-medium text-[#6A5ACD] mb-1">{item.title}</p>
-                        <p className="text-xs text-[#6A5ACD]/60">{item.desc}</p>
-                      </div>
-                      {index < steps.length - 1 && (
-                        <div className="hidden md:flex items-center justify-center px-1 pt-3">
-                          <ChevronRight className="w-5 h-5 text-[#6A5ACD]/40" />
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
-
           {/* Форма */}
-          <Card className="border border-[#E5E0FF] shadow-sm mb-8">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-[#6A5ACD]">
-                <Music className="h-5 w-5" />
-                Дані для замовлення
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
+          <Card className="border border-[#E5E0FF] shadow-sm mb-6">
+            <CardContent className="pt-6">
               <form onSubmit={handleSubmit} className="space-y-5">
                 {/* Ім'я */}
                 <div className="space-y-2">
@@ -238,78 +195,80 @@ export default function Order() {
                   )}
                 </div>
 
-                {/* Місто та відділення */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="city" className="text-[#6A5ACD]">Місто *</Label>
-                    <Input
-                      id="city"
-                      value={formData.city}
-                      onChange={(e) => handleInputChange("city", e.target.value)}
-                      placeholder="Ваше місто"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="novaPoshta" className="text-[#6A5ACD]">Відділення Нової Пошти *</Label>
-                    <Input
-                      id="novaPoshta"
-                      value={formData.novaPoshta}
-                      onChange={(e) => handleInputChange("novaPoshta", e.target.value)}
-                      placeholder="№ відділення"
-                      required
-                    />
+                {/* Доставка */}
+                <div className="space-y-3 p-4 bg-[#F8F4FF]/50 rounded-lg border border-[#E5E0FF]">
+                  <Label className="text-[#6A5ACD] font-medium">Доставка (Нова Пошта)</Label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div className="space-y-1.5">
+                      <Label htmlFor="city" className="text-xs text-[#6A5ACD]/70">Місто *</Label>
+                      <Input
+                        id="city"
+                        value={formData.city}
+                        onChange={(e) => handleInputChange("city", e.target.value)}
+                        placeholder="Ваше місто"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="novaPoshta" className="text-xs text-[#6A5ACD]/70">Відділення *</Label>
+                      <Input
+                        id="novaPoshta"
+                        value={formData.novaPoshta}
+                        onChange={(e) => handleInputChange("novaPoshta", e.target.value)}
+                        placeholder="№ відділення"
+                        required
+                      />
+                    </div>
                   </div>
                 </div>
 
-                {/* Промокод */}
-                <div className="space-y-2">
-                  <Label htmlFor="promoCode" className="text-[#6A5ACD]">Промокод</Label>
-                  <div className="flex gap-2">
-                    <Input
-                      id="promoCode"
-                      value={formData.promoCode}
-                      onChange={(e) => handleInputChange("promoCode", e.target.value.toUpperCase())}
-                      placeholder="NEXT25-XXXXXX"
-                      className="flex-1"
-                    />
-                    <Button
+                {/* Промокод - згорнутий */}
+                <Collapsible open={showPromoField} onOpenChange={setShowPromoField}>
+                  <CollapsibleTrigger asChild>
+                    <button
                       type="button"
-                      onClick={validatePromoCode}
-                      disabled={validatingPromo || !formData.promoCode.trim()}
-                      variant="outline"
+                      className="flex items-center gap-1 text-sm text-[#6A5ACD]/70 hover:text-[#6A5ACD] transition-colors"
                     >
-                      {validatingPromo ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Застосувати'}
-                    </Button>
-                  </div>
-                  {promoStatus && (
-                    <p className={`text-sm ${promoStatus.valid ? 'text-green-600' : 'text-red-600'}`}>
-                      {promoStatus.message}
-                    </p>
-                  )}
-                </div>
+                      <span>Є промокод?</span>
+                      <ChevronDown className={`h-4 w-4 transition-transform ${showPromoField ? 'rotate-180' : ''}`} />
+                    </button>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="mt-3">
+                    <div className="flex gap-2">
+                      <Input
+                        id="promoCode"
+                        value={formData.promoCode}
+                        onChange={(e) => handleInputChange("promoCode", e.target.value.toUpperCase())}
+                        placeholder="Введіть промокод"
+                        className="flex-1"
+                      />
+                      <Button
+                        type="button"
+                        onClick={validatePromoCode}
+                        disabled={validatingPromo || !formData.promoCode.trim()}
+                        variant="outline"
+                        size="sm"
+                      >
+                        {validatingPromo ? <Loader2 className="h-4 w-4 animate-spin" /> : 'OK'}
+                      </Button>
+                    </div>
+                    {promoStatus && (
+                      <p className={`text-sm mt-2 ${promoStatus.valid ? 'text-green-600' : 'text-red-600'}`}>
+                        {promoStatus.message}
+                      </p>
+                    )}
+                  </CollapsibleContent>
+                </Collapsible>
 
                 {/* Ціна */}
-                <div className="bg-[#F8F4FF] p-4 rounded-lg">
-                  {promoStatus?.valid && (
-                    <>
-                      <div className="flex justify-between text-sm text-[#6A5ACD]/70 mb-1">
-                        <span>Початкова ціна:</span>
-                        <span className="line-through">{basePrice} грн</span>
-                      </div>
-                      <div className="flex justify-between text-sm text-green-600 mb-2">
-                        <span>Знижка {promoStatus.discountPercent}%:</span>
-                        <span>-{basePrice - finalPrice} грн</span>
-                      </div>
-                    </>
-                  )}
-                  <div className="flex justify-between items-center text-lg font-bold text-[#6A5ACD]">
-                    <span>До сплати:</span>
-                    <span>{finalPrice} грн</span>
+                <div className="flex items-center justify-between py-3 border-t border-[#E5E0FF]">
+                  <span className="text-[#6A5ACD]/70">До сплати:</span>
+                  <div className="text-right">
+                    {promoStatus?.valid && (
+                      <span className="text-sm text-[#6A5ACD]/50 line-through mr-2">{basePrice} грн</span>
+                    )}
+                    <span className="text-xl font-bold text-[#6A5ACD]">{finalPrice} грн</span>
                   </div>
-                  <p className="text-xs text-[#6A5ACD]/60 mt-2">
-                    Безкоштовна доставка Новою Поштою
-                  </p>
                 </div>
 
                 <Button 
@@ -323,22 +282,11 @@ export default function Order() {
             </CardContent>
           </Card>
 
-          {/* Гарантія */}
-          <Card className="border border-green-200 bg-green-50">
-            <CardContent className="py-4">
-              <div className="flex items-center gap-3">
-                <div className="bg-green-100 rounded-full p-2">
-                  <Shield className="h-5 w-5 text-green-600" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-green-800">Гарантія 100% повернення</h3>
-                  <p className="text-sm text-green-700">
-                    Якщо результат не влаштує — повернемо кошти протягом 7 днів
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          {/* Гарантія - мінімальна */}
+          <div className="flex items-center justify-center gap-2 text-sm text-[#6A5ACD]/60">
+            <Shield className="h-4 w-4" />
+            <span>Якщо результат не сподобається — ми повернемо гроші</span>
+          </div>
         </div>
       </div>
       
