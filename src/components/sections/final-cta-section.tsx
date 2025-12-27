@@ -4,7 +4,7 @@ export function FinalCtaSection() {
   return (
     <section className="py-16 md:py-24 bg-gradient-to-b from-white to-[#F8F7FF] relative z-10">
       <div className="container mx-auto px-4">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           {/* Головна картка */}
           <div className="relative bg-gradient-to-br from-white via-[#FDFCFF] to-[#F8F7FF] border-2 border-[#6A5ACD]/20 rounded-3xl p-10 md:p-14 text-center shadow-xl shadow-[#6A5ACD]/10 overflow-hidden">
             {/* Декоративні елементи */}
