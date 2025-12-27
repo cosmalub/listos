@@ -36,13 +36,10 @@ export function PricingSection() {
         <div className="max-w-4xl mx-auto">
           {/* Main Header Section */}
           <div className="text-center mb-12 md:mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#6A5ACD] mb-6 leading-tight">
-              Скажи важливе —{" "}
-              <span className="bg-gradient-to-r from-[#6A5ACD] to-[#D292FF] bg-clip-text text-transparent">
-                красиво і по-справжньому
-              </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-center text-primary mb-4">
+              Скажи важливе — красиво і по-справжньому
             </h2>
-            <p className="text-lg md:text-xl text-[#6A5ACD]/70 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg text-center text-muted-foreground max-w-2xl mx-auto">
               Ми допоможемо оформити твої слова у музичну листівку, яку приємно вручити.
             </p>
           </div>

@@ -331,16 +331,16 @@ export default function ExamplesSection3D() {
     <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
         {/* Перехідна фраза */}
-        <p className="text-center text-lg text-[#6A5ACD]/60 mb-8 max-w-xl mx-auto leading-relaxed">
+        <p className="text-center text-lg text-muted-foreground mb-8 max-w-xl mx-auto leading-relaxed">
           Кожна з цих листівок — чиясь реальна історія.
           <br />
           Її можна побачити і послухати.
         </p>
 
-        <h2 className="text-3xl font-bold text-[#6A5ACD] mb-4 text-center">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-primary mb-4">
           Справжні листівки і справжні історії
         </h2>
-        <p className="text-lg text-[#6A5ACD]/80 max-w-2xl mx-auto leading-relaxed mb-12 text-center">
+        <p className="text-lg text-center text-muted-foreground max-w-2xl mx-auto mb-12">
           Реальні листівки з піснями, створені для близьких людей.
         </p>
 
