@@ -110,7 +110,7 @@ export default function Order() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] via-[#F3D1FF]/30 to-white">
-      <Header centerTitle="Замовлення" hideNav={false} showMenu={true} />
+      <Header hideNav={false} showMenu={true} />
       
       <div className="py-8 pt-24">
         <div className="container mx-auto px-4 max-w-xl">
