@@ -330,11 +330,18 @@ export default function ExamplesSection3D() {
   return (
     <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold font-baloo text-[#6A5ACD] mb-6 text-center">
-          Приклади музичних листівок
+        {/* Перехідна фраза */}
+        <p className="text-center text-lg text-[#6A5ACD]/60 mb-8 max-w-xl mx-auto leading-relaxed">
+          Кожна з цих листівок — чиясь реальна історія.
+          <br />
+          Її можна побачити і послухати.
+        </p>
+
+        <h2 className="text-3xl font-bold text-[#6A5ACD] mb-4 text-center">
+          Справжні листівки і справжні історії
         </h2>
-        <p className="text-lg text-[#6A5ACD]/80 max-w-3xl mx-auto leading-relaxed mb-12 text-center">
-          Погляньте на листівки, які вже створили наші клієнти. Ви можете повертати їх, щоб побачити обидві сторони, та послухати пісні.
+        <p className="text-lg text-[#6A5ACD]/80 max-w-2xl mx-auto leading-relaxed mb-12 text-center">
+          Реальні листівки з піснями, створені для близьких людей.
         </p>
 
         <div className="max-w-5xl mx-auto">
