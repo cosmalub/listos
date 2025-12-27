@@ -12,29 +12,34 @@ import OrderSuccess from "./pages/OrderSuccess";
 import PublicSong from "./pages/PublicSong";
 import Discount from "./pages/Discount";
 import NotFound from "./pages/NotFound";
+import { OrderDialogProvider } from "./components/order/OrderDialogContext";
+import { OrderDialog } from "./components/order/OrderDialog";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/order" element={<Order />} />
-          <Route path="/order-pending" element={<OrderPending />} />
-          <Route path="/studio" element={<Studio />} />
-          <Route path="/s/draft" element={<PublicSongDraft />} />
-          <Route path="/order-success" element={<OrderSuccess />} />
-          <Route path="/s/song/:orderId" element={<PublicSong />} />
-          <Route path="/discount" element={<Discount />} />
-          
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <OrderDialogProvider>
+        <Toaster />
+        <Sonner />
+        <OrderDialog />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/order" element={<Order />} />
+            <Route path="/order-pending" element={<OrderPending />} />
+            <Route path="/studio" element={<Studio />} />
+            <Route path="/s/draft" element={<PublicSongDraft />} />
+            <Route path="/order-success" element={<OrderSuccess />} />
+            <Route path="/s/song/:orderId" element={<PublicSong />} />
+            <Route path="/discount" element={<Discount />} />
+            
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </OrderDialogProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
