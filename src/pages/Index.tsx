@@ -1,7 +1,6 @@
 import { Header } from "@/components/sections/header";
 import { HeroSection } from "@/components/sections/hero-section";
 import { BenefitsSection } from "@/components/sections/benefits-section";
-import { ComparisonSection } from "@/components/sections/comparison-section";
 import { MascotSection } from "@/components/sections/mascot-section";
 import ExamplesSection3D from "@/components/sections/examples-section-3d";
 import { MomentsGallerySection } from "@/components/sections/moments-gallery-section";
@@ -25,9 +24,6 @@ const Index = () => {
       </section>
       <section id="benefits">
         <BenefitsSection />
-      </section>
-      <section id="comparison">
-        <ComparisonSection />
       </section>
       <section id="mascot">
         <MascotSection />
