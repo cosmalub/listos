@@ -23,9 +23,9 @@ export function GuaranteeSection() {
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
 
             <div className="relative z-10 text-center">
-              <h3 className="text-2xl md:text-3xl font-bold mb-4">Створюй без ризику</h3>
+              <h3 className="text-2xl md:text-3xl font-bold mb-4">Можеш почати без ризику</h3>
               <p className="text-lg text-white/90 max-w-xl mx-auto mb-8">
-                Спробуй спокійно. Якщо щось піде не так — ми повернемо гроші.
+                Якщо щось піде не так — ми повернемо гроші.
               </p>
 
               <Button
