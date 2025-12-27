@@ -5,6 +5,7 @@ import useEmblaCarousel from "embla-carousel-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Postcard3D } from "@/components/postcards/Postcard3D"
+import { useOrderDialog } from "@/components/order/OrderDialogContext"
 // --- Carousel Component (adapted from embla) ---
 type CarouselApi = any
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
@@ -327,6 +328,8 @@ const postcardExamples = [
 ]
 
 export default function ExamplesSection3D() {
+  const { openOrderDialog } = useOrderDialog();
+  
   return (
     <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
@@ -399,7 +402,7 @@ export default function ExamplesSection3D() {
               </h3>
               
               <Button 
-                onClick={() => window.location.href = '/order'}
+                onClick={openOrderDialog}
                 className="text-lg px-10 py-7 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold mb-6"
               >
                 🎵 Замовити свою листівку

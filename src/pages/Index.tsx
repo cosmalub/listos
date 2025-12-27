@@ -13,44 +13,49 @@ import { FaqSection } from "@/components/sections/faq-section";
 import FaqAndCtaSections from "@/components/sections/faq-and-cta-sections";
 import { FinalCtaSection } from "@/components/sections/final-cta-section";
 import { Footer } from "@/components/sections/footer";
+import { OrderDialogProvider } from "@/components/order/OrderDialogContext";
+import { OrderDialog } from "@/components/order/OrderDialog";
 
 
 const Index = () => {
   return (
-    <div className="min-h-screen">
-      <Header />
-      <section id="hero">
-        <HeroSection />
-      </section>
-      <section id="benefits">
-        <BenefitsSection />
-      </section>
-      <section id="mascot">
-        <MascotSection />
-      </section>
-      <section id="moments-gallery">
-        <MomentsGallerySection />
-      </section>
-      <section id="examples">
-        <ExamplesSection3D />
-      </section>
-      <section id="reviews">
-        <ReviewsSection />
-      </section>
-      <section id="pricing">
-        <PricingSection />
-      </section>
-      <section id="guarantee">
-        <GuaranteeSection />
-      </section>
-      <section id="faq">
-        <FaqAndCtaSections />
-      </section>
-      <section id="final-cta">
-        <FinalCtaSection />
-      </section>
-      <Footer />
-    </div>
+    <OrderDialogProvider>
+      <div className="min-h-screen">
+        <Header />
+        <section id="hero">
+          <HeroSection />
+        </section>
+        <section id="benefits">
+          <BenefitsSection />
+        </section>
+        <section id="mascot">
+          <MascotSection />
+        </section>
+        <section id="moments-gallery">
+          <MomentsGallerySection />
+        </section>
+        <section id="examples">
+          <ExamplesSection3D />
+        </section>
+        <section id="reviews">
+          <ReviewsSection />
+        </section>
+        <section id="pricing">
+          <PricingSection />
+        </section>
+        <section id="guarantee">
+          <GuaranteeSection />
+        </section>
+        <section id="faq">
+          <FaqAndCtaSections />
+        </section>
+        <section id="final-cta">
+          <FinalCtaSection />
+        </section>
+        <Footer />
+        <OrderDialog />
+      </div>
+    </OrderDialogProvider>
   );
 };
 

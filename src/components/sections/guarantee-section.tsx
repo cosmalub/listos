@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import mascotQualityGuarantee from "@/assets/mascot-quality-guarantee.png";
+import { useOrderDialog } from "@/components/order/OrderDialogContext";
 
 export function GuaranteeSection() {
+  const { openOrderDialog } = useOrderDialog();
   return (
     <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
@@ -29,7 +31,7 @@ export function GuaranteeSection() {
               </p>
 
               <Button
-                onClick={() => (window.location.href = "/order")}
+                onClick={openOrderDialog}
                 size="lg"
                 className="text-lg px-12 py-7 rounded-full bg-white text-[#6A5ACD] hover:bg-gray-50 shadow-xl transition-all hover:scale-105 font-bold"
               >
