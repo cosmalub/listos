@@ -1,44 +1,18 @@
 import { Button } from "@/components/ui/button";
-import { SectionHeader } from "@/components/ui/section-header";
 import mascotQualityGuarantee from "@/assets/mascot-quality-guarantee.png";
 
 export function GuaranteeSection() {
-  const guarantees = [
-    {
-      icon: "✅",
-      title: "Повернення грошей протягом 24 годин",
-    },
-    {
-      icon: "🔄",
-      title: "Необмежені перегенерації",
-    },
-  ];
-
   return (
     <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
         {/* 1. ОСНОВНИЙ БЛОК ГАРАНТІЙ */}
-        <SectionHeader
-          title="Ми гарантуємо"
-          subtitle="Твій ризик = 0. Якщо результат не сподобається — ми повернемо гроші."
-          size="md"
-        />
-
-        {/* Guarantee Items - Simple List */}
-        <div className="max-w-xl mx-auto mb-16">
-          <div className="flex flex-col gap-4">
-            {guarantees.map((guarantee, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-4 bg-[#F8F7FF] p-5 rounded-2xl border border-[#6A5ACD]/10"
-              >
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl bg-white shadow-sm">
-                  {guarantee.icon}
-                </div>
-                <h3 className="text-lg font-semibold text-[#6A5ACD]">{guarantee.title}</h3>
-              </div>
-            ))}
-          </div>
+        <div className="max-w-2xl mx-auto text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#6A5ACD] mb-6">Ми гарантуємо</h2>
+          <p className="text-lg md:text-xl text-[#6A5ACD]/80 leading-relaxed">
+            Ти отримаєш листівку, яку приємно вручити.
+            <br />
+            Якщо результат не сподобається — ми повернемо гроші протягом 24 годин.
+          </p>
         </div>
 
         {/* 2. CTA БЛОК "БЕЗ РИЗИКУ" */}
