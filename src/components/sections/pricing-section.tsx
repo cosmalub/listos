@@ -1,147 +1,113 @@
-import { Check, Sparkles, Zap, Truck, RefreshCw, Music, Download } from "lucide-react";
+import { Truck, Music, QrCode, FileText, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { SectionHeader } from "@/components/ui/section-header";
 import mascot100Guarantee from "@/assets/mascot-100-guarantee.png";
 
 export function PricingSection() {
   const features = [
     {
+      icon: <Music className="w-5 h-5" />,
+      title: "Створення пісні з твоїх слів",
+    },
+    {
+      icon: <FileText className="w-5 h-5" />,
+      title: "Фізична листівка формату A6",
+    },
+    {
       icon: <Sparkles className="w-5 h-5" />,
-      title: "Доступ до студії створення пісні та дизайну",
-      description: "Створюєш сам у зручному інтерфейсі. Листосик допомагає на кожному кроці.",
+      title: "Персональна сторінка з піснею та анімацією",
     },
     {
-      icon: <Check className="w-5 h-5" />,
-      title: "Друк листівки формату А6",
-      description: "Якісний друк твого дизайну. Не домашній принтер — професійна поліграфія.",
-    },
-    {
-      icon: "📱",
-      title: "QR-код на зворотній стороні",
-      description: "Для прослуховування пісні. Сканінуєш → відкривається анімована сторінка.",
+      icon: <QrCode className="w-5 h-5" />,
+      title: "QR-код для прослуховування",
     },
     {
       icon: <Truck className="w-5 h-5" />,
-      title: "Безкоштовна доставка Новою поштою",
-      description: "По всій Україні. Листівка приїжджає за 1-2 дні.",
-    },
-    {
-      icon: <Music className="w-5 h-5" />,
-      title: "Анімована персональна сторінка з піснею",
-      description: "Доступна назавжди. Можна ділитися посиланням.",
-    },
-    {
-      icon: <Download className="w-5 h-5" />,
-      title: "MP3 файл пісні",
-      description: "Завантажуй на телефон, діліся у месенджерах.",
-    },
-    {
-      icon: <RefreshCw className="w-5 h-5" />,
-      title: "Необмежені перегенерації у студії",
-      description: "Не сподобався результат? Перегенеруй безкоштовно. Скільки завгодно разів.",
+      title: "Безкоштовна доставка по Україні",
     },
   ];
 
   return (
-    <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
-      <div className="container mx-auto px-4">
-        <div className="max-w-5xl mx-auto relative">
-          <Card className="bg-card border-2 border-[#6A5ACD]/30 rounded-3xl shadow-lg overflow-hidden relative">
-            {/* Акційний бейдж - тільки десктоп */}
-            <div className="absolute top-3 right-3 md:top-6 md:right-6 z-10 hidden md:block">
-              <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-3 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-bold shadow-lg animate-pulse">
-                🔥 Акційна ціна
+    <section className="py-16 md:py-24 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10 overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-20 -left-20 w-72 h-72 bg-gradient-to-br from-[#E8B3FF]/20 to-transparent rounded-full blur-3xl" />
+        <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-gradient-to-tl from-[#B8B3FF]/20 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-[#6A5ACD]/5 to-[#D292FF]/5 rounded-full blur-3xl" />
+      </div>
+
+      <div className="container mx-auto px-4 relative">
+        <div className="max-w-4xl mx-auto">
+          {/* Main Header Section */}
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#6A5ACD] mb-6 leading-tight">
+              Скажи важливе —{" "}
+              <span className="bg-gradient-to-r from-[#6A5ACD] to-[#D292FF] bg-clip-text text-transparent">
+                красиво і по-справжньому
+              </span>
+            </h2>
+            <p className="text-lg md:text-xl text-[#6A5ACD]/70 max-w-2xl mx-auto leading-relaxed">
+              Ми допоможемо оформити твої слова у музичну листівку, яку приємно вручити.
+            </p>
+          </div>
+
+          {/* Features Card */}
+          <Card className="bg-gradient-to-br from-white via-white to-[#F8F7FF] border-2 border-[#6A5ACD]/20 rounded-3xl shadow-xl overflow-hidden relative backdrop-blur-sm">
+            {/* Subtle gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#6A5ACD]/[0.02] to-[#D292FF]/[0.02] pointer-events-none" />
+            
+            <div className="p-8 md:p-10 lg:p-14 relative">
+              {/* Features Section Header */}
+              <div className="text-center mb-10">
+                <p className="inline-block text-sm md:text-base font-medium text-[#6A5ACD]/80 bg-[#6A5ACD]/10 px-4 py-2 rounded-full">
+                  ✨ Усе, щоб подарунок вийшов гідним
+                </p>
               </div>
-            </div>
 
-            <div className="p-6 md:p-8 lg:p-12">
-              {/* Header - Centered */}
-              <div className="text-center mb-8">
-                {/* Бейдж для мобільних - над заголовком */}
-                <div className="md:hidden mb-4 flex justify-center">
-                  <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg animate-pulse">
-                    🔥 Акційна ціна
-                  </div>
-                </div>
-
-                <SectionHeader
-                  title="Персональна музична листівка"
-                  subtitle="Доступ до студії + друк + доставка = все включено"
-                  size="md"
-                  className="mb-0"
-                />
-              </div>
-
-              {/* Features List - Two columns */}
-              <div className="mb-10">
-                <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              {/* Features List */}
+              <div className="mb-12">
+                <div className="flex flex-col gap-4 max-w-xl mx-auto">
                   {features.map((feature, index) => (
                     <div
                       key={index}
-                      className="flex items-start gap-4 bg-[#F8F7FF] p-4 rounded-xl hover:shadow-md transition-all"
+                      className="flex items-center gap-4 bg-white/80 backdrop-blur-sm p-4 md:p-5 rounded-2xl border border-[#6A5ACD]/10 hover:border-[#6A5ACD]/30 hover:shadow-lg hover:shadow-[#6A5ACD]/5 transition-all duration-300 group"
                     >
-                      <div className="w-10 h-10 bg-gradient-to-r from-[#6A5ACD] to-[#8A7CDD] rounded-xl flex items-center justify-center flex-shrink-0 text-white">
-                        {typeof feature.icon === "string" ? <span className="text-xl">{feature.icon}</span> : feature.icon}
+                      <div className="w-12 h-12 bg-gradient-to-br from-[#6A5ACD] to-[#8A7CDD] rounded-xl flex items-center justify-center flex-shrink-0 text-white shadow-lg shadow-[#6A5ACD]/20 group-hover:scale-110 transition-transform duration-300">
+                        {feature.icon}
                       </div>
-                      <div className="flex-1">
-                        <h4 className="font-bold text-[#6A5ACD] mb-1 text-sm md:text-base">{feature.title}</h4>
-                        <p className="text-[#6A5ACD]/70 text-xs md:text-sm leading-relaxed">{feature.description}</p>
-                      </div>
+                      <h4 className="font-semibold text-[#6A5ACD] text-base md:text-lg">{feature.title}</h4>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Pricing */}
-              <div className="text-center mb-8">
-                <div className="inline-block bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 border-2 border-green-300 mb-6">
-                  <div className="flex items-center justify-center gap-4 mb-2">
-                    <span className="line-through text-gray-400 text-xl md:text-2xl">600 грн</span>
-                    <span className="text-green-600 font-bold text-3xl md:text-4xl">399 грн</span>
+              {/* Divider */}
+              <div className="w-full h-px bg-gradient-to-r from-transparent via-[#6A5ACD]/20 to-transparent mb-10" />
+
+              {/* Pricing & CTA */}
+              <div className="text-center">
+                {/* Price */}
+                <div className="mb-8">
+                  <div className="inline-flex items-baseline gap-2 mb-3">
+                    <span className="text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-[#6A5ACD] to-[#8A7CDD] bg-clip-text text-transparent">
+                      399
+                    </span>
+                    <span className="text-2xl md:text-3xl font-semibold text-[#6A5ACD]/70">грн</span>
                   </div>
-                  <p className="text-[#6A5ACD] font-semibold text-lg">Все включено! Доступ + друк + доставка</p>
+                  <p className="text-[#6A5ACD]/60 text-base md:text-lg font-medium">
+                    Готовий подарунок. Без доплат і сюрпризів.
+                  </p>
                 </div>
 
                 {/* CTA Button */}
                 <Button
                   size="lg"
-                  className="text-lg px-12 py-7 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold mb-6"
+                  className="text-lg md:text-xl px-10 md:px-14 py-7 md:py-8 rounded-full bg-gradient-to-r from-[#6A5ACD] via-[#8A7AEE] to-[#D292FF] hover:from-[#5A4ABD] hover:via-[#7A6ADE] hover:to-[#C282EF] text-white shadow-xl shadow-[#6A5ACD]/30 transition-all duration-300 hover:shadow-2xl hover:shadow-[#6A5ACD]/40 hover:scale-105 font-bold"
                   onClick={() => (window.location.href = "/order")}
                 >
-                  🎵 Замовити зараз
+                  <span className="mr-2">🎵</span>
+                  Почати створення
                 </Button>
-
-                {/* Benefits under button */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                      <Check className="w-5 h-5 text-green-600" />
-                    </div>
-                    <p className="text-xs text-[#6A5ACD]/80 text-center">Гарантія повернення грошей</p>
-                  </div>
-
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-                      <RefreshCw className="w-5 h-5 text-purple-600" />
-                    </div>
-                    <p className="text-xs text-[#6A5ACD]/80 text-center">Необмежені перегенерації</p>
-                  </div>
-
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                      <Truck className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <p className="text-xs text-[#6A5ACD]/80 text-center">Доставка за 1-2 дні</p>
-                  </div>
-
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
-                      <Zap className="w-5 h-5 text-yellow-600" />
-                    </div>
-                    <p className="text-xs text-[#6A5ACD]/80 text-center">Створення за 10 хвилин</p>
-                  </div>
-                </div>
               </div>
             </div>
           </Card>
