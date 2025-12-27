@@ -117,20 +117,20 @@ export function MascotSection() {
                   </p>
                 </div>
                 <div className="w-full md:w-80 flex-shrink-0">
-                  <img 
-                    src={postcardScanImage} 
-                    alt="Листівка з QR-кодом та смартфон, який сканує її" 
-                    className="rounded-lg aspect-square object-cover w-full shadow-lg"
-                  />
+                  <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg aspect-video flex items-center justify-center border-2 border-dashed border-[#E8B3FF]/30">
+                    <p className="text-muted-foreground text-sm">Тут буде відео</p>
+                  </div>
                 </div>
               </div>
 
               {/* Step 3: Даруєш і дивишся на емоції */}
               <div className="flex flex-col md:flex-row gap-6 items-center bg-card rounded-2xl border-2 border-[#B8B3FF]/40 hover:border-[#B8B3FF] transition-all hover:shadow-lg p-6">
                 <div className="w-full md:w-80 flex-shrink-0">
-                  <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg aspect-video flex items-center justify-center">
-                    <p className="text-muted-foreground text-sm">Листівка + смартфон</p>
-                  </div>
+                  <img 
+                    src={postcardScanImage} 
+                    alt="Листівка з QR-кодом та смартфон, який сканує її" 
+                    className="rounded-lg aspect-square object-cover w-full shadow-lg"
+                  />
                 </div>
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-primary mb-3">Крок 3: Даруєш і дивишся на емоції</h3>
