@@ -1,7 +1,6 @@
 import { Truck, Music, FileText, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import mascot100Guarantee from "@/assets/mascot-100-guarantee.png";
 
 export function PricingSection() {
   const features = [
@@ -113,31 +112,6 @@ export function PricingSection() {
               </div>
             </div>
           </Card>
-
-          {/* Mascot with Speech Bubble - Bottom Section for All Screens */}
-          <div className="flex flex-col md:flex-row-reverse items-center gap-6 md:gap-10 mt-12">
-            {/* Cat Image */}
-            <div className="w-full md:w-1/3 flex justify-center">
-              <img
-                src={mascot100Guarantee}
-                alt="Листосик - 100% гарантія"
-                className="w-64 h-64 transform transition-transform hover:scale-105 drop-shadow-2xl"
-              />
-            </div>
-
-            {/* Speech Bubble */}
-            <div className="w-full md:w-2/3 relative group">
-              <div className="bg-card p-6 rounded-3xl border-2 border-[#B8B3FF]/60 group-hover:border-[#B8B3FF] transition-colors group-hover:shadow-md relative">
-                {/* Speech bubble pointer - only visible on md screens and up */}
-                <div className="hidden md:block absolute top-1/2 -right-3 transform -translate-y-1/2 w-6 h-6 rotate-45 border-r-2 border-t-2 border-[#B8B3FF]/60 group-hover:border-[#B8B3FF] transition-colors bg-card"></div>
-
-                <h3 className="text-xl font-bold text-[#6A5ACD] mb-3">Гарантія якості!</h3>
-                <p className="text-muted-foreground">
-                  Якщо не сподобається — повернемо гроші! Ми впевнені в якості наших музичних листівок.
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
