@@ -32,11 +32,11 @@ const Index = () => {
       <section id="comparison">
         <ComparisonSection />
       </section>
-      <section id="examples">
-        <ExamplesSection3D />
-      </section>
       <section id="moments-gallery">
         <MomentsGallerySection />
+      </section>
+      <section id="examples">
+        <ExamplesSection3D />
       </section>
       <section id="reviews">
         <ReviewsSection />
