@@ -1,4 +1,4 @@
-import { Truck, Music, QrCode, FileText, Sparkles } from "lucide-react";
+import { Truck, Music, FileText, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import mascot100Guarantee from "@/assets/mascot-100-guarantee.png";
@@ -10,16 +10,13 @@ export function PricingSection() {
       title: "Створення пісні з твоїх слів",
     },
     {
-      icon: <FileText className="w-5 h-5" />,
-      title: "Фізична листівка формату A6",
-    },
-    {
       icon: <Sparkles className="w-5 h-5" />,
       title: "Персональна сторінка з піснею та анімацією",
     },
     {
-      icon: <QrCode className="w-5 h-5" />,
-      title: "QR-код для прослуховування",
+      icon: <FileText className="w-5 h-5" />,
+      title: "Фізична листівка формату A6",
+      subtitle: "з переходом на персональну сторінку",
     },
     {
       icon: <Truck className="w-5 h-5" />,
@@ -75,7 +72,12 @@ export function PricingSection() {
                       <div className="w-12 h-12 bg-gradient-to-br from-[#6A5ACD] to-[#8A7CDD] rounded-xl flex items-center justify-center flex-shrink-0 text-white shadow-lg shadow-[#6A5ACD]/20 group-hover:scale-110 transition-transform duration-300">
                         {feature.icon}
                       </div>
-                      <h4 className="font-semibold text-[#6A5ACD] text-base md:text-lg">{feature.title}</h4>
+                      <div>
+                        <h4 className="font-semibold text-[#6A5ACD] text-base md:text-lg">{feature.title}</h4>
+                        {feature.subtitle && (
+                          <p className="text-[#6A5ACD]/60 text-sm">{feature.subtitle}</p>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>
