@@ -49,7 +49,7 @@ export function Footer() {
                 <h3 className="font-bold text-[#6A5ACD] text-base md:text-lg">Зв'язок</h3>
                 <div className="space-y-2 text-[#6A5ACD]/80">
                   <p className="text-sm">melodlistiv@gmail.com</p>
-                  <p className="text-sm">+380 XX XXX XX XX</p>
+
                   <div className="flex gap-3 pt-1">
                     <a href="https://www.instagram.com/melodiinalistivka/" target="_blank" rel="noopener noreferrer" className="text-sm hover:text-[#6A5ACD] transition-colors">Instagram</a>
                     <a href="https://t.me/genbyhuman" target="_blank" rel="noopener noreferrer" className="text-sm hover:text-[#6A5ACD] transition-colors">Telegram</a>
