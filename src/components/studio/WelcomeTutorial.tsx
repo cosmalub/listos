@@ -230,11 +230,6 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
 
               {/* System step (Delivery) */}
               <div className="flex flex-col items-center w-40 relative">
-                <div className="absolute -top-3 -right-3">
-                  <div className="animate-bounce">
-                    <Gift className="w-6 h-6 text-orange-500" />
-                  </div>
-                </div>
                 <div className="flex items-center justify-center w-12 h-12 rounded-full border-2 border-orange-400 bg-orange-50 text-orange-600 shadow-sm z-10">
                   <Gift className="w-6 h-6" />
                 </div>
