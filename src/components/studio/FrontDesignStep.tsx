@@ -74,7 +74,7 @@ const styleGradients = {
 const StyleTooltip = ({ style }: { style: StyleKey }) => {
   const styleData = POSTCARD_STYLES[style];
   const Icon = styleIcons[style];
-  
+
   return (
     <div className={cn(
       "w-72 sm:w-80 p-4 rounded-lg bg-gradient-to-br relative overflow-hidden border shadow-lg",
@@ -107,10 +107,10 @@ const StyleTooltip = ({ style }: { style: StyleKey }) => {
 // Auto-select style based on description content
 const selectStyleFromDescription = (description: string): StyleKey => {
   const lowerDesc = description.toLowerCase();
-  
+
   const joyfulKeywords = ['свято', 'радість', 'яскравий', 'веселий', 'енергійний', 'святкування', 'смішний'];
   const gentleKeywords = ['ніжний', 'делікатний', 'м\'який', 'спокійний', 'теплий', 'романтичний', 'любов'];
-  
+
   if (joyfulKeywords.some(keyword => lowerDesc.includes(keyword))) {
     return 'joyful';
   } else if (gentleKeywords.some(keyword => lowerDesc.includes(keyword))) {
@@ -190,24 +190,24 @@ export function FrontDesignStep({
   // Build user context from available data
   const buildUserContext = (): UserContext => {
     const context: UserContext = {};
-    
+
     if (pageData?.occasion) {
       context.occasion = pageData.occasion;
     }
-    
+
     if (pageData?.recipient) {
       context.recipient = {
         name: pageData.recipient,
         relationship: detectRelationship(pageData.recipient, chatMessages)
       };
     }
-    
+
     if (pageData?.sender) {
       context.sender = {
         name: pageData.sender
       };
     }
-    
+
     // Extract summary from chat messages
     if (chatMessages && chatMessages.length > 0) {
       const userMessages = chatMessages
@@ -219,25 +219,25 @@ export function FrontDesignStep({
         context.conversationSummary = userMessages.substring(0, 200);
       }
     }
-    
+
     return context;
   };
-  
+
   // Detect relationship from recipient name or chat
   const detectRelationship = (recipient: string, messages?: any[]): string | undefined => {
     const lowerRecipient = recipient.toLowerCase();
-    
+
     const relationships = [
       'мама', 'тато', 'бабуся', 'дідусь', 'сестра', 'брат',
       'дружина', 'чоловік', 'кохана', 'коханий', 'друг', 'подруга'
     ];
-    
+
     for (const rel of relationships) {
       if (lowerRecipient.includes(rel)) {
         return rel;
       }
     }
-    
+
     // Try to find in chat messages
     if (messages) {
       const allText = messages.map((m: any) => m.content).join(' ').toLowerCase();
@@ -247,22 +247,22 @@ export function FrontDesignStep({
         }
       }
     }
-    
+
     return undefined;
   };
 
   // Extract song imagery from lyrics
   const extractSongImagery = async () => {
     if (!lyrics) return;
-    
+
     setIsExtractingImagery(true);
     try {
       console.log('Extracting song imagery from lyrics...');
-      
+
       const userContext = buildUserContext();
-      
+
       const { data, error } = await supabase.functions.invoke('extract-song-imagery', {
-        body: { 
+        body: {
           lyrics: lyrics,
           userContext: userContext
         }
@@ -286,16 +286,16 @@ export function FrontDesignStep({
 
   const generateImageDescription = async () => {
     if (!lyrics || !designData.caption) return;
-    
+
     setIsGeneratingDescription(true);
     try {
       console.log('Generating personalized image description');
-      
+
       const userContext = buildUserContext();
       console.log('User context:', userContext);
-      
+
       const { data, error } = await supabase.functions.invoke('generate-image-description', {
-        body: { 
+        body: {
           lyrics: lyrics,
           caption: designData.caption,
           userContext: userContext,
@@ -312,8 +312,8 @@ export function FrontDesignStep({
         console.log('Generated personalized description:', data.imageDescription);
         const autoStyle = selectStyleFromDescription(data.imageDescription);
         setImageDescription(data.imageDescription);
-        setDesignData(prev => ({ 
-          ...prev, 
+        setDesignData(prev => ({
+          ...prev,
           style: autoStyle,
           prompt: generatePromptFromLyrics(lyrics, autoStyle)
         }));
@@ -399,10 +399,10 @@ export function FrontDesignStep({
       toast.error('Потрібні підпис, опис дизайну та стиль для генерації');
       return;
     }
-    
+
     setIsGenerating(true);
     setGenerationProgress(0);
-    
+
     try {
       console.log('Creating postcard generation task with:', {
         caption: designData.caption,
@@ -437,7 +437,7 @@ export function FrontDesignStep({
 
       // Step 2: Poll for completion
       await pollForCompletion(taskId);
-      
+
     } catch (error) {
       console.error('Failed to generate postcard image:', error);
       toast.error('Помилка при генерації зображення: ' + error.message);
@@ -450,7 +450,7 @@ export function FrontDesignStep({
   const pollForCompletion = async (taskId: string) => {
     let attempts = 0;
     const maxAttempts = 60; // 2 minutes max (2s * 60)
-    
+
     const checkStatus = async () => {
       attempts++;
       console.log(`Polling attempt ${attempts}/${maxAttempts}...`);
@@ -474,7 +474,7 @@ export function FrontDesignStep({
           }));
           setGenerationProgress(100);
           toast.success('Зображення успішно згенеровано!');
-          
+
           if (pollingIntervalRef.current) {
             clearInterval(pollingIntervalRef.current);
             pollingIntervalRef.current = null;
@@ -545,11 +545,11 @@ export function FrontDesignStep({
     setIsGeneratingNewVariant(true);
     try {
       console.log('Generating new variant description for lyrics');
-      
+
       const userContext = buildUserContext();
-      
+
       const { data, error } = await supabase.functions.invoke('generate-image-description', {
-        body: { 
+        body: {
           lyrics: lyrics,
           caption: designData.caption,
           userContext: userContext,
@@ -580,8 +580,8 @@ export function FrontDesignStep({
   const handleAcceptVariant = () => {
     const autoStyle = selectStyleFromDescription(newVariantDescription);
     setImageDescription(newVariantDescription);
-    setDesignData(prev => ({ 
-      ...prev, 
+    setDesignData(prev => ({
+      ...prev,
       style: autoStyle,
       prompt: generatePromptFromLyrics(lyrics, autoStyle),
       imageUrl: null
@@ -632,11 +632,11 @@ export function FrontDesignStep({
                   Утвердити і згенерувати
                 </Button>
               </div>
-              
+
               {/* Alternative: switch to photo upload */}
               <div className="border-t pt-3">
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   size="sm"
                   onClick={() => {
                     setShowVariantDescription(false);
@@ -663,8 +663,8 @@ export function FrontDesignStep({
         {/* Postcard Preview */}
         <div className="flex justify-center">
           <div className="w-full max-w-xs">
-            <PostcardPreview 
-              frontData={designData} 
+            <PostcardPreview
+              frontData={designData}
               backData={{
                 selectedColor: 'red',
                 personalMessage: ''
@@ -686,17 +686,31 @@ export function FrontDesignStep({
             </div>
             <Switch
               checked={designData.useFrame || false}
-              onCheckedChange={(checked) => 
+              onCheckedChange={(checked) =>
                 setDesignData(prev => ({ ...prev, useFrame: checked }))
               }
             />
           </div>
         )}
 
-         {/* Action buttons */}
+        {/* Action buttons */}
         <div className="space-y-3">
+          {designData.mode === 'photo' && (
+            <Button
+              variant="outline"
+              onClick={() => {
+                setDesignData(prev => ({ ...prev, imageUrl: null }));
+                setCurrentState('editing');
+              }}
+              className="w-full"
+            >
+              <ImageIcon className="w-4 h-4 mr-2" />
+              Змінити фото
+            </Button>
+          )}
+
           {designData.mode === 'ai-generation' && (
-            <Button 
+            <Button
               variant="outline"
               onClick={handleCreateVariant}
               disabled={isGeneratingNewVariant}
@@ -715,8 +729,8 @@ export function FrontDesignStep({
               )}
             </Button>
           )}
-          
-          <Button 
+
+          <Button
             onClick={handleComplete}
             className="w-full"
             size="lg"
@@ -738,24 +752,24 @@ export function FrontDesignStep({
         <p className="text-sm text-muted-foreground">
           Підпис буде розміщено на лицьовій частині листівки
         </p>
-        
-        <Textarea 
-          value={designData.caption} 
+
+        <Textarea
+          value={designData.caption}
           onChange={e => setDesignData(prev => ({
             ...prev,
             caption: e.target.value
-          }))} 
+          }))}
           placeholder={isGeneratingCaption ? "⏳ Генерую підпис..." : designData.caption ? "Підпис для листівки" : "Введіть підпис для листівки..."}
-          className="min-h-[80px] text-sm resize-none" 
-          disabled={isGeneratingCaption} 
+          className="min-h-[80px] text-sm resize-none"
+          disabled={isGeneratingCaption}
         />
-        
+
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <span className="text-xs text-muted-foreground">
             {designData.caption ? `${designData.caption.length}/80 символів` : '0/80 символів'}
           </span>
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             onClick={async () => {
               setIsGeneratingCaption(true);
               try {
@@ -770,8 +784,8 @@ export function FrontDesignStep({
               } finally {
                 setIsGeneratingCaption(false);
               }
-            }} 
-            disabled={isGeneratingCaption || !lyrics} 
+            }}
+            disabled={isGeneratingCaption || !lyrics}
             className="h-8 px-3 w-full sm:w-auto"
           >
             {isGeneratingCaption ? (
@@ -797,9 +811,9 @@ export function FrontDesignStep({
         <p className="text-sm text-muted-foreground">
           Лицьова частина листівки може бути створена на основі вашого фото або згенерованого дизайну під вашу пісню
         </p>
-        
+
         <div className="flex flex-col sm:flex-row gap-3">
-          <Button 
+          <Button
             variant={selectedSource === 'photo' ? 'default' : 'outline'}
             onClick={() => setSelectedSource('photo')}
             className="flex-1 min-h-[44px]"
@@ -808,7 +822,7 @@ export function FrontDesignStep({
             <span className="hidden sm:inline">Завантажити фото</span>
           </Button>
           <span className="self-center text-muted-foreground text-sm">або</span>
-          <Button 
+          <Button
             variant={selectedSource === 'ai-generation' ? 'default' : 'outline'}
             onClick={() => setSelectedSource('ai-generation')}
             className="flex-1 min-h-[44px]"
@@ -820,14 +834,14 @@ export function FrontDesignStep({
 
         {selectedSource === 'ai-generation' && (
           <div className="space-y-4 mt-6">
-            <Textarea 
+            <Textarea
               placeholder={isGeneratingDescription ? "⏳ Генерую опис дизайну..." : imageDescription ? "Опис для генерації зображення" : "Опис для генерації зображення буде створено автоматично..."}
               value={imageDescription}
               onChange={(e) => setImageDescription(e.target.value)}
               className="min-h-[120px] text-sm resize-none"
               disabled={isGeneratingDescription}
             />
-            
+
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                 <span className="text-xs text-muted-foreground">
@@ -877,9 +891,9 @@ export function FrontDesignStep({
 
         {selectedSource === 'photo' && (
           <div className="mt-6">
-            <ImageUploader 
-              onImageUpload={handleImageUpload} 
-              isUploading={isUploading} 
+            <ImageUploader
+              onImageUpload={handleImageUpload}
+              isUploading={isUploading}
             />
           </div>
         )}
@@ -892,7 +906,7 @@ export function FrontDesignStep({
           <p className="text-sm text-muted-foreground">
             Створіть дизайн на основі опису та підпису
           </p>
-          
+
           {isGenerating && generationProgress > 0 && (
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
@@ -906,9 +920,9 @@ export function FrontDesignStep({
             </div>
           )}
 
-          <Button 
-            onClick={handleGenerateImage} 
-            disabled={!designData.style || !designData.prompt || isGenerating} 
+          <Button
+            onClick={handleGenerateImage}
+            disabled={!designData.style || !designData.prompt || isGenerating}
             className="w-full"
             size="lg"
           >
@@ -933,8 +947,8 @@ export function FrontDesignStep({
           <p className="text-sm text-muted-foreground">
             Створіть лицьову частину листівки з вашим фото та підписом
           </p>
-          
-          <Button 
+
+          <Button
             onClick={() => {
               setCurrentState('preview');
             }}
