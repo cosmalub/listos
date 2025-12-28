@@ -137,20 +137,20 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
   };
 
   return (
-    <div className="min-h-screen px-4 py-8">
+    <div className="min-h-screen px-4 py-8 md:py-12">
       {/* Promise text - integrated into page flow */}
-      <div className="text-center mb-16">
-        <h3 className="text-2xl md:text-3xl font-bold text-[#6A5ACD] mb-4">
+      <div className="text-center mb-20 md:mb-24 mt-4 md:mt-8">
+        <h3 className="text-2xl md:text-3xl font-bold text-[#6A5ACD] mb-6">
           Разом створимо шедевр
         </h3>
-        <p className="text-lg md:text-xl text-slate-900 dark:text-white max-w-2xl mx-auto">
+        <p className="text-lg md:text-xl text-slate-900 dark:text-white max-w-2xl mx-auto leading-relaxed">
           Ви створите неймовірну музичну листівку, яка точно вразить отримувача. Листосик допоможе на кожному кроці!
         </p>
       </div>
 
       {/* Lystosyk with Speech Bubble */}
-      <div className="max-w-5xl mx-auto mt-0 mb-8 px-4">
-        <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
+      <div className="max-w-5xl mx-auto mt-0 mb-20 md:mb-24 px-4">
+        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
           {/* Cat Image */}
           <div className="w-full md:w-1/3 flex justify-center">
             <img
@@ -177,7 +177,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
       </div>
 
       {/* Steps integrated into page flow */}
-      <div className="mb-16">
+      <div className="mb-20 md:mb-24">
         <div className="bg-transparent py-6">
           <div className="container mx-auto px-4">
             {/* Desktop: Horizontal layout with connecting lines */}
