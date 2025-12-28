@@ -679,9 +679,9 @@ export function FrontDesignStep({
         {designData.mode === 'photo' && (
           <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg border">
             <div className="flex-1">
-              <p className="font-medium text-sm">Додати рамку</p>
+              <p className="font-medium text-sm">Святкова рамка</p>
               <p className="text-xs text-muted-foreground">
-                Елегантна золота рамка навколо фото
+                Надає листівці класичного, урочистого вигляду
               </p>
             </div>
             <Switch
