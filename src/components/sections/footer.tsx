@@ -5,7 +5,7 @@ export function Footer() {
   const { openOrderDialog } = useOrderDialog();
 
   return (
-    <footer className="py-16 bg-gradient-to-b from-white to-[#B8B3FF]">
+    <footer className="py-16 bg-gradient-to-b from-white to-[#E6E6FA]/40">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-between gap-8 md:gap-16 mb-12">

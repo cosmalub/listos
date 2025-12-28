@@ -51,7 +51,7 @@ export default function OrderPending() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] via-[#F3D1FF]/30 to-white flex flex-col">
+    <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] from-0% via-[#F3D1FF]/30 via-50% to-white to-90% flex flex-col">
       <Header hideNav />
 
       <main className="flex-1 pt-20 pb-12 px-4">
