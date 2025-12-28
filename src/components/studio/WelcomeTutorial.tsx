@@ -263,9 +263,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
               </div>
 
               <div className="relative border-t pt-4 border-dashed border-orange-200">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-min-h-screen px-2 text-xs text-orange-400 bg-[#FFD1DC] rounded-full px-2">
-                  Ми робимо
-                </div>
+
                 <div className="flex items-center justify-center gap-3">
                   <div className="flex items-center justify-center w-10 h-10 rounded-full border-2 border-orange-400 bg-orange-50 text-orange-600">
                     <Gift className="w-5 h-5" />
