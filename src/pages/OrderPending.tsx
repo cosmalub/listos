@@ -50,10 +50,8 @@ export default function OrderPending() {
 
   const steps = [
     { text: 'Ми отримали вашу заявку.', done: true },
-    { text: 'Наступний крок — створення листівки в студії.', done: false },
-    { text: 'Після підтвердження оплати ви отримаєте доступ до студії.', done: false },
-    { text: 'У студії ви створите пісню та листівку — це займе близько 10 хвилин.', done: false },
-    { text: 'Після цього ми надрукуємо листівку та надішлемо її вам.', done: false },
+    { text: 'Після оплати відкриється доступ до студії для створення пісні та листівки.', done: false },
+    { text: 'Далі ми надрукуємо листівку та надішлемо її вам.', done: false },
   ];
 
   return (
@@ -115,37 +113,7 @@ export default function OrderPending() {
               </CardContent>
             </Card>
 
-            {/* Contact Info Display (Moved Up) */}
-            {orderData && (
-              <Card className="border border-[#E8D5FF] shadow-sm bg-white">
-                <CardContent className="p-6">
-                  <h3 className="text-lg font-bold text-primary mb-2">Ми будемо на звʼязку</h3>
-                  <p className="text-sm text-primary/80 mb-4">
-                    Ми використаємо цей контакт, якщо потрібно щось уточнити або допомогти.
-                  </p>
-                  <div className="space-y-2 text-sm text-primary/80">
-                    {orderData.user_phone && (
-                      <p className="flex items-center gap-2">
-                        <Phone className="w-4 h-4" />
-                        <span>{orderData.user_phone}</span>
-                      </p>
-                    )}
-                    {orderData.user_email && (
-                      <p className="flex items-center gap-2">
-                        <Mail className="w-4 h-4" />
-                        <span>{orderData.user_email}</span>
-                      </p>
-                    )}
-                    {orderData.contact_type && (
-                      <p className="flex items-center gap-2">
-                        <MessageCircle className="w-4 h-4" />
-                        <span>Спосіб зв'язку: {orderData.contact_type === 'telegram' ? 'Telegram' : 'Телефон'}</span>
-                      </p>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+
 
             {/* Contact Card */}
             <Card className="border border-[#E8D5FF] shadow-sm bg-white">
