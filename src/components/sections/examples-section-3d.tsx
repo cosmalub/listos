@@ -403,7 +403,7 @@ export default function ExamplesSection3D() {
 
               <Button
                 onClick={openOrderDialog}
-                className="text-base md:text-lg w-full md:w-auto px-6 md:px-10 py-3 md:py-7 h-auto whitespace-normal rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold mb-6"
+                className="text-base md:text-lg w-full md:w-auto px-6 md:px-8 py-3 md:py-4 h-auto whitespace-normal rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold mb-6"
               >
                 🎵 Замовити свою листівку
               </Button>
