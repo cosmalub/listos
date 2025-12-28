@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Play, ArrowRight, Music, Heart, Palette, Send, Sparkles, Star, Loader2, Lock, CheckCircle } from 'lucide-react';
+import { Play, ArrowRight, Music, Heart, Palette, Send, Sparkles, Star, Loader2, Lock, CheckCircle, Gift } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useOrderDialog } from '@/components/order/OrderDialogContext';
@@ -53,6 +53,14 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
       color: "from-green-500 to-emerald-500",
       bgColor: "bg-green-50 dark:bg-green-950/20",
       iconColor: "text-green-600"
+    },
+    {
+      icon: Gift,
+      title: "Відправка",
+      description: "Відправляємо готову фізичну листівку вам",
+      color: "from-orange-500 to-yellow-500",
+      bgColor: "bg-orange-50 dark:bg-orange-950/20",
+      iconColor: "text-orange-600"
     }
   ];
 
@@ -168,7 +176,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
               {/* Speech bubble pointer */}
               <div className="hidden md:block absolute top-1/2 -left-3 transform -translate-y-1/2 w-6 h-6 rotate-45 border-l-2 border-b-2 border-[#B8B3FF]/60 group-hover:border-[#B8B3FF] transition-colors bg-card"></div>
 
-              <h3 className="text-xl font-bold text-[#6A5ACD] mb-3 text-left">Усього 4 прості кроки!</h3>
+              <h3 className="text-xl font-bold text-[#6A5ACD] mb-3 text-left">Усього 5 простих кроків!</h3>
               <p className="text-muted-foreground text-left">
                 Спершу ми створимо слова, далі — згенеруємо унікальну пісню та сторінку для неї.
                 А на завершення — зробимо дизайн самої листівки. Я буду поруч на кожному кроці!
@@ -200,6 +208,10 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
                 id: 4,
                 title: 'Дизайн листівки',
                 description: 'Робимо дизайн\nлистівки з QR-кодом'
+              }, {
+                id: 5,
+                title: 'Відправка',
+                description: 'Відправляємо готову\nфізичну листівку вам'
               }].map((step, index, array) => (
                 <div key={step.id} className="contents">
                   <div className="flex flex-col items-center w-36">
@@ -223,7 +235,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
             </div>
 
             {/* Mobile: Compact grid layout */}
-            <div className="md:hidden grid grid-cols-4 gap-2 max-w-sm mx-auto">
+            <div className="md:hidden grid grid-cols-5 gap-1 max-w-sm mx-auto">
               {[{
                 id: 1,
                 title: 'Створення слів'
@@ -236,6 +248,9 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
               }, {
                 id: 4,
                 title: 'Дизайн листівки'
+              }, {
+                id: 5,
+                title: 'Відправка'
               }].map(step => (
                 <div key={step.id} className="flex flex-col items-center">
                   <div className="flex items-center justify-center w-8 h-8 rounded-full border-2 bg-background border-border text-muted-foreground transition-colors">
