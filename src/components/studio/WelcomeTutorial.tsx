@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Play, ArrowRight, Music, Heart, Palette, Send, Sparkles, Star, Loader2, Lock } from 'lucide-react';
+import { Play, ArrowRight, Music, Heart, Palette, Send, Sparkles, Star, Loader2, Lock, CheckCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -176,12 +176,76 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
         </div>
       </div>
 
-      {/* Video Section - integrated into page flow */}
-      <div className="mb-16 text-center">
-        <div className="relative aspect-video max-w-2xl mx-auto rounded-2xl overflow-hidden group cursor-pointer">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-            <div className="bg-white/90 backdrop-blur-sm rounded-full p-6 group-hover:scale-110 transition-transform duration-300 shadow-soft">
-              <Play className="h-12 w-12 text-primary fill-primary" />
+      {/* Steps integrated into page flow */}
+      <div className="mb-16">
+        <div className="bg-transparent py-6">
+          <div className="container mx-auto px-4">
+            {/* Desktop: Horizontal layout with connecting lines */}
+            <div className="hidden md:flex items-start justify-center gap-4 max-w-4xl mx-auto">
+              {[{
+                id: 1,
+                title: 'Створення слів',
+                description: 'Створюємо слова\nдля пісні'
+              }, {
+                id: 2,
+                title: 'Генерація музики',
+                description: 'Генеруємо 2 варіанти на основі тексту'
+              }, {
+                id: 3,
+                title: 'Сторінка з піснею',
+                description: 'Створюємо персональну сторінку з піснею'
+              }, {
+                id: 4,
+                title: 'Дизайн листівки',
+                description: 'Робимо дизайн\nлистівки з QR-кодом'
+              }].map((step, index, array) => (
+                <div key={step.id} className="contents">
+                  <div className="flex flex-col items-center w-36">
+                    <div className="flex items-center justify-center w-10 h-10 rounded-full border-2 bg-background border-border text-muted-foreground transition-colors">
+                      <span className="text-sm font-medium">{step.id}</span>
+                    </div>
+                    <div className="mt-2 text-center">
+                      <div className="text-sm font-medium text-foreground">
+                        {step.title}
+                      </div>
+                      <div className="text-xs text-muted-foreground whitespace-pre-line">
+                        {step.description}
+                      </div>
+                    </div>
+                  </div>
+                  {index < array.length - 1 && (
+                    <div className="h-0.5 w-12 mt-5 bg-border transition-colors" />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Mobile: Compact grid layout */}
+            <div className="md:hidden grid grid-cols-4 gap-2 max-w-sm mx-auto">
+              {[{
+                id: 1,
+                title: 'Створення слів'
+              }, {
+                id: 2,
+                title: 'Генерація музики'
+              }, {
+                id: 3,
+                title: 'Сторінка з піснею'
+              }, {
+                id: 4,
+                title: 'Дизайн листівки'
+              }].map(step => (
+                <div key={step.id} className="flex flex-col items-center">
+                  <div className="flex items-center justify-center w-8 h-8 rounded-full border-2 bg-background border-border text-muted-foreground transition-colors">
+                    <span className="text-xs font-medium">{step.id}</span>
+                  </div>
+                  <div className="mt-1 text-center h-8 overflow-hidden">
+                    <div className="text-xs leading-tight font-medium text-foreground">
+                      {step.title}
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

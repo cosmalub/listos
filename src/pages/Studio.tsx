@@ -98,27 +98,27 @@ const Studio = () => {
     if (savedDraftData) {
       try {
         const parsed = JSON.parse(savedDraftData);
-        
+
         // Restore lyrics if not already set
         if (parsed.lyrics && !lyrics) {
           setLyrics(parsed.lyrics);
         }
-        
+
         // Restore selectedMusicVariant if not already set
         if (parsed.musicVariant && !selectedMusicVariant) {
           setSelectedMusicVariant(parsed.musicVariant);
         }
-        
+
         // Restore pageData if not already set
         if (parsed.pageInfo && !pageData) {
           setPageData(parsed.pageInfo);
         }
-        
+
         // Restore designData if not already set
         if (parsed.designData && !designData) {
           setDesignData(parsed.designData);
         }
-        
+
         console.log('✅ Restored data from sessionStorage:', {
           hasLyrics: !!parsed.lyrics,
           hasMusicVariant: !!parsed.musicVariant,
@@ -176,12 +176,12 @@ const Studio = () => {
 
   const handleLyricsConfirmed = async (confirmedLyrics: string) => {
     setLyrics(confirmedLyrics);
-    
+
     // Переходимо на крок 1.5 та показуємо лоадер
     setIsAnalyzingLyrics(true);
     setCurrentStep(1.5);
     navigate('/studio?step=1.5');
-    
+
     // Аналізуємо тексти та отримуємо рекомендовані стилі
     try {
       const { data, error } = await supabase.functions.invoke('analyze-lyrics-for-music', {
@@ -200,15 +200,15 @@ const Studio = () => {
         console.log('Analysis result:', data);
         // Зберігаємо параметри для генерації
         sessionStorage.setItem('music-parameters', JSON.stringify(data));
-        
+
         // Отримуємо рекомендовані стилі
         const recommendedStyleIds = data.recommendedStyles || [];
         const styles = recommendedStyleIds
           .map((id: string) => getStyleById(id))
           .filter(Boolean) as MusicStyle[];
-        
+
         setRecommendedStyles(styles);
-        
+
         if (styles.length > 0) {
           toast.success('Підібрали найкращі стилі для вашої пісні!');
         }
@@ -233,7 +233,7 @@ const Studio = () => {
 
   const handleStyleSelected = async (style: MusicStyle) => {
     setSelectedStyle(style);
-    
+
     // Оновлюємо параметри з обраним стилем
     const storedParams = sessionStorage.getItem('music-parameters');
     if (storedParams) {
@@ -242,9 +242,9 @@ const Studio = () => {
       params.style = style.style;
       sessionStorage.setItem('music-parameters', JSON.stringify(params));
     }
-    
+
     toast.success(`Обрано стиль: ${style.name}`);
-    
+
     // Переходимо на генерацію музики
     setCurrentStep(2);
     navigate('/studio?step=2');
@@ -289,7 +289,7 @@ const Studio = () => {
     setRecommendedStyles([]);
     setPageData(null);
     setDesignData(null);
-    
+
     setShowWelcome(false);
     setCurrentStep(1);
     navigate('/studio?step=1');
@@ -309,7 +309,7 @@ const Studio = () => {
 
       // Get preOrderId from sessionStorage
       const storedPreOrderId = sessionStorage.getItem('studio-pre-order-id');
-      
+
       if (!storedPreOrderId) {
         throw new Error('Pre-order ID not found in session storage');
       }
@@ -329,7 +329,7 @@ const Studio = () => {
       });
 
       if (createError) throw createError;
-      
+
       const orderId = createData.orderId;
       console.log('Order created with ID:', orderId);
 
@@ -419,11 +419,11 @@ const Studio = () => {
       if (finalizeError) throw finalizeError;
 
       toast.success('Замовлення збережено успішно!');
-      
+
       // Очищаємо токен доступу (більше не потрібен)
       sessionStorage.removeItem('studio-access-token');
       sessionStorage.removeItem('studio-pre-order-id');
-      
+
       // Navigate to success page
       navigate(`/order-success?orderId=${orderId}`);
 
@@ -470,7 +470,7 @@ const Studio = () => {
           sender: 'Олексія'
         };
         setPageData(testPageData);
-        
+
         // Also save to sessionStorage for step 4 to work properly
         const draftData = {
           lyrics: lyrics || TEST_DATA.lyrics,
@@ -509,7 +509,7 @@ const Studio = () => {
         return (
           <div className="h-full">
             <Card className="p-4 h-full">
-              <ChatInterface 
+              <ChatInterface
                 key={chatKey}
                 ref={chatRef}
                 initialMessages={chatMessages}
@@ -541,7 +541,7 @@ const Studio = () => {
             </Card>
           );
         }
-        
+
         return (
           <MusicStyleSelector
             recommendedStyles={recommendedStyles}
@@ -592,7 +592,7 @@ const Studio = () => {
       <Header centerTitle="Студія створення листівки" hideNav showMenu={false} />
 
       {/* Steps indicator */}
-      <StepsHeader currentStep={currentStep} />
+      {!showWelcome && <StepsHeader currentStep={currentStep} />}
 
       {/* Step explanation */}
       <StepExplanation currentStep={currentStep} showTutorial={showWelcome} />
@@ -606,7 +606,7 @@ const Studio = () => {
           </div>
           <div className="space-y-2">
             <div className="text-xs text-muted-foreground mb-2">Quick Navigation:</div>
-            
+
             {/* Welcome Button */}
             <div className="mb-2">
               <Button
