@@ -9,7 +9,7 @@ const SYSTEM_PROMPT = `Ти — помічник, який аналізує іс
 
 На основі історії чату визнач:
 1. **occasion** — привід (одне з: birthday, congratulations, thanks, apology, love, friendship, holiday, other)
-2. **recipient** — ім'я отримувача (кому призначена листівка), у давальному відмінку якщо можливо (напр. "Марії", "Олі", "мамі")
+2. **recipient** — ім'я отримувача (для кого листівка), у РОДОВОМУ відмінку (для кого? — напр. "Аліни", "Олі", "мами", "Андрія", "Івана")
 3. **sender** — ім'я або роль відправника (хто дарує листівку), у родовому відмінку якщо можливо (напр. "Влада", "Олі", "хлопця")
 
 Маппінг приводів:
@@ -41,7 +41,7 @@ serve(async (req) => {
 
     if (!chatMessages || chatMessages.length === 0) {
       return new Response(
-        JSON.stringify({ 
+        JSON.stringify({
           occasion: '',
           recipient: '',
           sender: ''
@@ -121,15 +121,15 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in extract-page-metadata:', error);
     return new Response(
-      JSON.stringify({ 
+      JSON.stringify({
         occasion: '',
         recipient: '',
         sender: '',
         error: error instanceof Error ? error.message : 'Unknown error'
       }),
-      { 
+      {
         status: 200, // Return 200 with empty data instead of error
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
     );
   }
