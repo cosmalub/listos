@@ -25,8 +25,8 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
     {
       id: 1,
       icon: Music,
-      title: "Слова та музика",
-      description: "Створимо унікальну пісню разом з AI",
+      title: "Створення слів",
+      description: "Створюємо слова для пісні",
       color: "from-purple-500 to-pink-500",
       bgColor: "bg-purple-50 dark:bg-purple-950/20",
       iconColor: "text-purple-600"
@@ -34,29 +34,29 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
     {
       id: 2,
       icon: Heart,
-      title: "Вибір мелодії",
-      description: "Оберемо найкращий варіант з 2-х",
+      title: "Генерація музики",
+      description: "Генеруємо 2 варіанти на основі тексту",
       color: "from-red-500 to-orange-500",
       bgColor: "bg-red-50 dark:bg-red-950/20",
       iconColor: "text-red-600"
     },
     {
       id: 3,
-      icon: Palette,
-      title: "Дизайн листівки",
-      description: "Створимо красивий персональний дизайн",
-      color: "from-blue-500 to-cyan-500",
-      bgColor: "bg-blue-50 dark:bg-blue-950/20",
-      iconColor: "text-blue-600"
-    },
-    {
-      id: 4,
       icon: Send,
-      title: "Готова сторінка",
-      description: "Персональна сторінка з QR-кодом",
+      title: "Сторінка з піснею",
+      description: "Створюємо персональну сторінку з піснею",
       color: "from-green-500 to-emerald-500",
       bgColor: "bg-green-50 dark:bg-green-950/20",
       iconColor: "text-green-600"
+    },
+    {
+      id: 4,
+      icon: Palette,
+      title: "Дизайн листівки",
+      description: "Робимо дизайн листівки з QR-кодом",
+      color: "from-blue-500 to-cyan-500",
+      bgColor: "bg-blue-50 dark:bg-blue-950/20",
+      iconColor: "text-blue-600"
     },
     {
       id: 5,
