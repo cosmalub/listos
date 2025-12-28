@@ -27,10 +27,10 @@ interface ChatInterfaceProps {
   onConfirmLyrics?: (lyrics: string) => void;
 }
 
-export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({ 
+export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
   initialMessages,
   onMessagesChange,
-  onLyricsGenerated, 
+  onLyricsGenerated,
   onConfirmLyrics
 }, ref) => {
   const [messages, setMessages] = useState<Message[]>(() => {
@@ -79,13 +79,19 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
     };
 
     setMessages(prev => [...prev, userMessage]);
-    if (!customMessage) setNewMessage('');
+    if (!customMessage) {
+      setNewMessage('');
+      // Reset textarea height
+      if (textareaRef.current) {
+        textareaRef.current.style.height = 'auto';
+      }
+    }
     setIsTyping(true);
 
     try {
       // Trim conversation history to last 15 messages for API efficiency
       const trimmedHistory = messages.slice(-15);
-      
+
       const { data, error } = await supabase.functions.invoke('generate-lyrics', {
         body: {
           message: messageText,
@@ -124,7 +130,7 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
 
     } catch (error) {
       console.error('Error generating AI response:', error);
-      
+
       // Fallback response
       const fallbackResponse: Message = {
         id: (Date.now() + 1).toString(),
@@ -168,12 +174,13 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
   };
 
   const handleSaveEdit = (messageId: string) => {
-    setMessages(prev => prev.map(msg => 
-      msg.id === messageId 
-        ? { ...msg, content: msg.content.includes('```') 
+    setMessages(prev => prev.map(msg =>
+      msg.id === messageId
+        ? {
+          ...msg, content: msg.content.includes('```')
             ? msg.content.replace(/```[\s\S]*?```/, `\`\`\`\n${editingContent}\n\`\`\``)
             : editingContent
-          }
+        }
         : msg
     ));
     onLyricsGenerated(editingContent);
@@ -212,7 +219,7 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
           {messages.map((message) => {
             const hasLyrics = message.sender === 'assistant' && extractLyricsFromMessage(message.content);
             const isEditing = editingMessageId === message.id;
-            
+
             return (
               <div
                 key={message.id}
@@ -226,11 +233,10 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
                 )}
                 <div className="max-w-[80%] flex flex-col gap-3">
                   <div
-                    className={`rounded-lg px-4 py-2 ${
-                      message.sender === 'user'
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted text-muted-foreground'
-                    }`}
+                    className={`rounded-lg px-4 py-2 ${message.sender === 'user'
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-muted text-muted-foreground'
+                      }`}
                   >
                     {isEditing ? (
                       <Textarea
@@ -246,19 +252,19 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
                       {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </p>
                   </div>
-                  
-                   {/* Confirm button after lyrics */}
-                   {hasLyrics && !isEditing && onConfirmLyrics && (
-                     <div className="mt-4">
-                       <Button
-                         onClick={() => onConfirmLyrics(extractLyricsFromMessage(message.content) || '')}
-                         className="bg-primary text-primary-foreground hover:bg-primary/90"
-                       >
-                         Підтвердити і далі →
-                       </Button>
-                     </div>
+
+                  {/* Confirm button after lyrics */}
+                  {hasLyrics && !isEditing && onConfirmLyrics && (
+                    <div className="mt-4">
+                      <Button
+                        onClick={() => onConfirmLyrics(extractLyricsFromMessage(message.content) || '')}
+                        className="bg-primary text-primary-foreground hover:bg-primary/90"
+                      >
+                        Підтвердити і далі →
+                      </Button>
+                    </div>
                   )}
-                  
+
                   {/* Edit mode buttons */}
                   {isEditing && (
                     <div className="flex gap-2">
@@ -311,13 +317,21 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
           ref={textareaRef}
           placeholder={lastLyricsMessage ? "Скажіть що хочете змінити у пісні..." : "Введіть ваше повідомлення..."}
           value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
+          onChange={(e) => {
+            setNewMessage(e.target.value);
+            // Auto-resize textarea
+            if (textareaRef.current) {
+              textareaRef.current.style.height = 'auto';
+              textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 160)}px`;
+            }
+          }}
           onKeyPress={handleKeyPress}
-          className="min-h-[44px] max-h-32 resize-none"
+          className="min-h-[44px] max-h-40 resize-none overflow-y-auto"
           rows={1}
+          style={{ height: 'auto' }}
         />
-        <Button 
-          onClick={() => handleSendMessage()} 
+        <Button
+          onClick={() => handleSendMessage()}
           disabled={!newMessage.trim() || isTyping}
           size="icon"
           className="self-end"
