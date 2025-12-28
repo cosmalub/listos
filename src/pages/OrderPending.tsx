@@ -49,7 +49,8 @@ export default function OrderPending() {
   }
 
   const steps = [
-    { text: 'Ми вже отримали вашу заявку і будемо поруч далі.', done: true },
+    { text: 'Ми отримали вашу заявку.', done: true },
+    { text: 'Наступний крок — створення листівки в студії.', done: false },
     { text: 'Після підтвердження оплати ви отримаєте доступ до студії.', done: false },
     { text: 'У студії ви створите пісню та листівку — це займе близько 10 хвилин.', done: false },
     { text: 'Після цього ми надрукуємо листівку та надішлемо її вам.', done: false },
@@ -104,18 +105,13 @@ export default function OrderPending() {
             {/* Payment Details Card */}
             <Card className="border border-[#E8D5FF] shadow-sm bg-white">
               <CardContent className="p-6">
-                <h2 className="text-xl font-bold text-primary mb-4 flex items-center gap-2">
+                <h2 className="text-xl font-bold text-primary mb-2 flex items-center gap-2">
                   <CreditCard className="w-5 h-5 text-primary" />
-                  Реквізити для оплати
+                  Оплата — 399 грн
                 </h2>
-                <div className="bg-[#FFD1DC]/20 rounded-lg p-4">
-                  <p className="text-lg font-semibold text-primary mb-2">
-                    До сплати: <span className="text-primary">399 грн</span>
-                  </p>
-                  <p className="text-sm text-primary/80">
-                    Реквізити будуть надіслані вам під час зв'язку з менеджером
-                  </p>
-                </div>
+                <p className="text-primary/80 pl-7">
+                  Реквізити для оплати ми надішлемо вам окремо.
+                </p>
               </CardContent>
             </Card>
 
@@ -173,7 +169,7 @@ export default function OrderPending() {
                     className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#E8D5FF]/30 hover:bg-[#E8D5FF]/50 transition-colors text-foreground"
                   >
                     <MessageCircle className="w-4 h-4 text-primary" />
-                    <span className="text-sm">@genbyhuman</span>
+                    <span className="text-sm">Telegram: @genbyhuman</span>
                   </a>
                 </div>
               </CardContent>
