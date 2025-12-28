@@ -48,11 +48,7 @@ export default function OrderPending() {
     );
   }
 
-  const steps = [
-    { text: 'Ми отримали вашу заявку.', done: true },
-    { text: 'Після оплати відкриється доступ до студії для створення пісні та листівки.', done: false },
-    { text: 'Далі ми надрукуємо листівку та надішлемо її вам.', done: false },
-  ];
+
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] via-[#F3D1FF]/30 to-white flex flex-col">
@@ -81,22 +77,9 @@ export default function OrderPending() {
                   <MessageCircle className="w-5 h-5 text-primary" />
                   Що далі?
                 </h2>
-                <div className="space-y-4">
-                  {steps.map((step, index) => (
-                    <div key={index} className="flex items-start gap-3">
-                      <div className={`
-                        flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-sm font-medium
-                        ${step.done
-                          ? 'bg-green-100 text-green-600'
-                          : 'bg-primary/10 text-primary'
-                        }
-                      `}>
-                        {step.done ? <Check className="w-4 h-4" /> : index + 1}
-                      </div>
-                      <p className="text-primary/80 pt-0.5">{step.text}</p>
-                    </div>
-                  ))}
-                </div>
+                <p className="text-primary/80">
+                  Ми отримали вашу заявку. Після оплати відкриється доступ до студії для створення пісні та листівки. Далі ми надрукуємо листівку та надішлемо її вам.
+                </p>
               </CardContent>
             </Card>
 
