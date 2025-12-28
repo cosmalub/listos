@@ -22,28 +22,28 @@ export async function preprocessImageToA6(imageUrl: string): Promise<string> {
   // A6 format: 105x148mm at 300 DPI = 1240x1748 pixels
   const A6_WIDTH = 1240;
   const A6_HEIGHT = 1748;
-  
+
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.crossOrigin = 'anonymous';
-    
+
     img.onload = () => {
       const canvas = document.createElement('canvas');
       canvas.width = A6_WIDTH;
       canvas.height = A6_HEIGHT;
       const ctx = canvas.getContext('2d');
-      
+
       if (!ctx) {
         reject(new Error('Canvas context unavailable'));
         return;
       }
-      
+
       // Calculate dimensions to cover the A6 canvas (object-cover logic)
       const imgRatio = img.width / img.height;
       const canvasRatio = A6_WIDTH / A6_HEIGHT;
-      
+
       let drawWidth, drawHeight, offsetX, offsetY;
-      
+
       if (imgRatio > canvasRatio) {
         // Image is wider - fit by height
         drawHeight = A6_HEIGHT;
@@ -57,24 +57,24 @@ export async function preprocessImageToA6(imageUrl: string): Promise<string> {
         offsetX = 0;
         offsetY = -(drawHeight - A6_HEIGHT) / 2;
       }
-      
+
       // Fill background
       ctx.fillStyle = '#FFFFFF';
       ctx.fillRect(0, 0, A6_WIDTH, A6_HEIGHT);
-      
+
       // Draw image with object-cover logic
       ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-      
+
       resolve(canvas.toDataURL('image/png'));
     };
-    
+
     img.onerror = () => reject(new Error('Failed to load image'));
     img.src = imageUrl;
   });
 }
 
 export async function composeFrontImageA6(
-  imageUrl: string, 
+  imageUrl: string,
   caption: string,
   useFrame: boolean = false,
   mode: 'photo' | 'ai-generation' = 'photo'
@@ -205,10 +205,10 @@ export async function composeFrontImageA6(
           ctx.rect(photoX, photoY, photoW, photoH);
           ctx.clip();
         }
-        
+
         // Draw image
         ctx.drawImage(img, offX, offY, drawW, drawH);
-        
+
         if (useFrame) {
           ctx.restore();
         }
@@ -217,13 +217,16 @@ export async function composeFrontImageA6(
         const text = toUpper(caption || '');
         if (text && mode === 'photo') {
           const captionMargin = useFrame ? FRAME_LEFT : MARGIN;
-          const maxTextWidth = (useFrame ? FRAME_WIDTH : A6_WIDTH) - PAD_X * 2;
-          
+          // When no frame: use full width minus margins and padding
+          const maxTextWidth = useFrame
+            ? (FRAME_WIDTH - PAD_X * 2)
+            : (A6_WIDTH - MARGIN * 2 - PAD_X * 2);
+
           // Use 2-line split for frame mode, regular wrap otherwise
           let lines: string[];
           let fontSize: number;
           let lineHeight: number;
-          
+
           if (useFrame) {
             lines = splitTo2Lines(text);
             fontSize = 72; // Fixed size for frame mode
@@ -235,9 +238,10 @@ export async function composeFrontImageA6(
             fontSize = wrapped.fontSize;
             lineHeight = wrapped.lineHeight;
           }
-          
+
           const textHeight = lines.length * lineHeight;
-          const rectW = maxTextWidth + PAD_X * 2;
+          // When no frame: caption should have equal margins on both sides
+          const rectW = useFrame ? (maxTextWidth + PAD_X * 2) : (A6_WIDTH - MARGIN * 2);
           const rectH = textHeight + PAD_Y * 2;
           const rectX = captionMargin;
           const rectY = (useFrame ? FRAME_TOP + FRAME_HEIGHT : A6_HEIGHT) - BOTTOM_MARGIN - rectH;
@@ -286,7 +290,7 @@ function splitMessageToParagraphs(message: string): string[] {
   if (message.includes('\n\n')) {
     return message.split('\n\n').map(p => p.trim()).filter(p => p.length > 0);
   }
-  
+
   const sentences = message.split(/(?<=[.!?])\s+/);
   if (sentences.length >= 2) {
     const firstParagraph = sentences.slice(0, 2).join(' ');
@@ -295,17 +299,17 @@ function splitMessageToParagraphs(message: string): string[] {
       return [firstParagraph, secondParagraph];
     }
   }
-  
+
   return [message];
 }
 
 export async function composeBackImageA6(opts: { color: string; message: string; qrUrl: string }): Promise<string> {
   const { color, message, qrUrl } = opts;
-  
+
   // A6 print dimensions
   const A6_WIDTH = 1240;
   const A6_HEIGHT = 1748;
-  
+
   // Preview reference values (from PostcardPreview.tsx)
   // Container: max-w-xs = 320px, Text: max-w-[200px], p-6 = 24px, font-size: 14px
   // QR compact: w-24 h-24 = 96px, p-3 = 12px, pb-4 = 16px
@@ -319,10 +323,10 @@ export async function composeBackImageA6(opts: { color: string; message: string;
   const PREVIEW_QR_PAD = 12; // p-3
   const PREVIEW_QR_PB = 16; // pb-4
   const PREVIEW_PAD = 24; // p-6
-  
+
   // Scale factor from preview to A6
   const SCALE = A6_WIDTH / PREVIEW_W; // ~3.875
-  
+
   // Scaled values
   const FONT_SIZE = Math.round(PREVIEW_FONT * SCALE); // ~54px
   const MIN_FONT = Math.round(10 * SCALE); // ~39px for very long texts
@@ -354,7 +358,7 @@ export async function composeBackImageA6(opts: { color: string; message: string;
 
   // Split into paragraphs first (like in preview)
   const paragraphs = splitMessageToParagraphs((message || '').trim());
-  
+
   function setFont(size: number) {
     ctx.font = `bold ${size}px "Bebas Neue Cyrillic", "Bebas Neue", sans-serif`;
   }
@@ -372,7 +376,7 @@ export async function composeBackImageA6(opts: { color: string; message: string;
     const words = text.split(/\s+/);
     const lines: string[] = [];
     let cur = '';
-    
+
     for (const w of words) {
       const test = cur ? cur + ' ' + w : w;
       if (ctx.measureText(test).width <= TEXT_MAX_WIDTH) {
@@ -383,13 +387,13 @@ export async function composeBackImageA6(opts: { color: string; message: string;
       }
     }
     if (cur) lines.push(cur);
-    
+
     return lines;
   }
 
   // QR code positioning (from bottom)
   const qrBoxY = A6_HEIGHT - PAD - QR_PB - QR_BOX_SIZE;
-  
+
   // Calculate available height for text (from top padding to above QR)
   const textAreaTop = PAD;
   const textAreaBottom = qrBoxY - PAD;
@@ -403,10 +407,10 @@ export async function composeBackImageA6(opts: { color: string; message: string;
   while (fontSize >= MIN_FONT) {
     lineHeight = Math.round(fontSize * PREVIEW_LINE_H);
     allParagraphLines = paragraphs.map(p => wrapParagraph(p.toUpperCase(), fontSize));
-    
+
     const totalLines = allParagraphLines.reduce((sum, lines) => sum + lines.length, 0);
     const totalHeight = totalLines * lineHeight + (allParagraphLines.length - 1) * PARAGRAPH_GAP;
-    
+
     if (totalHeight <= availableHeightForText) {
       break;
     }
@@ -421,7 +425,7 @@ export async function composeBackImageA6(opts: { color: string; message: string;
   // Calculate total height of all text
   const totalLines = allParagraphLines.reduce((sum, lines) => sum + lines.length, 0);
   const totalH = totalLines * lineHeight + (allParagraphLines.length - 1) * PARAGRAPH_GAP;
-  
+
   // Center text vertically in available space
   let y = textAreaTop + (availableHeightForText - totalH) / 2 + lineHeight / 2;
   const centerX = A6_WIDTH / 2;
@@ -429,12 +433,12 @@ export async function composeBackImageA6(opts: { color: string; message: string;
   // Draw each paragraph with gap between them
   for (let pIdx = 0; pIdx < allParagraphLines.length; pIdx++) {
     const lines = allParagraphLines[pIdx];
-    
+
     for (const line of lines) {
       ctx.fillText(line, centerX, y);
       y += lineHeight;
     }
-    
+
     // Add paragraph gap after each paragraph except the last
     if (pIdx < allParagraphLines.length - 1) {
       y += PARAGRAPH_GAP;
