@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
+import { useOrderDialog } from "@/components/order/OrderDialogContext";
 import postcardScanImage from "@/assets/postcard-scan.png";
 
 export function MascotSection() {
+  const { openOrderDialog } = useOrderDialog();
   return (
     <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
@@ -77,12 +79,7 @@ export function MascotSection() {
                   <Button
                     size="lg"
                     className="bg-gradient-to-r from-[#B8B3FF] to-[#E8B3FF] hover:from-[#A8A3EF] hover:to-[#D8A3EF] text-white font-bold px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105"
-                    onClick={() => {
-                      const orderSection = document.getElementById('order-section');
-                      if (orderSection) {
-                        orderSection.scrollIntoView({ behavior: 'smooth' });
-                      }
-                    }}
+                    onClick={openOrderDialog}
                   >
                     Купити доступ
                   </Button>
