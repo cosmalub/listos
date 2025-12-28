@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { RotateCcw, RefreshCcw } from "lucide-react";
+import { RotateCcw, RefreshCcw, Hand } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Postcard3DProps = {
@@ -10,6 +10,8 @@ type Postcard3DProps = {
   orientation?: "landscape" | "portrait";
   initialTilt?: { x: number; y: number };
   maxTilt?: { x: number; y: number };
+  showHint?: boolean;
+  onFlip?: () => void;
 };
 
 export function Postcard3D({
@@ -19,11 +21,14 @@ export function Postcard3D({
   orientation = "landscape",
   initialTilt = { x: -2, y: 8 },
   maxTilt = { x: 10, y: 20 },
+  showHint = false,
+  onFlip,
 }: Postcard3DProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [rot, setRot] = useState<{ x: number; y: number }>(initialTilt);
   const [drag, setDrag] = useState<{ startX: number; startY: number; baseX: number; baseY: number } | null>(null);
   const [flipped, setFlipped] = useState(false);
+  const [hasFlipped, setHasFlipped] = useState(false);
 
   const clamp = (v: number, min: number, max: number) => Math.max(min, Math.min(max, v));
 
@@ -49,7 +54,13 @@ export function Postcard3D({
     setFlipped(false);
   };
 
-  const flip = () => setFlipped((f) => !f);
+  const flip = () => {
+    setFlipped((f) => !f);
+    if (!hasFlipped) {
+      setHasFlipped(true);
+    }
+    onFlip?.();
+  };
 
 
   return (
@@ -96,12 +107,20 @@ export function Postcard3D({
         <div className="pointer-events-none absolute inset-0 rounded-xl opacity-0 group-hover:opacity-20 transition-opacity duration-300 bg-[radial-gradient(100%_100%_at_30%_0%,rgba(255,255,255,0.6)_0%,transparent_60%)]" />
       </div>
 
-      {/* Controls */}
-      <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-        <Button variant="ghost" size="icon" className="bg-white/80 hover:bg-white rounded-full" onClick={flip} aria-label="Перевернути">
+      {/* Controls - always visible */}
+      <div className="absolute top-2 right-2 flex gap-2">
+        <Button variant="ghost" size="icon" className="bg-white/90 hover:bg-white rounded-full shadow-sm" onClick={flip} aria-label="Перевернути">
           <RefreshCcw className="h-4 w-4 text-primary" />
         </Button>
       </div>
+
+      {/* Hint below postcard */}
+      {showHint && !hasFlipped && (
+        <div className="absolute -bottom-8 left-0 right-0 flex items-center justify-center gap-1.5 text-xs text-[#6A5ACD]/70 animate-pulse">
+          <RefreshCcw className="h-3 w-3" />
+          <span>Натисни двічі, щоб перевернути</span>
+        </div>
+      )}
     </div>
   );
 }

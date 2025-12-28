@@ -358,7 +358,7 @@ export default function ExamplesSection3D() {
                         <h3 className="text-xl font-bold mb-2 text-[#6A5ACD]">{postcard.title}</h3>
                         <p className="text-[#6A5ACD]/80 mb-4">{postcard.description}</p>
 
-                        <div className="mb-4">
+                        <div className="mb-4 pb-2">
                           <Postcard3D
                             front={<PostcardImage src={postcard.frontImage} alt="Лицева сторона" />}
                             back={<PostcardImage src={postcard.backImage} alt="Зворотна сторона" />}
@@ -366,6 +366,7 @@ export default function ExamplesSection3D() {
                             className="w-full max-w-[280px] mx-auto"
                             initialTilt={{ x: 0, y: 5 }}
                             maxTilt={{ x: 8, y: 15 }}
+                            showHint={postcard.id === 1}
                           />
                         </div>
 
