@@ -49,16 +49,16 @@ export default function OrderPending() {
   }
 
   const steps = [
-    { text: 'Ми отримали вашу заявку', done: true },
-    { text: <>Зв'яжемося з вами протягом <span className="font-semibold text-primary">1-2 годин</span> для підтвердження оплати</>, done: false },
-    { text: <>Після оплати надішлемо на ваш {orderData?.contact_type === 'telegram' ? 'Telegram' : 'email/телефон'} <span className="font-semibold text-primary">посилання на студію</span></>, done: false },
-    { text: <>В студії ви зможете створити пісню та дизайн листівки за <span className="font-semibold text-primary">10 хвилин</span></>, done: false },
+    { text: 'Ми вже отримали вашу заявку і будемо поруч далі.', done: true },
+    { text: 'Після підтвердження оплати ви отримаєте доступ до студії.', done: false },
+    { text: 'У студії ви створите пісню та листівку — це займе близько 10 хвилин.', done: false },
+    { text: 'Після цього ми надрукуємо листівку та надішлемо її вам.', done: false },
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] via-[#F3D1FF]/30 to-white flex flex-col">
       <Header hideNav />
-      
+
       <main className="flex-1 pt-20 pb-12 px-4">
         <div className="max-w-2xl mx-auto">
           {/* Success Header */}
@@ -87,8 +87,8 @@ export default function OrderPending() {
                     <div key={index} className="flex items-start gap-3">
                       <div className={`
                         flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-sm font-medium
-                        ${step.done 
-                          ? 'bg-green-100 text-green-600' 
+                        ${step.done
+                          ? 'bg-green-100 text-green-600'
                           : 'bg-primary/10 text-primary'
                         }
                       `}>
@@ -119,39 +119,14 @@ export default function OrderPending() {
               </CardContent>
             </Card>
 
-            {/* Contact Card */}
-            <Card className="border border-[#E8D5FF] shadow-sm bg-white">
-              <CardContent className="p-6">
-                <h2 className="text-xl font-bold text-primary mb-4 flex items-center gap-2">
-                  <HelpCircle className="w-5 h-5 text-primary" />
-                  Є питання?
-                </h2>
-                <div className="flex flex-wrap gap-3">
-                  <a 
-                    href="mailto:info@listosyk.com" 
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#FFD1DC]/20 hover:bg-[#FFD1DC]/40 transition-colors text-foreground"
-                  >
-                    <Mail className="w-4 h-4 text-primary" />
-                    <span className="text-sm">info@listosyk.com</span>
-                  </a>
-                  <a 
-                    href="https://t.me/listosyk" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#E8D5FF]/30 hover:bg-[#E8D5FF]/50 transition-colors text-foreground"
-                  >
-                    <MessageCircle className="w-4 h-4 text-primary" />
-                    <span className="text-sm">@listosyk</span>
-                  </a>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Contact Info Display */}
+            {/* Contact Info Display (Moved Up) */}
             {orderData && (
               <Card className="border border-[#E8D5FF] shadow-sm bg-white">
                 <CardContent className="p-6">
-                  <h3 className="text-lg font-bold text-primary mb-3">Ваші контактні дані</h3>
+                  <h3 className="text-lg font-bold text-primary mb-2">Ми будемо на звʼязку</h3>
+                  <p className="text-sm text-primary/80 mb-4">
+                    Ми використаємо цей контакт, якщо потрібно щось уточнити або допомогти.
+                  </p>
                   <div className="space-y-2 text-sm text-primary/80">
                     {orderData.user_phone && (
                       <p className="flex items-center gap-2">
@@ -175,12 +150,40 @@ export default function OrderPending() {
                 </CardContent>
               </Card>
             )}
+
+            {/* Contact Card */}
+            <Card className="border border-[#E8D5FF] shadow-sm bg-white">
+              <CardContent className="p-6">
+                <h2 className="text-xl font-bold text-primary mb-4 flex items-center gap-2">
+                  <HelpCircle className="w-5 h-5 text-primary" />
+                  Є питання?
+                </h2>
+                <div className="flex flex-wrap gap-3">
+                  <a
+                    href="mailto:melodlistiv@gmail.com"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#FFD1DC]/20 hover:bg-[#FFD1DC]/40 transition-colors text-foreground"
+                  >
+                    <Mail className="w-4 h-4 text-primary" />
+                    <span className="text-sm">melodlistiv@gmail.com</span>
+                  </a>
+                  <a
+                    href="https://t.me/genbyhuman"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#E8D5FF]/30 hover:bg-[#E8D5FF]/50 transition-colors text-foreground"
+                  >
+                    <MessageCircle className="w-4 h-4 text-primary" />
+                    <span className="text-sm">@genbyhuman</span>
+                  </a>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Back Button */}
           <div className="text-center mt-8">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={() => navigate('/')}
               className="border-primary/30 hover:border-primary hover:bg-primary/5"
             >
