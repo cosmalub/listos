@@ -36,6 +36,18 @@ export default function PublicSong() {
   const [orderData, setOrderData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
+  // Prevent search engines from indexing personal song pages
+  useEffect(() => {
+    const meta = document.createElement('meta');
+    meta.name = 'robots';
+    meta.content = 'noindex, nofollow';
+    document.head.appendChild(meta);
+
+    return () => {
+      document.head.removeChild(meta);
+    };
+  }, []);
+
   useEffect(() => {
     async function fetchOrder() {
       if (!orderId) {
