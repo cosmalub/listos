@@ -1,17 +1,20 @@
 import { useOrderDialog } from "@/components/order/OrderDialogContext";
+import logoListosik from "@/assets/logo-listosik.png";
 
 export function Footer() {
   const { openOrderDialog } = useOrderDialog();
-  
+
   return (
     <footer className="py-16 bg-gradient-to-b from-white to-[#B8B3FF]">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-between gap-8 md:gap-16 mb-12">
             {/* Brand Left */}
-            <div className="hidden md:flex flex-col gap-1 text-[#6A5ACD]">
-              <span className="text-2xl font-extrabold tracking-tight">Листосик</span>
-              <span className="text-sm text-[#6A5ACD]/80">Сервіс листівок</span>
+            <div className="flex flex-col items-center md:items-start gap-4 text-[#6A5ACD] max-w-[280px] text-center md:text-left">
+              <img src={logoListosik} alt="Листосик" className="h-10 md:h-12" />
+              <p className="text-sm font-medium text-[#6A5ACD]/90 leading-relaxed">
+                Допомагає сказати важливе — красиво і по-справжньому
+              </p>
             </div>
 
             {/* Right group: links + contacts */}
@@ -25,7 +28,7 @@ export function Footer() {
                   <li><a href="#" className="text-sm text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Політика конфіденційності</a></li>
                   <li><a href="#" className="text-sm text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Умови користування</a></li>
                   <li>
-                    <button 
+                    <button
                       onClick={openOrderDialog}
                       className="text-sm text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors"
                     >
