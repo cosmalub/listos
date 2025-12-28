@@ -57,7 +57,7 @@ export default function OrderPending() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] via-[#F3D1FF]/30 to-white flex flex-col">
-      <Header centerTitle="Заявка створена" hideNav />
+      <Header hideNav />
       
       <main className="flex-1 pt-20 pb-12 px-4">
         <div className="max-w-2xl mx-auto">
@@ -66,11 +66,11 @@ export default function OrderPending() {
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Check className="w-8 h-8 text-green-600" />
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] bg-clip-text text-transparent mb-3">
+            <h1 className="text-3xl md:text-5xl font-bold text-primary mb-3">
               Заявка створена успішно!
             </h1>
-            <p className="text-muted-foreground">
-              Номер замовлення: <span className="font-mono font-semibold text-primary">{orderId?.slice(0, 8)}</span>
+            <p className="text-lg text-primary/80">
+              Номер замовлення: <span className="font-mono font-semibold">{orderId?.slice(0, 8)}</span>
             </p>
           </div>
 
@@ -78,7 +78,7 @@ export default function OrderPending() {
             {/* What's Next Card */}
             <Card className="border border-[#E8D5FF] shadow-sm bg-white">
               <CardContent className="p-6">
-                <h2 className="text-xl font-semibold text-foreground mb-5 flex items-center gap-2">
+                <h2 className="text-xl font-bold text-primary mb-5 flex items-center gap-2">
                   <MessageCircle className="w-5 h-5 text-primary" />
                   Що далі?
                 </h2>
@@ -94,7 +94,7 @@ export default function OrderPending() {
                       `}>
                         {step.done ? <Check className="w-4 h-4" /> : index + 1}
                       </div>
-                      <p className="text-muted-foreground pt-0.5">{step.text}</p>
+                      <p className="text-primary/80 pt-0.5">{step.text}</p>
                     </div>
                   ))}
                 </div>
@@ -104,15 +104,15 @@ export default function OrderPending() {
             {/* Payment Details Card */}
             <Card className="border border-[#E8D5FF] shadow-sm bg-white">
               <CardContent className="p-6">
-                <h2 className="text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
+                <h2 className="text-xl font-bold text-primary mb-4 flex items-center gap-2">
                   <CreditCard className="w-5 h-5 text-primary" />
                   Реквізити для оплати
                 </h2>
                 <div className="bg-[#FFD1DC]/20 rounded-lg p-4">
-                  <p className="text-lg font-semibold text-foreground mb-2">
+                  <p className="text-lg font-semibold text-primary mb-2">
                     До сплати: <span className="text-primary">399 грн</span>
                   </p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-primary/80">
                     Реквізити будуть надіслані вам під час зв'язку з менеджером
                   </p>
                 </div>
@@ -122,7 +122,7 @@ export default function OrderPending() {
             {/* Contact Card */}
             <Card className="border border-[#E8D5FF] shadow-sm bg-white">
               <CardContent className="p-6">
-                <h2 className="text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
+                <h2 className="text-xl font-bold text-primary mb-4 flex items-center gap-2">
                   <HelpCircle className="w-5 h-5 text-primary" />
                   Є питання?
                 </h2>
@@ -151,8 +151,8 @@ export default function OrderPending() {
             {orderData && (
               <Card className="border border-[#E8D5FF] shadow-sm bg-white">
                 <CardContent className="p-6">
-                  <h3 className="text-lg font-semibold text-foreground mb-3">Ваші контактні дані</h3>
-                  <div className="space-y-2 text-sm text-muted-foreground">
+                  <h3 className="text-lg font-bold text-primary mb-3">Ваші контактні дані</h3>
+                  <div className="space-y-2 text-sm text-primary/80">
                     {orderData.user_phone && (
                       <p className="flex items-center gap-2">
                         <Phone className="w-4 h-4" />
