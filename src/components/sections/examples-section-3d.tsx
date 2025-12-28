@@ -19,8 +19,8 @@ type CarouselProps = {
   setApi?: (api: CarouselApi) => void
 }
 
-const CarouselContext = React.createContext<CarouselProps & { 
-  carouselRef: any; 
+const CarouselContext = React.createContext<CarouselProps & {
+  carouselRef: any;
   api: CarouselApi | undefined;
   canScrollPrev: boolean;
   canScrollNext: boolean;
@@ -62,12 +62,12 @@ const Carousel = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>
     }, [api, onSelect])
 
     return (
-      <CarouselContext.Provider value={{ 
-        carouselRef, 
-        api, 
-        opts, 
-        orientation, 
-        canScrollPrev, 
+      <CarouselContext.Provider value={{
+        carouselRef,
+        api,
+        opts,
+        orientation,
+        canScrollPrev,
         canScrollNext,
         scrollPrev,
         scrollNext
@@ -146,7 +146,7 @@ CarouselNext.displayName = "CarouselNext"
 // --- Postcard Image Component ---
 function PostcardImage({ src, alt }: { src: string; alt: string }) {
   const [hasError, setHasError] = useState(false)
-  
+
   if (hasError || !src || !src.startsWith('/')) {
     return (
       <div className="w-full h-full bg-gradient-to-b from-primary/20 to-primary/40 flex items-center justify-center">
@@ -154,11 +154,11 @@ function PostcardImage({ src, alt }: { src: string; alt: string }) {
       </div>
     )
   }
-  
+
   return (
-    <img 
-      src={src} 
-      alt={alt} 
+    <img
+      src={src}
+      alt={alt}
       className="w-full h-full object-contain bg-white"
       onError={() => setHasError(true)}
     />
@@ -219,10 +219,10 @@ function AudioPlayer({ audioSrc, songTitle, artist }: { audioSrc: string; songTi
 
 
 // --- Customer Story Component ---
-function CustomerStory({ story, reaction, customerName, customerLocation, rating }: { 
-  story: string; 
-  reaction: string; 
-  customerName: string; 
+function CustomerStory({ story, reaction, customerName, customerLocation, rating }: {
+  story: string;
+  reaction: string;
+  customerName: string;
   customerLocation: string;
   rating: number;
 }) {
@@ -250,14 +250,14 @@ function CustomerStory({ story, reaction, customerName, customerLocation, rating
 
 // --- Main Component ---
 const postcardExamples = [
-  { 
-    id: 1, 
-    title: "Вітання з днем народження", 
-    description: "Музична листівка для мами.", 
-    frontImage: "/examples/stepan-front.png", 
-    backImage: "/examples/stepan-back.png", 
-    songTitle: "З днем народження, мамо", 
-    artist: "Від Степана", 
+  {
+    id: 1,
+    title: "Вітання з днем народження",
+    description: "Музична листівка для мами.",
+    frontImage: "/examples/stepan-front.png",
+    backImage: "/examples/stepan-back.png",
+    songTitle: "З днем народження, мамо",
+    artist: "Від Степана",
     audioSrc: "/audio/stepan-birthday.mp3",
     customerStory: "Степан створив пісню для своєї мами Галини на день народження. У пісні він подякував за турботу, любов і підтримку, згадав дитинство, безсонні ночі та моменти, коли мама завжди була поруч.",
     customerReaction: "Мама була дуже зворушена подарунком. Слухала пісню кілька разів і зберігає листівку вдома як пам'ять.",
@@ -265,14 +265,14 @@ const postcardExamples = [
     customerLocation: "Київ",
     rating: 5
   },
-  { 
-    id: 2, 
-    title: "Освідчення в коханні", 
-    description: "Романтична музична листівка для коханої.", 
-    frontImage: "/examples/nastya-front.png", 
-    backImage: "/examples/nastya-back.png", 
-    songTitle: "Моя Настя", 
-    artist: "Від Дмитра", 
+  {
+    id: 2,
+    title: "Освідчення в коханні",
+    description: "Романтична музична листівка для коханої.",
+    frontImage: "/examples/nastya-front.png",
+    backImage: "/examples/nastya-back.png",
+    songTitle: "Моя Настя",
+    artist: "Від Дмитра",
     audioSrc: "/audio/nastya-love.mp3",
     customerStory: "Дмитро створив цю пісню для своєї коханої Насті, щоб передати свої почуття і сказати, як багато вона для нього означає. У пісні він говорить про близькість, тепло і щастя бути разом.",
     customerReaction: "Настя була дуже зворушена подарунком. Сказала, що це один із найтепліших і найщиріших моментів у їхніх стосунках.",
@@ -280,14 +280,14 @@ const postcardExamples = [
     customerLocation: "Київ",
     rating: 5
   },
-  { 
-    id: 3, 
-    title: "Вибачення", 
-    description: "Музична листівка, щоб попросити пробачення.", 
-    frontImage: "/examples/maria-front.png", 
-    backImage: "/examples/maria-back.png", 
-    songTitle: "Вибач мені, Маріє", 
-    artist: "Від Дмитра", 
+  {
+    id: 3,
+    title: "Вибачення",
+    description: "Музична листівка, щоб попросити пробачення.",
+    frontImage: "/examples/maria-front.png",
+    backImage: "/examples/maria-back.png",
+    songTitle: "Вибач мені, Маріє",
+    artist: "Від Дмитра",
     audioSrc: "/audio/maria-apology.mp3",
     customerStory: "Дмитро створив цю пісню для Марії, щоб чесно попросити вибачення. Без виправдань і гучних слів — просто визнати помилку і сказати, що йому справді шкода.",
     customerReaction: "Марія сказала, що їй було важливо почути ці слова саме так — спокійно і щиро. Пісня допомогла почати розмову.",
@@ -295,14 +295,14 @@ const postcardExamples = [
     customerLocation: "Харків",
     rating: 5
   },
-  { 
-    id: 4, 
-    title: "З днем народження, вчителю", 
-    description: "Музична листівка для вчителя від учня.", 
-    frontImage: "/examples/teacher-front.png", 
-    backImage: "/examples/teacher-back.png", 
-    songTitle: "Дякую за науку і підтримку", 
-    artist: "Від учня", 
+  {
+    id: 4,
+    title: "З днем народження, вчителю",
+    description: "Музична листівка для вчителя від учня.",
+    frontImage: "/examples/teacher-front.png",
+    backImage: "/examples/teacher-back.png",
+    songTitle: "Дякую за науку і підтримку",
+    artist: "Від учня",
     audioSrc: "/audio/teacher-birthday.mp3",
     customerStory: "Учень створив музичну листівку для своєї вчительки Олени Петрівни на день народження, щоб подякувати за знання, терпіння і підтримку. У пісні — повага, вдячність і теплі слова, сказані просто і щиро.",
     customerReaction: "Олені Петрівні було приємно отримати такий подарунок. Вона сказала, що це було дуже несподівано і зворушливо, і залишила листівку на пам'ять.",
@@ -310,14 +310,14 @@ const postcardExamples = [
     customerLocation: "Львів",
     rating: 5
   },
-  { 
-    id: 5, 
-    title: "Дякую, бабусю", 
-    description: "Музична листівка для бабусі від онука.", 
-    frontImage: "/examples/grandma-front.png", 
-    backImage: "/examples/grandma-back.png", 
-    songTitle: "Для тебе, бабусю", 
-    artist: "Від онука", 
+  {
+    id: 5,
+    title: "Дякую, бабусю",
+    description: "Музична листівка для бабусі від онука.",
+    frontImage: "/examples/grandma-front.png",
+    backImage: "/examples/grandma-back.png",
+    songTitle: "Для тебе, бабусю",
+    artist: "Від онука",
     audioSrc: "/audio/grandma-thanks.mp3",
     customerStory: "Онук створив музичну листівку для своєї бабусі, щоб подякувати за турботу, тепло і любов, які вона дарувала йому з дитинства. У пісні — спогади, вдячність і дуже особисті слова.",
     customerReaction: "Вона слухала пісню мовчки, а потім просто обійняла онука",
@@ -329,7 +329,7 @@ const postcardExamples = [
 
 export default function ExamplesSection3D() {
   const { openOrderDialog } = useOrderDialog();
-  
+
   return (
     <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
@@ -357,7 +357,7 @@ export default function ExamplesSection3D() {
                       <CardContent className="p-6">
                         <h3 className="text-xl font-bold mb-2 text-[#6A5ACD]">{postcard.title}</h3>
                         <p className="text-[#6A5ACD]/80 mb-4">{postcard.description}</p>
-                        
+
                         <div className="mb-4">
                           <Postcard3D
                             front={<PostcardImage src={postcard.frontImage} alt="Лицева сторона" />}
@@ -368,17 +368,17 @@ export default function ExamplesSection3D() {
                             maxTilt={{ x: 8, y: 15 }}
                           />
                         </div>
-                        
-                        <AudioPlayer 
-                          audioSrc={postcard.audioSrc} 
-                          songTitle={postcard.songTitle} 
-                          artist={postcard.artist} 
+
+                        <AudioPlayer
+                          audioSrc={postcard.audioSrc}
+                          songTitle={postcard.songTitle}
+                          artist={postcard.artist}
                         />
-                        
-                        <CustomerStory 
-                          story={postcard.customerStory} 
-                          reaction={postcard.customerReaction} 
-                          customerName={postcard.customerName} 
+
+                        <CustomerStory
+                          story={postcard.customerStory}
+                          reaction={postcard.customerReaction}
+                          customerName={postcard.customerName}
                           customerLocation={postcard.customerLocation}
                           rating={postcard.rating}
                         />
@@ -396,29 +396,29 @@ export default function ExamplesSection3D() {
 
           {/* CTA після прикладів */}
           <div className="mt-16 max-w-3xl mx-auto">
-            <div className="bg-card rounded-3xl border-2 border-[#B8B3FF]/60 hover:border-[#B8B3FF] transition-all hover:shadow-lg p-8 text-center">
+            <div className="bg-card rounded-3xl border-2 border-[#B8B3FF]/60 hover:border-[#B8B3FF] transition-all hover:shadow-lg p-6 md:p-8 text-center">
               <h3 className="text-2xl font-bold text-[#6A5ACD] mb-6">
                 Створи свою унікальну історію
               </h3>
-              
-              <Button 
+
+              <Button
                 onClick={openOrderDialog}
-                className="text-lg px-10 py-7 rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold mb-6"
+                className="text-lg w-full md:w-auto px-6 md:px-10 py-5 md:py-7 h-auto whitespace-normal rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold mb-6"
               >
                 🎵 Замовити свою листівку
               </Button>
-              
+
               <div className="space-y-3 text-[#6A5ACD]/80">
                 <div className="flex items-center justify-center gap-2">
                   <span className="text-xl">💝</span>
                   <span className="text-sm md:text-base">Створи емоції, які запам'ятаються назавжди</span>
                 </div>
-                
+
                 <div className="flex items-center justify-center gap-2">
                   <span className="text-xl">✨</span>
                   <span className="text-sm md:text-base">Листосик допоможе з усім — від слів пісні до дизайну листівки</span>
                 </div>
-                
+
                 <div className="flex items-center justify-center gap-2">
                   <span className="text-xl">⚡️</span>
                   <span className="text-sm md:text-base">Готова листівка за 10 хвилин</span>
