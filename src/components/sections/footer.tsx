@@ -26,20 +26,20 @@ export function Footer() {
                   <li><a href="#faq" className="text-sm text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Часті запитання</a></li>
                   <li><a href="#" className="text-sm text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Політика конфіденційності</a></li>
                   <li>
-                    <a
-                      href="https://lystosyk.com/studio"
-                      className="text-sm text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors"
-                    >
-                      Створити листівку
-                    </a>
-                  </li>
-                  <li>
                     <button
                       onClick={openOrderDialog}
                       className="text-sm text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors text-left"
                     >
                       Оформити замовлення
                     </button>
+                  </li>
+                  <li>
+                    <a
+                      href="https://lystosyk.com/studio"
+                      className="text-sm text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors"
+                    >
+                      Створити листівку
+                    </a>
                   </li>
                 </ul>
               </div>
