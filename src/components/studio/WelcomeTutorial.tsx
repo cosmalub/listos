@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Play, ArrowRight, Music, Heart, Palette, Send, Sparkles, Star, Loader2, Lock, CheckCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { useOrderDialog } from '@/components/order/OrderDialogContext';
 
 const DEV_MODE = import.meta.env.DEV;
 
@@ -18,6 +19,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
   const [showTokenDialog, setShowTokenDialog] = useState(false);
   const [accessToken, setAccessToken] = useState('');
   const [isValidating, setIsValidating] = useState(false);
+  const { openOrderDialog } = useOrderDialog();
 
   const steps = [
     {
@@ -279,9 +281,13 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
 
         <p className="text-sm text-muted-foreground text-center">
           Ще немає коду доступу?{' '}
-          <a href="/order" className="text-[#6A5ACD] hover:underline font-medium">
+          <button
+            type="button"
+            onClick={openOrderDialog}
+            className="text-[#6A5ACD] hover:underline font-medium bg-transparent border-0 p-0 cursor-pointer inline"
+          >
             Оформити замовлення
-          </a>
+          </button>
         </p>
       </div>
 
@@ -335,16 +341,15 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
                   <p className="text-sm text-purple-900">
                     <strong>У вас ще немає коду?</strong><br />
                     Ви можете{' '}
-                    <a
-                      href="/order"
-                      className="text-[#6A5ACD] underline hover:text-[#5A4ABD] font-semibold"
+                    <button
+                      className="text-[#6A5ACD] underline hover:text-[#5A4ABD] font-semibold bg-transparent border-0 p-0 cursor-pointer inline"
                       onClick={(e) => {
                         e.preventDefault();
-                        window.location.href = '/order';
+                        openOrderDialog();
                       }}
                     >
                       оформити замовлення тут
-                    </a>
+                    </button>
                     {' '}і отримати код доступу після оплати
                   </p>
                 </div>

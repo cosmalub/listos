@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
@@ -11,6 +11,7 @@ interface HeaderProps {
   showMenu?: boolean;
   ctaLabel?: string;
   ctaPath?: string;
+  onCtaClick?: () => void;
 }
 
 const Header = ({
@@ -18,7 +19,8 @@ const Header = ({
   hideNav = false,
   showMenu = true,
   ctaLabel = "Створити",
-  ctaPath = "/studio"
+  ctaPath = "/studio",
+  onCtaClick
 }: HeaderProps) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -63,6 +65,18 @@ const Header = ({
     setIsOpen(false);
   };
 
+  const handleCtaClick = (e?: React.MouseEvent) => {
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
+
+    if (onCtaClick) {
+      onCtaClick();
+    } else if (ctaPath) {
+      navigate(ctaPath);
+    }
+  };
+
   return (
     <header className="absolute top-0 left-0 right-0 z-50 px-4 py-0.5 md:py-1 pt-safe-top">
       <div className="w-full max-w-[90rem] 2xl:max-w-screen-2xl backdrop-blur-md bg-background/30 border border-white/10 rounded-2xl px-6 shadow-lg shadow-black/5 my-[3px] py-0 mx-auto">
@@ -97,7 +111,7 @@ const Header = ({
           <div className="flex items-center gap-3 justify-self-end">
             {/* CTA Button */}
             <Button
-              onClick={() => navigate(ctaPath)}
+              onClick={handleCtaClick}
               size="sm"
               className="hidden md:flex bg-[#6A5ACD] hover:bg-[#5A4ABD] text-white rounded-full px-6 shadow-sm hover:shadow transition-all duration-300 font-medium"
             >

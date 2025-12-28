@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link, useSearchParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, CheckCircle, Circle, Settings, Trash, Loader2 } from 'lucide-react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { Settings, Trash, Loader2 } from 'lucide-react';
 
 // DEV MODE - Automatically true only in development
 const DEV_MODE = import.meta.env.DEV;
@@ -16,10 +16,11 @@ import { Header } from '@/components/sections/header';
 import { Footer } from '@/components/sections/footer';
 import { StepsHeader } from '@/components/studio/StepsHeader';
 import { StepExplanation } from '@/components/studio/StepExplanation';
+import { useOrderDialog } from '@/components/order/OrderDialogContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { MusicStyle, MUSIC_STYLES, getStyleById } from '@/lib/music-styles';
-import { composeFrontImageA6, composeBackImageA6, preprocessImageToA6, captureElement } from '@/lib/postcard-generator';
+import { MusicStyle, getStyleById } from '@/lib/music-styles';
+import { composeFrontImageA6, captureElement } from '@/lib/postcard-generator';
 
 const steps = [
   { id: 1, title: 'Створення слів', description: 'Створюємо слова для пісні' },
@@ -58,6 +59,7 @@ const TEST_DATA = {
 const Studio = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { openOrderDialog } = useOrderDialog();
   const [currentStep, setCurrentStep] = useState(0); // Start with welcome tutorial
   const [lyrics, setLyrics] = useState('');
   const [selectedMusicVariant, setSelectedMusicVariant] = useState<any>(null);
@@ -594,7 +596,8 @@ const Studio = () => {
         hideNav
         showMenu={false}
         ctaLabel="Оформити замовлення"
-        ctaPath="/order"
+        ctaPath="#"
+        onCtaClick={openOrderDialog}
       />
 
       {/* Steps indicator */}
