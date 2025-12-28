@@ -8,13 +8,13 @@ import { supabase } from '@/integrations/supabase/client';
 const detectLanguage = (text: string): 'uk' | 'ru' => {
   const ukrainianChars = /[іїєґ]/i;
   const russianChars = /[ыэъ]/i;
-  
+
   const hasUkrainian = ukrainianChars.test(text);
   const hasRussian = russianChars.test(text);
-  
+
   if (hasUkrainian && !hasRussian) return 'uk';
   if (hasRussian && !hasUkrainian) return 'ru';
-  
+
   return 'uk';
 };
 
@@ -87,7 +87,7 @@ export default function PublicSong() {
     <div className="min-h-screen relative">
       {/* Intro ritual animation (8 seconds) + static background */}
       <OccasionAnimation occasion={orderData.page_occasion} ritualDuration={8000} />
-      
+
       <div className="relative z-10">
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto bg-white/95 backdrop-blur-sm rounded-lg shadow-2xl p-8">
@@ -128,9 +128,9 @@ export default function PublicSong() {
 
             {/* Текст песни */}
             {orderData.lyrics && (
-              <div className="bg-gradient-to-r from-[hsl(var(--primary))]/10 to-[hsl(var(--secondary))]/10 rounded-lg p-6">
-                <div 
-                  className="whitespace-pre-wrap text-center"
+              <div className="bg-purple-50 border border-purple-100 rounded-xl p-6">
+                <div
+                  className="whitespace-pre-wrap text-center leading-relaxed text-gray-700"
                   dangerouslySetInnerHTML={{
                     __html: (() => {
                       return orderData.lyrics
