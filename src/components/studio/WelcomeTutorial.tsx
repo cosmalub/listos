@@ -166,10 +166,10 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
               {/* Speech bubble pointer */}
               <div className="hidden md:block absolute top-1/2 -left-3 transform -translate-y-1/2 w-6 h-6 rotate-45 border-l-2 border-b-2 border-[#B8B3FF]/60 group-hover:border-[#B8B3FF] transition-colors bg-card"></div>
 
-              <h3 className="text-xl font-bold text-[#6A5ACD] mb-3 text-left">Як це працює?</h3>
+              <h3 className="text-xl font-bold text-[#6A5ACD] mb-3 text-left">Усього 4 прості кроки!</h3>
               <p className="text-muted-foreground text-left">
-                Подивіться на відео нижче, щоб зрозуміти, як працює процес створення музичної листівки.
-                Я крок за кроком покажу, як створити унікальний подарунок з піснею!
+                Спершу ми створимо слова, далі — згенеруємо унікальну пісню та сторінку для неї.
+                А на завершення — зробимо дизайн самої листівки. Я буду поруч на кожному кроці!
               </p>
             </div>
           </div>
