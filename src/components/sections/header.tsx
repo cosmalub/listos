@@ -27,7 +27,7 @@ const Header = ({ centerTitle, hideNav = false, showMenu = true }: HeaderProps) 
       href: "#reviews"
     },
     {
-      name: "Ціни",
+      name: "Ціна",
       href: "#pricing"
     },
     {
@@ -74,7 +74,7 @@ const Header = ({ centerTitle, hideNav = false, showMenu = true }: HeaderProps) 
                 <button
                   key={item.name}
                   onClick={() => handleNavClick(item)}
-                  className="text-foreground/80 hover:text-foreground transition-all duration-300 hover:scale-105 transform relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 focus:ring-offset-transparent rounded-md px-2 py-1"
+                  className="text-foreground/80 hover:text-foreground transition-all duration-300 hover:scale-105 transform relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 focus:ring-offset-transparent rounded-md px-2 py-1 whitespace-nowrap"
                 >
                   {item.name}
                 </button>
