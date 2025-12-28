@@ -589,7 +589,13 @@ const Studio = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] via-white to-white">
       {/* Header */}
-      <Header centerTitle="Студія створення листівки" hideNav showMenu={false} />
+      <Header
+        centerTitle="Студія створення листівки"
+        hideNav
+        showMenu={false}
+        ctaLabel="Оформити замовлення"
+        ctaPath="/order"
+      />
 
       {/* Steps indicator */}
       {!showWelcome && <StepsHeader currentStep={currentStep} />}

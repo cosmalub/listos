@@ -9,9 +9,17 @@ interface HeaderProps {
   centerTitle?: string;
   hideNav?: boolean;
   showMenu?: boolean;
+  ctaLabel?: string;
+  ctaPath?: string;
 }
 
-const Header = ({ centerTitle, hideNav = false, showMenu = true }: HeaderProps) => {
+const Header = ({
+  centerTitle,
+  hideNav = false,
+  showMenu = true,
+  ctaLabel = "Створити",
+  ctaPath = "/studio"
+}: HeaderProps) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const menuItems = [
@@ -66,7 +74,7 @@ const Header = ({ centerTitle, hideNav = false, showMenu = true }: HeaderProps) 
 
           {/* Desktop Navigation or Center Title */}
           {centerTitle ? (
-            <div className="hidden md:block text-xl font-semibold text-foreground justify-self-center">
+            <div className="hidden md:block text-xl font-semibold text-foreground justify-self-center whitespace-nowrap overflow-hidden text-ellipsis max-w-[300px] lg:max-w-none">
               {centerTitle}
             </div>
           ) : !hideNav ? (
@@ -89,11 +97,11 @@ const Header = ({ centerTitle, hideNav = false, showMenu = true }: HeaderProps) 
           <div className="flex items-center gap-3 justify-self-end">
             {/* CTA Button */}
             <Button
-              onClick={() => navigate('/studio')}
+              onClick={() => navigate(ctaPath)}
               size="sm"
               className="hidden md:flex bg-[#6A5ACD] hover:bg-[#5A4ABD] text-white rounded-full px-6 shadow-sm hover:shadow transition-all duration-300 font-medium"
             >
-              Створити
+              {ctaLabel}
             </Button>
 
             {/* Mobile Menu */}
