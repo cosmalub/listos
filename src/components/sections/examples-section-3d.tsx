@@ -331,7 +331,7 @@ export default function ExamplesSection3D() {
   const { openOrderDialog } = useOrderDialog();
 
   return (
-    <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
+    <section id="examples" className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
         {/* Перехідна фраза */}
         <p className="text-center text-lg text-muted-foreground mb-8 max-w-xl mx-auto leading-relaxed">
