@@ -68,7 +68,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
 
     try {
       console.log('Validating access token...');
-      
+
       const { data, error } = await supabase.functions.invoke('validate-studio-token', {
         body: { token: accessToken.trim() }
       });
@@ -86,15 +86,15 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
         sessionStorage.removeItem('studio-draft-data');
         sessionStorage.removeItem('music-parameters');
         sessionStorage.removeItem('studio-selected-music');
-        
+
         // Зберігаємо новий токен і preOrderId
         sessionStorage.setItem('studio-access-token', accessToken.trim());
         sessionStorage.setItem('studio-pre-order-id', data.preOrderId);
-        
+
         console.log('Token validated successfully, cleared old data, stored new token');
-        
+
         toast.success(data.message || 'Код доступу підтверджено!');
-        
+
         // Закриваємо діалог і переходимо до студії
         setShowTokenDialog(false);
         setAccessToken('');
@@ -125,91 +125,92 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
     sessionStorage.removeItem('studio-draft-data');
     sessionStorage.removeItem('music-parameters');
     sessionStorage.removeItem('studio-selected-music');
-    
+
     // Імітуємо валідний токен для dev режиму
     sessionStorage.setItem('studio-access-token', 'dev-mode-token');
     sessionStorage.setItem('studio-pre-order-id', 'dev-mode-pre-order-id');
-    
+
     console.log('🔧 DEV MODE: Cleared old data, skipped token validation');
     toast.success('Dev mode: пропущено перевірку токена');
-    
+
     onStart();
   };
 
   return (
     <div className="min-h-screen px-4 py-8">
-        {/* Lystosyk with Speech Bubble */}
-        <div className="max-w-5xl mx-auto mt-0 mb-8 px-4">
-          <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
-            {/* Cat Image */}
-            <div className="w-full md:w-1/3 flex justify-center">
-              <img
-                src="/lovable-uploads/26b60a97-63b1-4ff3-93d6-e0607581e4b0.png"
-                alt="Листосик - кіт-помічник"
-                className="w-48 h-48 transform transition-transform hover:scale-105 drop-shadow-2xl"
-              />
-            </div>
+      {/* Promise text - integrated into page flow */}
+      <div className="text-center mb-16">
+        <h3 className="text-2xl md:text-3xl font-bold text-[#6A5ACD] mb-4">
+          Разом створимо шедевр
+        </h3>
+        <p className="text-lg md:text-xl text-slate-900 dark:text-white max-w-2xl mx-auto">
+          Ви створите неймовірну музичну листівку, яка точно вразить отримувача. Листосик допоможе на кожному кроці!
+        </p>
+      </div>
 
-            {/* Speech Bubble */}
-            <div className="w-full md:w-2/3 relative group">
-              <div className="bg-card p-6 rounded-3xl border-2 border-[#B8B3FF]/60 group-hover:border-[#B8B3FF] transition-colors group-hover:shadow-md relative">
-                {/* Speech bubble pointer */}
-                <div className="hidden md:block absolute top-1/2 -left-3 transform -translate-y-1/2 w-6 h-6 rotate-45 border-l-2 border-b-2 border-[#B8B3FF]/60 group-hover:border-[#B8B3FF] transition-colors bg-card"></div>
+      {/* Lystosyk with Speech Bubble */}
+      <div className="max-w-5xl mx-auto mt-0 mb-8 px-4">
+        <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
+          {/* Cat Image */}
+          <div className="w-full md:w-1/3 flex justify-center">
+            <img
+              src="/lovable-uploads/26b60a97-63b1-4ff3-93d6-e0607581e4b0.png"
+              alt="Листосик - кіт-помічник"
+              className="w-48 h-48 transform transition-transform hover:scale-105 drop-shadow-2xl"
+            />
+          </div>
 
-                <h3 className="text-xl font-bold text-[#6A5ACD] mb-3 text-left">Як це працює?</h3>
-                <p className="text-muted-foreground text-left">
-                  Подивіться на відео нижче, щоб зрозуміти, як працює процес створення музичної листівки.
-                  Я крок за кроком покажу, як створити унікальний подарунок з піснею!
-                </p>
-              </div>
+          {/* Speech Bubble */}
+          <div className="w-full md:w-2/3 relative group">
+            <div className="bg-card p-6 rounded-3xl border-2 border-[#B8B3FF]/60 group-hover:border-[#B8B3FF] transition-colors group-hover:shadow-md relative">
+              {/* Speech bubble pointer */}
+              <div className="hidden md:block absolute top-1/2 -left-3 transform -translate-y-1/2 w-6 h-6 rotate-45 border-l-2 border-b-2 border-[#B8B3FF]/60 group-hover:border-[#B8B3FF] transition-colors bg-card"></div>
+
+              <h3 className="text-xl font-bold text-[#6A5ACD] mb-3 text-left">Як це працює?</h3>
+              <p className="text-muted-foreground text-left">
+                Подивіться на відео нижче, щоб зрозуміти, як працює процес створення музичної листівки.
+                Я крок за кроком покажу, як створити унікальний подарунок з піснею!
+              </p>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Video Section - integrated into page flow */}
-        <div className="mb-16 text-center">
-          <div className="relative aspect-video max-w-2xl mx-auto rounded-2xl overflow-hidden group cursor-pointer">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-              <div className="bg-white/90 backdrop-blur-sm rounded-full p-6 group-hover:scale-110 transition-transform duration-300 shadow-soft">
-                <Play className="h-12 w-12 text-primary fill-primary" />
-              </div>
+      {/* Video Section - integrated into page flow */}
+      <div className="mb-16 text-center">
+        <div className="relative aspect-video max-w-2xl mx-auto rounded-2xl overflow-hidden group cursor-pointer">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
+            <div className="bg-white/90 backdrop-blur-sm rounded-full p-6 group-hover:scale-110 transition-transform duration-300 shadow-soft">
+              <Play className="h-12 w-12 text-primary fill-primary" />
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Promise text - integrated into page flow */}
-        <div className="text-center mb-16">
-          <h3 className="text-2xl md:text-3xl font-bold text-[#6A5ACD] mb-4">
-            Разом створимо шедевр
-          </h3>
-          <p className="text-lg md:text-xl text-slate-900 dark:text-white max-w-2xl mx-auto">
-            Ви створите неймовірну музичну листівку, яка точно вразить отримувача. Листосик допоможе на кожному кроці!
-          </p>
-        </div>
 
-        {/* Start Button */}
-        <div className="flex justify-center gap-4">
+      {/* Start Button */}
+      <div className="flex justify-center gap-4">
+        <Button
+          onClick={handleStartClick}
+          size="lg"
+          className="min-w-[200px]"
+        >
+          Почати створення
+          <ArrowRight className="h-5 w-5" />
+        </Button>
+
+        {/* Dev кнопка - показується тільки в dev режимі */}
+        {DEV_MODE && (
           <Button
-            onClick={handleStartClick}
+            onClick={handleDevSkip}
             size="lg"
-            className="min-w-[200px]"
+            variant="outline"
+            className="min-w-[200px] border-orange-500 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950"
           >
-            Почати створення
-            <ArrowRight className="h-5 w-5" />
+            🔧 Skip (Dev)
           </Button>
-          
-          {/* Dev кнопка - показується тільки в dev режимі */}
-          {DEV_MODE && (
-            <Button
-              onClick={handleDevSkip}
-              size="lg"
-              variant="outline"
-              className="min-w-[200px] border-orange-500 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950"
-            >
-              🔧 Skip (Dev)
-            </Button>
-          )}
-        </div>
+        )}
+      </div>
 
       {/* Діалог для введення токена */}
       <Dialog open={showTokenDialog} onOpenChange={handleDialogClose}>
@@ -224,7 +225,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
               <p className="text-sm">Або просто перейдіть за посиланням з email/telegram — код підставиться автоматично.</p>
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <Label htmlFor="access-token">Код доступу</Label>
@@ -256,13 +257,13 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
                     Зв'яжіться з нами після оплати, і ми відправимо вам код доступу
                   </p>
                 </div>
-                
+
                 <div className="border-t border-purple-200 pt-3">
                   <p className="text-sm text-purple-900">
                     <strong>У вас ще немає коду?</strong><br />
                     Ви можете{' '}
-                    <a 
-                      href="/order" 
+                    <a
+                      href="/order"
                       className="text-[#6A5ACD] underline hover:text-[#5A4ABD] font-semibold"
                       onClick={(e) => {
                         e.preventDefault();
