@@ -31,15 +31,15 @@ interface PostcardPreviewProps {
 function isLightColor(color: string): boolean {
   // Remove # if present
   const hex = color.replace('#', '');
-  
+
   // Convert to RGB
   const r = parseInt(hex.substring(0, 2), 16);
   const g = parseInt(hex.substring(2, 4), 16);
   const b = parseInt(hex.substring(4, 6), 16);
-  
+
   // Calculate relative luminance
   const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-  
+
   // Return true if light (> 0.5)
   return luminance > 0.5;
 }
@@ -50,7 +50,7 @@ function splitMessageToParagraphs(message: string): string[] {
   if (message.includes('\n\n')) {
     return message.split('\n\n').map(p => p.trim()).filter(p => p.length > 0);
   }
-  
+
   // Otherwise split after first sentence (ends with . or ! or ?)
   const sentences = message.split(/(?<=[.!?])\s+/);
   if (sentences.length >= 2) {
@@ -61,7 +61,7 @@ function splitMessageToParagraphs(message: string): string[] {
       return [firstParagraph, secondParagraph];
     }
   }
-  
+
   return [message];
 }
 
@@ -69,13 +69,13 @@ function splitMessageToParagraphs(message: string): string[] {
 function splitCaptionToLines(caption: string): string[] {
   const words = caption.trim().split(/\s+/);
   const lines: string[] = [];
-  
+
   let i = 0;
   while (i < words.length) {
     // Take 2-3 words per line depending on word lengths
     const remaining = words.length - i;
     let wordsToTake = 2;
-    
+
     // If we have 3-4 words left, split evenly
     if (remaining === 3) {
       wordsToTake = 2; // 2 + 1
@@ -88,25 +88,25 @@ function splitCaptionToLines(caption: string): string[] {
       const nextThreeWords = words.slice(i, i + 3).join(' ');
       wordsToTake = nextThreeWords.length <= 20 ? 3 : 2;
     }
-    
+
     lines.push(words.slice(i, i + wordsToTake).join(' '));
     i += wordsToTake;
   }
-  
+
   return lines;
 }
 
 // Split caption into exactly 2 lines (for photo mode with frame)
 function splitCaptionTo2Lines(caption: string): string[] {
   const words = caption.trim().split(/\s+/);
-  
+
   if (words.length <= 1) {
     return [caption.trim()];
   }
-  
+
   // Split words roughly in half
   const midPoint = Math.ceil(words.length / 2);
-  
+
   return [
     words.slice(0, midPoint).join(' '),
     words.slice(midPoint).join(' ')
@@ -127,7 +127,7 @@ export const PostcardPreview = forwardRef<HTMLDivElement, PostcardPreviewProps>(
                 src={frontData.imageUrl}
                 alt="Postcard design"
                 className="absolute object-cover"
-                style={{ 
+                style={{
                   zIndex: 1,
                   left: '5.2%',
                   top: '3.5%',
@@ -135,7 +135,7 @@ export const PostcardPreview = forwardRef<HTMLDivElement, PostcardPreviewProps>(
                   height: '93.5%'
                 }}
               />
-              
+
               {/* Caption overlay - under the frame */}
               {frontData.caption && (
                 <div className="absolute bottom-[4.5%] left-[5.2%] right-[4.8%]" style={{ zIndex: 2 }}>
@@ -151,7 +151,7 @@ export const PostcardPreview = forwardRef<HTMLDivElement, PostcardPreviewProps>(
                   </div>
                 </div>
               )}
-              
+
               {/* Frame overlay - on top of everything */}
               <img
                 src="/frames/elegant-frame.png?v=5"
@@ -170,7 +170,7 @@ export const PostcardPreview = forwardRef<HTMLDivElement, PostcardPreviewProps>(
                   className="w-full h-full object-cover rounded-lg"
                 />
               </div>
-              
+
               {/* Caption overlay - only for photo mode without frame */}
               {frontData.caption && frontData.mode === 'photo' && (
                 <div className="absolute bottom-6 left-4 right-4 z-20">
@@ -206,7 +206,7 @@ export const PostcardPreview = forwardRef<HTMLDivElement, PostcardPreviewProps>(
   const backSide = (
     <div id="postcard-back-preview" className="relative w-full h-full bg-background border rounded-xl overflow-hidden">
       {backData.selectedColor ? (
-        <div 
+        <div
           className="h-full flex flex-col p-6"
           style={{ backgroundColor: backData.selectedColor }}
         >
@@ -228,14 +228,14 @@ export const PostcardPreview = forwardRef<HTMLDivElement, PostcardPreviewProps>(
             ) : backData.personalMessage ? (
               <div className="text-center max-w-[200px]">
                 {splitMessageToParagraphs(backData.personalMessage).map((paragraph, index) => (
-                  <p 
+                  <p
                     key={index}
                     className={cn(
                       "leading-snug",
                       isLightColor(backData.selectedColor) ? "text-gray-900" : "text-white",
                       index > 0 && "mt-3"
                     )}
-                    style={{ 
+                    style={{
                       fontFamily: "'Bebas Neue Cyrillic', 'Bebas Neue', sans-serif",
                       fontSize: '14px',
                       fontWeight: 'bold',
@@ -258,14 +258,14 @@ export const PostcardPreview = forwardRef<HTMLDivElement, PostcardPreviewProps>(
 
           {/* QR Code - compact at bottom */}
           <div className="flex justify-center pb-4">
-            <div 
+            <div
               className={cn(
                 "bg-white rounded-lg flex items-center justify-center p-3",
                 size === 'large' ? "w-32 h-32" : "w-24 h-24"
               )}
             >
               <QRCode
-                value={qrUrl || "https://listos.app/postcard/sample"}
+                value={qrUrl || "https://lystosyk.com/postcard/sample"}
                 size={size === 'large' ? 104 : 72}
                 level="M"
                 className="w-full h-full"

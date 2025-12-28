@@ -23,7 +23,7 @@ const Discount = () => {
         setLoading(false);
         return;
       }
-      
+
       try {
         const { data, error } = await supabase
           .from('promo_codes')
@@ -66,10 +66,10 @@ const Discount = () => {
 
   const addToCalendar = () => {
     if (!promoData) return;
-    
+
     const expiryDate = new Date(promoData.expiresAt);
     const reminderDate = new Date(expiryDate.getTime() - 3 * 24 * 60 * 60 * 1000);
-    
+
     const formatICSDate = (date: Date) => {
       return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
     };
@@ -94,24 +94,24 @@ END:VCALENDAR`;
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    
+
     toast.success("Нагадування завантажено! Відкрийте файл, щоб додати в календар 📅");
   };
 
   const sendToTelegram = () => {
     if (!promoData) return;
-    
-    const text = `🎁 Мій промокод Листосик: ${promoData.code}\n\nЗнижка 25% на наступну листівку!\n⏰ Дійсний до: ${formatExpiryDate(promoData.expiresAt)}\n\n🔗 listosyk.com`;
-    
-    window.open(`https://t.me/share/url?url=https://listosyk.com&text=${encodeURIComponent(text)}`, '_blank');
+
+    const text = `🎁 Мій промокод Листосик: ${promoData.code}\n\nЗнижка 25% на наступну листівку!\n⏰ Дійсний до: ${formatExpiryDate(promoData.expiresAt)}\n\n🔗 lystosyk.com`;
+
+    window.open(`https://t.me/share/url?url=https://lystosyk.com&text=${encodeURIComponent(text)}`, '_blank');
   };
 
   const formatExpiryDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('uk-UA', { 
-      day: 'numeric', 
-      month: 'long', 
-      year: 'numeric' 
+    return date.toLocaleDateString('uk-UA', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
     });
   };
 
@@ -154,7 +154,7 @@ END:VCALENDAR`;
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] to-white/20">
       <Header />
-      
+
       <main className="container mx-auto px-4 pt-24 pb-16">
         <div className="max-w-2xl mx-auto text-center space-y-8">
           {/* Hero Section */}
@@ -191,7 +191,7 @@ END:VCALENDAR`;
               <p className="text-xl md:text-2xl text-[#6A5ACD] font-baloo font-semibold">
                 Знижка на наступну листівку 🎁
               </p>
-              
+
               <div className="bg-white/90 backdrop-blur-sm rounded-xl p-6 space-y-4 border-2 border-[#6A5ACD]/20 shadow-inner">
                 <p className="text-sm text-gray-600 uppercase tracking-wide font-semibold">
                   Ваш персональний промокод
