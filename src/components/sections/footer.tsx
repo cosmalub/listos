@@ -24,15 +24,21 @@ export function Footer() {
                 <h3 className="font-bold text-[#6A5ACD] text-base md:text-lg">Корисна інформація</h3>
                 <ul className="space-y-1.5">
                   <li><a href="#faq" className="text-sm text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Часті запитання</a></li>
-                  <li><a href="#" className="text-sm text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Доставка та оплата</a></li>
                   <li><a href="#" className="text-sm text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Політика конфіденційності</a></li>
-                  <li><a href="#" className="text-sm text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors">Умови користування</a></li>
                   <li>
-                    <button
-                      onClick={openOrderDialog}
+                    <a
+                      href="https://lystosyk.com/studio"
                       className="text-sm text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors"
                     >
                       Створити листівку
+                    </a>
+                  </li>
+                  <li>
+                    <button
+                      onClick={openOrderDialog}
+                      className="text-sm text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors text-left"
+                    >
+                      Оформити замовлення
                     </button>
                   </li>
                 </ul>
