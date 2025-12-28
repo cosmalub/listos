@@ -253,27 +253,36 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
 
 
       {/* Start Button */}
-      <div className="flex justify-center gap-4">
-        <Button
-          onClick={handleStartClick}
-          size="lg"
-          className="min-w-[200px]"
-        >
-          Почати створення
-          <ArrowRight className="h-5 w-5" />
-        </Button>
-
-        {/* Dev кнопка - показується тільки в dev режимі */}
-        {DEV_MODE && (
+      <div className="flex flex-col items-center gap-4">
+        <div className="flex justify-center gap-4">
           <Button
-            onClick={handleDevSkip}
+            onClick={handleStartClick}
             size="lg"
-            variant="outline"
-            className="min-w-[200px] border-orange-500 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950"
+            className="min-w-[200px]"
           >
-            🔧 Skip (Dev)
+            Почати створення
+            <ArrowRight className="h-5 w-5" />
           </Button>
-        )}
+
+          {/* Dev кнопка - показується тільки в dev режимі */}
+          {DEV_MODE && (
+            <Button
+              onClick={handleDevSkip}
+              size="lg"
+              variant="outline"
+              className="min-w-[200px] border-orange-500 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950"
+            >
+              🔧 Skip (Dev)
+            </Button>
+          )}
+        </div>
+
+        <p className="text-sm text-muted-foreground text-center">
+          Ще немає коду доступу?{' '}
+          <a href="/order" className="text-[#6A5ACD] hover:underline font-medium">
+            Оформити замовлення
+          </a>
+        </p>
       </div>
 
       {/* Діалог для введення токена */}
