@@ -200,26 +200,39 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
           <div className="container mx-auto px-4">
             {/* Desktop: Horizontal layout with connecting lines */}
             <div className="hidden md:flex items-start justify-center gap-4 max-w-5xl mx-auto">
-              {userSteps.map((step, index, array) => (
-                <div key={step.id} className="contents">
-                  <div className="flex flex-col items-center w-36">
-                    <div className="flex items-center justify-center w-10 h-10 rounded-full border-2 bg-background border-border text-muted-foreground transition-colors relative z-10">
-                      <span className="text-sm font-medium">{index + 1}</span>
-                    </div>
-                    <div className="mt-2 text-center">
-                      <div className="text-sm font-medium text-foreground">
-                        {step.title}
+              {userSteps.map((step, index) => {
+                const isActive = index === 0;
+                const isInactive = index > 0;
+
+                return (
+                  <div key={step.id} className="contents">
+                    <div className="flex flex-col items-center w-36">
+                      <div className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-colors relative z-10 ${isActive
+                          ? "bg-[#8A7AEE] border-[#8A7AEE] text-white shadow-lg shadow-purple-200"
+                          : "bg-white border-purple-100 text-purple-300"
+                        }`}>
+                        <span className={`text-sm font-bold ${isActive ? "text-white" : "text-purple-300"}`}>
+                          {index + 1}
+                        </span>
                       </div>
-                      <div className="text-xs text-muted-foreground whitespace-pre-line">
-                        {step.description}
+                      <div className="mt-3 text-center">
+                        <div className={`text-sm font-bold mb-1 ${isActive ? "text-[#4A3AFF]" : "text-purple-300"
+                          }`}>
+                          {step.title}
+                        </div>
+                        <div className={`text-xs whitespace-pre-line leading-relaxed ${isActive ? "text-slate-600 font-medium" : "text-purple-200"
+                          }`}>
+                          {step.description}
+                        </div>
                       </div>
                     </div>
+                    {index < array.length - 1 && (
+                      <div className={`h-0.5 w-12 mt-5 transition-colors ${isActive ? "bg-purple-200" : "bg-purple-100"
+                        }`} />
+                    )}
                   </div>
-                  {index < array.length - 1 && (
-                    <div className="h-0.5 w-12 mt-5 bg-border transition-colors" />
-                  )}
-                </div>
-              ))}
+                );
+              })}
 
               {/* Arrow to system step */}
               <div className="h-0.5 w-16 mt-5 bg-gradient-to-r from-border to-orange-400 transition-colors relative">
