@@ -98,7 +98,7 @@ export default function FaqAndCtaSections() {
         <Accordion type="single" collapsible className="w-full">
           {faqs.map((faq, index) => (
             <AccordionItem key={index} value={`item-${index}`}>
-              <AccordionTrigger className="text-lg font-medium text-[#6A5ACD]">{faq.question}</AccordionTrigger>
+              <AccordionTrigger className="text-lg font-medium text-[#6A5ACD] text-left">{faq.question}</AccordionTrigger>
               <AccordionContent className="text-[#6A5ACD]/80 whitespace-pre-line">{faq.answer}</AccordionContent>
             </AccordionItem>
           ))}
