@@ -91,9 +91,8 @@ const Header = ({ centerTitle, hideNav = false, showMenu = true }: HeaderProps) 
             <Button
               onClick={() => navigate('/studio')}
               size="sm"
-              className="hidden md:flex bg-[#6A5ACD] hover:bg-[#5A4ABD] text-white shadow-md hover:shadow-lg transition-all duration-300"
+              className="hidden md:flex bg-[#6A5ACD] hover:bg-[#5A4ABD] text-white rounded-full px-6 shadow-sm hover:shadow transition-all duration-300 font-medium"
             >
-              <Sparkles className="w-4 h-4 mr-2" />
               Створити
             </Button>
 
