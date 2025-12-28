@@ -23,6 +23,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
 
   const steps = [
     {
+      id: 1,
       icon: Music,
       title: "Слова та музика",
       description: "Створимо унікальну пісню разом з AI",
@@ -31,6 +32,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
       iconColor: "text-purple-600"
     },
     {
+      id: 2,
       icon: Heart,
       title: "Вибір мелодії",
       description: "Оберемо найкращий варіант з 2-х",
@@ -39,6 +41,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
       iconColor: "text-red-600"
     },
     {
+      id: 3,
       icon: Palette,
       title: "Дизайн листівки",
       description: "Створимо красивий персональний дизайн",
@@ -47,6 +50,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
       iconColor: "text-blue-600"
     },
     {
+      id: 4,
       icon: Send,
       title: "Готова сторінка",
       description: "Персональна сторінка з QR-кодом",
@@ -55,6 +59,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
       iconColor: "text-green-600"
     },
     {
+      id: 5,
       icon: Gift,
       title: "Відправка",
       description: "Відправляємо готову фізичну листівку вам",
@@ -63,6 +68,9 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
       iconColor: "text-orange-600"
     }
   ];
+
+  const userSteps = steps.slice(0, 4);
+  const systemStep = steps[4];
 
   const handleStartClick = () => {
     setShowTokenDialog(true);
@@ -176,7 +184,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
               {/* Speech bubble pointer */}
               <div className="hidden md:block absolute top-1/2 -left-3 transform -translate-y-1/2 w-6 h-6 rotate-45 border-l-2 border-b-2 border-[#B8B3FF]/60 group-hover:border-[#B8B3FF] transition-colors bg-card"></div>
 
-              <h3 className="text-xl font-bold text-[#6A5ACD] mb-3 text-left">Усього 5 простих кроків!</h3>
+              <h3 className="text-xl font-bold text-[#6A5ACD] mb-3 text-left">4 прості кроки створенння + доставка</h3>
               <p className="text-muted-foreground text-left">
                 Спершу ми створимо слова, далі — згенеруємо унікальну пісню та сторінку для неї.
                 А на завершення — зробимо дизайн самої листівки. Я буду поруч на кожному кроці!
@@ -191,32 +199,12 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
         <div className="bg-transparent py-6">
           <div className="container mx-auto px-4">
             {/* Desktop: Horizontal layout with connecting lines */}
-            <div className="hidden md:flex items-start justify-center gap-4 max-w-4xl mx-auto">
-              {[{
-                id: 1,
-                title: 'Створення слів',
-                description: 'Створюємо слова\nдля пісні'
-              }, {
-                id: 2,
-                title: 'Генерація музики',
-                description: 'Генеруємо 2 варіанти на основі тексту'
-              }, {
-                id: 3,
-                title: 'Сторінка з піснею',
-                description: 'Створюємо персональну сторінку з піснею'
-              }, {
-                id: 4,
-                title: 'Дизайн листівки',
-                description: 'Робимо дизайн\nлистівки з QR-кодом'
-              }, {
-                id: 5,
-                title: 'Відправка',
-                description: 'Відправляємо готову\nфізичну листівку вам'
-              }].map((step, index, array) => (
+            <div className="hidden md:flex items-start justify-center gap-4 max-w-5xl mx-auto">
+              {userSteps.map((step, index, array) => (
                 <div key={step.id} className="contents">
                   <div className="flex flex-col items-center w-36">
-                    <div className="flex items-center justify-center w-10 h-10 rounded-full border-2 bg-background border-border text-muted-foreground transition-colors">
-                      <span className="text-sm font-medium">{step.id}</span>
+                    <div className="flex items-center justify-center w-10 h-10 rounded-full border-2 bg-background border-border text-muted-foreground transition-colors relative z-10">
+                      <span className="text-sm font-medium">{index + 1}</span>
                     </div>
                     <div className="mt-2 text-center">
                       <div className="text-sm font-medium text-foreground">
@@ -232,37 +220,70 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
                   )}
                 </div>
               ))}
+
+              {/* Arrow to system step */}
+              <div className="h-0.5 w-16 mt-5 bg-gradient-to-r from-border to-orange-400 transition-colors relative">
+                <div className="absolute right-0 -top-1.5 text-orange-400">
+                  <ArrowRight className="w-4 h-4" />
+                </div>
+              </div>
+
+              {/* System step (Delivery) */}
+              <div className="flex flex-col items-center w-40 relative">
+                <div className="absolute -top-3 -right-3">
+                  <div className="animate-bounce">
+                    <Gift className="w-6 h-6 text-orange-500" />
+                  </div>
+                </div>
+                <div className="flex items-center justify-center w-12 h-12 rounded-full border-2 border-orange-400 bg-orange-50 text-orange-600 shadow-sm z-10">
+                  <Gift className="w-6 h-6" />
+                </div>
+                <div className="mt-2 text-center">
+                  <div className="text-sm font-bold text-orange-600">
+                    {systemStep.title}
+                  </div>
+                  <div className="text-xs text-orange-600/80 whitespace-pre-line font-medium">
+                    {systemStep.description}
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Mobile: Compact grid layout */}
-            <div className="md:hidden grid grid-cols-5 gap-1 max-w-sm mx-auto">
-              {[{
-                id: 1,
-                title: 'Створення слів'
-              }, {
-                id: 2,
-                title: 'Генерація музики'
-              }, {
-                id: 3,
-                title: 'Сторінка з піснею'
-              }, {
-                id: 4,
-                title: 'Дизайн листівки'
-              }, {
-                id: 5,
-                title: 'Відправка'
-              }].map(step => (
-                <div key={step.id} className="flex flex-col items-center">
-                  <div className="flex items-center justify-center w-8 h-8 rounded-full border-2 bg-background border-border text-muted-foreground transition-colors">
-                    <span className="text-xs font-medium">{step.id}</span>
+            <div className="md:hidden flex flex-col gap-6 max-w-sm mx-auto">
+              <div className="grid grid-cols-4 gap-2">
+                {userSteps.map((step, index) => (
+                  <div key={index} className="flex flex-col items-center">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full border-2 bg-background border-border text-muted-foreground transition-colors">
+                      <span className="text-xs font-medium">{index + 1}</span>
+                    </div>
+                    <div className="mt-1 text-center h-8 overflow-hidden">
+                      <div className="text-xs leading-tight font-medium text-foreground">
+                        {step.title}
+                      </div>
+                    </div>
                   </div>
-                  <div className="mt-1 text-center h-8 overflow-hidden">
-                    <div className="text-xs leading-tight font-medium text-foreground">
-                      {step.title}
+                ))}
+              </div>
+
+              <div className="relative border-t pt-4 border-dashed border-orange-200">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-min-h-screen px-2 text-xs text-orange-400 bg-[#FFD1DC] rounded-full px-2">
+                  Ми робимо
+                </div>
+                <div className="flex items-center justify-center gap-3">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-full border-2 border-orange-400 bg-orange-50 text-orange-600">
+                    <Gift className="w-5 h-5" />
+                  </div>
+                  <div className="text-left">
+                    <div className="text-sm font-bold text-orange-600">
+                      {systemStep.title}
+                    </div>
+                    <div className="text-xs text-orange-600/80">
+                      {systemStep.description}
                     </div>
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </div>
