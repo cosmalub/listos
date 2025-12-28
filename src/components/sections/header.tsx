@@ -1,8 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Menu } from "lucide-react";
+import { Menu, Sparkles } from "lucide-react";
 import logoListosik from "@/assets/logo-listosik.png";
 
 interface HeaderProps {
@@ -12,6 +12,7 @@ interface HeaderProps {
 }
 
 const Header = ({ centerTitle, hideNav = false, showMenu = true }: HeaderProps) => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const menuItems = [
     {
@@ -84,17 +85,17 @@ const Header = ({ centerTitle, hideNav = false, showMenu = true }: HeaderProps) 
             <div />
           )}
 
-          {/* Language Switcher & Mobile Menu */}
+          {/* CTA Button & Mobile Menu */}
           <div className="flex items-center gap-3 justify-self-end">
-            {/* Language Switcher */}
-            <ToggleGroup type="single" defaultValue="ua" className="bg-background/60 backdrop-blur-sm border border-white/10 rounded-lg p-0.5">
-              <ToggleGroupItem value="ua" className="rounded-md px-2.5 py-1 text-xs font-medium text-foreground/80 data-[state=on]:bg-primary data-[state=on]:text-white transition-all duration-200 hover:bg-primary/10">
-                UA
-              </ToggleGroupItem>
-              <ToggleGroupItem value="ru" className="rounded-md px-2.5 py-1 text-xs font-medium text-foreground/80 data-[state=on]:bg-primary data-[state=on]:text-white transition-all duration-200 hover:bg-primary/10">
-                RU
-              </ToggleGroupItem>
-            </ToggleGroup>
+            {/* CTA Button */}
+            <Button
+              onClick={() => navigate('/studio')}
+              size="sm"
+              className="hidden md:flex bg-[#6A5ACD] hover:bg-[#5A4ABD] text-white shadow-md hover:shadow-lg transition-all duration-300"
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
+              Створити
+            </Button>
 
             {/* Mobile Menu */}
             {showMenu && (
