@@ -82,6 +82,7 @@ export function OrderDialog() {
       const { data, error } = await supabase
         .from('pre_orders')
         .insert({
+          client_name: formData.name,
           user_email: formData.contactType === 'telegram' ? formData.telegram : null,
           user_phone: formData.contactType === 'phone' ? formData.phone : null,
           city: formData.city,
