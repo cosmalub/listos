@@ -152,6 +152,7 @@ export type Database = {
         Row: {
           access_token: string
           city: string | null
+          client_name: string | null
           comment: string | null
           contact_type: string | null
           created_at: string
@@ -168,6 +169,7 @@ export type Database = {
         Insert: {
           access_token?: string
           city?: string | null
+          client_name?: string | null
           comment?: string | null
           contact_type?: string | null
           created_at?: string
@@ -184,6 +186,7 @@ export type Database = {
         Update: {
           access_token?: string
           city?: string | null
+          client_name?: string | null
           comment?: string | null
           contact_type?: string | null
           created_at?: string
