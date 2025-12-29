@@ -101,10 +101,10 @@ export function HeroSection() {
 
     <section className="relative py-16 md:py-24 overflow-hidden bg-gradient-to-b from-[#FFD1DC] to-white/20">
       {/* Top corners */}
-      <div className="absolute top-28 left-[10%] transform -rotate-3 hidden lg:block z-10 animate-subtle-move">
+      <div className="absolute top-28 left-[10%] transform -rotate-3 hidden xl:block z-10 animate-subtle-move">
         <ReviewBubble name="Олена С." rating={5} text="Чудова ідея для подарунка!" initials="ОС" bgColor="#FFD1DC" />
       </div>
-      <div className="absolute top-28 right-[10%] transform rotate-3 hidden lg:block z-10 animate-subtle-move-slow-reverse">
+      <div className="absolute top-28 right-[10%] transform rotate-3 hidden xl:block z-10 animate-subtle-move-slow-reverse">
         <ReviewBubble
           name="Софія М."
           rating={5}
@@ -115,15 +115,15 @@ export function HeroSection() {
       </div>
 
       {/* Left and right sides - middle */}
-      <div className="absolute top-1/2 left-[5%] transform -translate-y-1/2 rotate-3 hidden lg:block z-10 animate-subtle-move">
+      <div className="absolute top-1/2 left-[5%] transform -translate-y-1/2 rotate-3 hidden xl:block z-10 animate-subtle-move">
         <ReviewBubble name="Марія К." rating={5} text="Дуже зворушливий подарунок!" initials="МК" bgColor="#B8B3FF" />
       </div>
-      <div className="absolute top-1/2 right-[5%] transform -translate-y-1/2 -rotate-3 hidden lg:block z-10 animate-subtle-move-reverse">
+      <div className="absolute top-1/2 right-[5%] transform -translate-y-1/2 -rotate-3 hidden xl:block z-10 animate-subtle-move-reverse">
         <ReviewBubble name="Андрій В." rating={5} text="Оригінально та душевно!" initials="АВ" bgColor="#F3D1FF" />
       </div>
 
       {/* Bottom corners */}
-      <div className="absolute bottom-10 left-[15%] transform rotate-2 hidden lg:block z-10 animate-subtle-move-slow">
+      <div className="absolute bottom-10 left-[15%] transform rotate-2 hidden xl:block z-10 animate-subtle-move-slow">
         <ReviewBubble
           name="Дмитро С."
           rating={5}
@@ -132,7 +132,7 @@ export function HeroSection() {
           bgColor="#F3D1FF"
         />
       </div>
-      <div className="absolute bottom-10 right-[15%] transform -rotate-2 hidden lg:block z-10 animate-subtle-move">
+      <div className="absolute bottom-10 right-[15%] transform -rotate-2 hidden xl:block z-10 animate-subtle-move">
         <ReviewBubble name="Наталія Р." rating={5} text="Неймовірно приємний сервіс!" initials="НР" bgColor="#B8B3FF" />
       </div>
 
@@ -194,7 +194,7 @@ export function HeroSection() {
         </div>
 
         {/* Mobile reviews (visible only on small screens) - arranged in 2 rows */}
-        <div className="mt-8 grid grid-cols-2 gap-3 md:hidden">
+        <div className="mt-8 grid grid-cols-2 gap-3 xl:hidden">
           <div>
             <ReviewBubbleMobile
               name="Марія К."
