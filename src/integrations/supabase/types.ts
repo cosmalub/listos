@@ -57,6 +57,7 @@ export type Database = {
           front_design_style: string | null
           front_image_url: string | null
           id: string
+          internal_comment: string | null
           lyrics: string
           music_audio_url: string | null
           music_selected: boolean | null
@@ -68,6 +69,7 @@ export type Database = {
           page_recipient: string
           page_sender: string
           pre_order_id: string
+          production_stage: string | null
           qr_code_url: string | null
           studio_completed: boolean
           studio_completed_at: string | null
@@ -86,6 +88,7 @@ export type Database = {
           front_design_style?: string | null
           front_image_url?: string | null
           id?: string
+          internal_comment?: string | null
           lyrics: string
           music_audio_url?: string | null
           music_selected?: boolean | null
@@ -97,6 +100,7 @@ export type Database = {
           page_recipient: string
           page_sender: string
           pre_order_id: string
+          production_stage?: string | null
           qr_code_url?: string | null
           studio_completed?: boolean
           studio_completed_at?: string | null
@@ -115,6 +119,7 @@ export type Database = {
           front_design_style?: string | null
           front_image_url?: string | null
           id?: string
+          internal_comment?: string | null
           lyrics?: string
           music_audio_url?: string | null
           music_selected?: boolean | null
@@ -126,6 +131,7 @@ export type Database = {
           page_recipient?: string
           page_sender?: string
           pre_order_id?: string
+          production_stage?: string | null
           qr_code_url?: string | null
           studio_completed?: boolean
           studio_completed_at?: string | null
@@ -251,7 +257,9 @@ export type Database = {
           comment: string | null
           contact_type: string | null
           created_at: string
+          crm_stage: string | null
           id: string
+          internal_comment: string | null
           is_paid: boolean
           nova_poshta: string | null
           status: string | null
@@ -265,7 +273,9 @@ export type Database = {
           comment?: string | null
           contact_type?: string | null
           created_at?: string
+          crm_stage?: string | null
           id?: string
+          internal_comment?: string | null
           is_paid?: boolean
           nova_poshta?: string | null
           status?: string | null
@@ -279,7 +289,9 @@ export type Database = {
           comment?: string | null
           contact_type?: string | null
           created_at?: string
+          crm_stage?: string | null
           id?: string
+          internal_comment?: string | null
           is_paid?: boolean
           nova_poshta?: string | null
           status?: string | null
