@@ -14,36 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      music_requests: {
-        Row: {
-          created_at: string
-          generated_variants: Json | null
-          id: string
-          lyrics: string
-          style: string | null
-          updated_at: string
-          user_feedback: string | null
-        }
-        Insert: {
-          created_at?: string
-          generated_variants?: Json | null
-          id?: string
-          lyrics: string
-          style?: string | null
-          updated_at?: string
-          user_feedback?: string | null
-        }
-        Update: {
-          created_at?: string
-          generated_variants?: Json | null
-          id?: string
-          lyrics?: string
-          style?: string | null
-          updated_at?: string
-          user_feedback?: string | null
-        }
-        Relationships: []
-      }
       orders: {
         Row: {
           back_design_color: string | null
