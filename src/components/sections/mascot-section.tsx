@@ -132,11 +132,13 @@ export function MascotSection() {
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-primary mb-3">Крок 3: Даруєш і дивишся на емоції</h3>
                   <p className="text-muted-foreground mb-2">
-                    Листівка приїжджає <span className="font-semibold text-primary">Новою поштою за 1-2 дні</span>.
-                    Ти отримуєш її та даруєш особливій людині.
+                    Ми друкуємо <span className="font-semibold text-primary">фізичну листівку</span> з твоїми словами та персональною піснею і надсилаємо її <span className="font-semibold text-primary">Новою поштою за 1–2 дні</span>.
                   </p>
                   <p className="text-muted-foreground mb-3">
-                    <span className="font-semibold text-primary">А далі відбувається магія:</span> отримувач відкриває листівку → читає твої слова → сканує QR-код → і... звучить пісня, створена саме для нього.
+                    Ти береш листівку в руки і даруєш особливій людині.
+                  </p>
+                  <p className="text-muted-foreground mb-2">
+                    <span className="font-semibold text-primary">А далі відбувається магія:</span> отримувач відкриває листівку → читає твої слова → і... звучить пісня, створена саме для нього.
                   </p>
                   <p className="text-muted-foreground mb-2">
                     Пісня звучить. Слова зворушують. Емоції переповнюють.
