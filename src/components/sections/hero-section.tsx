@@ -102,13 +102,13 @@ export function HeroSection() {
     <section className="relative py-16 md:py-24 overflow-hidden bg-gradient-to-b from-[#FFD1DC] to-white/20">
       {/* Top corners */}
       <div className="absolute top-28 left-[10%] transform -rotate-3 hidden xl:block z-10 animate-subtle-move">
-        <ReviewBubble name="Олена С." rating={5} text="Не хотілося чергового привітання. Вийшло дуже особисто." initials="ОС" bgColor="#FFD1DC" />
+        <ReviewBubble name="Олена С." rating={5} text="Не хотілося чергового привітання — вийшло дуже особисто." initials="ОС" bgColor="#FFD1DC" />
       </div>
       <div className="absolute top-28 right-[10%] transform rotate-3 hidden xl:block z-10 animate-subtle-move-slow-reverse">
         <ReviewBubble
           name="Софія М."
           rating={5}
-          text="Хотіла подякувати, щоб це справді відчули. Щиро, без пафосу."
+          text="Хотіла подякувати так, щоб це справді відчули."
           initials="СМ"
           bgColor="#FFD1DC"
         />
@@ -116,10 +116,10 @@ export function HeroSection() {
 
       {/* Left and right sides - middle */}
       <div className="absolute top-1/2 left-[5%] transform -translate-y-1/2 rotate-3 hidden xl:block z-10 animate-subtle-move">
-        <ReviewBubble name="Марія К." rating={5} text="Було складно підібрати правильний тон. Вийшло м’яко і спокійно." initials="МК" bgColor="#B8B3FF" />
+        <ReviewBubble name="Марія К." rating={5} text="Вийшло м’яко і спокійно сказати важливе." initials="МК" bgColor="#B8B3FF" />
       </div>
       <div className="absolute top-1/2 right-[5%] transform -translate-y-1/2 -rotate-3 hidden xl:block z-10 animate-subtle-move-reverse">
-        <ReviewBubble name="Андрій В." rating={5} text="Хвилювався, щоб не виглядало банально. Момент вийшов сильний." initials="АВ" bgColor="#F3D1FF" />
+        <ReviewBubble name="Андрій В." rating={5} text="Хвилювався, щоб не виглядало банально — момент вийшов сильний." initials="АВ" bgColor="#F3D1FF" />
       </div>
 
       {/* Bottom corners */}
@@ -127,13 +127,13 @@ export function HeroSection() {
         <ReviewBubble
           name="Дмитро С."
           rating={5}
-          text="Це не просто подарунок. Таке хочеться залишити."
+          text="Це не просто подарунок, а емоція."
           initials="ДС"
           bgColor="#F3D1FF"
         />
       </div>
       <div className="absolute bottom-10 right-[15%] transform -rotate-2 hidden xl:block z-10 animate-subtle-move">
-        <ReviewBubble name="Наталія Р." rating={5} text="Замовляла для різних ситуацій. Кожного разу — влучно." initials="НР" bgColor="#B8B3FF" />
+        <ReviewBubble name="Наталія Р." rating={5} text="Підійшло для різних ситуацій — кожного разу влучно." initials="НР" bgColor="#B8B3FF" />
       </div>
 
       <div className="container mx-auto px-4 relative z-20">
@@ -199,7 +199,7 @@ export function HeroSection() {
             <ReviewBubbleMobile
               name="Марія К."
               rating={5}
-              text="Було складно підібрати правильний тон. Вийшло м’яко і спокійно."
+              text="Вийшло м’яко і спокійно сказати важливе."
               initials="МК"
               bgColor="#FFD1DC"
             />
@@ -208,16 +208,16 @@ export function HeroSection() {
             <ReviewBubbleMobile
               name="Андрій В."
               rating={5}
-              text="Хвилювався, щоб не виглядало банально. Момент вийшов сильний."
+              text="Хвилювався, щоб не виглядало банально — момент вийшов сильний."
               initials="АВ"
               bgColor="#B8B3FF"
             />
           </div>
           <div>
-            <ReviewBubbleMobile name="Софія М." rating={5} text="Хотіла подякувати, щоб це справді відчули. Щиро, без пафосу." initials="СМ" bgColor="#F3D1FF" />
+            <ReviewBubbleMobile name="Софія М." rating={5} text="Хотіла подякувати так, щоб це справді відчули." initials="СМ" bgColor="#F3D1FF" />
           </div>
           <div>
-            <ReviewBubbleMobile name="Дмитро С." rating={5} text="Це не просто подарунок. Таке хочеться залишити." initials="ДС" bgColor="#B8B3FF" />
+            <ReviewBubbleMobile name="Дмитро С." rating={5} text="Це не просто подарунок, а емоція." initials="ДС" bgColor="#B8B3FF" />
           </div>
         </div>
       </div>
