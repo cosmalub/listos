@@ -152,6 +152,7 @@ Deno.serve(async (req) => {
           front_design_prompt: frontDesign.prompt,
           back_design_color: backDesign.selectedColor,
           back_design_message: backDesign.personalMessage,
+          production_stage: 'created',
         })
         .select()
         .single();
