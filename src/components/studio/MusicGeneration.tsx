@@ -79,14 +79,14 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
         if (data.status === 'completed' && data.variants) {
           // Перевіряємо, що ВСІ варіанти мають audioUrl
           const allVariantsReady = data.variants.every((v: MusicVariant) => v.audioUrl);
-          
+
           if (allVariantsReady) {
             console.log('Music ready:', data.variants.length, 'variants');
             setVariants(data.variants);
             setPendingTaskId(null);
             setIsTestMode(data.variants?.some((v: MusicVariant) => v.title?.includes('(Test)')) || false);
           } else {
-            console.log('Waiting for all variants to have audioUrl...', 
+            console.log('Waiting for all variants to have audioUrl...',
               data.variants.filter((v: MusicVariant) => !v.audioUrl).length, 'variants still pending');
           }
         }
@@ -117,16 +117,16 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
   const startGeneration = async () => {
     setIsGenerating(true);
     setVariants([]);
-    
+
     try {
       console.log('Starting music generation with lyrics:', lyrics.substring(0, 100) + '...');
       console.log('Method:', generationMethod, 'Model:', sunoModel);
       console.log('Analyzed params:', analyzedParams);
-      
+
       const functionName = generationMethod === 'suno' ? 'generate-music-suno' : 'generate-music';
-      
+
       // Prepare request body with analyzed parameters
-      const requestBody: any = { 
+      const requestBody: any = {
         lyrics: lyrics,
         model: generationMethod === 'suno' ? sunoModel : undefined
       };
@@ -141,7 +141,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
         requestBody.audioWeight = analyzedParams.audioWeight;
         requestBody.negativeTags = analyzedParams.negativeTags;
       }
-      
+
       const response = await supabase.functions.invoke(functionName, {
         body: requestBody
       });
@@ -168,10 +168,10 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
 
       console.log('Music generation successful:', data.variants?.length || 0, 'variants');
       setVariants(data.variants || []);
-      
+
       // Check if any variant has "Test" in title to detect test mode
       setIsTestMode(data.variants?.some((v: MusicVariant) => v.title?.includes('(Test)')) || false);
-      
+
     } catch (error) {
       console.error('Music generation error:', error);
       setVariants([]);
@@ -185,7 +185,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
     if (generationAttempt >= 2) {
       return;
     }
-    
+
     // Re-analyze lyrics to get new parameters for variation
     setIsGenerating(true);
     try {
@@ -208,7 +208,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
       // Continue with existing params if analysis fails
     }
     setIsGenerating(false);
-    
+
     // Start generation with new or existing params
     await startGeneration();
   };
@@ -217,7 +217,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
     if (generationAttempt >= 2) {
       return;
     }
-    
+
     // Re-analyze lyrics to get new parameters for variation with feedback
     setIsGenerating(true);
     try {
@@ -240,7 +240,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
       // Continue with existing params if analysis fails
     }
     setIsGenerating(false);
-    
+
     // Start generation with new or existing params
     await startGeneration();
   };
@@ -272,14 +272,14 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
       if (data.status === 'completed' && data.variants) {
         // Перевіряємо, що ВСІ варіанти мають audioUrl
         const allVariantsReady = data.variants.every((v: MusicVariant) => v.audioUrl);
-        
+
         if (allVariantsReady) {
           console.log('Music ready:', data.variants.length, 'variants');
           setVariants(data.variants);
           setPendingTaskId(null);
           setIsTestMode(data.variants?.some((v: MusicVariant) => v.title?.includes('(Test)')) || false);
         } else {
-          console.log('Waiting for all variants to have audioUrl...', 
+          console.log('Waiting for all variants to have audioUrl...',
             data.variants.filter((v: MusicVariant) => !v.audioUrl).length, 'variants still pending');
         }
       }
@@ -323,7 +323,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
                 </div>
               </RadioGroup>
             </div>
-            
+
             {generationMethod === 'suno' && (
               <div className="space-y-2">
                 <Label>Suno Model</Label>
@@ -382,7 +382,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
               <div className="space-y-2">
                 <p className="text-lg font-semibold">Листосик створює пісню на основі ваших слів...</p>
                 <p className="text-sm text-muted-foreground max-w-md">
-                  Це займе 1-2 хвилини. Будь ласка, зачекайте — створюємо мелодію та вокал спеціально для вас
+                  Створення якісної пісні потребує трохи часу. Зазвичай це займає 2-4 хвилини. Працюємо над вашим шедевром...
                 </p>
               </div>
             </div>
@@ -407,7 +407,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
               Спроба {generationAttempt} з 2 {isTestMode ? '• Тестовий режим' : ''}
             </p>
           </div>
-          
+
           <div className="grid gap-4 md:grid-cols-2">
             {variants.map((variant) => (
               <MusicVariantCard
@@ -460,7 +460,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
               Опишіть, що ви хочете покращити в музиці. Це допоможе нам створити саме те, що вам потрібно.
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <Label>Швидкий вибір:</Label>
