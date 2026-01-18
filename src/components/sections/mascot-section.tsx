@@ -88,31 +88,66 @@ export function MascotSection() {
 
               {/* Step 2: Створюєш у студії */}
               <div className="flex flex-col gap-6 bg-card rounded-2xl border-2 border-[#E8B3FF]/40 hover:border-[#E8B3FF] transition-all hover:shadow-lg p-6">
-                <div className="flex-1 max-w-3xl mx-auto text-left">
-                  <h3 className="text-xl font-bold text-primary mb-3">Крок 2: Створюєш пісню і дизайн у студії</h3>
-                  <p className="text-muted-foreground mb-3">У зручній студії ти:</p>
-                  <ol className="space-y-2 text-muted-foreground">
-                    <li className="flex gap-2">
-                      <span className="font-semibold text-primary">1.</span>
-                      <span><span className="font-semibold text-primary">Створюєш слова пісні</span> — Листосик (ШІ-помічник) ставить питання і допомагає знайти правильні слова. <span className="font-semibold">Не потрібно писати вірші</span> — просто розкажи, що хочеш сказати.</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="font-semibold text-primary">2.</span>
-                      <span><span className="font-semibold text-primary">Генеруєш унікальну музику</span> — ШІ створює пісню за 30 секунд. Не сподобалось? Перегенеруй безкоштовно. Скільки завгодно разів.</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="font-semibold text-primary">3.</span>
-                      <span><span className="font-semibold text-primary">Створюєш сторінку з анімацією для пісні</span> — обираєш нагоду (день народження, подяка, кохання тощо), вказуєш кому та від кого. Система автоматично створює персональну сторінку з анімацією, музикою та текстом пісні. Отримувач побачить її, відсканувавши QR-код на листівці.</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="font-semibold text-primary">4.</span>
-                      <span><span className="font-semibold text-primary">Створюєш дизайн листівки</span> — обираєш фото, текст, стиль. Все просто, як конструктор.</span>
-                    </li>
-                  </ol>
-                  <p className="text-muted-foreground mt-3">
-                    <span className="font-semibold text-primary">Процес займає 10 хвилин.</span> Все інтуїтивно — справиться кожен!
-                  </p>
+                <div className="text-center">
+                  <h3 className="text-xl font-bold text-primary mb-2">Крок 2: Створюєш пісню і дизайн у студії</h3>
+                  <p className="text-muted-foreground mb-6">У зручній студії за 10 хвилин ти:</p>
                 </div>
+
+                {/* Grid of 4 cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
+                  {/* Card 1 */}
+                  <div className="bg-gradient-to-br from-[#B8B3FF]/10 to-[#E8B3FF]/10 rounded-xl p-5 border border-[#B8B3FF]/30 text-center hover:border-[#B8B3FF]/60 transition-colors">
+                    <div className="w-10 h-10 mx-auto mb-3 rounded-full bg-gradient-to-r from-[#B8B3FF] to-[#E8B3FF] flex items-center justify-center text-white font-bold text-lg shadow-md">
+                      1
+                    </div>
+                    <h4 className="font-semibold text-primary mb-2">Створюєш слова пісні</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Листосик ставить питання — ти просто розповідаєш, що хочеш сказати
+                    </p>
+                  </div>
+
+                  {/* Card 2 */}
+                  <div className="bg-gradient-to-br from-[#E8B3FF]/10 to-[#B8B3FF]/10 rounded-xl p-5 border border-[#E8B3FF]/30 text-center hover:border-[#E8B3FF]/60 transition-colors">
+                    <div className="w-10 h-10 mx-auto mb-3 rounded-full bg-gradient-to-r from-[#E8B3FF] to-[#B8B3FF] flex items-center justify-center text-white font-bold text-lg shadow-md">
+                      2
+                    </div>
+                    <h4 className="font-semibold text-primary mb-2">Генеруєш музику</h4>
+                    <p className="text-sm text-muted-foreground">
+                      ШІ створює пісню за 30 сек. Не сподобалось? Перегенеруй безкоштовно
+                    </p>
+                  </div>
+
+                  {/* Card 3 */}
+                  <div className="bg-gradient-to-br from-[#B8B3FF]/10 to-[#E8B3FF]/10 rounded-xl p-5 border border-[#B8B3FF]/30 text-center hover:border-[#B8B3FF]/60 transition-colors">
+                    <div className="w-10 h-10 mx-auto mb-3 rounded-full bg-gradient-to-r from-[#B8B3FF] to-[#E8B3FF] flex items-center justify-center text-white font-bold text-lg shadow-md">
+                      3
+                    </div>
+                    <h4 className="font-semibold text-primary mb-2">Створюєш сторінку</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Персональна сторінка з анімацією, музикою та текстом пісні
+                    </p>
+                  </div>
+
+                  {/* Card 4 */}
+                  <div className="bg-gradient-to-br from-[#E8B3FF]/10 to-[#B8B3FF]/10 rounded-xl p-5 border border-[#E8B3FF]/30 text-center hover:border-[#E8B3FF]/60 transition-colors">
+                    <div className="w-10 h-10 mx-auto mb-3 rounded-full bg-gradient-to-r from-[#E8B3FF] to-[#B8B3FF] flex items-center justify-center text-white font-bold text-lg shadow-md">
+                      4
+                    </div>
+                    <h4 className="font-semibold text-primary mb-2">Створюєш дизайн</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Обираєш фото, текст, стиль — все просто, як конструктор
+                    </p>
+                  </div>
+                </div>
+
+                {/* Time badge */}
+                <div className="text-center">
+                  <span className="inline-block bg-gradient-to-r from-[#B8B3FF]/20 to-[#E8B3FF]/20 text-primary font-semibold px-4 py-2 rounded-full border border-[#B8B3FF]/30">
+                    ⏱️ Весь процес займає 10 хвилин
+                  </span>
+                </div>
+
+                {/* Video */}
                 <div className="w-full max-w-2xl mx-auto">
                   <video
                     src="/videos/studio.mp4"
