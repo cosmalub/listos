@@ -114,9 +114,14 @@ export function MascotSection() {
                   </p>
                 </div>
                 <div className="w-full md:w-80 flex-shrink-0">
-                  <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg aspect-video flex items-center justify-center border-2 border-dashed border-[#E8B3FF]/30">
-                    <p className="text-muted-foreground text-sm font-bold">ТУТ БУДЕ ВІДЕО (ПЕРЕВІРКА)</p>
-                  </div>
+                  <video
+                    src="/videos/studio.mp4"
+                    controls
+                    className="rounded-lg w-full shadow-lg"
+                    preload="metadata"
+                  >
+                    Ваш браузер не підтримує відео.
+                  </video>
                 </div>
               </div>
 
