@@ -102,7 +102,8 @@ export function MascotSection() {
                     </div>
                     <h4 className="font-semibold text-primary mb-2">Створюєш слова пісні</h4>
                     <p className="text-sm text-muted-foreground">
-                      Листосик ставить питання — ти просто розповідаєш, що хочеш сказати
+                      Листосик (ШІ-помічник) ставить питання і допомагає знайти правильні слова. 
+                      Не потрібно писати вірші — просто розкажи, що хочеш сказати.
                     </p>
                   </div>
 
@@ -111,9 +112,10 @@ export function MascotSection() {
                     <div className="w-10 h-10 mx-auto mb-3 rounded-full bg-gradient-to-r from-[#E8B3FF] to-[#B8B3FF] flex items-center justify-center text-white font-bold text-lg shadow-md">
                       2
                     </div>
-                    <h4 className="font-semibold text-primary mb-2">Генеруєш музику</h4>
+                    <h4 className="font-semibold text-primary mb-2">Генеруєш унікальну музику</h4>
                     <p className="text-sm text-muted-foreground">
-                      ШІ створює пісню за 30 сек. Не сподобалось? Перегенеруй безкоштовно
+                      ШІ створює пісню за 30 секунд. Не сподобалось? 
+                      Перегенеруй безкоштовно. Скільки завгодно разів.
                     </p>
                   </div>
 
@@ -122,9 +124,10 @@ export function MascotSection() {
                     <div className="w-10 h-10 mx-auto mb-3 rounded-full bg-gradient-to-r from-[#B8B3FF] to-[#E8B3FF] flex items-center justify-center text-white font-bold text-lg shadow-md">
                       3
                     </div>
-                    <h4 className="font-semibold text-primary mb-2">Створюєш сторінку</h4>
+                    <h4 className="font-semibold text-primary mb-2">Створюєш сторінку з анімацією</h4>
                     <p className="text-sm text-muted-foreground">
-                      Персональна сторінка з анімацією, музикою та текстом пісні
+                      Обираєш нагоду, вказуєш кому та від кого. Система створює персональну сторінку 
+                      з анімацією, музикою та текстом. Отримувач побачить її, відсканувавши QR-код.
                     </p>
                   </div>
 
@@ -133,9 +136,9 @@ export function MascotSection() {
                     <div className="w-10 h-10 mx-auto mb-3 rounded-full bg-gradient-to-r from-[#E8B3FF] to-[#B8B3FF] flex items-center justify-center text-white font-bold text-lg shadow-md">
                       4
                     </div>
-                    <h4 className="font-semibold text-primary mb-2">Створюєш дизайн</h4>
+                    <h4 className="font-semibold text-primary mb-2">Створюєш дизайн листівки</h4>
                     <p className="text-sm text-muted-foreground">
-                      Обираєш фото, текст, стиль — все просто, як конструктор
+                      Обираєш фото, текст, стиль. Все просто, як конструктор.
                     </p>
                   </div>
                 </div>
