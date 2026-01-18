@@ -1,27 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { useOrderDialog } from "@/components/order/OrderDialogContext";
 import postcardScanImage from "@/assets/postcard-scan.png";
-
 export function MascotSection() {
-  const { openOrderDialog } = useOrderDialog();
-  return (
-    <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
+  const {
+    openOrderDialog
+  } = useOrderDialog();
+  return <section className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
         <div className="mt-8 text-center">
           <p className="text-lg text-[#6A5ACD]/80 italic animate-pulse-slow">
             А тепер — познайомся з Листосиком, котиком, який перетворить твої слова й почуття на листівку з піснею
           </p>
           <div className="w-12 h-12 mx-auto mt-4">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-[#B8B3FF] animate-bounce w-full h-full"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#B8B3FF] animate-bounce w-full h-full">
               <path d="M12 5v14M5 12l7 7 7-7" />
             </svg>
           </div>
@@ -31,11 +22,7 @@ export function MascotSection() {
             <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
               {/* Cat Image */}
               <div className="w-full md:w-1/3 flex justify-center">
-                <img
-                  src="/lovable-uploads/26b60a97-63b1-4ff3-93d6-e0607581e4b0.png"
-                  alt="Листосик - кіт-помічник для створення музичних листівок"
-                  className="w-64 h-64 transform transition-transform hover:scale-105 drop-shadow-2xl"
-                />
+                <img src="/lovable-uploads/26b60a97-63b1-4ff3-93d6-e0607581e4b0.png" alt="Листосик - кіт-помічник для створення музичних листівок" className="w-64 h-64 transform transition-transform hover:scale-105 drop-shadow-2xl" />
               </div>
 
               {/* Speech Bubble */}
@@ -76,11 +63,7 @@ export function MascotSection() {
                   </p>
                 </div>
                 <div className="w-full flex justify-center">
-                  <Button
-                    size="lg"
-                    className="bg-gradient-to-r from-[#B8B3FF] to-[#E8B3FF] hover:from-[#A8A3EF] hover:to-[#D8A3EF] text-white font-bold px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105"
-                    onClick={openOrderDialog}
-                  >
+                  <Button size="lg" className="bg-gradient-to-r from-[#B8B3FF] to-[#E8B3FF] hover:from-[#A8A3EF] hover:to-[#D8A3EF] text-white font-bold px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105" onClick={openOrderDialog}>
                     Купити доступ
                   </Button>
                 </div>
@@ -90,7 +73,7 @@ export function MascotSection() {
               <div className="flex flex-col gap-6 bg-card rounded-2xl border-2 border-[#E8B3FF]/40 hover:border-[#E8B3FF] transition-all hover:shadow-lg p-6">
                 <div className="text-center">
                   <h3 className="text-xl font-bold text-primary mb-2">Крок 2: Створюєш пісню і дизайн у студії</h3>
-                  <p className="text-muted-foreground mb-6">У зручній студії за 10 хвилин ти:</p>
+                  <p className="text-muted-foreground mb-6">У зручній студії ти:</p>
                 </div>
 
                 {/* Grid of 4 cards */}
@@ -152,12 +135,7 @@ export function MascotSection() {
 
                 {/* Video */}
                 <div className="w-full max-w-2xl mx-auto">
-                  <video
-                    src="/videos/studio.mp4"
-                    controls
-                    className="rounded-lg w-full shadow-lg"
-                    preload="metadata"
-                  >
+                  <video src="/videos/studio.mp4" controls className="rounded-lg w-full shadow-lg" preload="metadata">
                     Ваш браузер не підтримує відео.
                   </video>
                 </div>
@@ -166,11 +144,7 @@ export function MascotSection() {
               {/* Step 3: Даруєш і дивишся на емоції */}
               <div className="flex flex-col md:flex-row gap-6 items-center bg-card rounded-2xl border-2 border-[#B8B3FF]/40 hover:border-[#B8B3FF] transition-all hover:shadow-lg p-6">
                 <div className="w-full md:w-80 flex-shrink-0">
-                  <img
-                    src={postcardScanImage}
-                    alt="Листівка з QR-кодом та смартфон, який сканує її"
-                    className="rounded-lg aspect-square object-cover w-full shadow-lg"
-                  />
+                  <img src={postcardScanImage} alt="Листівка з QR-кодом та смартфон, який сканує її" className="rounded-lg aspect-square object-cover w-full shadow-lg" />
                 </div>
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-primary mb-3">Крок 3: Даруєш і дивишся на емоції</h3>
@@ -196,6 +170,5 @@ export function MascotSection() {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 }
