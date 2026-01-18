@@ -88,7 +88,7 @@ export function MascotSection() {
 
               {/* Step 2: Створюєш у студії */}
               <div className="flex flex-col gap-6 bg-card rounded-2xl border-2 border-[#E8B3FF]/40 hover:border-[#E8B3FF] transition-all hover:shadow-lg p-6">
-                <div className="flex-1">
+                <div className="flex-1 max-w-3xl mx-auto text-left">
                   <h3 className="text-xl font-bold text-primary mb-3">Крок 2: Створюєш пісню і дизайн у студії</h3>
                   <p className="text-muted-foreground mb-3">У зручній студії ти:</p>
                   <ol className="space-y-2 text-muted-foreground">
