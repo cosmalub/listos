@@ -8,6 +8,7 @@ import { Play, ArrowRight, Music, Heart, Palette, Send, Sparkles, Star, Loader2,
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useOrderDialog } from '@/components/order/OrderDialogContext';
+import { posthog } from '@/providers/PostHogProvider';
 
 const DEV_MODE = import.meta.env.DEV;
 
@@ -111,6 +112,9 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
 
         console.log('Token validated successfully, cleared old data, stored new token');
 
+        // Трекаємо початок роботи в студії
+        posthog.capture('studio_started');
+
         toast.success(data.message || 'Код доступу підтверджено!');
 
         // Закриваємо діалог і переходимо до студії
@@ -147,6 +151,9 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
     // Імітуємо валідний токен для dev режиму
     sessionStorage.setItem('studio-access-token', 'dev-mode-token');
     sessionStorage.setItem('studio-pre-order-id', 'dev-mode-pre-order-id');
+
+    // Трекаємо початок роботи в студії (dev mode)
+    posthog.capture('studio_started', { dev_mode: true });
 
     console.log('🔧 DEV MODE: Cleared old data, skipped token validation');
     toast.success('Dev mode: пропущено перевірку токена');

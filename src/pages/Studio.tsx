@@ -21,6 +21,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { MusicStyle, getStyleById } from '@/lib/music-styles';
 import { composeFrontImageA6, captureElement } from '@/lib/postcard-generator';
+import { posthog } from '@/providers/PostHogProvider';
 
 const steps = [
   { id: 1, title: 'Створення слів', description: 'Створюємо слова для пісні' },
@@ -178,6 +179,9 @@ const Studio = () => {
 
   const handleLyricsConfirmed = async (confirmedLyrics: string) => {
     setLyrics(confirmedLyrics);
+
+    // Трекаємо підтвердження тексту
+    posthog.capture('lyrics_confirmed');
 
     // Переходимо на крок 1.5 та показуємо лоадер
     setIsAnalyzingLyrics(true);
