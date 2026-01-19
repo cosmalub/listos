@@ -594,6 +594,9 @@ const Studio = () => {
       <Header
         hideNav
         showMenu={false}
+        ctaLabel={showWelcome ? "Оформити замовлення" : undefined}
+        ctaPath={showWelcome ? "#" : undefined}
+        onCtaClick={showWelcome ? openOrderDialog : undefined}
       />
 
       {/* Steps indicator */}
