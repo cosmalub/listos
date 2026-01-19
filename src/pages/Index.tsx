@@ -14,7 +14,7 @@ import { Footer } from "@/components/sections/footer";
 const Index = () => {
   return (
     <div className="min-h-screen">
-      <Header />
+      <Header ctaLabel="Створити" />
       <section id="hero">
         <HeroSection />
       </section>

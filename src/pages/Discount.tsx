@@ -118,7 +118,7 @@ END:VCALENDAR`;
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-background to-accent/20">
-        <Header />
+        <Header ctaLabel="Створити" />
         <main className="container mx-auto px-4 py-16">
           <div className="max-w-2xl mx-auto text-center">
             <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto" />
@@ -132,7 +132,7 @@ END:VCALENDAR`;
   if (!promoData) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-background to-accent/20">
-        <Header />
+        <Header ctaLabel="Створити" />
         <main className="container mx-auto px-4 py-16">
           <div className="max-w-2xl mx-auto text-center space-y-8">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground">
@@ -153,7 +153,7 @@ END:VCALENDAR`;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] to-white/20">
-      <Header />
+      <Header ctaLabel="Створити" />
 
       <main className="container mx-auto px-4 pt-24 pb-16">
         <div className="max-w-2xl mx-auto text-center space-y-8">

@@ -18,7 +18,7 @@ const Header = ({
   centerTitle,
   hideNav = false,
   showMenu = true,
-  ctaLabel = "Створити",
+  ctaLabel,
   ctaPath = "/studio",
   onCtaClick
 }: HeaderProps) => {
@@ -110,13 +110,15 @@ const Header = ({
           {/* CTA Button & Mobile Menu */}
           <div className="flex items-center gap-3 justify-self-end">
             {/* CTA Button */}
-            <Button
-              onClick={handleCtaClick}
-              size="sm"
-              className="hidden md:flex bg-[#6A5ACD] hover:bg-[#5A4ABD] text-white rounded-full px-6 shadow-sm hover:shadow transition-all duration-300 font-medium"
-            >
-              {ctaLabel}
-            </Button>
+            {ctaLabel && (
+              <Button
+                onClick={handleCtaClick}
+                size="sm"
+                className="hidden md:flex bg-[#6A5ACD] hover:bg-[#5A4ABD] text-white rounded-full px-6 shadow-sm hover:shadow transition-all duration-300 font-medium"
+              >
+                {ctaLabel}
+              </Button>
+            )}
 
             {/* Mobile Menu */}
             {showMenu && (
