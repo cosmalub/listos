@@ -18,12 +18,12 @@ function ReviewScreenshot({ imagePath, alt }: ReviewScreenshotProps) {
 export function ReviewsSection() {
   const reviews = [
     { imagePath: "/lovable-uploads/1-3.png", alt: "Відгук клієнта 1" },
-    { imagePath: "/lovable-uploads/review-artem.png", alt: "Відгук Артема" },
     { imagePath: "/lovable-uploads/2-2.png", alt: "Відгук клієнта 2" },
+    { imagePath: "/lovable-uploads/review-artem.png", alt: "Відгук Артема" },
     { imagePath: "/lovable-uploads/3.png", alt: "Відгук клієнта 3" },
-    { imagePath: "/lovable-uploads/review-oleksandr.png", alt: "Відгук Олександра" },
     { imagePath: "/lovable-uploads/4.png", alt: "Відгук клієнта 4" },
     { imagePath: "/lovable-uploads/review-miroslav.png", alt: "Відгук Мирослава" },
+    { imagePath: "/lovable-uploads/review-oleksandr.png", alt: "Відгук Олександра" },
   ];
 
   // Дублюємо відгуки для безперервної прокрутки
