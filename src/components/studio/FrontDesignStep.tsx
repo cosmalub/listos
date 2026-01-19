@@ -843,26 +843,9 @@ export function FrontDesignStep({
             />
 
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                <span className="text-xs text-muted-foreground">
-                  {imageDescription?.split(' ').filter(word => word.length > 0).length || 0}/80 слів
-                </span>
-                {designData.style && (
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <button className="flex items-center gap-1 text-xs px-2 py-1 bg-primary/10 text-primary rounded cursor-pointer hover:bg-primary/20 transition-colors w-fit">
-                        <span>
-                          Стиль: {designData.style === 'joyful' ? 'Радісний' : designData.style === 'gentle' ? 'Ніжний' : 'Універсальний'}
-                        </span>
-                        <Info className="w-3 h-3" />
-                      </button>
-                    </PopoverTrigger>
-                    <PopoverContent side="top" className="p-0 w-auto">
-                      <StyleTooltip style={designData.style} />
-                    </PopoverContent>
-                  </Popover>
-                )}
-              </div>
+              <span className="text-xs text-muted-foreground">
+                {imageDescription?.split(' ').filter(word => word.length > 0).length || 0}/80 слів
+              </span>
               <Button
                 variant="ghost"
                 size="sm"
