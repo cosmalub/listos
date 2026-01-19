@@ -15,6 +15,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useOrderDialog } from "./OrderDialogContext";
+import { posthog } from "@/providers/PostHogProvider";
 
 export function OrderDialog() {
   const navigate = useNavigate();
@@ -105,6 +106,13 @@ export function OrderDialog() {
           })
           .eq('code', formData.promoCode.toUpperCase().trim());
       }
+
+      // Трекаємо успішне замовлення
+      posthog.capture('order_submitted', {
+        price: finalPrice,
+        has_promo: promoStatus?.valid || false,
+        contact_type: formData.contactType
+      });
 
       closeOrderDialog();
       navigate(`/order-pending?orderId=${data.id}`);

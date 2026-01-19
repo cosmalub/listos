@@ -320,7 +320,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
           Ще немає коду доступу?{' '}
           <button
             type="button"
-            onClick={openOrderDialog}
+            onClick={() => openOrderDialog('studio_welcome', 'Оформити замовлення')}
             className="text-[#6A5ACD] hover:underline font-medium bg-transparent border-0 p-0 cursor-pointer inline"
           >
             Оформити замовлення
@@ -382,7 +382,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
                       className="text-[#6A5ACD] underline hover:text-[#5A4ABD] font-semibold bg-transparent border-0 p-0 cursor-pointer inline"
                       onClick={(e) => {
                         e.preventDefault();
-                        openOrderDialog();
+                        openOrderDialog('studio_token_dialog', 'Оформити замовлення');
                       }}
                     >
                       оформити замовлення тут

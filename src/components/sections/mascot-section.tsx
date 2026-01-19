@@ -63,7 +63,7 @@ export function MascotSection() {
                   </p>
                 </div>
                 <div className="w-full flex justify-center">
-                  <Button size="lg" className="bg-gradient-to-r from-[#B8B3FF] to-[#E8B3FF] hover:from-[#A8A3EF] hover:to-[#D8A3EF] text-white font-bold px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105" onClick={openOrderDialog}>
+                  <Button size="lg" className="bg-gradient-to-r from-[#B8B3FF] to-[#E8B3FF] hover:from-[#A8A3EF] hover:to-[#D8A3EF] text-white font-bold px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105" onClick={() => openOrderDialog('mascot', 'Купити доступ')}>
                     Купити доступ
                   </Button>
                 </div>

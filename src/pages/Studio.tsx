@@ -600,7 +600,7 @@ const Studio = () => {
         showMenu={false}
         ctaLabel={showWelcome ? "Оформити замовлення" : undefined}
         ctaPath={showWelcome ? "#" : undefined}
-        onCtaClick={showWelcome ? openOrderDialog : undefined}
+        onCtaClick={showWelcome ? () => openOrderDialog('studio_header', 'Оформити замовлення') : undefined}
       />
 
       {/* Steps indicator */}
