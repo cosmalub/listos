@@ -10,6 +10,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
+import { posthog } from '@/providers/PostHogProvider';
 
 interface MusicVariant {
   id: string;
@@ -247,6 +248,14 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
 
   const handleVariantSelect = (variant: MusicVariant) => {
     setSelectedVariant(variant);
+    
+    // Трекаємо вибір музики
+    posthog.capture('music_generated', {
+      variant_id: variant.id,
+      style: variant.style,
+      generation_attempt: generationAttempt
+    });
+    
     onVariantSelected(variant);
   };
 

@@ -7,6 +7,7 @@ import { FrontDesignStep } from './FrontDesignStep';
 import { BackDesignStep } from './BackDesignStep';
 import { PostcardPreview } from './PostcardPreview';
 import type { StyleKey } from '@/lib/postcard-styles';
+import { posthog } from '@/providers/PostHogProvider';
 
 interface PostcardDesignData {
   front: {
@@ -64,6 +65,14 @@ export function PostcardDesign({ lyrics, onComplete, onBack, pageData, chatMessa
   const handleBackComplete = (backData: PostcardDesignData['back']) => {
     const finalData = { ...designData, back: backData };
     setDesignData(finalData);
+    
+    // Трекаємо завершення дизайну листівки
+    posthog.capture('postcard_completed', {
+      front_mode: finalData.front.mode,
+      front_style: finalData.front.style,
+      has_frame: finalData.front.useFrame
+    });
+    
     onComplete(finalData);
   };
 
