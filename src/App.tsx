@@ -14,6 +14,7 @@ import Discount from "./pages/Discount";
 import NotFound from "./pages/NotFound";
 import { OrderDialogProvider } from "./components/order/OrderDialogContext";
 import { OrderDialog } from "./components/order/OrderDialog";
+import { PostHogProvider } from "./providers/PostHogProvider";
 
 const queryClient = new QueryClient();
 
@@ -23,9 +24,10 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <OrderDialogProvider>
-          <OrderDialog />
-          <Routes>
+        <PostHogProvider>
+          <OrderDialogProvider>
+            <OrderDialog />
+            <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/order" element={<Order />} />
             <Route path="/order-pending" element={<OrderPending />} />
@@ -37,8 +39,9 @@ const App = () => (
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
-          </Routes>
-        </OrderDialogProvider>
+            </Routes>
+          </OrderDialogProvider>
+        </PostHogProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
