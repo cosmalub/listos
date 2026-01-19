@@ -27,7 +27,7 @@ export function Footer() {
 
                   <li>
                     <button
-                      onClick={openOrderDialog}
+                      onClick={() => openOrderDialog('footer', 'Оформити замовлення')}
                       className="text-sm text-[#6A5ACD]/80 hover:text-[#6A5ACD] transition-colors text-left"
                     >
                       Оформити замовлення

@@ -39,7 +39,7 @@ export function FinalCtaSection() {
 
               {/* CTA */}
               <Button
-                onClick={openOrderDialog}
+                onClick={() => openOrderDialog('final_cta', 'Створити спогад')}
                 size="lg"
                 className="text-lg md:text-xl px-10 md:px-14 py-7 md:py-8 rounded-full bg-gradient-to-r from-[#6A5ACD] via-[#8A7AEE] to-[#D292FF] hover:from-[#5A4ABD] hover:via-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg shadow-[#6A5ACD]/25 transition-all duration-300 hover:shadow-xl hover:shadow-[#6A5ACD]/35 hover:scale-105 font-semibold"
               >
