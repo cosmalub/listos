@@ -23,6 +23,7 @@ export function ReviewsSection() {
     { imagePath: "/lovable-uploads/4.png", alt: "Відгук клієнта 4" },
     { imagePath: "/lovable-uploads/review-miroslav.png", alt: "Відгук Мирослава" },
     { imagePath: "/lovable-uploads/review-artem.png", alt: "Відгук Артема" },
+    { imagePath: "/lovable-uploads/review-oleksandr.png", alt: "Відгук Олександра" },
   ];
 
   // Дублюємо відгуки для безперервної прокрутки
