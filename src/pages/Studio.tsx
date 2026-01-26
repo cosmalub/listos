@@ -302,9 +302,10 @@ const Studio = () => {
   };
 
   const handlePostcardDesignComplete = async (postcardDesignData: any) => {
+    const toastId = toast.loading('Створення замовлення...');
+    
     try {
       setDesignData(postcardDesignData);
-      toast.loading('Збереження замовлення...');
 
       // Get page data from sessionStorage
       const storedData = sessionStorage.getItem('studio-draft-data');
@@ -338,6 +339,9 @@ const Studio = () => {
 
       const orderId = createData.orderId;
       console.log('Order created with ID:', orderId);
+
+      // Update toast for image generation
+      toast.loading('Генерація зображень...', { id: toastId });
 
       // Generate QR code URL with correct orderId
       const qrUrl = `https://lystosyk.com/s/song/${orderId}`;
@@ -405,6 +409,9 @@ const Studio = () => {
       // Cleanup
       offscreenContainer.remove();
 
+      // Update toast for upload
+      toast.loading('Завантаження на сервер...', { id: toastId });
+
       // PHASE 2: Finalize order with images
       console.log('Phase 2: Finalizing order with images...');
       const { data: finalizeData, error: finalizeError } = await supabase.functions.invoke('save-order', {
@@ -424,7 +431,7 @@ const Studio = () => {
 
       if (finalizeError) throw finalizeError;
 
-      toast.success('Замовлення збережено успішно!');
+      toast.success('Замовлення збережено успішно!', { id: toastId });
 
       // Очищаємо токен доступу (більше не потрібен)
       sessionStorage.removeItem('studio-access-token');
@@ -435,7 +442,7 @@ const Studio = () => {
 
     } catch (error) {
       console.error('Error saving order:', error);
-      toast.error('Помилка збереження замовлення');
+      toast.error('Помилка збереження замовлення', { id: toastId });
     }
   };
 
