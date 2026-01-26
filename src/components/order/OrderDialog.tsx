@@ -19,7 +19,7 @@ import { posthog } from "@/providers/PostHogProvider";
 
 export function OrderDialog() {
   const navigate = useNavigate();
-  const { isOpen, closeOrderDialog } = useOrderDialog();
+  const { isOpen, source, closeOrderDialog } = useOrderDialog();
   
   const [formData, setFormData] = useState({
     name: "",
@@ -109,6 +109,7 @@ export function OrderDialog() {
 
       // Трекаємо успішне замовлення
       posthog.capture('order_submitted', {
+        source,
         price: finalPrice,
         has_promo: promoStatus?.valid || false,
         contact_type: formData.contactType

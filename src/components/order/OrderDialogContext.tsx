@@ -3,6 +3,7 @@ import { posthog } from "@/providers/PostHogProvider";
 
 interface OrderDialogContextType {
   isOpen: boolean;
+  source: string | null;
   openOrderDialog: (source: string, label?: string) => void;
   closeOrderDialog: () => void;
 }
@@ -11,10 +12,12 @@ const OrderDialogContext = createContext<OrderDialogContextType | undefined>(und
 
 export function OrderDialogProvider({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [source, setSource] = useState<string | null>(null);
 
-  const openOrderDialog = useCallback((source: string, label?: string) => {
+  const openOrderDialog = useCallback((src: string, label?: string) => {
+    setSource(src);
     posthog.capture('order_dialog_opened', {
-      source,
+      source: src,
       button_label: label
     });
     setIsOpen(true);
@@ -22,10 +25,11 @@ export function OrderDialogProvider({ children }: { children: React.ReactNode })
 
   const closeOrderDialog = useCallback(() => {
     setIsOpen(false);
+    setSource(null);
   }, []);
 
   return (
-    <OrderDialogContext.Provider value={{ isOpen, openOrderDialog, closeOrderDialog }}>
+    <OrderDialogContext.Provider value={{ isOpen, source, openOrderDialog, closeOrderDialog }}>
       {children}
     </OrderDialogContext.Provider>
   );
