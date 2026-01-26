@@ -8,7 +8,7 @@
 
 **Файл:** `src/providers/PostHogProvider.tsx`
 
-- Хост: `https://eu.i.posthog.com`
+- Хост: `https://us.i.posthog.com`
 - Автоматичний pageview вимкнено (ручний трекінг для SPA)
 - API ключ налаштовано в провайдері
 

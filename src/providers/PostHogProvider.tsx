@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 // Ініціалізація PostHog
 posthog.init('phc_pD8dlXRfPgmM4cZDrDHPpUHxKeerl0AOFKqvfuFYiJk', {
-  api_host: 'https://eu.i.posthog.com',
+  api_host: 'https://us.i.posthog.com',
   loaded: (posthog) => {
     if (import.meta.env.DEV) posthog.debug();
   },
