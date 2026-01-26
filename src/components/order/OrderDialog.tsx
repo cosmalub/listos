@@ -115,12 +115,16 @@ export function OrderDialog() {
       });
 
       closeOrderDialog();
-      navigate(`/order-pending?orderId=${data.id}`);
+      
+      // Даємо час Radix Dialog завершити анімацію закриття
+      // перед навігацією, щоб уникнути конфлікту DOM операцій
+      setTimeout(() => {
+        navigate(`/order-pending?orderId=${data.id}`);
+      }, 150);
 
     } catch (error) {
       console.error('Error creating order:', error);
       toast.error('Помилка при створенні замовлення');
-    } finally {
       setIsSubmitting(false);
     }
   };
