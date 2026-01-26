@@ -167,11 +167,18 @@ export default function OrderSuccess() {
                   Лицьова сторона
                 </h3>
                 <div className="aspect-[105/148] rounded-lg overflow-hidden border-2 border-border">
-                  <img
-                    src={orderData.front_image_url}
-                    alt="Front of postcard"
-                    className="w-full h-full object-cover"
-                  />
+                  {orderData.front_image_url ? (
+                    <img
+                      src={orderData.front_image_url}
+                      alt="Front of postcard"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-muted gap-2">
+                      <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground">Обробляється...</span>
+                    </div>
+                  )}
                 </div>
               </div>
               <div>
@@ -179,11 +186,18 @@ export default function OrderSuccess() {
                   Зворотня сторона
                 </h3>
                 <div className="aspect-[105/148] rounded-lg overflow-hidden border-2 border-border">
-                  <img
-                    src={orderData.back_image_url}
-                    alt="Back of postcard"
-                    className="w-full h-full object-cover"
-                  />
+                  {orderData.back_image_url ? (
+                    <img
+                      src={orderData.back_image_url}
+                      alt="Back of postcard"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-muted gap-2">
+                      <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground">Обробляється...</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
