@@ -1,178 +1,103 @@
 
-# План: Виправлення білого екрану після оформлення замовлення
 
-## Діагностика
+# Додати source до order_submitted
 
-### Виявлена проблема
-При оформленні замовлення в `OrderDialog.tsx`:
-1. Користувач натискає "Оформити замовлення"
-2. Запис створюється в `pre_orders` ✅
-3. `closeOrderDialog()` закриває діалог (анімація Radix Dialog)
-4. `navigate('/order-pending')` виконується одночасно
-5. **Конфлікт**: Radix Dialog unmount + React Router навігація відбуваються паралельно
-6. **Результат**: `NotFoundError: removeChild` → білий екран
-
-### Підтвердження з консолі
-```
-NotFoundError: Failed to execute 'removeChild' on 'Node': 
-The node to be removed is not a child of this node.
-```
-
-Це типова помилка коли Radix Dialog анімація unmount конфліктує з React Router навігацією.
-
----
+## Проблема
+Подія `order_submitted` не містить інформації звідки прийшло замовлення (hero, pricing, footer тощо). Ця інформація є тільки в `order_dialog_opened`.
 
 ## Рішення
+Зберігати `source` в контексті діалогу і передавати його в `order_submitted`.
 
-### 1. Затримати навігацію після закриття діалогу
+---
 
-**Файл: `src/components/order/OrderDialog.tsx`**
+## Зміни
 
-Змінити рядки 117-118:
+### Файл 1: `src/components/order/OrderDialogContext.tsx`
 
-```tsx
-// Було:
-closeOrderDialog();
-navigate(`/order-pending?orderId=${data.id}`);
-
-// Стане:
-closeOrderDialog();
-// Даємо час Radix Dialog завершити анімацію закриття
-setTimeout(() => {
-  navigate(`/order-pending?orderId=${data.id}`);
-}, 150); // 150ms достатньо для анімації
-```
-
-### 2. Альтернативне рішення: Навігувати без закриття діалогу
-
-Radix Dialog автоматично закриється при зміні route, тому можна не викликати `closeOrderDialog()`:
+Додати зберігання source:
 
 ```tsx
-// Було:
-closeOrderDialog();
-navigate(`/order-pending?orderId=${data.id}`);
+interface OrderDialogContextType {
+  isOpen: boolean;
+  source: string | null;  // ДОДАТИ
+  openOrderDialog: (source: string, label?: string) => void;
+  closeOrderDialog: () => void;
+}
 
-// Стане:
-// Не закриваємо діалог вручну - він закриється автоматично при зміні route
-navigate(`/order-pending?orderId=${data.id}`);
-```
+export function OrderDialogProvider({ children }: { children: React.ReactNode }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [source, setSource] = useState<string | null>(null);  // ДОДАТИ
 
-### 3. Рекомендоване рішення (комбіноване)
-
-Використати `setTimeout` для безпечної навігації:
-
-```tsx
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setIsSubmitting(true);
-  
-  try {
-    const { data, error } = await supabase
-      .from('pre_orders')
-      .insert({
-        client_name: formData.name,
-        user_email: formData.contactType === 'telegram' ? formData.telegram : null,
-        user_phone: formData.contactType === 'phone' ? formData.phone : null,
-        city: formData.city,
-        nova_poshta: formData.novaPoshta,
-        comment: formData.comment,
-        contact_type: formData.contactType,
-      })
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    if (promoStatus?.valid && formData.promoCode) {
-      await supabase
-        .from('promo_codes')
-        .update({
-          is_used: true,
-          used_at: new Date().toISOString(),
-          used_in_order_id: data.id
-        })
-        .eq('code', formData.promoCode.toUpperCase().trim());
-    }
-
-    // Трекаємо успішне замовлення
-    posthog.capture('order_submitted', {
-      price: finalPrice,
-      has_promo: promoStatus?.valid || false,
-      contact_type: formData.contactType
+  const openOrderDialog = useCallback((source: string, label?: string) => {
+    setSource(source);  // ДОДАТИ - зберігаємо source
+    posthog.capture('order_dialog_opened', {
+      source,
+      button_label: label
     });
+    setIsOpen(true);
+  }, []);
 
-    // Закриваємо діалог
-    closeOrderDialog();
-    
-    // ВИПРАВЛЕННЯ: Даємо час Radix Dialog завершити анімацію
-    // перед навігацією, щоб уникнути конфлікту DOM операцій
-    setTimeout(() => {
-      navigate(`/order-pending?orderId=${data.id}`);
-    }, 150);
+  const closeOrderDialog = useCallback(() => {
+    setIsOpen(false);
+    setSource(null);  // ДОДАТИ - очищаємо при закритті
+  }, []);
 
-  } catch (error) {
-    console.error('Error creating order:', error);
-    toast.error('Помилка при створенні замовлення');
-    setIsSubmitting(false); // Reset тільки при помилці
-  }
-  // Видаляємо finally блок - не скидаємо isSubmitting при успіху,
-  // бо користувач буде переведений на іншу сторінку
-};
-```
-
----
-
-## Технічні деталі
-
-### Чому це працює
-
-1. **Radix Dialog анімація** займає ~150ms для завершення
-2. **React Router** чекає поки DOM стабілізується
-3. **setTimeout(150)** гарантує що анімація закриття завершиться до навігації
-
-### Побічний ефект
-
-Користувач побачить коротку затримку (~150ms) перед переходом на нову сторінку. Це непомітно і краще ніж білий екран.
-
----
-
-## Додаткове покращення (опціонально)
-
-### Прибрати finally блок
-
-Поточний код:
-```tsx
-} finally {
-  setIsSubmitting(false);
+  return (
+    <OrderDialogContext.Provider value={{ isOpen, source, openOrderDialog, closeOrderDialog }}>
+      {children}
+    </OrderDialogContext.Provider>
+  );
 }
 ```
 
-Проблема: `setIsSubmitting(false)` виконується навіть при успіху, що може викликати flicker кнопки перед навігацією.
+### Файл 2: `src/components/order/OrderDialog.tsx`
 
-Краще:
+Використати source з контексту:
+
 ```tsx
-} catch (error) {
-  console.error('Error creating order:', error);
-  toast.error('Помилка при створенні замовлення');
-  setIsSubmitting(false); // Тільки при помилці
-}
-// Без finally - при успіху компонент unmount перед reset
+// Рядок ~21
+const { isOpen, source, closeOrderDialog } = useOrderDialog();
+
+// Рядок ~111
+posthog.capture('order_submitted', {
+  source,  // ДОДАТИ
+  price: finalPrice,
+  has_promo: promoStatus?.valid || false,
+  contact_type: formData.contactType
+});
 ```
 
 ---
 
-## Файли для зміни
+## Результат в PostHog
 
-| Файл | Зміни |
-|------|-------|
-| `src/components/order/OrderDialog.tsx` | Додати setTimeout перед navigate(), видалити finally блок |
+Після цих змін `order_submitted` матиме:
+
+```json
+{
+  "source": "hero",
+  "price": 399,
+  "has_promo": false,
+  "contact_type": "phone"
+}
+```
+
+Можливі значення `source`:
+- `hero` — головний екран
+- `pricing` — секція з ціною
+- `mascot` — секція з маскотом
+- `guarantee` — секція гарантії
+- `final_cta` — фінальний заклик
+- `footer` — футер
+- `header` — шапка
+- `examples` — секція прикладів
 
 ---
 
-## Очікуваний результат
+## В PostHog
 
-1. ✅ Користувач натискає "Оформити замовлення"
-2. ✅ Діалог закривається з анімацією
-3. ✅ Через 150ms відбувається навігація на `/order-pending`
-4. ✅ Сторінка `/order-pending` показує "Заявка створена успішно!"
-5. ✅ Немає білого екрану та DOM помилок
+Після публікації зможеш:
+1. **Insights → Trends**: Вибрати `order_submitted`, розбити по `source`
+2. **Funnels**: Порівняти конверсію з різних джерел
+3. Побачити який елемент сайту найкраще конвертує
+
