@@ -14,12 +14,12 @@ export default function Valentine() {
     <div className="min-h-screen bg-white font-sans text-gray-900 overflow-x-hidden">
       <HeroSection />
       <PainSection />
+      <InsightSection />
       <SolutionSection />
       <HowItWorksSection />
       <GallerySection />
       <TrustSection />
       <WhoIsThisForSection />
-      <InsightSection />
       <FinalCTASection />
       <Footer />
     </div>
