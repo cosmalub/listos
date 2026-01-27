@@ -1,14 +1,20 @@
 import React from 'react';
-import { ShieldCheck } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { useOrderDialog } from "@/components/order/OrderDialogContext";
+
 export function TrustSection() {
+  const { openOrderDialog } = useOrderDialog();
+
   return (
     <section className="py-20 px-4 bg-white">
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-          Зняття страхів
+          Ми гарантуємо
         </h2>
         <p className="text-lg text-gray-600 mb-10">
-          Ми подбали про все, щоб тобі було легко і впевнено
+          Ти отримаєш листівку, яку приємно вручити.
+          <br />
+          Якщо результат не сподобається — ми повернемо гроші протягом 24 годин.
         </p>
 
         <div className="grid md:grid-cols-2 gap-4 mb-10">
@@ -49,13 +55,27 @@ export function TrustSection() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-8 rounded-2xl border-2 border-purple-100">
-          <p className="text-xl md:text-2xl font-bold text-gray-900">
-            Твій ризик — нуль.{' '}
-            <span className="text-[#6B5CE7]">Твоя емоція — максимум.</span>
-          </p>
+        <div className="bg-gradient-to-br from-[#6B5CE7] to-[#8A7AEE] rounded-3xl p-8 md:p-12 text-white shadow-xl relative overflow-hidden">
+          {/* Decorative elements */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+
+          <div className="relative z-10 text-center">
+            <h3 className="text-2xl md:text-3xl font-bold mb-4">Можеш почати без ризику</h3>
+            <p className="text-lg text-white/90 max-w-xl mx-auto mb-8">
+              Якщо щось піде не так — ми повернемо гроші.
+            </p>
+
+            <Button
+              onClick={() => openOrderDialog('guarantee-valentine', 'Почати без ризику')}
+              size="lg"
+              className="text-lg px-12 py-7 rounded-full bg-white text-[#6B5CE7] hover:bg-gray-50 shadow-xl transition-all hover:scale-105 font-bold"
+            >
+              Почати без ризику
+            </Button>
+          </div>
         </div>
       </div>
-    </section>);
-
+    </section>
+  );
 }
