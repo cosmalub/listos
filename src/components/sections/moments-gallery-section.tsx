@@ -60,12 +60,12 @@ export function MomentsGallerySection() {
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-12 md:mb-16">
           {/* Головний заголовок */}
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-primary mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4">
             Моменти, які хочеться запам'ятати
           </h2>
           
           {/* Підзаголовок */}
-          <p className="text-lg text-center text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-center text-gray-600 max-w-2xl mx-auto">
             Це не просто подарунок, а момент, який проживають разом.
           </p>
         </div>
