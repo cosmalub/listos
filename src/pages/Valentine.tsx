@@ -6,6 +6,7 @@ import { MomentsGallerySection } from '@/components/sections/moments-gallery-sec
 import { TrustSection } from '../components/valentine/TrustSection';
 import { WhoIsThisForSection } from '../components/valentine/WhoIsThisForSection';
 import { InsightSection } from '../components/valentine/InsightSection';
+import { FaqSection } from '../components/valentine/FaqSection';
 import { FinalCTASection } from '../components/valentine/FinalCTASection';
 import { Footer } from '@/components/sections/footer';
 
@@ -20,6 +21,7 @@ export default function Valentine() {
       <MomentsGallerySection />
       <TrustSection />
       <WhoIsThisForSection />
+      <FaqSection />
       <FinalCTASection />
       <Footer />
     </div>
