@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { useOrderDialog } from "@/components/order/OrderDialogContext";
+import { Lightbulb, ShieldCheck, HandHeart, RefreshCcw } from "lucide-react";
 
 export function TrustSection() {
   const { openOrderDialog } = useOrderDialog();
@@ -20,16 +21,16 @@ export function TrustSection() {
         <div className="grid md:grid-cols-2 gap-4 mb-10">
           <div className="bg-white p-6 rounded-2xl border border-purple-100 shadow-md text-left">
             <div className="w-8 h-8 bg-gradient-to-br from-pink-100 to-purple-100 rounded-full flex items-center justify-center mb-3">
-              <span className="text-pink-500 font-bold">💝</span>
+              <Lightbulb className="w-4 h-4 text-pink-500" />
             </div>
             <p className="text-gray-800 font-medium">
-              Не потрібно вміти писати вірші
+              Не потрібно нічого вигадувати
             </p>
           </div>
 
           <div className="bg-white p-6 rounded-2xl border border-purple-100 shadow-md text-left">
             <div className="w-8 h-8 bg-gradient-to-br from-pink-100 to-purple-100 rounded-full flex items-center justify-center mb-3">
-              <span className="text-pink-500 font-bold">💝</span>
+              <ShieldCheck className="w-4 h-4 text-pink-500" />
             </div>
             <p className="text-gray-800 font-medium">
               Неможливо «зробити погано»
@@ -38,7 +39,7 @@ export function TrustSection() {
 
           <div className="bg-white p-6 rounded-2xl border border-purple-100 shadow-md text-left">
             <div className="w-8 h-8 bg-gradient-to-br from-pink-100 to-purple-100 rounded-full flex items-center justify-center mb-3">
-              <span className="text-pink-500 font-bold">💝</span>
+              <HandHeart className="w-4 h-4 text-pink-500" />
             </div>
             <p className="text-gray-800 font-medium">
               Ми проведемо тебе на кожному кроці
@@ -47,7 +48,7 @@ export function TrustSection() {
 
           <div className="bg-white p-6 rounded-2xl border border-purple-100 shadow-md text-left">
             <div className="w-8 h-8 bg-gradient-to-br from-pink-100 to-purple-100 rounded-full flex items-center justify-center mb-3">
-              <span className="text-pink-500 font-bold">💝</span>
+              <RefreshCcw className="w-4 h-4 text-pink-500" />
             </div>
             <p className="text-gray-800 font-medium">
               Якщо не відчуєш «це воно» — повернемо гроші
