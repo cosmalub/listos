@@ -54,11 +54,6 @@ export function FinalCTASection() {
             </motion.button>
           </div>
         </motion.div>
-
-        <footer className="mt-16 text-gray-400 text-sm">
-          © {new Date().getFullYear()} Lystosyk. Зроблено з любов'ю в Україні
-          🇺🇦
-        </footer>
       </div>
     </section>);
 

@@ -63,7 +63,7 @@ export function Footer() {
           <div className="border-t border-[#6A5ACD]/20 pt-8">
             <div className="text-center">
               <p className="text-sm text-[#6A5ACD]/80">
-                © 2025 Листосик. Всі права захищені.
+                © 2026 Листосик. Всі права захищені.
               </p>
             </div>
           </div>
