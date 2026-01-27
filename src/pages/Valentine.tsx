@@ -7,6 +7,7 @@ import { TrustSection } from '../components/valentine/TrustSection';
 import { WhoIsThisForSection } from '../components/valentine/WhoIsThisForSection';
 import { InsightSection } from '../components/valentine/InsightSection';
 import { FinalCTASection } from '../components/valentine/FinalCTASection';
+import { Footer } from '@/components/sections/footer';
 
 export default function Valentine() {
   return (
@@ -20,13 +21,7 @@ export default function Valentine() {
       <WhoIsThisForSection />
       <InsightSection />
       <FinalCTASection />
-
-      {/* Footer */}
-      <footer className="bg-gray-50 py-12 border-t border-gray-100">
-        <div className="max-w-6xl mx-auto px-4 text-center text-gray-500">
-          <p>© 2024 Листосик. Зроблено з любов'ю.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
