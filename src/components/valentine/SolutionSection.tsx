@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Music, PenTool, Heart } from 'lucide-react';
+import { useOrderDialog } from '@/components/order/OrderDialogContext';
 const FeatureCard = ({ icon: Icon, title, description, delay }: any) =>
 <motion.div
   initial={{
@@ -27,6 +28,8 @@ const FeatureCard = ({ icon: Icon, title, description, delay }: any) =>
   </motion.div>;
 
 export function SolutionSection() {
+  const { openOrderDialog } = useOrderDialog();
+
   return (
     <section className="py-24 px-4 bg-gradient-to-b from-white to-purple-50">
       <div className="max-w-6xl mx-auto">
@@ -66,6 +69,7 @@ export function SolutionSection() {
             whileTap={{
               scale: 0.95
             }}
+            onClick={() => openOrderDialog('solution-valentine', 'Спробувати створити свою листівку')}
             className="bg-[#6B5CE7] text-white text-lg font-bold py-4 px-10 rounded-full shadow-lg hover:shadow-xl transition-all">
 
             💌 Спробувати створити свою листівку

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import logoListosik from "@/assets/logo-listosik.png";
+import { useOrderDialog } from "@/components/order/OrderDialogContext";
 
 interface MenuItem {
   name: string;
@@ -41,6 +42,7 @@ const Header = ({
 }: HeaderProps) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const { openOrderDialog } = useOrderDialog();
 
   const handleNavClick = (item: any) => {
     if (item.isExternal) {
@@ -63,8 +65,8 @@ const Header = ({
 
     if (onCtaClick) {
       onCtaClick();
-    } else if (ctaPath) {
-      navigate(ctaPath);
+    } else {
+      openOrderDialog('header-cta', ctaLabel || 'Створити');
     }
   };
 
