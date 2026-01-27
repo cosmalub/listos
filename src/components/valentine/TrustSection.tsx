@@ -6,7 +6,7 @@ export function TrustSection() {
   const { openOrderDialog } = useOrderDialog();
 
   return (
-    <section className="py-20 px-4 bg-white">
+    <section className="py-20 px-4 bg-gradient-to-b from-purple-50/40 to-pink-50/30">
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
           Ми гарантуємо
@@ -18,36 +18,36 @@ export function TrustSection() {
         </p>
 
         <div className="grid md:grid-cols-2 gap-4 mb-10">
-          <div className="bg-white p-6 rounded-2xl border border-purple-100 text-left">
-            <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mb-3">
-              <span className="text-purple-600 font-bold">✓</span>
+          <div className="bg-white p-6 rounded-2xl border border-purple-100 shadow-md text-left">
+            <div className="w-8 h-8 bg-gradient-to-br from-pink-100 to-purple-100 rounded-full flex items-center justify-center mb-3">
+              <span className="text-pink-500 font-bold">💝</span>
             </div>
             <p className="text-gray-800 font-medium">
               Не потрібно вміти писати вірші
             </p>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border border-purple-100 text-left">
-            <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mb-3">
-              <span className="text-purple-600 font-bold">✓</span>
+          <div className="bg-white p-6 rounded-2xl border border-purple-100 shadow-md text-left">
+            <div className="w-8 h-8 bg-gradient-to-br from-pink-100 to-purple-100 rounded-full flex items-center justify-center mb-3">
+              <span className="text-pink-500 font-bold">💝</span>
             </div>
             <p className="text-gray-800 font-medium">
               Неможливо «зробити погано»
             </p>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border border-purple-100 text-left">
-            <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mb-3">
-              <span className="text-purple-600 font-bold">✓</span>
+          <div className="bg-white p-6 rounded-2xl border border-purple-100 shadow-md text-left">
+            <div className="w-8 h-8 bg-gradient-to-br from-pink-100 to-purple-100 rounded-full flex items-center justify-center mb-3">
+              <span className="text-pink-500 font-bold">💝</span>
             </div>
             <p className="text-gray-800 font-medium">
               Ми проведемо тебе на кожному кроці
             </p>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border border-purple-100 text-left">
-            <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mb-3">
-              <span className="text-purple-600 font-bold">✓</span>
+          <div className="bg-white p-6 rounded-2xl border border-purple-100 shadow-md text-left">
+            <div className="w-8 h-8 bg-gradient-to-br from-pink-100 to-purple-100 rounded-full flex items-center justify-center mb-3">
+              <span className="text-pink-500 font-bold">💝</span>
             </div>
             <p className="text-gray-800 font-medium">
               Якщо не відчуєш «це воно» — повернемо гроші

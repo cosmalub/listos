@@ -36,7 +36,7 @@ const PainPoint = ({
 
 export function PainSection() {
   return (
-    <section className="py-20 px-4 bg-white">
+    <section className="py-20 px-4 bg-gradient-to-br from-white via-white to-pink-50/30">
       <div className="max-w-5xl mx-auto">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <motion.div

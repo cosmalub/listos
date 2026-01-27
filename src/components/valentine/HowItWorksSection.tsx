@@ -5,7 +5,7 @@ export function HowItWorksSection() {
   const { openOrderDialog } = useOrderDialog();
 
   return (
-    <section className="py-24 px-4 bg-white">
+    <section className="py-24 px-4 bg-gradient-to-b from-pink-50/50 to-purple-50/30">
       <div className="max-w-5xl mx-auto">
         {/* Main Heading */}
         <div className="text-center mb-16">
@@ -31,7 +31,7 @@ export function HowItWorksSection() {
             viewport={{
               once: true
             }}
-            className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl p-8 md:p-12 border border-purple-100 text-center">
+            className="bg-white rounded-3xl p-8 md:p-12 border border-purple-100 shadow-lg text-center">
 
             <h3 className="text-2xl md:text-3xl font-bold text-[#6B5CE7] mb-4">
               Крок 1: Купуєш доступ до студії
@@ -71,7 +71,7 @@ export function HowItWorksSection() {
             transition={{
               delay: 0.1
             }}
-            className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl p-8 md:p-12 border border-purple-100">
+            className="bg-white rounded-3xl p-8 md:p-12 border border-purple-100 shadow-lg">
 
             <h3 className="text-2xl md:text-3xl font-bold text-[#6B5CE7] mb-6 text-center">
               Крок 2: Створюєш пісню і дизайн у студії
@@ -196,7 +196,7 @@ export function HowItWorksSection() {
             transition={{
               delay: 0.2
             }}
-            className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl overflow-hidden border border-purple-100">
+            className="bg-white rounded-3xl overflow-hidden border border-purple-100 shadow-lg">
 
             <div className="grid md:grid-cols-2 gap-8 items-center">
               {/* Image placeholder */}
