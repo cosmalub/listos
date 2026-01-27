@@ -1,44 +1,110 @@
 
 
-# Додати блок PricingSection на сторінку Valentine
+# Додати Header на сторінку Valentine
 
-## Що робимо
-Копіюємо компонент `PricingSection` з головної сторінки на Valentine сторінку з мінімальною адаптацією тексту.
+## Що зробимо
+Перевикористаємо існуючий компонент `Header` з головної сторінки, передавши йому пункти меню, адаптовані під контент Valentine сторінки.
 
-## Зміни в тексті (мінімальні)
+## Проблема
+Зараз Header використовує захардкоджені `menuItems`. Потрібно:
+1. Зробити menuItems параметром Header
+2. Додати ID до секцій на Valentine
+3. Додати Header на Valentine сторінку
 
-| Елемент | Оригінал | Valentine |
-|---------|----------|-----------|
-| Заголовок | Скажи важливе — красиво і по-справжньому | Скажи про кохання — красиво і по-справжньому |
-| Підзаголовок | ...твої слова у музичну листівку... | ...твої почуття у музичну листівку... |
-| Tracking source | 'pricing' | 'pricing-valentine' |
+## Зміни
 
-## Що залишається БЕЗ змін
-- Бейдж "✨ Усе, щоб подарунок вийшов гідним"
-- Усі 4 пункти (пісня, сторінка, листівка, доставка)
-- Ціна 399 грн
-- Підпис "Готовий подарунок. Без доплат і сюрпризів."
-- Кнопка "🎵 Почати створення"
-- Уся стилістика (градієнти, картка, іконки)
+### 1. Оновити `src/components/sections/header.tsx`
 
-## Файли
+Додати новий проп `menuItems`:
 
-### 1. Створити: `src/components/valentine/PricingSection.tsx`
-Копія з `src/components/sections/pricing-section.tsx` з двома змінами:
-- Заголовок: "Скажи про кохання — красиво і по-справжньому"
-- Підзаголовок: "Ми допоможемо оформити твої почуття у музичну листівку, яку приємно вручити."
-- Tracking: `openOrderDialog('pricing-valentine', ...)`
-
-### 2. Оновити: `src/pages/Valentine.tsx`
 ```tsx
-import { PricingSection } from '../components/valentine/PricingSection';
+interface MenuItem {
+  name: string;
+  href: string;
+  isExternal?: boolean;
+}
 
-// Додати між WhoIsThisForSection і FaqSection:
-<WhoIsThisForSection />
-<PricingSection />
-<FaqSection />
+interface HeaderProps {
+  centerTitle?: string;
+  hideNav?: boolean;
+  showMenu?: boolean;
+  ctaLabel?: string;
+  ctaPath?: string;
+  onCtaClick?: () => void;
+  menuItems?: MenuItem[];  // НОВИЙ ПРОП
+}
 ```
 
-## Візуальний результат
-Блок буде виглядати **ідентично** як на головній сторінці — та сама картка з ціною, пунктами і кнопкою.
+Використати переданий `menuItems` або дефолтний масив.
+
+### 2. Додати ID до секцій Valentine
+
+| Секція | ID |
+|--------|-----|
+| HowItWorksSection | `how-it-works` |
+| ReviewsSection | `reviews` |
+| PricingSection | `pricing` |
+| TrustSection | `guarantee` |
+| FaqSection | `faq` |
+
+### 3. Оновити `src/pages/Valentine.tsx`
+
+Додати Header з пунктами меню для Valentine:
+
+```tsx
+import { Header } from '@/components/sections/header';
+
+const valentineMenuItems = [
+  { name: "Як це працює", href: "#how-it-works" },
+  { name: "Відгуки", href: "#reviews" },
+  { name: "Ціна", href: "#pricing" },
+  { name: "Гарантія", href: "#guarantee" },
+  { name: "FAQ", href: "#faq" },
+];
+
+export default function Valentine() {
+  return (
+    <div className="min-h-screen bg-white font-sans text-gray-900 overflow-x-hidden">
+      <Header 
+        ctaLabel="Створити" 
+        menuItems={valentineMenuItems}
+      />
+      {/* секції з id */}
+      ...
+    </div>
+  );
+}
+```
+
+### 4. Додати ID до компонентів секцій
+
+Кожну секцію обгорнути в div з відповідним id:
+
+```tsx
+<section id="how-it-works">
+  <HowItWorksSection />
+</section>
+<section id="reviews">
+  <ReviewsSection />
+</section>
+// ... і так далі
+```
+
+## Пункти меню для Valentine
+
+| Пункт | Секція |
+|-------|--------|
+| Як це працює | HowItWorksSection |
+| Відгуки | ReviewsSection |
+| Ціна | PricingSection |
+| Гарантія | TrustSection |
+| FAQ | FaqSection |
+
+## Результат
+
+- Красивий Header з логотипом Листосик у верхній частині сторінки
+- 5 пунктів навігації з плавним скролом до відповідних секцій
+- Кнопка "Створити" справа (фіолетова)
+- Мобільне меню-бургер для маленьких екранів
+- Стилістика ідентична головній сторінці (backdrop-blur, заокруглені кути)
 
