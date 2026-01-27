@@ -1,110 +1,80 @@
 
+# Підключити всі кнопки до форми замовлення
 
-# Додати Header на сторінку Valentine
-
-## Що зробимо
-Перевикористаємо існуючий компонент `Header` з головної сторінки, передавши йому пункти меню, адаптовані під контент Valentine сторінки.
-
-## Проблема
-Зараз Header використовує захардкоджені `menuItems`. Потрібно:
-1. Зробити menuItems параметром Header
-2. Додати ID до секцій на Valentine
-3. Додати Header на Valentine сторінку
+## Що робимо
+Зробити так, щоб кнопка "Створити" у меню та всі кнопки на сторінці Valentine відкривали діалог оформлення замовлення.
 
 ## Зміни
 
-### 1. Оновити `src/components/sections/header.tsx`
-
-Додати новий проп `menuItems`:
+### 1. Header (`src/components/sections/header.tsx`)
+Зараз кнопка CTA робить навігацію на `/studio`. Потрібно:
+- Додати імпорт `useOrderDialog`
+- При наявності `onCtaClick` — викликати його
+- Інакше — відкривати `openOrderDialog('header-cta', ctaLabel)`
 
 ```tsx
-interface MenuItem {
-  name: string;
-  href: string;
-  isExternal?: boolean;
-}
+import { useOrderDialog } from "@/components/order/OrderDialogContext";
 
-interface HeaderProps {
-  centerTitle?: string;
-  hideNav?: boolean;
-  showMenu?: boolean;
-  ctaLabel?: string;
-  ctaPath?: string;
-  onCtaClick?: () => void;
-  menuItems?: MenuItem[];  // НОВИЙ ПРОП
-}
+const Header = ({ ... }) => {
+  const { openOrderDialog } = useOrderDialog();
+  
+  const handleCtaClick = () => {
+    if (onCtaClick) {
+      onCtaClick();
+    } else {
+      openOrderDialog('header-cta', ctaLabel || 'Створити');
+    }
+  };
+  // ...
+};
 ```
 
-Використати переданий `menuItems` або дефолтний масив.
+### 2. Valentine HeroSection (`src/components/valentine/HeroSection.tsx`)
+Додати:
+- Імпорт `useOrderDialog`
+- Кнопка "Створити листівку до 14 лютого" → `openOrderDialog('hero-valentine', ...)`
 
-### 2. Додати ID до секцій Valentine
+### 3. Valentine SolutionSection (`src/components/valentine/SolutionSection.tsx`)
+Додати:
+- Імпорт `useOrderDialog`
+- Кнопка "Спробувати створити свою листівку" → `openOrderDialog('solution-valentine', ...)`
 
-| Секція | ID |
-|--------|-----|
-| HowItWorksSection | `how-it-works` |
-| ReviewsSection | `reviews` |
-| PricingSection | `pricing` |
-| TrustSection | `guarantee` |
-| FaqSection | `faq` |
+### 4. Valentine HowItWorksSection (`src/components/valentine/HowItWorksSection.tsx`)
+Додати:
+- Імпорт `useOrderDialog`
+- Кнопка "Купити доступ" → `openOrderDialog('how-it-works-valentine', ...)`
 
-### 3. Оновити `src/pages/Valentine.tsx`
+### 5. Valentine FinalCTASection (`src/components/valentine/FinalCTASection.tsx`)
+Додати:
+- Імпорт `useOrderDialog`
+- Кнопка "Створити листівку з піснею до 14 лютого" → `openOrderDialog('final-cta-valentine', ...)`
 
-Додати Header з пунктами меню для Valentine:
+## Технічна реалізація
+У кожному компоненті:
 
 ```tsx
-import { Header } from '@/components/sections/header';
+import { useOrderDialog } from "@/components/order/OrderDialogContext";
 
-const valentineMenuItems = [
-  { name: "Як це працює", href: "#how-it-works" },
-  { name: "Відгуки", href: "#reviews" },
-  { name: "Ціна", href: "#pricing" },
-  { name: "Гарантія", href: "#guarantee" },
-  { name: "FAQ", href: "#faq" },
-];
-
-export default function Valentine() {
+export function ComponentName() {
+  const { openOrderDialog } = useOrderDialog();
+  
   return (
-    <div className="min-h-screen bg-white font-sans text-gray-900 overflow-x-hidden">
-      <Header 
-        ctaLabel="Створити" 
-        menuItems={valentineMenuItems}
-      />
-      {/* секції з id */}
-      ...
-    </div>
+    // ...
+    <button onClick={() => openOrderDialog('source-name', 'Button Label')}>
+      Button Label
+    </button>
   );
 }
 ```
 
-### 4. Додати ID до компонентів секцій
-
-Кожну секцію обгорнути в div з відповідним id:
-
-```tsx
-<section id="how-it-works">
-  <HowItWorksSection />
-</section>
-<section id="reviews">
-  <ReviewsSection />
-</section>
-// ... і так далі
-```
-
-## Пункти меню для Valentine
-
-| Пункт | Секція |
-|-------|--------|
-| Як це працює | HowItWorksSection |
-| Відгуки | ReviewsSection |
-| Ціна | PricingSection |
-| Гарантія | TrustSection |
-| FAQ | FaqSection |
-
 ## Результат
 
-- Красивий Header з логотипом Листосик у верхній частині сторінки
-- 5 пунктів навігації з плавним скролом до відповідних секцій
-- Кнопка "Створити" справа (фіолетова)
-- Мобільне меню-бургер для маленьких екранів
-- Стилістика ідентична головній сторінці (backdrop-blur, заокруглені кути)
+| Компонент | Кнопка | Tracking source |
+|-----------|--------|-----------------|
+| Header | Створити | `header-cta` |
+| HeroSection | Створити листівку до 14 лютого | `hero-valentine` |
+| SolutionSection | Спробувати створити свою листівку | `solution-valentine` |
+| HowItWorksSection | Купити доступ | `how-it-works-valentine` |
+| FinalCTASection | Створити листівку з піснею до 14 лютого | `final-cta-valentine` |
 
+Всі кнопки відкриватимуть діалог замовлення з відповідним tracking source для аналітики.
