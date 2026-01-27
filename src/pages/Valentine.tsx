@@ -20,9 +20,9 @@ export default function Valentine() {
       <SolutionSection />
       <HowItWorksSection />
       <MomentsGallerySection />
+      <ReviewsSection />
       <TrustSection />
       <WhoIsThisForSection />
-      <ReviewsSection />
       <FaqSection />
       <FinalCTASection />
       <Footer />
