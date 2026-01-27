@@ -33,7 +33,7 @@ export function FinalCTASection() {
 
 
           <div className="relative z-10">
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl md:text-5xl font-bold text-[#6B5CE7] mb-6">
               ❤️ 14 лютого буває раз на рік.
             </h2>
             <p className="text-xl md:text-2xl text-gray-600 mb-8">

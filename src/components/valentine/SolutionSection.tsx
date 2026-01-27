@@ -34,9 +34,9 @@ export function SolutionSection() {
     <section className="py-24 px-4 bg-gradient-to-b from-white to-purple-50">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#6B5CE7] mb-6">
             Листосик — це листівка, <br />
-            <span className="text-[#6B5CE7]">в якій живе пісня</span>
+            в якій живе пісня
           </h2>
         </div>
 

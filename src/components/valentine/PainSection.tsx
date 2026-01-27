@@ -51,7 +51,7 @@ export function PainSection() {
             }}
             className="space-y-6">
 
-            <h2 className="text-4xl font-bold text-gray-900 mb-2">
+            <h2 className="text-4xl font-bold text-[#6B5CE7] mb-2">
               Ти ж це знаєш.
             </h2>
             <div className="w-20 h-1 bg-[#6B5CE7] rounded-full mb-8" />

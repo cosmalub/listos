@@ -33,7 +33,7 @@ export function ReviewsSection() {
   return (
     <section className="py-20 bg-gradient-to-b from-purple-50 to-white overflow-hidden">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4">
+        <h2 className="text-4xl md:text-5xl font-bold text-center text-[#6B5CE7] mb-4">
           Відгуки наших клієнтів
         </h2>
         <p className="text-lg text-center text-gray-600 mb-12">

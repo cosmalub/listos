@@ -38,7 +38,7 @@ export function PricingSection() {
         <div className="max-w-4xl mx-auto">
           {/* Main Header Section */}
           <div className="text-center mb-12 md:mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-center text-primary mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-center text-[#6B5CE7] mb-4">
               Скажи про кохання — красиво і по-справжньому
             </h2>
             <p className="text-lg text-center text-muted-foreground max-w-2xl mx-auto">
