@@ -1,103 +1,56 @@
 
+# Додати футер на сторінку /valentine
 
-# Додати source до order_submitted
+## Що зараз
+На сторінці `/valentine` є простий інлайн-футер:
+```tsx
+<footer className="bg-gray-50 py-12 border-t border-gray-100">
+  <p>© 2024 Листосик. Зроблено з любов'ю.</p>
+</footer>
+```
 
-## Проблема
-Подія `order_submitted` не містить інформації звідки прийшло замовлення (hero, pricing, footer тощо). Ця інформація є тільки в `order_dialog_opened`.
-
-## Рішення
-Зберігати `source` в контексті діалогу і передавати його в `order_submitted`.
+## Що зробимо
+Замінимо його на повноцінний `Footer` компонент з головної сторінки, який містить:
+- Логотип Листосик
+- Слоган бренду
+- Посилання (FAQ, оформити замовлення, студія)
+- Контакти (email, Instagram, Telegram)
+- Копірайт
 
 ---
 
 ## Зміни
 
-### Файл 1: `src/components/order/OrderDialogContext.tsx`
+### Файл: `src/pages/Valentine.tsx`
 
-Додати зберігання source:
+1. Додати імпорт `Footer` компонента
+2. Замінити інлайн-футер на компонент `<Footer />`
 
 ```tsx
-interface OrderDialogContextType {
-  isOpen: boolean;
-  source: string | null;  // ДОДАТИ
-  openOrderDialog: (source: string, label?: string) => void;
-  closeOrderDialog: () => void;
-}
+import { Footer } from '@/components/sections/footer';
+// ... інші імпорти
 
-export function OrderDialogProvider({ children }: { children: React.ReactNode }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [source, setSource] = useState<string | null>(null);  // ДОДАТИ
-
-  const openOrderDialog = useCallback((source: string, label?: string) => {
-    setSource(source);  // ДОДАТИ - зберігаємо source
-    posthog.capture('order_dialog_opened', {
-      source,
-      button_label: label
-    });
-    setIsOpen(true);
-  }, []);
-
-  const closeOrderDialog = useCallback(() => {
-    setIsOpen(false);
-    setSource(null);  // ДОДАТИ - очищаємо при закритті
-  }, []);
-
+export default function Valentine() {
   return (
-    <OrderDialogContext.Provider value={{ isOpen, source, openOrderDialog, closeOrderDialog }}>
-      {children}
-    </OrderDialogContext.Provider>
+    <div className="min-h-screen bg-white font-sans text-gray-900 overflow-x-hidden">
+      <HeroSection />
+      <PainSection />
+      <SolutionSection />
+      <HowItWorksSection />
+      <GallerySection />
+      <TrustSection />
+      <WhoIsThisForSection />
+      <InsightSection />
+      <FinalCTASection />
+      <Footer />  {/* Замість інлайн-футера */}
+    </div>
   );
 }
 ```
 
-### Файл 2: `src/components/order/OrderDialog.tsx`
-
-Використати source з контексту:
-
-```tsx
-// Рядок ~21
-const { isOpen, source, closeOrderDialog } = useOrderDialog();
-
-// Рядок ~111
-posthog.capture('order_submitted', {
-  source,  // ДОДАТИ
-  price: finalPrice,
-  has_promo: promoStatus?.valid || false,
-  contact_type: formData.contactType
-});
-```
-
 ---
 
-## Результат в PostHog
-
-Після цих змін `order_submitted` матиме:
-
-```json
-{
-  "source": "hero",
-  "price": 399,
-  "has_promo": false,
-  "contact_type": "phone"
-}
-```
-
-Можливі значення `source`:
-- `hero` — головний екран
-- `pricing` — секція з ціною
-- `mascot` — секція з маскотом
-- `guarantee` — секція гарантії
-- `final_cta` — фінальний заклик
-- `footer` — футер
-- `header` — шапка
-- `examples` — секція прикладів
-
----
-
-## В PostHog
-
-Після публікації зможеш:
-1. **Insights → Trends**: Вибрати `order_submitted`, розбити по `source`
-2. **Funnels**: Порівняти конверсію з різних джерел
-3. Побачити який елемент сайту найкраще конвертує
-
+## Результат
+- Сторінка `/valentine` матиме такий самий футер як головна сторінка
+- Кнопка "Оформити замовлення" в футері відкриватиме діалог (з source="footer")
+- Всі посилання та контакти працюватимуть
