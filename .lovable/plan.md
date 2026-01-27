@@ -1,58 +1,50 @@
 
-# Додати FAQ секцію на сторінку Valentine
+# Додати секцію відгуків зі скриншотами на сторінку Valentine
 
 ## Що зробимо
-Створимо новий компонент FAQ для Valentine сторінки, який використовує ті ж самі питання-відповіді що і на головній, але адаптований під стилістику Valentine:
-- Кольори: `text-gray-900` для заголовків, `text-gray-600` для тексту
-- Акценти: `text-[#6B5CE7]` (фіолетовий) та `border-purple-100`
-- Фон: білий або м'який градієнт
+Додамо секцію відгуків на сторінку `/valentine` — такий самий анімований скрол зі скриншотами реальних відгуків як на головній, але адаптований під стилістику сторінки Valentine.
 
 ## Розташування
-Секція буде додана **перед** `FinalCTASection` (блок "14 лютого буває раз на рік")
+Секція буде додана **після** `WhoIsThisForSection` і **перед** `FaqSection`
 
 ## Зміни
 
-### 1. Створити новий файл: `src/components/valentine/FaqSection.tsx`
+### 1. Створити новий файл: `src/components/valentine/ReviewsSection.tsx`
+
+Компонент буде містити:
+- Ті ж самі 9 скриншотів відгуків що на головній
+- Анімований скрол в два ряди (вліво/вправо)
+- Стилістика адаптована під Valentine:
+  - Заголовок: `text-gray-900` замість фіолетового
+  - Підзаголовок: `text-gray-600`
+  - Картки: `border-purple-100` замість `border-primary/10`
+  - Тіні: `shadow-purple-100/50` замість `shadow-primary/20`
 
 ```tsx
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+// Структура компонента
+export function ReviewsSection() {
+  const reviews = [
+    { imagePath: "/lovable-uploads/1-3.png", alt: "Відгук клієнта 1" },
+    { imagePath: "/lovable-uploads/review-iryna.png", alt: "Відгук Ірини" },
+    // ... всі 9 скриншотів
+  ];
 
-const faqs = [
-  // Ті ж самі питання-відповіді що на головній
-];
+  const firstRow = [...reviews, ...reviews];
+  const secondRow = [...reviews.reverse(), ...reviews.reverse()];
 
-export function FaqSection() {
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-purple-50 to-white">
-      <div className="max-w-3xl mx-auto">
-        {/* Заголовок у стилі Valentine */}
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4">
-          Часті запитання
-        </h2>
-        <p className="text-lg text-center text-gray-600 mb-12">
-          Все, що варто знати перед створенням листівки
-        </p>
-        
-        {/* Акордеон з питаннями */}
-        <Accordion type="single" collapsible>
-          {faqs.map((faq, index) => (
-            <AccordionItem 
-              key={index} 
-              value={`item-${index}`}
-              className="border-purple-100"
-            >
-              <AccordionTrigger className="text-lg font-medium text-gray-900 hover:text-[#6B5CE7]">
-                {faq.question}
-              </AccordionTrigger>
-              <AccordionContent className="text-gray-600 whitespace-pre-line">
-                {faq.answer}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-      </div>
+    <section className="py-20 px-4 bg-white overflow-hidden">
+      {/* Заголовок в стилі Valentine */}
+      <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4">
+        Відгуки наших клієнтів
+      </h2>
+      <p className="text-lg text-center text-gray-600 mb-12">
+        Реальні повідомлення від задоволених покупців
+      </p>
+      
+      {/* Анімований скрол */}
+      <div className="flex gap-5 animate-scroll-left">...</div>
+      <div className="flex gap-5 animate-scroll-right">...</div>
     </section>
   );
 }
@@ -60,41 +52,36 @@ export function FaqSection() {
 
 ### 2. Оновити файл: `src/pages/Valentine.tsx`
 
-Додати імпорт та вставити компонент перед FinalCTASection:
+Додати імпорт та вставити компонент:
 
 ```tsx
-import { FaqSection } from '../components/valentine/FaqSection';
+import { ReviewsSection } from '../components/valentine/ReviewsSection';
 
-export default function Valentine() {
-  return (
-    <div className="min-h-screen bg-white font-sans text-gray-900 overflow-x-hidden">
-      <HeroSection />
-      <PainSection />
-      <InsightSection />
-      <SolutionSection />
-      <HowItWorksSection />
-      <MomentsGallerySection />
-      <TrustSection />
-      <WhoIsThisForSection />
-      <FaqSection />          {/* Нова секція */}
-      <FinalCTASection />
-      <Footer />
-    </div>
-  );
-}
+// В JSX, порядок секцій:
+<TrustSection />
+<WhoIsThisForSection />
+<ReviewsSection />        {/* Нова секція */}
+<FaqSection />
+<FinalCTASection />
 ```
 
-## Стилістичні деталі
+## Стилістичні відмінності від головної
 
-| Елемент | Головна сторінка | Valentine сторінка |
-|---------|------------------|-------------------|
-| Заголовок | `text-[#6A5ACD]` | `text-gray-900` |
-| Текст питання | `text-[#6A5ACD]` | `text-gray-900` + hover `text-[#6B5CE7]` |
-| Текст відповіді | `text-[#6A5ACD]/80` | `text-gray-600` |
-| Фон секції | `bg-white` з тінню | `bg-gradient-to-b from-purple-50 to-white` |
-| Бордери | стандартні | `border-purple-100` |
+| Елемент | Головна | Valentine |
+|---------|---------|-----------|
+| Заголовок | `SectionHeader` з градієнтом | Простий `text-gray-900` |
+| Підзаголовок | `text-muted-foreground` | `text-gray-600` |
+| Бордер картки | `border-primary/10` | `border-purple-100` |
+| Тінь картки | `shadow-primary/20` | `shadow-purple-100/50` |
+| Hover тінь | `shadow-primary/30` | `shadow-purple-200/60` |
+| Фон секції | `bg-white` | `bg-white` |
+
+## Технічні деталі
+- Анімації `animate-scroll-left` та `animate-scroll-right` вже визначені в `tailwind.config.ts`
+- Пауза анімації при hover вже працює через CSS в `index.css`
+- Картки дублюються для безперервного скролу
 
 ## Результат
-- FAQ секція з'явиться перед фінальним CTA блоком
-- Стилістика узгоджена з іншими секціями Valentine (TrustSection, SolutionSection)
-- Ті ж самі 11 питань-відповідей що на головній сторінці
+- Сторінка `/valentine` матиме таку ж секцію відгуків зі скриншотами як головна
+- Стиль узгоджений з іншими секціями Valentine (сірі тони)
+- Анімований скрол працює ідентично
