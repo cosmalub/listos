@@ -31,7 +31,7 @@ export function ReviewsSection() {
   const secondRow = [...reviews.slice().reverse(), ...reviews.slice().reverse()];
 
   return (
-    <section className="py-16 bg-white overflow-hidden">
+    <section className="py-20 bg-gradient-to-b from-purple-50 to-white overflow-hidden">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4">
           Відгуки наших клієнтів
