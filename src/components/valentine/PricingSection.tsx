@@ -105,7 +105,6 @@ export function PricingSection() {
                   className="text-lg md:text-xl px-10 md:px-14 py-7 md:py-8 rounded-full bg-gradient-to-r from-[#6A5ACD] via-[#8A7AEE] to-[#D292FF] hover:from-[#5A4ABD] hover:via-[#7A6ADE] hover:to-[#C282EF] text-white shadow-xl shadow-[#6A5ACD]/30 transition-all duration-300 hover:shadow-2xl hover:shadow-[#6A5ACD]/40 hover:scale-105 font-bold"
                   onClick={() => openOrderDialog('pricing-valentine', 'Почати створення')}
                 >
-                  <span className="mr-2">💝</span>
                   Почати створення
                 </Button>
               </div>
