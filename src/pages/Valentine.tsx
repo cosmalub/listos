@@ -22,9 +22,9 @@ export default function Valentine() {
       <HowItWorksSection />
       <MomentsGallerySection />
       <ReviewsSection />
+      <PricingSection />
       <TrustSection />
       <WhoIsThisForSection />
-      <PricingSection />
       <FaqSection />
       <FinalCTASection />
       <Footer />
