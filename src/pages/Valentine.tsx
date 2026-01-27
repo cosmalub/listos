@@ -9,6 +9,7 @@ import { InsightSection } from '../components/valentine/InsightSection';
 import { FaqSection } from '../components/valentine/FaqSection';
 import { FinalCTASection } from '../components/valentine/FinalCTASection';
 import { ReviewsSection } from '../components/valentine/ReviewsSection';
+import { PricingSection } from '../components/valentine/PricingSection';
 import { Footer } from '@/components/sections/footer';
 
 export default function Valentine() {
@@ -23,6 +24,7 @@ export default function Valentine() {
       <ReviewsSection />
       <TrustSection />
       <WhoIsThisForSection />
+      <PricingSection />
       <FaqSection />
       <FinalCTASection />
       <Footer />
