@@ -1,48 +1,36 @@
 
-# Замінити галерею на /valentine на MomentsGallerySection
+# Адаптувати заголовок галереї під стиль Valentine
 
-## Що зараз
-На сторінці `/valentine` використовується `GallerySection` з:
-- 6 стокових фото з Unsplash
-- Полароїд-стиль з "скотчем"
-- Статична сітка 3 колонки
+## Проблема
+Заголовок секції `MomentsGallerySection` використовує семантичні кольори (`text-primary`, `text-muted-foreground`), які не співпадають зі стилем інших заголовків на сторінці `/valentine`.
 
-## Що зробимо
-Замінимо на `MomentsGallerySection` з головної сторінки:
-- Реальні картинки з `/public/gallery/` (ті самі що на головній)
-- Анімована прокрутка в два ряди (вліво/вправо)
-- Красивий hover-ефект з glow та scale
-- Градієнти затухання по краях
-
----
+## Стиль заголовків на Valentine
+Інші секції використовують:
+- Заголовок: `text-[#6B5CE7]` або `text-gray-900` 
+- Підзаголовок: `text-gray-600` або `text-gray-500`
+- Розмір: `text-3xl md:text-4xl` або `text-4xl md:text-5xl`
 
 ## Зміни
 
-### Файл: `src/pages/Valentine.tsx`
+### Файл: `src/components/sections/moments-gallery-section.tsx`
 
-1. Замінити імпорт `GallerySection` на `MomentsGallerySection`
-2. Використати `MomentsGallerySection` замість `GallerySection`
-
+Рядок 63 — змінити клас заголовка:
 ```tsx
 // Було:
-import { GallerySection } from '../components/valentine/GallerySection';
+<h2 className="text-3xl md:text-4xl font-bold text-center text-primary mb-4">
 
 // Стане:
-import { MomentsGallerySection } from '@/components/sections/moments-gallery-section';
+<h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4">
 ```
 
+Рядок 68 — змінити клас підзаголовка:
 ```tsx
-// В JSX замість:
-<GallerySection />
+// Було:
+<p className="text-lg text-center text-muted-foreground max-w-2xl mx-auto">
 
-// Буде:
-<MomentsGallerySection />
+// Стане:
+<p className="text-lg text-center text-gray-600 max-w-2xl mx-auto">
 ```
-
----
 
 ## Результат
-- Сторінка `/valentine` матиме таку ж красиву галерею як головна
-- Ті самі реальні картинки з проекту
-- Анімована безперервна прокрутка
-- Консистентний вигляд між сторінками
+Заголовок "Моменти, які хочеться запам'ятати" та підзаголовок матимуть однаковий стиль як інші секції на сторінці Valentine (сірі тони замість фіолетового).
