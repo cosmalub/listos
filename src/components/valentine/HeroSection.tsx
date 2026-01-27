@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Sparkles } from 'lucide-react';
+import { useOrderDialog } from '@/components/order/OrderDialogContext';
 // Floating heart decoration component
 const FloatingHeart = ({
   delay,
@@ -33,6 +34,8 @@ const FloatingHeart = ({
   </motion.div>;
 
 export function HeroSection() {
+  const { openOrderDialog } = useOrderDialog();
+
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20 pb-16 px-4">
       {/* Enhanced Background */}
@@ -129,31 +132,32 @@ export function HeroSection() {
           </motion.p>
 
           {/* CTA Button with enhanced styling */}
-          <motion.button
-            initial={{
-              opacity: 0,
-              y: 20
-            }}
-            animate={{
-              opacity: 1,
-              y: 0
-            }}
-            transition={{
-              delay: 0.7,
-              duration: 0.5
-            }}
-            whileHover={{
-              scale: 1.05,
-              boxShadow: '0 20px 40px rgba(107, 92, 231, 0.3)'
-            }}
-            whileTap={{
-              scale: 0.95
-            }}
-            className="bg-gradient-to-r from-[#6B5CE7] to-[#8B7CE7] text-white text-lg md:text-xl font-bold py-5 px-12 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 inline-flex items-center gap-3">
+            <motion.button
+              initial={{
+                opacity: 0,
+                y: 20
+              }}
+              animate={{
+                opacity: 1,
+                y: 0
+              }}
+              transition={{
+                delay: 0.7,
+                duration: 0.5
+              }}
+              whileHover={{
+                scale: 1.05,
+                boxShadow: '0 20px 40px rgba(107, 92, 231, 0.3)'
+              }}
+              whileTap={{
+                scale: 0.95
+              }}
+              onClick={() => openOrderDialog('hero-valentine', 'Створити листівку до 14 лютого')}
+              className="bg-gradient-to-r from-[#6B5CE7] to-[#8B7CE7] text-white text-lg md:text-xl font-bold py-5 px-12 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 inline-flex items-center gap-3">
 
-            <Heart size={24} fill="currentColor" />
-            Створити листівку до 14 лютого
-          </motion.button>
+              <Heart size={24} fill="currentColor" />
+              Створити листівку до 14 лютого
+            </motion.button>
 
           {/* Trust indicator */}
           <motion.p

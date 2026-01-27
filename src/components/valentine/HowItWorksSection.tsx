@@ -1,6 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useOrderDialog } from '@/components/order/OrderDialogContext';
 export function HowItWorksSection() {
+  const { openOrderDialog } = useOrderDialog();
+
   return (
     <section className="py-24 px-4 bg-white">
       <div className="max-w-5xl mx-auto">
@@ -45,7 +48,9 @@ export function HowItWorksSection() {
               <span className="font-semibold text-[#6B5CE7]">24/7</span> —
               створюй, коли зручно!
             </p>
-            <button className="bg-[#6B5CE7] text-white font-bold py-3 px-8 rounded-full hover:bg-[#5a4bd1] transition-colors">
+            <button 
+              onClick={() => openOrderDialog('how-it-works-valentine', 'Купити доступ')}
+              className="bg-[#6B5CE7] text-white font-bold py-3 px-8 rounded-full hover:bg-[#5a4bd1] transition-colors">
               Купити доступ
             </button>
           </motion.div>

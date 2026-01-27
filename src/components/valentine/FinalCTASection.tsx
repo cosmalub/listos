@@ -1,7 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
+import { useOrderDialog } from '@/components/order/OrderDialogContext';
 export function FinalCTASection() {
+  const { openOrderDialog } = useOrderDialog();
+
   return (
     <section className="py-24 px-4 bg-gradient-to-b from-pink-50 to-white text-center">
       <div className="max-w-4xl mx-auto">
@@ -48,6 +51,7 @@ export function FinalCTASection() {
               whileTap={{
                 scale: 0.95
               }}
+              onClick={() => openOrderDialog('final-cta-valentine', 'Створити листівку з піснею до 14 лютого')}
               className="bg-[#6B5CE7] text-white text-lg md:text-xl font-bold py-5 px-12 rounded-full shadow-xl hover:shadow-2xl hover:bg-[#5a4bd1] transition-all duration-300 flex items-center gap-3 mx-auto">
 
               <span>💘</span> Створити листівку з піснею до 14 лютого
