@@ -1,56 +1,33 @@
 
-# Додати футер на сторінку /valentine
+# Прибрати дублікат копірайту та оновити рік
 
-## Що зараз
-На сторінці `/valentine` є простий інлайн-футер:
-```tsx
-<footer className="bg-gray-50 py-12 border-t border-gray-100">
-  <p>© 2024 Листосик. Зроблено з любов'ю.</p>
-</footer>
-```
-
-## Що зробимо
-Замінимо його на повноцінний `Footer` компонент з головної сторінки, який містить:
-- Логотип Листосик
-- Слоган бренду
-- Посилання (FAQ, оформити замовлення, студія)
-- Контакти (email, Instagram, Telegram)
-- Копірайт
-
----
+## Проблема
+На сторінці `/valentine` зараз показуються два копірайти:
+1. В `FinalCTASection.tsx` (рядки 58-61): `© {new Date().getFullYear()} Lystosyk. Зроблено з любов'ю в Україні 🇺🇦`
+2. В `Footer` компоненті (рядок 66): `© 2025 Листосик. Всі права захищені.`
 
 ## Зміни
 
-### Файл: `src/pages/Valentine.tsx`
-
-1. Додати імпорт `Footer` компонента
-2. Замінити інлайн-футер на компонент `<Footer />`
-
+### 1. `src/components/valentine/FinalCTASection.tsx`
+Видалити інлайн-футер з копірайтом (рядки 58-61):
 ```tsx
-import { Footer } from '@/components/sections/footer';
-// ... інші імпорти
-
-export default function Valentine() {
-  return (
-    <div className="min-h-screen bg-white font-sans text-gray-900 overflow-x-hidden">
-      <HeroSection />
-      <PainSection />
-      <SolutionSection />
-      <HowItWorksSection />
-      <GallerySection />
-      <TrustSection />
-      <WhoIsThisForSection />
-      <InsightSection />
-      <FinalCTASection />
-      <Footer />  {/* Замість інлайн-футера */}
-    </div>
-  );
-}
+// Видалити цей блок:
+<footer className="mt-16 text-gray-400 text-sm">
+  © {new Date().getFullYear()} Lystosyk. Зроблено з любов'ю в Україні
+  🇺🇦
+</footer>
 ```
 
----
+### 2. `src/components/sections/footer.tsx`
+Оновити рік з 2025 на 2026 (рядок 66):
+```tsx
+// Було:
+© 2025 Листосик. Всі права захищені.
+
+// Стане:
+© 2026 Листосик. Всі права захищені.
+```
 
 ## Результат
-- Сторінка `/valentine` матиме такий самий футер як головна сторінка
-- Кнопка "Оформити замовлення" в футері відкриватиме діалог (з source="footer")
-- Всі посилання та контакти працюватимуть
+- На сторінці `/valentine` залишиться тільки один копірайт в основному футері
+- Рік буде актуальний — 2026
