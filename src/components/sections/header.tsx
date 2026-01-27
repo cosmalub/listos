@@ -5,6 +5,12 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import logoListosik from "@/assets/logo-listosik.png";
 
+interface MenuItem {
+  name: string;
+  href: string;
+  isExternal?: boolean;
+}
+
 interface HeaderProps {
   centerTitle?: string;
   hideNav?: boolean;
@@ -12,7 +18,17 @@ interface HeaderProps {
   ctaLabel?: string;
   ctaPath?: string;
   onCtaClick?: () => void;
+  menuItems?: MenuItem[];
 }
+
+const defaultMenuItems: MenuItem[] = [
+  { name: "Як це працює", href: "#mascot" },
+  { name: "Приклади", href: "#examples" },
+  { name: "Відгуки", href: "#reviews" },
+  { name: "Ціна", href: "#pricing" },
+  { name: "Гарантія", href: "#guarantee" },
+  { name: "FAQ", href: "#faq" },
+];
 
 const Header = ({
   centerTitle,
@@ -20,36 +36,11 @@ const Header = ({
   showMenu = true,
   ctaLabel,
   ctaPath = "/studio",
-  onCtaClick
+  onCtaClick,
+  menuItems = defaultMenuItems
 }: HeaderProps) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const menuItems = [
-    {
-      name: "Як це працює",
-      href: "#mascot"
-    },
-    {
-      name: "Приклади",
-      href: "#examples"
-    },
-    {
-      name: "Відгуки",
-      href: "#reviews"
-    },
-    {
-      name: "Ціна",
-      href: "#pricing"
-    },
-    {
-      name: "Гарантія",
-      href: "#guarantee"
-    },
-    {
-      name: "FAQ",
-      href: "#faq"
-    }
-  ];
 
   const handleNavClick = (item: any) => {
     if (item.isExternal) {

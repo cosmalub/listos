@@ -11,21 +11,41 @@ import { FinalCTASection } from '../components/valentine/FinalCTASection';
 import { ReviewsSection } from '../components/valentine/ReviewsSection';
 import { PricingSection } from '../components/valentine/PricingSection';
 import { Footer } from '@/components/sections/footer';
+import { Header } from '@/components/sections/header';
+
+const valentineMenuItems = [
+  { name: "Як це працює", href: "#how-it-works" },
+  { name: "Відгуки", href: "#reviews" },
+  { name: "Ціна", href: "#pricing" },
+  { name: "Гарантія", href: "#guarantee" },
+  { name: "FAQ", href: "#faq" },
+];
 
 export default function Valentine() {
   return (
     <div className="min-h-screen bg-white font-sans text-gray-900 overflow-x-hidden">
+      <Header ctaLabel="Створити" menuItems={valentineMenuItems} />
       <HeroSection />
       <PainSection />
       <InsightSection />
       <SolutionSection />
-      <HowItWorksSection />
+      <div id="how-it-works">
+        <HowItWorksSection />
+      </div>
       <MomentsGallerySection />
-      <ReviewsSection />
-      <PricingSection />
-      <TrustSection />
+      <div id="reviews">
+        <ReviewsSection />
+      </div>
+      <div id="pricing">
+        <PricingSection />
+      </div>
+      <div id="guarantee">
+        <TrustSection />
+      </div>
       <WhoIsThisForSection />
-      <FaqSection />
+      <div id="faq">
+        <FaqSection />
+      </div>
       <FinalCTASection />
       <Footer />
     </div>
