@@ -1,33 +1,54 @@
 
-# Прибрати дублікат копірайту та оновити рік
+# Перемістити InsightSection після 2-го блоку
 
-## Проблема
-На сторінці `/valentine` зараз показуються два копірайти:
-1. В `FinalCTASection.tsx` (рядки 58-61): `© {new Date().getFullYear()} Lystosyk. Зроблено з любов'ю в Україні 🇺🇦`
-2. В `Footer` компоненті (рядок 66): `© 2025 Листосик. Всі права захищені.`
+## Поточний порядок секцій на /valentine:
+1. HeroSection
+2. PainSection ← 2-й блок
+3. SolutionSection
+4. HowItWorksSection
+5. GallerySection
+6. TrustSection
+7. WhoIsThisForSection
+8. InsightSection ← зараз тут
+9. FinalCTASection
+10. Footer
+
+## Новий порядок:
+1. HeroSection
+2. PainSection
+3. **InsightSection** ← переміщуємо сюди
+4. SolutionSection
+5. HowItWorksSection
+6. GallerySection
+7. TrustSection
+8. WhoIsThisForSection
+9. FinalCTASection
+10. Footer
 
 ## Зміни
 
-### 1. `src/components/valentine/FinalCTASection.tsx`
-Видалити інлайн-футер з копірайтом (рядки 58-61):
-```tsx
-// Видалити цей блок:
-<footer className="mt-16 text-gray-400 text-sm">
-  © {new Date().getFullYear()} Lystosyk. Зроблено з любов'ю в Україні
-  🇺🇦
-</footer>
-```
+### Файл: `src/pages/Valentine.tsx`
 
-### 2. `src/components/sections/footer.tsx`
-Оновити рік з 2025 на 2026 (рядок 66):
-```tsx
-// Було:
-© 2025 Листосик. Всі права захищені.
+Змінити порядок компонентів — перенести `<InsightSection />` після `<PainSection />`:
 
-// Стане:
-© 2026 Листосик. Всі права захищені.
+```tsx
+export default function Valentine() {
+  return (
+    <div className="min-h-screen bg-white font-sans text-gray-900 overflow-x-hidden">
+      <HeroSection />
+      <PainSection />
+      <InsightSection />  {/* Переміщено сюди */}
+      <SolutionSection />
+      <HowItWorksSection />
+      <GallerySection />
+      <TrustSection />
+      <WhoIsThisForSection />
+      <FinalCTASection />
+      <Footer />
+    </div>
+  );
+}
 ```
 
 ## Результат
-- На сторінці `/valentine` залишиться тільки один копірайт в основному футері
-- Рік буде актуальний — 2026
+Секція "Любов — це не фраза..." з'явиться одразу після PainSection, створюючи кращий емоційний перехід до рішення.
