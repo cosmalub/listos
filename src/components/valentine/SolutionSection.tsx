@@ -72,7 +72,7 @@ export function SolutionSection() {
             onClick={() => openOrderDialog('solution-valentine', 'Спробувати створити свою листівку')}
             className="bg-[#6B5CE7] text-white text-lg font-bold py-4 px-10 rounded-full shadow-lg hover:shadow-xl transition-all">
 
-            Спробувати створити свою листівку
+            💌 Спробувати створити свою листівку
           </motion.button>
         </div>
       </div>
