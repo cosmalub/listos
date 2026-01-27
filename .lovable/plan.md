@@ -1,87 +1,60 @@
 
-# Додати секцію відгуків зі скриншотами на сторінку Valentine
 
-## Що зробимо
-Додамо секцію відгуків на сторінку `/valentine` — такий самий анімований скрол зі скриншотами реальних відгуків як на головній, але адаптований під стилістику сторінки Valentine.
+# Покращення візуального потоку секції відгуків
 
-## Розташування
-Секція буде додана **після** `WhoIsThisForSection` і **перед** `FaqSection`
+## Проблема
+Зараз на сторінці `/valentine` є кілька білих секцій підряд:
+- HowItWorksSection → **білий**
+- MomentsGallerySection → **білий**  
+- ReviewsSection → **білий** 
+- TrustSection → **білий**
+
+Це робить сторінку візуально "плоскою" без чіткого розділення між блоками.
+
+## Рішення: Градієнтний фон для відгуків
+
+Змінимо фон секції відгуків на м'який градієнт `bg-gradient-to-b from-purple-50 to-white`, що:
+- Візуально відділить відгуки від галереї
+- Створить плавний перехід до наступної білої секції TrustSection
+- Збереже узгодженість із загальним стилем сторінки
 
 ## Зміни
 
-### 1. Створити новий файл: `src/components/valentine/ReviewsSection.tsx`
+### Файл: `src/components/valentine/ReviewsSection.tsx`
 
-Компонент буде містити:
-- Ті ж самі 9 скриншотів відгуків що на головній
-- Анімований скрол в два ряди (вліво/вправо)
-- Стилістика адаптована під Valentine:
-  - Заголовок: `text-gray-900` замість фіолетового
-  - Підзаголовок: `text-gray-600`
-  - Картки: `border-purple-100` замість `border-primary/10`
-  - Тіні: `shadow-purple-100/50` замість `shadow-primary/20`
-
+**Рядок 34** — змінити фон секції:
 ```tsx
-// Структура компонента
-export function ReviewsSection() {
-  const reviews = [
-    { imagePath: "/lovable-uploads/1-3.png", alt: "Відгук клієнта 1" },
-    { imagePath: "/lovable-uploads/review-iryna.png", alt: "Відгук Ірини" },
-    // ... всі 9 скриншотів
-  ];
+// Було:
+<section className="py-16 bg-white overflow-hidden">
 
-  const firstRow = [...reviews, ...reviews];
-  const secondRow = [...reviews.reverse(), ...reviews.reverse()];
-
-  return (
-    <section className="py-20 px-4 bg-white overflow-hidden">
-      {/* Заголовок в стилі Valentine */}
-      <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4">
-        Відгуки наших клієнтів
-      </h2>
-      <p className="text-lg text-center text-gray-600 mb-12">
-        Реальні повідомлення від задоволених покупців
-      </p>
-      
-      {/* Анімований скрол */}
-      <div className="flex gap-5 animate-scroll-left">...</div>
-      <div className="flex gap-5 animate-scroll-right">...</div>
-    </section>
-  );
-}
+// Стане:
+<section className="py-20 bg-gradient-to-b from-purple-50 to-white overflow-hidden">
 ```
 
-### 2. Оновити файл: `src/pages/Valentine.tsx`
+## Візуальний потік після змін
 
-Додати імпорт та вставити компонент:
-
-```tsx
-import { ReviewsSection } from '../components/valentine/ReviewsSection';
-
-// В JSX, порядок секцій:
-<TrustSection />
-<WhoIsThisForSection />
-<ReviewsSection />        {/* Нова секція */}
-<FaqSection />
-<FinalCTASection />
+```text
+┌─────────────────────────────────────┐
+│  HowItWorksSection                  │  білий
+├─────────────────────────────────────┤
+│  MomentsGallerySection              │  білий
+├─────────────────────────────────────┤
+│  ReviewsSection                     │  градієнт purple-50 → white
+├─────────────────────────────────────┤
+│  TrustSection                       │  білий
+├─────────────────────────────────────┤
+│  WhoIsThisForSection                │  фіолетовий градієнт
+└─────────────────────────────────────┘
 ```
 
-## Стилістичні відмінності від головної
+## Альтернативні варіанти (можна обговорити)
 
-| Елемент | Головна | Valentine |
-|---------|---------|-----------|
-| Заголовок | `SectionHeader` з градієнтом | Простий `text-gray-900` |
-| Підзаголовок | `text-muted-foreground` | `text-gray-600` |
-| Бордер картки | `border-primary/10` | `border-purple-100` |
-| Тінь картки | `shadow-primary/20` | `shadow-purple-100/50` |
-| Hover тінь | `shadow-primary/30` | `shadow-purple-200/60` |
-| Фон секції | `bg-white` | `bg-white` |
-
-## Технічні деталі
-- Анімації `animate-scroll-left` та `animate-scroll-right` вже визначені в `tailwind.config.ts`
-- Пауза анімації при hover вже працює через CSS в `index.css`
-- Картки дублюються для безперервного скролу
+1. **Варіант з фіолетовим фоном** — `bg-purple-50` без градієнту
+2. **Варіант з тінню зверху** — залишити білий, але додати внутрішню тінь для глибини
+3. **Варіант з рожевим відтінком** — `bg-gradient-to-b from-pink-50 to-white` для більшого контрасту
 
 ## Результат
-- Сторінка `/valentine` матиме таку ж секцію відгуків зі скриншотами як головна
-- Стиль узгоджений з іншими секціями Valentine (сірі тони)
-- Анімований скрол працює ідентично
+- Секція відгуків візуально відокремлена від галереї
+- Плавний перехід кольорів створює приємний візуальний потік
+- Скриншоти залишаються без змін — лише фон секції
+
