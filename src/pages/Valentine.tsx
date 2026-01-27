@@ -8,6 +8,7 @@ import { WhoIsThisForSection } from '../components/valentine/WhoIsThisForSection
 import { InsightSection } from '../components/valentine/InsightSection';
 import { FaqSection } from '../components/valentine/FaqSection';
 import { FinalCTASection } from '../components/valentine/FinalCTASection';
+import { ReviewsSection } from '../components/valentine/ReviewsSection';
 import { Footer } from '@/components/sections/footer';
 
 export default function Valentine() {
@@ -21,6 +22,7 @@ export default function Valentine() {
       <MomentsGallerySection />
       <TrustSection />
       <WhoIsThisForSection />
+      <ReviewsSection />
       <FaqSection />
       <FinalCTASection />
       <Footer />
