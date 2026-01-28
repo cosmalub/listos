@@ -120,9 +120,6 @@ export function HeroSection() {
         </motion.div>
 
       </div>
-
-      {/* Gradient tail for smooth transition to next section */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-rose-50/30 pointer-events-none" />
     </section>
   );
 }
