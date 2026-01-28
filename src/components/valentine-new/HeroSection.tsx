@@ -44,15 +44,15 @@ export function HeroSection() {
           <div className="absolute inset-0 flex items-center justify-center drop-shadow-2xl">
             <motion.svg
               viewBox="0 0 512 512"
-              className="w-[850px] h-[850px] text-rose-100"
+              className="w-[850px] h-[850px]"
               animate={{ y: [0, -15, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             >
               <path
-                fill="currentColor"
+                fill="none"
+                stroke="#fecdd3"
+                strokeWidth="3"
                 d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"
-                className="drop-shadow-xl backdrop-blur-3xl"
-                style={{ filter: 'drop-shadow(0 20px 40px rgba(244, 63, 94, 0.15))' }}
               />
             </motion.svg>
 
@@ -63,18 +63,11 @@ export function HeroSection() {
               animate={{ y: [0, -15, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             >
-              <defs>
-                <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="rgba(255,255,255,0.8)" />
-                  <stop offset="50%" stopColor="rgba(255,255,255,0.4)" />
-                  <stop offset="100%" stopColor="rgba(255,255,255,0.1)" />
-                </linearGradient>
-              </defs>
               <path
-                fill="url(#glassGradient)"
-                fillOpacity="0.3"
+                fill="none"
+                stroke="rgba(255,255,255,0.4)"
+                strokeWidth="2"
                 d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"
-                className="backdrop-blur-md"
               />
             </motion.svg>
           </div>
