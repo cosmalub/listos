@@ -1,52 +1,66 @@
 
-# Оновити блок "Ми гарантуємо" на Valentine
+# Покращити контраст Hero-секції на /valentine-new
 
-## Що зробимо
-1. Замінити текст "Не потрібно вміти писати вірші" на "Не потрібно нічого вигадувати"
-2. Замінити емодзі 💝 на Lucide іконки для кожної картки
+## Проблема
+Серце (`text-white/40`) та glass overlay зливаються з майже білим фоном (`bg-[#FAFAFA]`). Недостатній контраст для візуального виділення головного елемента.
 
-## Нові іконки для карток
+## Рішення
+Змінити фон на м'який рожево-білий градієнт + зробити серце трохи рожевим для кращого контрасту.
 
-| Картка | Текст | Іконка | Логіка |
-|--------|-------|--------|--------|
-| 1 | Не потрібно нічого вигадувати | `Lightbulb` | Не потрібно думати/вигадувати |
-| 2 | Неможливо «зробити погано» | `ShieldCheck` | Захист від помилок |
-| 3 | Ми проведемо тебе на кожному кроці | `HandHeart` | Підтримка, турбота |
-| 4 | Якщо не відчуєш «це воно» — повернемо гроші | `RefreshCcw` | Повернення, гарантія |
+## Зміни у файлі `src/components/valentine-new/HeroSection.tsx`
 
-## Зміни у файлі
-
-### `src/components/valentine/TrustSection.tsx`
-
+### 1. Фон секції (рядок 19)
+**Було:**
 ```tsx
-import { Lightbulb, ShieldCheck, HandHeart, RefreshCcw } from "lucide-react";
+className="... bg-[#FAFAFA]"
+```
 
-// Картка 1 (рядки 21-28):
-<div className="w-8 h-8 bg-gradient-to-br from-pink-100 to-purple-100 rounded-full flex items-center justify-center mb-3">
-  <Lightbulb className="w-4 h-4 text-pink-500" />
-</div>
-<p className="text-gray-800 font-medium">
-  Не потрібно нічого вигадувати
-</p>
+**Стане:**
+```tsx
+className="... bg-gradient-to-b from-rose-50 via-pink-50/50 to-white"
+```
 
-// Картка 2 (рядки 30-37):
-<div className="w-8 h-8 bg-gradient-to-br from-pink-100 to-purple-100 rounded-full flex items-center justify-center mb-3">
-  <ShieldCheck className="w-4 h-4 text-pink-500" />
-</div>
+### 2. Колір серця (рядок 47)
+**Було:**
+```tsx
+className="w-[850px] h-[850px] text-white/40"
+```
 
-// Картка 3 (рядки 39-46):
-<div className="w-8 h-8 bg-gradient-to-br from-pink-100 to-purple-100 rounded-full flex items-center justify-center mb-3">
-  <HandHeart className="w-4 h-4 text-pink-500" />
-</div>
+**Стане:**
+```tsx
+className="w-[850px] h-[850px] text-rose-100"
+```
 
-// Картка 4 (рядки 48-55):
-<div className="w-8 h-8 bg-gradient-to-br from-pink-100 to-purple-100 rounded-full flex items-center justify-center mb-3">
-  <RefreshCcw className="w-4 h-4 text-pink-500" />
-</div>
+### 3. Ambient glow (рядок 30) — підсилити рожеве сяйво
+**Було:**
+```tsx
+className="... bg-rose-200/40 blur-[100px] ..."
+```
+
+**Стане:**
+```tsx
+className="... bg-rose-300/50 blur-[100px] ..."
+```
+
+## Візуальний результат
+
+```text
+┌─────────────────────────────────────┐
+│  ░░░ from-rose-50 (ніжно-рожевий) ░░░│
+│                                     │
+│           ♥  (rose-100)             │
+│         Скажи "Я кохаю"             │
+│                                     │
+│  ░░░░░ via-pink-50/50 ░░░░░░░░░░░░░ │
+│                                     │
+│         [Створити листівку]         │
+│                                     │
+│  ░░░░░░░░ to-white ░░░░░░░░░░░░░░░░ │
+└─────────────────────────────────────┘
 ```
 
 ## Результат
-- Текст першої картки змінено на "Не потрібно нічого вигадувати"
-- Замість емодзі 💝 — чіткі Lucide іконки у рожевому кольорі
-- Іконки відповідають змісту кожної картки
-- Стиль залишається однаковим (градієнтний фон, розмір 8x8)
+- Серце виділяється на рожевому градієнті
+- Валентинівська атмосфера підсилена
+- Плавний перехід до білих секцій нижче
+- Консистентний з дизайн-напрямком проєкту
