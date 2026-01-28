@@ -8,15 +8,14 @@ const PainPoint = ({ text, index }: { text: React.ReactNode, index: number }) =>
     offset: ["start end", "center center"]
   });
 
-  // Smooth animation: 0→1→0
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.9, 1, 1, 0.95]);
-  const y = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [60, 0, 0, -40]);
+  // Clean fade animation without vertical movement
+  const opacity = useTransform(scrollYProgress, [0, 0.4, 0.6, 1], [0, 1, 1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.4, 0.6, 1], [0.95, 1, 1, 0.95]);
 
   return (
     <motion.div
       ref={ref}
-      style={{ opacity, scale, y }}
+      style={{ opacity, scale }}
       className="h-[70vh] flex items-center justify-center px-8 sticky top-0"
     >
       <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 text-center leading-tight max-w-3xl">
