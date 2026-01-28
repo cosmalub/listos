@@ -12,6 +12,7 @@ import OrderSuccess from "./pages/OrderSuccess";
 import PublicSong from "./pages/PublicSong";
 import Discount from "./pages/Discount";
 import Valentine from "./pages/Valentine";
+import ValentineNew from "./pages/ValentineNew";
 import NotFound from "./pages/NotFound";
 import { OrderDialogProvider } from "./components/order/OrderDialogContext";
 import { OrderDialog } from "./components/order/OrderDialog";
@@ -29,18 +30,19 @@ const App = () => (
           <OrderDialogProvider>
             <OrderDialog />
             <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/order" element={<Order />} />
-            <Route path="/order-pending" element={<OrderPending />} />
-            <Route path="/studio" element={<Studio />} />
-            <Route path="/s/draft" element={<PublicSongDraft />} />
-            <Route path="/order-success" element={<OrderSuccess />} />
-            <Route path="/s/song/:orderId" element={<PublicSong />} />
-            <Route path="/discount" element={<Discount />} />
-            <Route path="/valentine" element={<Valentine />} />
-            
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
+              <Route path="/" element={<Index />} />
+              <Route path="/order" element={<Order />} />
+              <Route path="/order-pending" element={<OrderPending />} />
+              <Route path="/studio" element={<Studio />} />
+              <Route path="/s/draft" element={<PublicSongDraft />} />
+              <Route path="/order-success" element={<OrderSuccess />} />
+              <Route path="/s/song/:orderId" element={<PublicSong />} />
+              <Route path="/discount" element={<Discount />} />
+              <Route path="/valentine" element={<Valentine />} />
+              <Route path="/valentine-new" element={<ValentineNew />} />
+
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </OrderDialogProvider>
         </PostHogProvider>
