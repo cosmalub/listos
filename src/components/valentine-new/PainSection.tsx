@@ -26,7 +26,7 @@ const PainPoint = ({ text, index }: { text: React.ReactNode, index: number }) =>
 
 export function PainSection() {
   return (
-    <section className="relative py-32 bg-[#FAFAFA] overflow-hidden">
+    <section className="relative py-32 bg-gradient-to-b from-white via-white to-[#FAFAFA] overflow-hidden">
 
       {/* Abstract Background Shadows/Gradients */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
