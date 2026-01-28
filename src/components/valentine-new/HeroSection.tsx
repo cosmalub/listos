@@ -50,7 +50,7 @@ export function HeroSection() {
           </div>
 
           {/* Text Content - Positioned visually inside the heart */}
-          <div className="relative z-10 flex flex-col items-center text-center pt-16 pb-12 px-12 max-w-2xl">
+          <div className="relative z-10 flex flex-col items-center text-center pt-8 pb-12 px-12 max-w-2xl">
 
             {/* Headline */}
             <motion.h1
