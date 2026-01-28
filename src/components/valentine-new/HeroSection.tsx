@@ -16,7 +16,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-40 pb-16 px-4 bg-[#FAFAFA]">
+    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-40 pb-16 px-4 bg-gradient-to-b from-rose-50 via-pink-50/50 to-white">
       {/* Background Texture */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-0 mix-blend-multiply"
         style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E")` }}
@@ -27,7 +27,7 @@ export function HeroSection() {
         <motion.div
           animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-rose-200/40 blur-[100px] rounded-full"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-rose-300/50 blur-[100px] rounded-full"
         />
       </div>
 
@@ -44,7 +44,7 @@ export function HeroSection() {
           <div className="absolute inset-0 flex items-center justify-center drop-shadow-2xl">
             <motion.svg
               viewBox="0 0 512 512"
-              className="w-[850px] h-[850px] text-white/40"
+              className="w-[850px] h-[850px] text-rose-100"
               animate={{ y: [0, -15, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             >
