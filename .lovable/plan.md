@@ -1,45 +1,24 @@
 
-# Убрать асимметричное розовое пятно на фоне
+# Поднять текст выше внутри сердца
 
-## Проблема
-На строках 26-32 есть **Ambient Glow** — огромный размытый круг `bg-rose-300/50` с анимацией масштабирования. Это создаёт неравномерное розовое пятно на фоне.
+## Текущее состояние
+Контейнер с текстом (строка 53) имеет padding сверху `pt-16` — это 64px.
 
 ## Решение
-**Полностью удалить Ambient Glow**. Фон секции уже имеет мягкий розовый градиент `from-pink-50/80 via-white to-white` — дополнительное пятно не нужно.
+Уменьшить верхний padding, чтобы текст поднялся выше. Изменить `pt-16` на `pt-8` (32px) — сдвиг на 32px вверх.
 
-## Изменения в `src/components/valentine-new/HeroSection.tsx`
+## Изменение в `src/components/valentine-new/HeroSection.tsx`
 
-Удалить строки 25-32:
+**Строка 53:**
 
 ```tsx
-{/* Ambient Glows */}
-<div className="absolute inset-0 overflow-hidden pointer-events-none">
-  <motion.div
-    animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
-    transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-rose-300/50 blur-[100px] rounded-full"
-  />
-</div>
+// Было:
+<div className="relative z-10 flex flex-col items-center text-center pt-16 pb-12 px-12 max-w-2xl">
+
+// Станет:
+<div className="relative z-10 flex flex-col items-center text-center pt-8 pb-12 px-12 max-w-2xl">
 ```
 
 ## Результат
-
-```text
-┌─────────────────────────────────────────┐
-│ ░░░░ pink-50/80 (ровный градиент) ░░░░░ │
-│ ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ │
-│            ╭─────────╮                  │
-│          ╱             ╲                │
-│        ╱    Скажи       ╲               │
-│       │   "Я кохаю"      │              │
-│        ╲                ╱               │
-│          ╲            ╱                 │
-│            ╰────────╯                   │
-│                                         │
-│ ░░░░░░░░░ to-white ░░░░░░░░░░░░░░░░░░░ │
-└─────────────────────────────────────────┘
-```
-
-- Фон **равномерный** по всей ширине экрана
-- Никаких розовых пятен слева/справа
-- Чистый минималистичный дизайн
+- Заголовок и подзаголовок поднимутся на ~32px выше
+- Визуально текст будет ближе к центру сердца
