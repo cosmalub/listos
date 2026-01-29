@@ -85,7 +85,7 @@ export function HowItWorksSection() {
                   <div className="flex-shrink-0 w-5 h-5 rounded-full bg-rose-100 flex items-center justify-center">
                     <Sparkles size={12} className="text-rose-500" />
                   </div>
-                  Вічна пам'ять у QR-коді
+                  Пісня, що залишається назавжди
                 </li>
               </ul>
               <button
