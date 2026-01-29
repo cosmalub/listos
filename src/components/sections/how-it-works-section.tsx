@@ -41,7 +41,7 @@ export function HowItWorksSection() {
     return (
         <section className="py-20 bg-white relative overflow-hidden" id="how-it-works">
             <div className="container mx-auto px-4 relative z-10">
-                <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+                <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start max-w-6xl mx-auto">
 
                     {/* Left: Sticky Title & CTA */}
                     <div className="lg:sticky lg:top-32 h-fit space-y-8 text-center lg:text-left">
