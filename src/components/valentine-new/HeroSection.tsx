@@ -86,10 +86,9 @@ export function HeroSection() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => openOrderDialog('hero-valentine', 'Створити листівку')}
-            className="px-6 py-3 bg-gradient-to-r from-rose-500 to-purple-600 text-white rounded-full font-semibold shadow-lg hover:shadow-rose-500/40 transition-shadow flex items-center gap-2"
+            className="px-6 py-3 bg-gradient-to-r from-rose-500 to-purple-600 text-white rounded-full font-semibold shadow-lg hover:shadow-rose-500/40 transition-shadow"
           >
-            <span className="relative z-10">Створити листівку</span>
-            <ArrowRight size={18} />
+            Створити листівку
           </motion.button>
         </motion.div>
 
@@ -100,15 +99,20 @@ export function HeroSection() {
           transition={{ delay: 1 }}
           className="flex flex-col items-center gap-3 mt-8 opacity-80"
         >
-          <div className="flex -space-x-3">
+          <div className="flex items-center">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="w-10 h-10 rounded-full bg-gray-200 border-2 border-white overflow-hidden relative shadow-sm">
-                <img
-                  src={`https://api.dicebear.com/9.x/notionists/svg?seed=${i + 5}`}
-                  alt="user"
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <React.Fragment key={i}>
+                <div className={`w-10 h-10 rounded-full bg-gray-200 border-2 border-white overflow-hidden relative shadow-sm ${i > 1 ? '-ml-3' : ''}`}>
+                  <img
+                    src={`https://api.dicebear.com/9.x/notionists/svg?seed=${i + 5}`}
+                    alt="user"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                {i === 2 && (
+                  <span className="text-rose-400 text-xs mx-1">♥</span>
+                )}
+              </React.Fragment>
             ))}
           </div>
           <div className="text-sm text-gray-500 flex items-center gap-2">
