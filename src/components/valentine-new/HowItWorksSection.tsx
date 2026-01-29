@@ -119,7 +119,7 @@ export function HowItWorksSection() {
             {/* Step 2: Creation (Screencast Placeholder) */}
             <StepCard number="2" title="Магія створення" icon={Play}>
               <p className="mb-6">
-                Обираєш стиль і отримуєш варіанти пісні. Щось не так? Можна перегенерувати, доки не стане ідеально.
+                Генеруєш ідеальну пісню та створюєш персональний дизайн з фото. Бачиш магію на екрані ще до замовлення.
               </p>
               {/* MEDIA PLACEHOLDER: Screencast */}
               <div className="relative w-full aspect-video bg-gray-900 rounded-2xl overflow-hidden shadow-lg group cursor-pointer border border-gray-800">
@@ -139,7 +139,7 @@ export function HowItWorksSection() {
             {/* Step 3: Result (Photo Placeholder) */}
             <StepCard number="3" title="Емоція в руках" icon={Gift} isLast={true}>
               <p className="mb-6">
-                Створюєш власний дизайн з фото або опису, а ми друкуємо. Скануєш QR — і твоя пісня оживає.
+                Отримуєш фізичну листівку. Момент вручення, скан QR-коду — і емоції, які неможливо стримати.
               </p>
               {/* MEDIA PLACEHOLDER: Photo of Result */}
               <div className="relative w-full aspect-[4/3] bg-rose-50 rounded-2xl overflow-hidden shadow-lg border border-rose-100">
