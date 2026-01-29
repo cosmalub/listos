@@ -4,10 +4,10 @@ import { CheckCircle2, Heart } from 'lucide-react';
 
 export function WhoIsThisForSection() {
   const points = [
-    'Для тих, хто любить, але не вміє красиво говорити',
-    'Для тих, хто боїться банальності',
-    'Для тих, хто хоче справжній момент, а не формальність',
-    'Для тих, кому важливо, щоб це запам’яталося'
+    'Хочеш сказати більше, ніж просто «Я тебе люблю»',
+    'Шукаєш щось особливе, не банальне',
+    'Бажаєш створити момент, який запам\'ятається',
+    'Хочеш здивувати по-справжньому'
   ];
 
   return (
@@ -25,11 +25,11 @@ export function WhoIsThisForSection() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6"
           >
             <Heart size={16} className="text-rose-400 fill-rose-400" />
-            <span className="text-sm font-medium text-white/80">Ідеальний метч</span>
+            <span className="text-sm font-medium text-white/80">14 лютого</span>
           </motion.div>
 
           <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
-            Для кого це <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-purple-400">14 лютого</span>
+            Кому потрібна <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-purple-400">ця листівка?</span>
           </h2>
         </div>
 
