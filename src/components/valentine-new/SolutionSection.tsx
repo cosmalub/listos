@@ -40,101 +40,133 @@ export function SolutionSection() {
         </div>
 
         {/* CENTERPIECE: The Artistic Composition */}
-        <div className="relative min-h-[600px] flex items-center justify-center mb-24">
+        <div className="relative min-h-[650px] flex items-center justify-center mb-24">
 
-          {/* The "Sonic Pulse" - Visible, Rhythmic, Powerful */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center pointer-events-none -z-10">
-            {/* Core Glow */}
-            <div className="absolute w-64 h-64 bg-rose-400/20 blur-[50px] rounded-full animate-pulse" />
+          {/* Floating Hearts Animation - Emanating FROM the cards */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {/* Soft glow behind cards */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-rose-200/30 blur-[80px] rounded-full" />
 
-            {/* Expanding Shockwaves (Filled) */}
-            {[...Array(3)].map((_, i) => (
-              <motion.div
-                key={`wave-${i}`}
-                className="absolute rounded-full bg-gradient-to-br from-rose-100/60 to-purple-100/60 mix-blend-multiply"
-                initial={{ width: '250px', height: '250px', opacity: 0.8 }}
-                animate={{
-                  width: ['250px', '700px'],
-                  height: ['250px', '700px'],
-                  opacity: [0.5, 0],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  delay: i * 1,
-                  ease: "easeOut"
-                }}
-              />
-            ))}
+            {/* Hearts rising UP from card area */}
+            {[...Array(10)].map((_, i) => {
+              const size = 14 + Math.random() * 14; // 14-28px
+              const startX = 35 + (i * 3) % 30; // start near center (35-65%)
+              const endX = (i % 2 === 0 ? -1 : 1) * (30 + Math.random() * 40); // spread left/right
+              const duration = 4 + Math.random() * 3; // 4-7s
+              const delay = i * 0.6;
 
-            {/* Expanding Rings (Definition) */}
-            {[...Array(3)].map((_, i) => (
-              <motion.div
-                key={`ring-${i}`}
-                className="absolute rounded-full border border-rose-300/40"
-                initial={{ width: '250px', height: '250px', opacity: 1 }}
-                animate={{
-                  width: ['250px', '800px'],
-                  height: ['250px', '800px'],
-                  opacity: [0.8, 0],
-                  borderWidth: ['1px', '4px', '0px']
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  delay: i * 1,
-                  ease: "easeOut"
-                }}
-              />
-            ))}
+              return (
+                <motion.div
+                  key={`heart-${i}`}
+                  className="absolute text-rose-400/70"
+                  style={{
+                    left: `${startX}%`,
+                    top: '55%', // start from card area
+                    fontSize: `${size}px`,
+                  }}
+                  initial={{ y: 0, x: 0, opacity: 0, scale: 0.5 }}
+                  animate={{
+                    y: [0, -300, -500],
+                    x: [0, endX * 0.5, endX],
+                    opacity: [0, 1, 0.8, 0],
+                    scale: [0.5, 1, 0.8],
+                    rotate: [0, (i % 2 === 0 ? 15 : -15)],
+                  }}
+                  transition={{
+                    duration: duration,
+                    repeat: Infinity,
+                    delay: delay,
+                    ease: "easeOut",
+                  }}
+                >
+                  ♥
+                </motion.div>
+              );
+            })}
+
+            {/* Musical notes also rising from cards */}
+            {[...Array(6)].map((_, i) => {
+              const size = 16 + Math.random() * 12;
+              const startX = 40 + (i * 4) % 20; // center area
+              const endX = (i % 2 === 0 ? -1 : 1) * (40 + Math.random() * 50);
+              const duration = 5 + Math.random() * 2;
+              const delay = i * 0.9 + 0.2;
+
+              return (
+                <motion.div
+                  key={`note-${i}`}
+                  className="absolute text-purple-400/60"
+                  style={{
+                    left: `${startX}%`,
+                    top: '55%',
+                    fontSize: `${size}px`,
+                  }}
+                  initial={{ y: 0, opacity: 0 }}
+                  animate={{
+                    y: [0, -250, -450],
+                    x: [0, endX * 0.3, endX * 0.8],
+                    opacity: [0, 0.8, 0.6, 0],
+                    rotate: [0, 180, 360],
+                  }}
+                  transition={{
+                    duration: duration,
+                    repeat: Infinity,
+                    delay: delay,
+                    ease: "easeOut",
+                  }}
+                >
+                  ♪
+                </motion.div>
+              );
+            })}
           </div>
 
-          {/* The Cards: Overlapping & Tilted */}
-          <div className="relative w-full max-w-lg h-[400px] flex items-center justify-center">
+          {/* The Cards: Overlapping & Tilted - LARGER */}
+          <div className="relative w-full max-w-xl h-[450px] flex items-center justify-center">
 
-            {/* Back Card (QR) - Tilted Right, slightly behind or front? Let's put it Front-Right for scanning focus */}
+            {/* Back Card (QR) - Tilted Right */}
             <motion.div
-              initial={{ opacity: 0, rotate: 10, x: 50, y: 10 }}
-              whileInView={{ opacity: 1, rotate: 6, x: 40, y: 0 }} // Final state
+              initial={{ opacity: 0, rotate: 10, x: 60, y: 10 }}
+              whileInView={{ opacity: 1, rotate: 6, x: 50, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="absolute z-20 w-64 h-96 bg-white rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] flex flex-col items-center justify-center border border-white/50 backdrop-blur-sm"
+              className="absolute z-20 w-72 h-[420px] bg-white rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.15)] flex flex-col items-center justify-center border border-white/50 backdrop-blur-sm"
             >
               {/* Texture/Noise */}
-              <div className="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/paper.png')] mix-blend-multiply" />
+              <div className="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/paper.png')] mix-blend-multiply rounded-2xl" />
 
               <div className="relative z-10 flex flex-col items-center">
-                <div className="w-28 h-28 bg-gray-900 rounded-lg mb-6 flex items-center justify-center relative shadow-lg group hover:scale-105 transition-transform duration-300">
-                  <div className="absolute inset-0 border border-white/20 rounded opacity-50" />
-                  <ScanLine className="text-white w-10 h-10 opacity-80" />
+                <div className="w-32 h-32 bg-gray-900 rounded-xl mb-6 flex items-center justify-center relative shadow-lg group hover:scale-105 transition-transform duration-300">
+                  <div className="absolute inset-0 border border-white/20 rounded-xl opacity-50" />
+                  <ScanLine className="text-white w-12 h-12 opacity-80" />
                   {/* Small pulse from QR itself */}
                   <motion.div
-                    className="absolute inset-0 bg-white/5 rounded-lg"
+                    className="absolute inset-0 bg-white/5 rounded-xl"
                     animate={{ opacity: [0, 0.5, 0] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   />
                 </div>
-                <span className="text-xs font-medium text-gray-400 uppercase tracking-widest mb-1">Зворот</span>
-                <p className="text-[10px] text-gray-400 max-w-[120px] text-center">
+                <span className="text-sm font-medium text-gray-400 uppercase tracking-widest mb-1">Зворот</span>
+                <p className="text-xs text-gray-400 max-w-[140px] text-center">
                   Наведи камеру,<br />і музика заграє
                 </p>
               </div>
             </motion.div>
 
-            {/* Front Card (Design) - Tilted Left, slightly behind */}
+            {/* Front Card (Design) - Tilted Left */}
             <motion.div
-              initial={{ opacity: 0, rotate: -10, x: -50, y: -10 }}
-              whileInView={{ opacity: 1, rotate: -6, x: -40, y: 0 }} // Final state
+              initial={{ opacity: 0, rotate: -10, x: -60, y: -10 }}
+              whileInView={{ opacity: 1, rotate: -6, x: -50, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="absolute z-10 w-64 h-96 bg-white rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center border border-gray-100"
+              className="absolute z-10 w-72 h-[420px] bg-white rounded-2xl shadow-[0_15px_40px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center border border-gray-100"
             >
               {/* Placeholder Design */}
-              <div className="absolute inset-4 border border-rose-100 rounded-lg flex flex-col items-center justify-center">
-                <Heart className="w-12 h-12 text-rose-200 mb-4" strokeWidth={1} />
-                <span className="text-xs text-rose-300 font-handwriting">Ваші найтепліші слова...</span>
+              <div className="absolute inset-5 border border-rose-100 rounded-xl flex flex-col items-center justify-center">
+                <Heart className="w-14 h-14 text-rose-200 mb-4" strokeWidth={1} />
+                <span className="text-sm text-rose-300 font-handwriting">Ваші найтепліші слова...</span>
               </div>
-              <div className="absolute bottom-6 text-[10px] text-gray-300 uppercase tracking-widest">
+              <div className="absolute bottom-6 text-xs text-gray-300 uppercase tracking-widest">
                 Лицьова
               </div>
             </motion.div>
@@ -191,7 +223,7 @@ export function SolutionSection() {
           </motion.button>
         </div>
 
-      </div>
-    </section>
+      </div >
+    </section >
   );
 }
