@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useOrderDialog } from '@/components/order/OrderDialogContext';
 import { Sparkles, Play, Gift } from 'lucide-react';
+import postcardScanImage from "@/assets/postcard-scan.png";
 
 const StepCard = ({ number, title, children, icon: Icon, isLast = false }: any) => (
     <motion.div
@@ -107,14 +108,15 @@ export function HowItWorksSection() {
                             </p>
                             {/* Media Container - Styled with Home Page borders */}
                             <div className="relative w-full aspect-video bg-[#2A2A2A] rounded-xl overflow-hidden shadow-md border border-gray-800 group cursor-pointer">
-                                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
-                                    <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm mb-4 group-hover:scale-110 transition-transform">
-                                        <Play className="text-white fill-white ml-1" size={32} />
-                                    </div>
-                                    <span className="text-gray-400 text-xs uppercase tracking-widest font-bold">Демонстрація процесу</span>
-                                </div>
-                                {/* Visual abstract bg */}
-                                <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
+                                <video
+                                    src="/videos/studio.mp4"
+                                    className="w-full h-full object-cover"
+                                    muted
+                                    playsInline
+                                    loop
+                                    autoPlay
+                                />
+                                <div className="absolute inset-0 bg-black/10" />
                             </div>
                         </StepCard>
 
@@ -125,10 +127,11 @@ export function HowItWorksSection() {
                             </p>
                             {/* Media Container - Light Theme for Result */}
                             <div className="relative w-full aspect-[4/3] bg-gradient-to-br from-[#F5F3FF] to-[#F0F0FF] rounded-xl overflow-hidden shadow-md border border-[#E8B3FF]/30">
-                                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                    <Gift className="text-[#B8B3FF] w-16 h-16 mb-2" />
-                                    <span className="text-[#B8B3FF] font-medium">Фото готової листівки</span>
-                                </div>
+                                <img
+                                    src={postcardScanImage}
+                                    alt="Листівка з QR-кодом"
+                                    className="w-full h-full object-cover"
+                                />
                             </div>
                         </StepCard>
                     </div>
