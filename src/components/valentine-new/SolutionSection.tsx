@@ -254,7 +254,7 @@ export function SolutionSection() {
             <div className="w-14 h-14 mx-auto bg-white shadow-lg rounded-2xl flex items-center justify-center text-rose-500 group-hover:scale-110 transition-transform duration-300">
               <Music size={26} strokeWidth={1.5} />
             </div>
-            <h3 className="text-xl font-bold text-gray-900">Фізична + Цифрова</h3>
+            <h3 className="text-xl font-bold text-gray-900">В руках і в серці</h3>
             <p className="text-gray-500 leading-relaxed text-sm">
               Листівка, яку тримають в руках. <br />
               Пісня, яку відчувають серцем.
