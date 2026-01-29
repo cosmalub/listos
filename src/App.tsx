@@ -38,8 +38,8 @@ const App = () => (
               <Route path="/order-success" element={<OrderSuccess />} />
               <Route path="/s/song/:orderId" element={<PublicSong />} />
               <Route path="/discount" element={<Discount />} />
-              <Route path="/valentine" element={<Valentine />} />
-              <Route path="/valentine-new" element={<ValentineNew />} />
+              <Route path="/valentine" element={<ValentineNew />} />
+              <Route path="/valentine-old" element={<Valentine />} />
 
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
