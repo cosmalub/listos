@@ -12,7 +12,7 @@ const StepCard = ({ number, title, children, icon: Icon, isLast = false }: any) 
     >
         {/* Connector Line */}
         {!isLast && (
-            <div className="absolute left-[19px] md:left-[22px] top-12 bottom-0 w-0.5 bg-gradient-to-b from-[#B8B3FF] to-transparent/10" />
+            <div className="absolute left-[20px] top-12 bottom-8 w-0.5 border-l-2 border-dashed border-[#B8B3FF]/30" />
         )}
 
         {/* Number/Icon Bubble */}
@@ -41,7 +41,7 @@ export function HowItWorksSection() {
     return (
         <section className="py-20 bg-white relative overflow-hidden" id="how-it-works">
             <div className="container mx-auto px-4 relative z-10">
-                <div className="grid lg:grid-cols-2 gap-12 lg:gap-24">
+                <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
 
                     {/* Left: Sticky Title & CTA */}
                     <div className="lg:sticky lg:top-32 h-fit space-y-8 text-center lg:text-left">
@@ -98,7 +98,7 @@ export function HowItWorksSection() {
                     </div>
 
                     {/* Right: Timeline Steps */}
-                    <div className="relative pt-8">
+                    <div className="space-y-8">
 
                         {/* Step 1: Creation */}
                         <StepCard number="1" title="Магія створення" icon={Play}>
