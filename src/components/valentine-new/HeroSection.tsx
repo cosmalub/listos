@@ -112,6 +112,9 @@ export function HeroSection() {
             <div className="w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-sm">
               <img src="/avatars/couple4.jpg" alt="couple" className="w-full h-full object-cover" />
             </div>
+            <div className="w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-sm">
+              <img src="/avatars/couple5.jpg" alt="couple" className="w-full h-full object-cover" />
+            </div>
           </div>
           <div className="text-sm text-gray-500 flex items-center gap-2">
             <div className="flex text-yellow-400">
