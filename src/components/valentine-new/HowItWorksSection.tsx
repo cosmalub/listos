@@ -104,7 +104,7 @@ export function HowItWorksSection() {
             {/* Step 1: Idea */}
             <StepCard number="1" title="Розкажи свою історію" icon={MessageCircleHeart}>
               <p className="mb-4">
-                Це просто. Увійди в студію і дай відповіді на кілька питань про людину, яку хочеш привітати.
+                Ти відповідаєш на питання, а наш ШІ делікатно допомагає сформулювати думки у зворушливий текст.
               </p>
               <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
                 <div className="flex gap-3 items-center opacity-60 grayscale">
@@ -119,7 +119,7 @@ export function HowItWorksSection() {
             {/* Step 2: Creation (Screencast Placeholder) */}
             <StepCard number="2" title="Магія створення" icon={Play}>
               <p className="mb-6">
-                Штучний інтелект підбере рими і напише музику. Ти бачиш весь процес на екрані.
+                Обираєш стиль і отримуєш варіанти пісні. Щось не так? Можна перегенерувати, доки не стане ідеально.
               </p>
               {/* MEDIA PLACEHOLDER: Screencast */}
               <div className="relative w-full aspect-video bg-gray-900 rounded-2xl overflow-hidden shadow-lg group cursor-pointer border border-gray-800">
@@ -139,7 +139,7 @@ export function HowItWorksSection() {
             {/* Step 3: Result (Photo Placeholder) */}
             <StepCard number="3" title="Емоція в руках" icon={Gift} isLast={true}>
               <p className="mb-6">
-                Ми друкуємо листівку і відправляємо тобі. Людина сканує код — і її серце тане.
+                Створюєш власний дизайн з фото або опису, а ми друкуємо. Скануєш QR — і твоя пісня оживає.
               </p>
               {/* MEDIA PLACEHOLDER: Photo of Result */}
               <div className="relative w-full aspect-[4/3] bg-rose-50 rounded-2xl overflow-hidden shadow-lg border border-rose-100">
