@@ -90,10 +90,10 @@ export function HowItWorksSection() {
               </ul>
               <button
                 onClick={() => openOrderDialog('how-it-works-valentine', 'Купити доступ')}
-                className="w-full bg-gray-900 text-white font-bold py-4 rounded-xl hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-rose-500 to-purple-600 text-white font-bold py-4 rounded-xl hover:shadow-rose-500/40 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
               >
                 <span>Створити пісню</span>
-                <Sparkles size={16} className="text-purple-300" />
+                <Sparkles size={16} className="text-white/80" />
               </button>
             </div>
           </div>

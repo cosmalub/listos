@@ -256,8 +256,8 @@ export function SolutionSection() {
             </div>
             <h3 className="text-xl font-bold text-gray-900">Фізична + Цифрова</h3>
             <p className="text-gray-500 leading-relaxed text-sm">
-              Справжня листівка в руках. <br />
-              Справжня емоція в навушниках.
+              Листівка, яку тримають в руках. <br />
+              Пісня, яку відчувають серцем.
             </p>
           </div>
 
@@ -267,8 +267,8 @@ export function SolutionSection() {
             </div>
             <h3 className="text-xl font-bold text-gray-900">Без творчих мук</h3>
             <p className="text-gray-500 leading-relaxed text-sm">
-              Ми перетворимо ваші думки <br />
-              на професійну пісню.
+              Ми допомагаємо сформулювати ваші думки <br />
+              і бережно перетворюємо їх на пісню.
             </p>
           </div>
 
@@ -290,9 +290,9 @@ export function SolutionSection() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => openOrderDialog('solution-valentine', 'Створити пісню')}
-            className="px-10 py-5 bg-gray-900 text-white rounded-full font-bold shadow-xl hover:shadow-2xl transition-all flex items-center gap-3 mx-auto"
+            className="px-10 py-5 bg-gradient-to-r from-rose-500 to-purple-600 text-white rounded-full font-bold shadow-xl hover:shadow-rose-500/40 transition-all flex items-center gap-3 mx-auto"
           >
-            <Sparkles size={18} className="text-purple-300" />
+            <Sparkles size={18} className="text-white/80" />
             <span>Створити свою магію</span>
           </motion.button>
         </div>
