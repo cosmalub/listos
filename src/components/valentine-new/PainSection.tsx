@@ -52,31 +52,31 @@ const cardVariants: Variants = {
 
 export function PainSection() {
   return (
-    <section className="relative py-20 md:py-28 bg-[#FAFAFA] overflow-hidden">
+    <section className="relative py-16 md:py-28 bg-[#FAFAFA] overflow-hidden">
       {/* Background Decor - matching HowItWorks */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-rose-100/30 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-purple-100/20 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="relative z-10 max-w-5xl mx-auto px-4">
         {/* Section header */}
-        <div className="text-center mb-12 md:mb-16">
+        <div className="text-center mb-10 md:mb-16">
           <motion.span
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-sm font-bold tracking-wider text-rose-500 uppercase block"
+            className="text-base md:text-sm font-bold tracking-wider text-rose-500 uppercase block"
           >
             Знайома ситуація?
           </motion.span>
         </div>
 
-        {/* Cards grid - HowItWorks style */}
+        {/* Cards grid - optimized for mobile */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8"
+          className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-8"
         >
           {painPoints.map((point, index) => {
             const Icon = point.icon;
@@ -84,20 +84,21 @@ export function PainSection() {
               <motion.div
                 key={index}
                 variants={cardVariants}
-                className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 md:p-8 border border-rose-100 shadow-sm hover:shadow-md transition-all duration-300"
+                className="bg-white/80 backdrop-blur-sm rounded-2xl md:rounded-3xl p-4 md:p-8 border border-rose-100 shadow-sm hover:shadow-md transition-all duration-300"
               >
-                <div className="flex items-start gap-4">
-                  {/* Icon container - matching HowItWorks */}
-                  <div className="flex-shrink-0 p-3 bg-rose-50 rounded-2xl">
-                    <Icon className="w-6 h-6 text-rose-500" />
+                {/* Mobile: vertical centered layout, Desktop: horizontal layout */}
+                <div className="flex flex-col items-center text-center md:flex-row md:items-start md:text-left gap-3 md:gap-4">
+                  {/* Icon container */}
+                  <div className="flex-shrink-0 p-2.5 md:p-3 bg-rose-50 rounded-xl md:rounded-2xl">
+                    <Icon className="w-5 h-5 md:w-6 md:h-6 text-rose-500" />
                   </div>
                   
                   {/* Text */}
-                  <div className="pt-1">
-                    <p className="text-lg font-semibold text-gray-900">
+                  <div className="md:pt-1">
+                    <p className="text-sm md:text-lg font-semibold text-gray-900 leading-tight">
                       {point.text}
                     </p>
-                    <p className="text-gray-600 font-normal">
+                    <p className="text-xs md:text-base text-gray-600 font-normal mt-0.5 md:mt-0">
                       {point.subtext}
                     </p>
                   </div>
