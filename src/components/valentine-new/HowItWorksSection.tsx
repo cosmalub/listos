@@ -53,7 +53,7 @@ export function HowItWorksSection() {
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
                 Від ідеї до емоції — <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-purple-600">
-                  всього 3 кроки
+                  всього 2 кроки
                 </span>
               </h2>
               <p className="text-lg text-gray-600 max-w-md mx-auto lg:mx-0">
@@ -101,25 +101,10 @@ export function HowItWorksSection() {
           {/* Right: Timeline Steps */}
           <div className="relative pt-8">
 
-            {/* Step 1: Idea */}
-            <StepCard number="1" title="Розкажи свою історію" icon={MessageCircleHeart}>
-              <p className="mb-4">
-                Ти відповідаєш на питання, а наш ШІ делікатно допомагає сформулювати думки у зворушливий текст.
-              </p>
-              <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
-                <div className="flex gap-3 items-center opacity-60 grayscale">
-                  <div className="w-8 h-8 rounded-full bg-rose-200" />
-                  <div className="h-2 w-24 bg-gray-200 rounded-full" />
-                </div>
-                <div className="mt-3 h-2 w-full bg-gray-200 rounded-full opacity-30" />
-                <div className="mt-2 h-2 w-3/4 bg-gray-200 rounded-full opacity-30" />
-              </div>
-            </StepCard>
-
-            {/* Step 2: Creation (Screencast Placeholder) */}
-            <StepCard number="2" title="Магія створення" icon={Play}>
+            {/* Step 1: Creation (Studio Process) */}
+            <StepCard number="1" title="Магія створення" icon={Play}>
               <p className="mb-6">
-                Генеруєш ідеальну пісню та створюєш персональний дизайн з фото. Бачиш магію на екрані ще до замовлення.
+                Ти відповідаєш на питання — ШІ створює пісню. Створюєш дизайн (фото або генерація) і бачиш результат на екрані.
               </p>
               {/* MEDIA PLACEHOLDER: Screencast */}
               <div className="relative w-full aspect-video bg-gray-900 rounded-2xl overflow-hidden shadow-lg group cursor-pointer border border-gray-800">
@@ -136,8 +121,10 @@ export function HowItWorksSection() {
               </div>
             </StepCard>
 
-            {/* Step 3: Result (Photo Placeholder) */}
-            <StepCard number="3" title="Емоція в руках" icon={Gift} isLast={true}>
+
+
+            {/* Step 2: Result (Photo Placeholder) */}
+            <StepCard number="2" title="Емоція в руках" icon={Gift} isLast={true}>
               <p className="mb-6">
                 Отримуєш фізичну листівку. Момент вручення, скан QR-коду — і емоції, які неможливо стримати.
               </p>
