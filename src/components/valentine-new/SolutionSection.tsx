@@ -42,26 +42,26 @@ export function SolutionSection() {
         {/* CENTERPIECE: The Artistic Composition */}
         <div className="relative min-h-[650px] flex items-center justify-center mb-24">
 
-          {/* Floating Hearts Animation - Emanating FROM the cards */}
+          {/* Floating Hearts Animation - Emanating FROM the cards in ALL directions */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             {/* Soft glow behind cards */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-rose-200/30 blur-[80px] rounded-full" />
 
             {/* Hearts rising UP from card area */}
-            {[...Array(10)].map((_, i) => {
-              const size = 14 + Math.random() * 14; // 14-28px
-              const startX = 35 + (i * 3) % 30; // start near center (35-65%)
-              const endX = (i % 2 === 0 ? -1 : 1) * (30 + Math.random() * 40); // spread left/right
-              const duration = 4 + Math.random() * 3; // 4-7s
-              const delay = i * 0.6;
+            {[...Array(8)].map((_, i) => {
+              const size = 14 + Math.random() * 14;
+              const startX = 35 + (i * 4) % 30;
+              const endX = (i % 2 === 0 ? -1 : 1) * (30 + Math.random() * 40);
+              const duration = 4 + Math.random() * 3;
+              const delay = i * 0.7;
 
               return (
                 <motion.div
-                  key={`heart-${i}`}
+                  key={`heart-up-${i}`}
                   className="absolute text-rose-400/70"
                   style={{
                     left: `${startX}%`,
-                    top: '55%', // start from card area
+                    top: '55%',
                     fontSize: `${size}px`,
                   }}
                   initial={{ y: 0, x: 0, opacity: 0, scale: 0.5 }}
@@ -84,10 +84,84 @@ export function SolutionSection() {
               );
             })}
 
-            {/* Musical notes also rising from cards */}
+            {/* Hearts going LEFT from card area */}
+            {[...Array(5)].map((_, i) => {
+              const size = 12 + Math.random() * 12;
+              const startY = 40 + (i * 5) % 20;
+              const endY = (i % 2 === 0 ? -1 : 1) * (20 + Math.random() * 30);
+              const duration = 4.5 + Math.random() * 2.5;
+              const delay = i * 0.8 + 0.3;
+
+              return (
+                <motion.div
+                  key={`heart-left-${i}`}
+                  className="absolute text-rose-300/60"
+                  style={{
+                    left: '50%',
+                    top: `${startY}%`,
+                    fontSize: `${size}px`,
+                  }}
+                  initial={{ x: 0, y: 0, opacity: 0, scale: 0.5 }}
+                  animate={{
+                    x: [0, -200, -350],
+                    y: [0, endY * 0.5, endY],
+                    opacity: [0, 0.9, 0.7, 0],
+                    scale: [0.5, 1, 0.7],
+                    rotate: [0, -20],
+                  }}
+                  transition={{
+                    duration: duration,
+                    repeat: Infinity,
+                    delay: delay,
+                    ease: "easeOut",
+                  }}
+                >
+                  ♥
+                </motion.div>
+              );
+            })}
+
+            {/* Hearts going RIGHT from card area */}
+            {[...Array(5)].map((_, i) => {
+              const size = 12 + Math.random() * 12;
+              const startY = 40 + (i * 5) % 20;
+              const endY = (i % 2 === 0 ? -1 : 1) * (20 + Math.random() * 30);
+              const duration = 4.5 + Math.random() * 2.5;
+              const delay = i * 0.8 + 0.5;
+
+              return (
+                <motion.div
+                  key={`heart-right-${i}`}
+                  className="absolute text-rose-300/60"
+                  style={{
+                    left: '50%',
+                    top: `${startY}%`,
+                    fontSize: `${size}px`,
+                  }}
+                  initial={{ x: 0, y: 0, opacity: 0, scale: 0.5 }}
+                  animate={{
+                    x: [0, 200, 350],
+                    y: [0, endY * 0.5, endY],
+                    opacity: [0, 0.9, 0.7, 0],
+                    scale: [0.5, 1, 0.7],
+                    rotate: [0, 20],
+                  }}
+                  transition={{
+                    duration: duration,
+                    repeat: Infinity,
+                    delay: delay,
+                    ease: "easeOut",
+                  }}
+                >
+                  ♥
+                </motion.div>
+              );
+            })}
+
+            {/* Musical notes rising from cards */}
             {[...Array(6)].map((_, i) => {
               const size = 16 + Math.random() * 12;
-              const startX = 40 + (i * 4) % 20; // center area
+              const startX = 40 + (i * 4) % 20;
               const endX = (i % 2 === 0 ? -1 : 1) * (40 + Math.random() * 50);
               const duration = 5 + Math.random() * 2;
               const delay = i * 0.9 + 0.2;
