@@ -15,9 +15,10 @@ import { Header } from '@/components/sections/header';
 
 const valentineMenuItems = [
   { name: "Як це працює", href: "#how-it-works" },
+  { name: "Галерея", href: "#gallery" },
   { name: "Відгуки", href: "#reviews" },
   { name: "Ціна", href: "#pricing" },
-  { name: "Гарантія", href: "#guarantee" },
+  { name: "Для кого", href: "#for-whom" },
   { name: "FAQ", href: "#faq" },
 ];
 
@@ -34,7 +35,9 @@ export default function Valentine() {
       </div>
 
       {/* Real Photos Gallery (Custom Polaroid Style for Valentine New Page) */}
-      <ValentineMomentsGallerySection />
+      <div id="gallery">
+        <ValentineMomentsGallerySection />
+      </div>
 
       {/* Screenshots Reviews */}
       <div id="reviews">
@@ -47,7 +50,9 @@ export default function Valentine() {
       <div id="guarantee">
         <TrustSection />
       </div>
-      <WhoIsThisForSection />
+      <div id="for-whom">
+        <WhoIsThisForSection />
+      </div>
       <div id="faq">
         <FaqSection />
       </div>
