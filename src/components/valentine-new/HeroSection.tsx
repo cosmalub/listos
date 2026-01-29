@@ -99,23 +99,18 @@ export function HeroSection() {
           transition={{ delay: 1 }}
           className="flex flex-col items-center gap-3 mt-8 opacity-80"
         >
-          <div className="flex items-center">
-            {/* Couple 1: female + male */}
-            <div className="w-10 h-10 rounded-full bg-gray-200 border-2 border-white overflow-hidden shadow-sm">
-              <img src="https://api.dicebear.com/9.x/notionists/svg?seed=Luna" alt="user" className="w-full h-full object-cover" />
+          <div className="flex -space-x-3">
+            <div className="w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-sm">
+              <img src="/avatars/couple1.jpg" alt="couple" className="w-full h-full object-cover" />
             </div>
-            <div className="w-10 h-10 rounded-full bg-gray-200 border-2 border-white overflow-hidden shadow-sm -ml-3">
-              <img src="https://api.dicebear.com/9.x/notionists/svg?seed=Max" alt="user" className="w-full h-full object-cover" />
+            <div className="w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-sm">
+              <img src="/avatars/couple2.jpg" alt="couple" className="w-full h-full object-cover" />
             </div>
-
-            <span className="text-rose-500 text-base mx-2">♥</span>
-
-            {/* Couple 2: female + male */}
-            <div className="w-10 h-10 rounded-full bg-gray-200 border-2 border-white overflow-hidden shadow-sm">
-              <img src="https://api.dicebear.com/9.x/notionists/svg?seed=Sofia" alt="user" className="w-full h-full object-cover" />
+            <div className="w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-sm">
+              <img src="/avatars/couple3.jpg" alt="couple" className="w-full h-full object-cover" />
             </div>
-            <div className="w-10 h-10 rounded-full bg-gray-200 border-2 border-white overflow-hidden shadow-sm -ml-3">
-              <img src="https://api.dicebear.com/9.x/notionists/svg?seed=Alex" alt="user" className="w-full h-full object-cover" />
+            <div className="w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-sm">
+              <img src="/avatars/couple4.jpg" alt="couple" className="w-full h-full object-cover" />
             </div>
           </div>
           <div className="text-sm text-gray-500 flex items-center gap-2">
