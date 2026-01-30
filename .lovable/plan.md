@@ -1,85 +1,106 @@
 
-# Редизайн PainSection — гармонія зі стилем сайту
+# Редизайн сторінок OrderPending та OrderSuccess
 
-## Проблема
-Поточний дизайн — "список з іконками" — виглядає занадто плоско і не вписується в картковий стиль інших секцій (HowItWorks, Solution).
+## Поточна проблема
+Сторінки оформлення замовлення використовують старий дизайн з фіолетовими акцентами та насиченим градієнтом, який не відповідає новому мінімалістичному стилю головної сторінки.
 
-## Рішення
-Картки у стилі HowItWorks — білий фон, м'яка тінь, рожевий бордер — але без нумерації та таймлайну.
-
-## Візуальна схема
+## Візуальне порівняння
 
 ```text
-┌─────────────────────────────────────────────────────────────────┐
-│  bg-[#FAFAFA] — як HowItWorks                                   │
-│                                                                 │
-│              « Знайома ситуація? »                              │
-│                  (label сірий)                                  │
-│                                                                 │
-│   ┌─────────────────────────┐  ┌─────────────────────────────┐  │
-│   │ ┌────┐                  │  │ ┌────┐                      │  │
-│   │ │ 💔 │  "Я тебе люблю"  │  │ │ 🌸 │  Квіти — гарно,      │  │
-│   │ └────┘  звучить занадто │  │ └────┘  але порожньо        │  │
-│   │         просто          │  │                             │  │
-│   └─────────────────────────┘  └─────────────────────────────┘  │
-│                                                                 │
-│   ┌─────────────────────────┐  ┌─────────────────────────────┐  │
-│   │ ┌────┐                  │  │ ┌────┐                      │  │
-│   │ │ 💬 │  Повідомлення    │  │ │ 🔇 │  Слова застрягають   │  │
-│   │ └────┘  зникне завтра   │  │ └────┘  десь усередині      │  │
-│   └─────────────────────────┘  └─────────────────────────────┘  │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
+СТАРИЙ СТИЛЬ (OrderPending/OrderSuccess)     НОВИЙ СТИЛЬ (Index)
+─────────────────────────────────────────    ─────────────────────────────────
+Градієнт: #FFD1DC → #F3D1FF → white          Градієнт: #FFE4EC → #FFF0F5 → white
+Картки: border-[#E8D5FF] (фіолетовий)        Картки: border-gray-100 (сірий)
+Текст: text-primary (фіолетовий)             Текст: text-gray-900/600 (нейтральний)
+Header: старий Header                        Header: HeaderExperiment (glass)
+Footer: старий Footer                        Footer: FooterExperiment (чистий)
 ```
 
-## Ключові зміни
+## План змін
 
-### 1. Фон секції
+### 1. OrderPending.tsx
+
+**Імпорти:**
+- Замінити `Header` на `HeaderExperiment`
+- Замінити `Footer` на `FooterExperiment`
+
+**Фон секції:**
 ```text
-Було:  bg-white
-Стане: bg-[#FAFAFA] (як HowItWorks)
+Було:  bg-gradient-to-b from-[#FFD1DC] via-[#F3D1FF]/30 to-white
+Стане: bg-gradient-to-b from-[#FFE4EC] via-[#FFF0F5] to-white
 ```
 
-### 2. Стиль карток
-```tsx
-// Як у HowItWorks:
-className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 md:p-8 
-           border border-rose-100 shadow-sm 
-           hover:shadow-md transition-all duration-300"
+**Стиль карток:**
+```text
+Було:  border border-[#E8D5FF] shadow-sm bg-white
+Стане: bg-white rounded-2xl shadow-sm border border-gray-100
 ```
 
-### 3. Контейнер іконок
-```tsx
-// Рожевий фон, як у HowItWorks:
-className="p-3 bg-rose-50 rounded-2xl text-rose-500"
+**Типографіка:**
+```text
+Було:  text-primary, text-primary/80
+Стане: text-gray-900, text-gray-600
 ```
 
-### 4. Типографіка
-```tsx
-// Основний текст:
-className="text-lg font-semibold text-gray-900"
-
-// Підтекст:
-className="text-gray-600 font-normal"
+**Іконки:**
+```text
+Було:  text-primary
+Стане: text-gray-700
 ```
 
-### 5. Layout
-- Сітка 2×2 (md+), 1 колонка (mobile)
-- gap-6 md:gap-8
+**Кнопки контактів:**
+```text
+Було:  bg-[#FFD1DC]/20, bg-[#E8D5FF]/30
+Стане: bg-gray-50 hover:bg-gray-100
+```
 
-## Технічні деталі
+### 2. OrderSuccess.tsx
 
-| Параметр | Значення |
-|----------|----------|
-| Фон | `bg-[#FAFAFA]` |
-| Картки | `bg-white/80 backdrop-blur-sm rounded-3xl` |
-| Бордер | `border border-rose-100` |
-| Тінь | `shadow-sm hover:shadow-md` |
-| Іконки | `bg-rose-50 rounded-2xl`, колір `text-rose-500` |
-| Анімація | `fade-in + stagger 0.1s` |
+**Імпорти:**
+- Замінити `Header` на `HeaderExperiment`
+- Замінити `Footer` на `FooterExperiment`
+
+**Фон секції:**
+```text
+Було:  bg-gradient-to-b from-[#FFD1DC] via-white to-white
+Стане: bg-gradient-to-b from-[#FFE4EC] via-[#FFF0F5] to-white
+```
+
+**Головна картка:**
+```text
+Було:  Card без специфікацій
+Стане: bg-white rounded-2xl shadow-sm border border-gray-100
+```
+
+**Секція "Що далі":**
+```text
+Було:  bg-secondary/30 border-border
+Стане: bg-gray-50 border border-gray-100 rounded-2xl
+```
+
+**Alert:**
+```text
+Було:  bg-secondary/30 border-border
+Стане: bg-gray-50 border border-gray-100 rounded-xl
+```
+
+**Gradient CTA кнопка:**
+```text
+Залишаємо градієнт як акцент (це CTA)
+```
+
+## Технічна реалізація
+
+| Файл | Зміни |
+|------|-------|
+| OrderPending.tsx | Імпорти + градієнт + картки + типографіка |
+| OrderSuccess.tsx | Імпорти + градієнт + картки + типографіка |
+
+## Що НЕ змінюємо
+- Функціональність (fetch, navigate, toast)
+- Confetti анімація на OrderSuccess
+- Логіку генерації промокода
+- Структуру контенту
 
 ## Результат
-- Секція виглядає як частина HowItWorks
-- Картки мають ту саму "скляну" текстуру
-- Рожеві акценти об'єднують дизайн
-- Плавний перехід від Hero (білий) → PainSection (світло-сірий) → InsightSection (темний)
+Сторінки OrderPending та OrderSuccess будуть візуально узгоджені з новим мінімалістичним дизайном головної сторінки.
