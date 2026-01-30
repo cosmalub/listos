@@ -43,15 +43,15 @@ export function HeaderExperiment() {
 
   return (
     <header className="absolute top-0 left-0 right-0 z-50 px-4 py-2 pt-safe-top">
-      <div className="w-full max-w-[90rem] 2xl:max-w-screen-2xl backdrop-blur-md bg-white/80 border border-gray-200/50 rounded-2xl px-6 shadow-sm my-[3px] py-2 mx-auto">
+      <div className="w-full max-w-6xl backdrop-blur-md bg-white/80 border border-gray-200/50 rounded-2xl px-6 shadow-sm my-[3px] py-2 mx-auto">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <a href="/" className="hover:opacity-80 transition-opacity">
             <img src={logoListosik} alt="Листосик" className="h-8 md:h-10" />
           </a>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
+          {/* Desktop Navigation - centered on page like the title below */}
+          <nav className="absolute left-1/2 -translate-x-1/2 hidden md:flex items-center space-x-6">
             {/* Products Dropdown */}
             <div className="relative">
               <button
@@ -62,7 +62,7 @@ export function HeaderExperiment() {
                 Продукти
                 <ChevronDown size={16} className={`transition-transform ${isProductsOpen ? 'rotate-180' : ''}`} />
               </button>
-              
+
               {isProductsOpen && (
                 <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-100 py-2 min-w-[160px]">
                   {productItems.map(item => (
@@ -78,33 +78,27 @@ export function HeaderExperiment() {
               )}
             </div>
 
-            {mainMenuItems.map(item => (
-              <button
-                key={item.name}
-                onClick={() => handleNavClick(item)}
-                className="text-gray-700 hover:text-[#6A5ACD] transition-colors font-medium"
-              >
-                {item.name}
-              </button>
-            ))}
+            <a href="#how-it-works" className="text-gray-700 hover:text-[#6A5ACD] transition-colors font-medium">Як це працює</a>
+            <a href="#pricing" className="text-gray-700 hover:text-[#6A5ACD] transition-colors font-medium">Ціна</a>
+            <a href="#cases" className="text-gray-700 hover:text-[#6A5ACD] transition-colors font-medium">Кейси</a>
           </nav>
 
           {/* Right side buttons */}
           <div className="flex items-center gap-3">
-            {/* Login - subtle */}
+            {/* Get Access - first */}
+            <Button
+              onClick={() => openOrderDialog('header-experiment', 'Отримати доступ')}
+              className="bg-gray-100 hover:bg-gray-200 text-gray-900 border border-transparent hover:border-gray-300 rounded-full px-6 py-2 transition-all font-medium"
+            >
+              Отримати доступ
+            </Button>
+
+            {/* Login - second */}
             <Button
               variant="ghost"
               className="hidden md:flex text-gray-600 hover:text-[#6A5ACD] hover:bg-transparent font-medium"
             >
               Увійти
-            </Button>
-            
-            {/* Get Access - prominent */}
-            <Button
-              onClick={() => openOrderDialog('header-experiment', 'Отримати доступ')}
-              className="bg-[#6A5ACD] hover:bg-[#5A4ABD] text-white rounded-full px-6 py-2 shadow-sm hover:shadow transition-all font-medium"
-            >
-              Отримати доступ
             </Button>
 
             {/* Mobile Menu */}
@@ -139,7 +133,7 @@ export function HeaderExperiment() {
                   ))}
                   <div className="pt-4 border-t border-gray-100 space-y-3">
                     <Button variant="outline" className="w-full">Увійти</Button>
-                    <Button 
+                    <Button
                       onClick={() => openOrderDialog('header-mobile', 'Отримати доступ')}
                       className="w-full bg-[#6A5ACD] hover:bg-[#5A4ABD] text-white"
                     >

@@ -5,13 +5,17 @@ import { useOrderDialog } from "@/components/order/OrderDialogContext";
 import { motion, AnimatePresence } from "framer-motion";
 
 const TESTIMONIALS = [
-  { id: 0, text: "Мама плакала від щастя...", author: "Олена" },
-  { id: 1, text: "Найкращий подарунок у житті", author: "Андрій" },
-  { id: 2, text: "Замовляла вже тричі!", author: "Софія" },
-  { id: 3, text: "Дуже зворушливо і щиро", author: "Марія" },
-  { id: 4, text: "Всі гості були в захваті", author: "Дмитро" },
-  { id: 5, text: "Це просто магія!", author: "Вікторія" },
-  { id: 6, text: "Не очікував такого ефекту", author: "Максим" },
+  { id: 0, text: "Мама плакала від щастя...", author: "Олена", image: "/lovable-uploads/review-iryna.png" },
+  { id: 1, text: "Найкращий подарунок у житті", author: "Андрій", image: "/lovable-uploads/review-artem.png" },
+  { id: 2, text: "Замовляла вже тричі!", author: "Софія", image: "/lovable-uploads/review-miroslav.png" },
+  { id: 3, text: "Дуже зворушливо і щиро", author: "Марія", image: "/lovable-uploads/review-oleksandr.png" },
+  { id: 4, text: "Всі гості були в захваті", author: "Дмитро", image: "/lovable-uploads/review-vitalii.png" },
+  { id: 5, text: "Це просто магія!", author: "Вікторія", image: "/lovable-uploads/review-iryna.png" },
+  { id: 6, text: "Не очікував такого ефекту", author: "Максим", image: "/lovable-uploads/review-artem.png" },
+  { id: 7, text: "Подарунок, що запам'ятається", author: "Ірина", image: "/lovable-uploads/review-miroslav.png" },
+  { id: 8, text: "Краще за будь-які квіти", author: "Олексій", image: "/lovable-uploads/review-oleksandr.png" },
+  { id: 9, text: "Справжні емоції!", author: "Наталя", image: "/lovable-uploads/review-vitalii.png" },
+  { id: 10, text: "Рекомендую всім друзям", author: "Тарас", image: "/lovable-uploads/review-iryna.png" },
 ];
 
 // Interactive review badge with avatars
@@ -26,32 +30,32 @@ function InteractiveReviewBadge() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center gap-6 mt-10 w-full max-w-lg mx-auto">
-      
+    <div className="flex flex-col items-center gap-6 mt-4 w-full max-w-2xl mx-auto">
+
       {/* Badge + Avatars Row */}
       <div className="flex flex-col items-center gap-3 w-full">
-        
+
         {/* Avatars Row - Expanded */}
         <div className="flex justify-center -space-x-3 py-2 w-full overflow-hidden px-4">
           {TESTIMONIALS.map((_, i) => (
-            <motion.div 
+            <motion.div
               key={i}
-              animate={{ 
+              animate={{
                 scale: activeIndex === i ? 1.3 : 1,
                 zIndex: activeIndex === i ? 20 : 10 - i, // Правильный z-index для перекрытия
                 opacity: activeIndex === i ? 1 : 0.7,
                 y: activeIndex === i ? -5 : 0
               }}
-              className="w-12 h-12 md:w-14 md:h-14 rounded-full border-[3px] border-white bg-gray-200 overflow-hidden cursor-pointer relative shadow-lg transition-all duration-300"
+              className="w-14 h-14 md:w-16 md:h-16 rounded-full border-[3px] border-white bg-gray-200 overflow-hidden cursor-pointer relative shadow-lg transition-all duration-300"
               onClick={() => setActiveIndex(i)}
             >
-              <img 
+              <img
                 src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 5}`} // Другой сид для разнообразия
-                alt="Avatar" 
+                alt="Avatar"
                 className="w-full h-full object-cover"
               />
               {activeIndex === i && (
-                <motion.div 
+                <motion.div
                   layoutId="active-ring"
                   className="absolute inset-0 border-[3px] border-[#9370DB] rounded-full"
                   initial={{ opacity: 0 }}
@@ -72,19 +76,22 @@ function InteractiveReviewBadge() {
         </div>
       </div>
 
-      {/* Animated Testimonial Card - Enhanced */}
-      <div className="h-24 w-full flex justify-center items-start">
+      {/* Animated Review Screenshot */}
+      <div className="h-40 md:h-56 w-full flex justify-center items-start">
         <AnimatePresence mode="wait">
-          <motion.div 
+          <motion.div
             key={activeIndex}
             initial={{ opacity: 0, y: 10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="bg-white/95 backdrop-blur-xl px-6 py-4 rounded-[20px] border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] max-w-sm text-center w-full"
+            className="rounded-2xl overflow-hidden shadow-lg border border-gray-100 max-w-lg"
           >
-            <p className="text-base text-gray-800 italic mb-1.5 leading-snug">"{TESTIMONIALS[activeIndex].text}"</p>
-            <p className="text-xs text-[#9370DB] font-bold tracking-wide uppercase">— {TESTIMONIALS[activeIndex].author}</p>
+            <img
+              src={TESTIMONIALS[activeIndex].image}
+              alt={`Відгук від ${TESTIMONIALS[activeIndex].author}`}
+              className="w-full h-auto object-contain"
+            />
           </motion.div>
         </AnimatePresence>
       </div>
@@ -96,34 +103,15 @@ function InteractiveReviewBadge() {
 
 export function HeroSectionExperiment() {
   const { openOrderDialog } = useOrderDialog();
-  
-  return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-b from-[#FDFBF7] via-[#FFF5F5] to-white">
-      {/* Dynamic Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div 
-          animate={{ 
-            scale: [1, 1.2, 1],
-            rotate: [0, 10, -10, 0],
-          }}
-          transition={{ duration: 20, repeat: Infinity, repeatType: "reverse" }}
-          className="absolute top-[-10%] right-[-5%] w-[60%] h-[60%] rounded-full bg-gradient-to-br from-[#E6E6FA]/40 to-[#FFD1DC]/30 blur-[100px]" 
-        />
-        <motion.div 
-          animate={{ 
-            scale: [1, 1.1, 1],
-            x: [0, 30, 0],
-          }}
-          transition={{ duration: 15, repeat: Infinity, repeatType: "reverse" }}
-          className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-gradient-to-tr from-[#FFD1DC]/40 to-[#FFB7C5]/30 blur-[100px]" 
-        />
-      </div>
 
-      <div className="container mx-auto px-4 pt-24 pb-16 relative z-10">
+  return (
+    <section className="relative flex items-center overflow-hidden bg-gradient-to-b from-[#FFE4EC] via-[#FFF0F5] to-white">
+
+      <div className="container mx-auto px-4 pt-44 pb-0 relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Main content */}
-          <div className="text-center mb-12 mt-12">
-            <motion.h1 
+          <div className="text-center mb-6 mt-0">
+            <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
@@ -134,32 +122,20 @@ export function HeroSectionExperiment() {
                 на музичну листівку
               </span>
             </motion.h1>
-            
-            <motion.p 
+
+            <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.4 }}
               className="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto leading-relaxed"
             >
-              Скажи «дякую», «кохаю» чи «вибач» — а Листосик створить пісню 
+              Скажи «дякую», «кохаю» чи «вибач» — а Листосик створить пісню
               і надрукує листівку з QR-кодом.
             </motion.p>
           </div>
 
           {/* CTA buttons - ONLY ONE MAIN BUTTON */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.6 }}
-            className="flex flex-col items-center justify-center mb-8"
-          >
-            <Button
-              onClick={() => openOrderDialog('hero-experiment', 'Почати створення')}
-              className="h-auto text-xl px-12 py-6 rounded-full bg-gradient-to-r from-[#6A5ACD] to-[#9370DB] hover:from-[#5A4ABD] hover:to-[#8360CB] text-white shadow-xl hover:shadow-[#6A5ACD]/30 hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300 font-bold w-full sm:w-auto"
-            >
-              Почати створення
-            </Button>
-          </motion.div>
+
 
           {/* Interactive Social Proof */}
           <InteractiveReviewBadge />
