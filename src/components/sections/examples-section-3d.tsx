@@ -263,7 +263,8 @@ const postcardExamples = [
     customerReaction: "Мама була дуже зворушена подарунком. Слухала пісню кілька разів і зберігає листівку вдома як пам'ять.",
     customerName: "Степан, 29 років",
     customerLocation: "Київ",
-    rating: 5
+    rating: 5,
+    category: 'greetings'
   },
   {
     id: 2,
@@ -278,7 +279,8 @@ const postcardExamples = [
     customerReaction: "Настя була дуже зворушена подарунком. Сказала, що це один із найтепліших і найщиріших моментів у їхніх стосунках.",
     customerName: "Дмитро, 27 років",
     customerLocation: "Київ",
-    rating: 5
+    rating: 5,
+    category: 'love'
   },
   {
     id: 3,
@@ -293,7 +295,8 @@ const postcardExamples = [
     customerReaction: "Марія сказала, що їй було важливо почути ці слова саме так — спокійно і щиро. Пісня допомогла почати розмову.",
     customerName: "Дмитро, 31 рік",
     customerLocation: "Харків",
-    rating: 5
+    rating: 5,
+    category: 'apology'
   },
   {
     id: 4,
@@ -308,7 +311,8 @@ const postcardExamples = [
     customerReaction: "Олені Петрівні було приємно отримати такий подарунок. Вона сказала, що це було дуже несподівано і зворушливо, і залишила листівку на пам'ять.",
     customerName: "Учень, 12 років",
     customerLocation: "Львів",
-    rating: 5
+    rating: 5,
+    category: 'greetings'
   },
   {
     id: 5,
@@ -323,42 +327,67 @@ const postcardExamples = [
     customerReaction: "Вона слухала пісню мовчки, а потім просто обійняла онука",
     customerName: "онук, 15 років",
     customerLocation: "Тернопіль",
-    rating: 5
+    rating: 5,
+    category: 'gratitude'
   },
 ]
 
+const categories = [
+  { id: 'all', label: 'Всі' },
+  { id: 'love', label: 'Кохання' },
+  { id: 'greetings', label: 'Вітання' },
+  { id: 'apology', label: 'Вибачення' },
+  { id: 'gratitude', label: 'Вдячність' },
+];
+
 export default function ExamplesSection3D() {
   const { openOrderDialog } = useOrderDialog();
+  const [activeCategory, setActiveCategory] = useState("all");
+
+  const filteredExamples = activeCategory === 'all'
+    ? postcardExamples
+    : postcardExamples.filter(ex => ex.category === activeCategory);
 
   return (
     <section id="examples" className="py-16 bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative z-10">
       <div className="container mx-auto px-4">
-        {/* Перехідна фраза */}
-        <p className="text-center text-lg text-muted-foreground mb-8 max-w-xl mx-auto leading-relaxed">
-          Кожна з цих листівок — чиясь реальна історія.
-          <br />
-          Її можна побачити і послухати.
-        </p>
-
-        <h2 className="text-3xl md:text-5xl font-bold text-center text-gray-900 mb-4 leading-tight tracking-tight">
+        <h2 className="text-3xl md:text-5xl font-bold text-center text-gray-900 mb-6 leading-tight tracking-tight">
           Справжні листівки і справжні історії
         </h2>
-        <p className="text-lg text-center text-muted-foreground max-w-2xl mx-auto mb-12">
-          Реальні листівки з піснями, створені для близьких людей.
+        <p className="text-xl text-center text-gray-600 max-w-2xl mx-auto mb-12 leading-relaxed">
+          Кожна з цих листівок — чиясь реальна історія. Її можна побачити і послухати.
         </p>
+
+        {/* Filter Buttons */}
+        <div className="flex flex-wrap justify-center gap-3 mb-10">
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setActiveCategory(cat.id)}
+              className={cn(
+                "px-6 py-2.5 rounded-full text-base font-medium transition-all duration-300",
+                activeCategory === cat.id
+                  ? "bg-[#6A5ACD] text-white shadow-lg scale-105"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200 hover:scale-105"
+              )}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
 
         <div className="max-w-5xl mx-auto">
           <Carousel opts={{ align: "center" }} className="w-full">
             <CarouselContent>
-              {postcardExamples.map((postcard) => (
+              {filteredExamples.map((postcard) => (
                 <CarouselItem key={postcard.id} className="md:basis-2/3 lg:basis-1/2">
                   <div className="p-1">
-                    <Card className="border-2 border-[#6A5ACD]/30 overflow-hidden">
-                      <CardContent className="p-6">
+                    <Card className="border-2 border-[#6A5ACD]/30 overflow-hidden h-full">
+                      <CardContent className="p-6 flex flex-col h-full">
                         <h3 className="text-xl font-bold mb-2 text-[#6A5ACD]">{postcard.title}</h3>
                         <p className="text-[#6A5ACD]/80 mb-4">{postcard.description}</p>
 
-                        <div className="mb-4 pb-2">
+                        <div className="mb-4 pb-2 flex-grow flex items-center justify-center">
                           <Postcard3D
                             front={<PostcardImage src={postcard.frontImage} alt="Лицева сторона" />}
                             back={<PostcardImage src={postcard.backImage} alt="Зворотна сторона" />}

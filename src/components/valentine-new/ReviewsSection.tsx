@@ -49,11 +49,11 @@ export function ReviewsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-gray-900 drop-shadow-sm mb-6">
-              Їхні слова, <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2]">їхні емоції</span>
+            <h2 className="text-3xl md:text-5xl font-bold text-center text-gray-900 mb-6 leading-tight tracking-tight">
+              Їхні слова, їхні емоції
             </h2>
-            <p className="text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
-              Коли ми кажемо, що це зворушує до сліз — ми не перебільшуємо. Ось що пишуть люди, які вже подарували Листосик.
+            <p className="text-xl text-center text-gray-600 max-w-2xl mx-auto mb-12 leading-relaxed">
+              Коли ми кажемо, що це зворушує до сліз — ми не перебільшуємо. Ось що пишуть люди, які вже створили свою особливу листівку.
             </p>
           </motion.div>
         </div>

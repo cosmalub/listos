@@ -37,9 +37,9 @@ const Pricing = () => {
             <HeaderExperiment />
 
             {/* Page Header */}
-            <section className="pt-44 pb-12 text-center px-4 bg-gradient-to-b from-[#FFE4EC] via-[#FFF0F5] to-white">
+            <section className="pt-44 pb-12 text-center px-4 bg-gradient-to-b from-[#F3E8FF] via-[#F5F3FF] to-white">
                 <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight tracking-tight mb-6">
-                    Проста та прозора <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2]">ціна</span>
+                    Проста та <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2]">прозора ціна</span>
                 </h1>
                 <p className="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
                     Все включено. Жодних прихованих платежів. Ти платиш лише за результат.
@@ -49,7 +49,7 @@ const Pricing = () => {
             {/* Pricing Content */}
             <section className="py-12 md:py-20 px-4 relative overflow-hidden bg-white">
                 {/* Background Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-b from-white to-gray-50/50" />
+                <div className="absolute inset-0 bg-gradient-to-b from-white to-[#F3E8FF]/50" />
 
                 <div className="container mx-auto px-4 relative z-10 max-w-6xl">
                     <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -98,29 +98,33 @@ const Pricing = () => {
 
                                 <p className="text-gray-500 mb-8 font-medium">Повна вартість за створення, друк та доставку</p>
 
-                                <div className="space-y-4">
-                                    <Button
-                                        onClick={() => openOrderDialog('pricing-page', 'Отримати доступ')}
-                                        className="w-full bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2] text-white hover:opacity-90 rounded-full px-8 py-7 text-xl font-bold shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all h-auto"
-                                    >
-                                        Отримати доступ
-                                    </Button>
-
-                                    <Button
-                                        variant="outline"
-                                        onClick={() => openOrderDialog('login', 'Увійти')}
-                                        className="w-full rounded-full px-8 py-7 text-xl font-bold border-2 border-gray-200 text-gray-600 hover:border-[#9370DB] hover:text-[#9370DB] hover:bg-transparent transition-all h-auto"
-                                    >
-                                        Увійти
-                                    </Button>
+                                <div className="text-left space-y-4 max-w-xs mx-auto mb-8">
+                                    <p className="font-bold text-gray-900 text-center mb-4">Все включено: створення, друк, доставка</p>
+                                    <ul className="space-y-3">
+                                        <li className="flex items-center gap-3 text-gray-600">
+                                            <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                                                <Check size={14} className="text-green-600" />
+                                            </div>
+                                            Доступ до студії без обмежень
+                                        </li>
+                                        <li className="flex items-center gap-3 text-gray-600">
+                                            <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                                                <Check size={14} className="text-green-600" />
+                                            </div>
+                                            Друк та безкоштовна доставка
+                                        </li>
+                                        <li className="flex items-center gap-3 text-gray-600">
+                                            <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                                                <Check size={14} className="text-green-600" />
+                                            </div>
+                                            Пісня, що залишається назавжди
+                                        </li>
+                                    </ul>
                                 </div>
 
-                                <div className="mt-8 pt-6 border-t border-gray-100">
-                                    <p className="text-sm text-gray-500 flex items-center justify-center gap-2 font-medium">
-                                        <Check size={18} className="text-green-500" />
-                                        100% Гарантія повернення коштів
-                                    </p>
-                                </div>
+
+
+
                             </div>
                         </div>
 
@@ -131,10 +135,40 @@ const Pricing = () => {
             {/* Guarantee Section Mini */}
             <section className="py-20 bg-gray-50">
                 <div className="container mx-auto px-4 text-center max-w-3xl">
-                    <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 tracking-tight">Ти нічим не ризикуєш</h2>
-                    <p className="text-lg text-gray-600 leading-relaxed mb-8">
-                        Якщо результат тобі не сподобається — ми повернемо гроші протягом 24 годин. Без зайвих питань. Ми впевнені у якості нашого продукту.
+                    <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6 tracking-tight leading-tight">
+                        Ти нічим не ризикуєш
+                    </h2>
+                    <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed mb-8">
+                        Якщо результат тобі не сподобається – напиши у службу підтримки в Telegram (<a href="https://t.me/genbyhuman" target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">@genbyhuman</a>), і ми повернем гроші протягом 24 годин. Без зайвих питань.
                     </p>
+                </div>
+            </section>
+
+            {/* Final CTA Section */}
+            <section className="py-20 bg-white border-t border-gray-100">
+                <div className="container mx-auto px-4 text-center max-w-4xl">
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+                        <Button
+                            onClick={() => openOrderDialog('pricing-page-bottom', 'Створити пісню')}
+                            className="w-full sm:w-auto bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2] text-white hover:opacity-90 rounded-full px-8 py-6 text-lg font-bold shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all h-auto min-w-[220px]"
+                        >
+                            <Sparkles className="w-5 h-5 mr-2" />
+                            Створити пісню
+                        </Button>
+                        <Button
+                            variant="outline"
+                            onClick={() => openOrderDialog('login', 'Увійти')}
+                            className="w-full sm:w-auto rounded-full px-8 py-6 text-lg font-bold border-2 border-gray-200 text-gray-600 hover:border-[#9370DB] hover:text-[#9370DB] hover:bg-transparent transition-all h-auto min-w-[220px]"
+                        >
+                            Увійти
+                        </Button>
+                    </div>
+
+                    <div className="flex justify-center mt-6">
+                        <p className="text-sm text-gray-500 font-medium text-center max-w-2xl mx-auto leading-relaxed">
+                            * Ти отримуєш доступ до студії, де з ШІ-помічником у зручному інтерфейсі створиш слова, музику та дизайн листівки. А ми її надрукуємо і відправимо – все включено за 399 грн.
+                        </p>
+                    </div>
                 </div>
             </section>
 

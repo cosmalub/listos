@@ -18,8 +18,8 @@ const Cases = () => {
         },
         {
             icon: Sparkles,
-            title: "День народження",
-            text: "Замість звичайної листівки з побажанням «щастя-здоров'я» — персональний хіт про іменинника, який він слухатиме на репіті.",
+            title: "Привітання до будь-якої події",
+            text: "День народження, річниця, Новий рік чи 8 березня. Створи персональний хіт, який стане найкращим подарунком до будь-якої важливої дати.",
             gradient: "from-purple-500 to-indigo-500"
         },
         {
@@ -41,9 +41,9 @@ const Cases = () => {
             <HeaderExperiment />
 
             {/* Page Header */}
-            <section className="pt-44 pb-12 text-center px-4 bg-gradient-to-b from-[#FFE4EC] via-[#FFF0F5] to-white">
+            <section className="pt-44 pb-12 text-center px-4 bg-gradient-to-b from-[#FFF0E5] via-[#FFF5F0] to-white">
                 <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight tracking-tight mb-6">
-                    Одна листівка — <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2]">тисяча емоцій</span>
+                    Одна листівка – <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2]">тисяча емоцій</span>
                 </h1>
                 <p className="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
                     Листосик допомагає висловити те, що важко сказати просто словами.
@@ -55,7 +55,7 @@ const Cases = () => {
                 <div className="container mx-auto px-4 max-w-6xl">
                     <div className="grid md:grid-cols-2 gap-8">
                         {jobs.map((job, idx) => (
-                            <div key={idx} className="group relative bg-white border-2 border-slate-100 hover:border-[#F3D1FF] rounded-3xl p-8 transition-all hover:shadow-xl hover:-translate-y-1">
+                            <div key={idx} className="group relative bg-white border-2 border-slate-100 hover:border-[#F3D1FF] rounded-3xl p-8 transition-all hover:shadow-xl hover:-translate-y-1 flex flex-col items-center text-center">
                                 <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${job.gradient} flex items-center justify-center text-white mb-6 shadow-lg transform group-hover:scale-110 transition-transform`}>
                                     <job.icon size={28} />
                                 </div>
@@ -83,20 +83,26 @@ const Cases = () => {
                     <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-8 leading-tight tracking-tight">
                         Готовий створити свою історію?
                     </h2>
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
                         <Button
                             onClick={() => openOrderDialog('cases-page', 'Отримати доступ')}
-                            className="bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2] text-white hover:opacity-90 rounded-full px-10 py-6 text-xl font-bold shadow-lg hover:-translate-y-1 transition-all h-auto min-w-[240px]"
+                            className="bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2] text-white hover:opacity-90 rounded-full px-8 py-6 text-lg font-bold shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all h-auto min-w-[220px]"
                         >
+                            <Sparkles className="w-5 h-5 mr-2" />
                             Створити листівку
                         </Button>
                         <Button
                             variant="outline"
                             onClick={() => openOrderDialog('login', 'Увійти')}
-                            className="rounded-full px-10 py-6 text-xl font-bold border-2 border-gray-200 text-gray-600 hover:border-[#9370DB] hover:text-[#9370DB] hover:bg-transparent transition-all h-auto min-w-[240px]"
+                            className="rounded-full px-8 py-6 text-lg font-bold border-2 border-gray-200 text-gray-600 hover:border-[#9370DB] hover:text-[#9370DB] hover:bg-transparent transition-all h-auto min-w-[220px]"
                         >
                             Увійти
                         </Button>
+                    </div>
+                    <div className="flex justify-center mt-6">
+                        <p className="text-sm text-gray-500 font-medium text-center max-w-2xl mx-auto leading-relaxed">
+                            * Ти отримуєш доступ до студії, де з ШІ-помічником у зручному інтерфейсі створиш слова, музику та дизайн листівки. А ми її надрукуємо і відправимо – все включено за 399 грн.
+                        </p>
                     </div>
                 </div>
             </section>
