@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Info, Loader2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { Header } from '@/components/sections/header';
-import { Footer } from '@/components/sections/footer';
+import { HeaderExperiment } from '@/components/sections/header-experiment';
+import { FooterExperiment } from '@/components/sections/footer-experiment';
 import { OccasionAnimation } from '@/components/public/OccasionAnimation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -116,19 +116,19 @@ export default function OrderSuccess() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#FFE4EC] via-[#FFF0F5] to-white">
+        <Loader2 className="w-8 h-8 animate-spin text-gray-700" />
       </div>
     );
   }
 
   if (!orderId || !orderData) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="max-w-md mx-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#FFE4EC] via-[#FFF0F5] to-white">
+        <Card className="max-w-md mx-4 bg-white rounded-2xl shadow-sm border border-gray-100">
           <CardContent className="p-6 text-center">
-            <h2 className="text-2xl font-bold mb-4">Замовлення не знайдено</h2>
-            <p className="text-muted-foreground mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Замовлення не знайдено</h2>
+            <p className="text-gray-600 mb-6">
               Можливо, сталася помилка або замовлення ще не створено.
             </p>
             <Button asChild>
@@ -141,15 +141,15 @@ export default function OrderSuccess() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] via-white to-white">
+    <div className="min-h-screen bg-gradient-to-b from-[#FFE4EC] via-[#FFF0F5] to-white">
       <OccasionAnimation occasion={orderData.page_occasion || 'congratulations'} />
-      <Header centerTitle="Студія створення листівки" hideNav showMenu={false} />
+      <HeaderExperiment />
 
-      {/* Success Header Section with Pink Background */}
+      {/* Success Header Section */}
       <div className="bg-transparent pt-24 md:pt-28 pb-8">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <p className="text-center text-foreground bg-muted/20 rounded-lg px-6 py-3 text-base md:text-lg font-normal">
+            <p className="text-center text-gray-700 bg-gray-50 rounded-lg px-6 py-3 text-base md:text-lg font-normal border border-gray-100">
               Вітаємо! 🎉 Ваша листівка створена
             </p>
           </div>
@@ -157,16 +157,16 @@ export default function OrderSuccess() {
       </div>
 
       <main className="container mx-auto px-4 pb-12 relative z-10">
-        <Card className="max-w-5xl mx-auto">
+        <Card className="max-w-5xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-100">
           <CardContent className="p-8 md:p-12">
 
             {/* Postcard Preview - both sides */}
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               <div>
-                <h3 className="text-lg font-semibold mb-3 text-center">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3 text-center">
                   Лицьова сторона
                 </h3>
-                <div className="aspect-[105/148] rounded-lg overflow-hidden border-2 border-border">
+                <div className="aspect-[105/148] rounded-lg overflow-hidden border-2 border-gray-200">
                   {orderData.front_image_url ? (
                     <img
                       src={orderData.front_image_url}
@@ -174,18 +174,18 @@ export default function OrderSuccess() {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center bg-muted gap-2">
-                      <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">Обробляється...</span>
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-gray-50 gap-2">
+                      <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+                      <span className="text-sm text-gray-500">Обробляється...</span>
                     </div>
                   )}
                 </div>
               </div>
               <div>
-                <h3 className="text-lg font-semibold mb-3 text-center">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3 text-center">
                   Зворотня сторона
                 </h3>
-                <div className="aspect-[105/148] rounded-lg overflow-hidden border-2 border-border">
+                <div className="aspect-[105/148] rounded-lg overflow-hidden border-2 border-gray-200">
                   {orderData.back_image_url ? (
                     <img
                       src={orderData.back_image_url}
@@ -193,9 +193,9 @@ export default function OrderSuccess() {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center bg-muted gap-2">
-                      <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">Обробляється...</span>
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-gray-50 gap-2">
+                      <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+                      <span className="text-sm text-gray-500">Обробляється...</span>
                     </div>
                   )}
                 </div>
@@ -203,22 +203,22 @@ export default function OrderSuccess() {
             </div>
 
             {/* Next Steps */}
-            <div className="bg-secondary/30 rounded-lg p-6 mb-8 border border-border">
-              <h2 className="text-2xl font-bold mb-4">Що далі?</h2>
+            <div className="bg-gray-50 rounded-2xl p-6 mb-8 border border-gray-100">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Що далі?</h2>
               <ul className="space-y-3">
-                <li className="flex items-start gap-3">
+                <li className="flex items-start gap-3 text-gray-700">
                   <span className="text-2xl">✓</span>
                   <span>Ваша листівка збережена у нашій системі</span>
                 </li>
-                <li className="flex items-start gap-3">
+                <li className="flex items-start gap-3 text-gray-700">
                   <span className="text-2xl">🎨</span>
                   <span>Ми надрукуємо її у високій якості на професійному обладнанні</span>
                 </li>
-                <li className="flex items-start gap-3">
+                <li className="flex items-start gap-3 text-gray-700">
                   <span className="text-2xl">📞</span>
                   <span>Зв'яжемося з вами для узгодження деталей та адреси доставки</span>
                 </li>
-                <li className="flex items-start gap-3">
+                <li className="flex items-start gap-3 text-gray-700">
                   <span className="text-2xl">📦</span>
                   <span>Відправимо Новою Поштою протягом 1-2 робочих днів</span>
                 </li>
@@ -227,11 +227,11 @@ export default function OrderSuccess() {
 
 
             {/* Draft Page Link */}
-            <Alert className="bg-secondary/30 border-border">
-              <Info className="h-4 w-4" />
-              <AlertDescription className="flex items-center justify-between">
+            <Alert className="bg-gray-50 border border-gray-100 rounded-xl">
+              <Info className="h-4 w-4 text-gray-600" />
+              <AlertDescription className="flex items-center justify-between text-gray-700">
                 <span>Ваша персональна сторінка з піснею готова!</span>
-                <Button asChild variant="outline" size="sm">
+                <Button asChild variant="outline" size="sm" className="border-gray-200 hover:bg-gray-100">
                   <Link to={`/s/song/${orderId}`}>Переглянути</Link>
                 </Button>
               </AlertDescription>
@@ -251,7 +251,7 @@ export default function OrderSuccess() {
         </Card>
       </main>
 
-      <Footer />
+      <FooterExperiment />
     </div>
   );
 }

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { Mail, MessageCircle, CreditCard, HelpCircle, Phone, Check } from 'lucide-react';
+import { Mail, MessageCircle, CreditCard, HelpCircle, Check } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
-import { Header } from '@/components/sections/header';
-import { Footer } from '@/components/sections/footer';
+import { HeaderExperiment } from '@/components/sections/header-experiment';
+import { FooterExperiment } from '@/components/sections/footer-experiment';
 
 export default function OrderPending() {
   const [searchParams] = useSearchParams();
@@ -42,17 +42,15 @@ export default function OrderPending() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] via-[#F3D1FF]/30 to-white flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      <div className="min-h-screen bg-gradient-to-b from-[#FFE4EC] via-[#FFF0F5] to-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-700"></div>
       </div>
     );
   }
 
-
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] from-0% via-[#F3D1FF]/30 via-50% to-white to-90% flex flex-col">
-      <Header hideNav />
+    <div className="min-h-screen bg-gradient-to-b from-[#FFE4EC] via-[#FFF0F5] to-white flex flex-col">
+      <HeaderExperiment />
 
       <main className="flex-1 pt-20 pb-12 px-4">
         <div className="max-w-2xl mx-auto">
@@ -61,65 +59,63 @@ export default function OrderPending() {
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Check className="w-8 h-8 text-green-600" />
             </div>
-            <h1 className="text-3xl md:text-5xl font-bold text-primary mb-3">
+            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
               Заявка створена успішно!
             </h1>
-            <p className="text-lg text-primary/80">
+            <p className="text-lg text-gray-600">
               Номер замовлення: <span className="font-mono font-semibold">{orderId?.slice(0, 8)}</span>
             </p>
           </div>
 
           <div className="space-y-6">
             {/* What's Next Card */}
-            <Card className="border border-[#E8D5FF] shadow-sm bg-white">
+            <Card className="bg-white rounded-2xl shadow-sm border border-gray-100">
               <CardContent className="p-6">
-                <h2 className="text-xl font-bold text-primary mb-5 flex items-center gap-2">
-                  <MessageCircle className="w-5 h-5 text-primary" />
+                <h2 className="text-xl font-bold text-gray-900 mb-5 flex items-center gap-2">
+                  <MessageCircle className="w-5 h-5 text-gray-700" />
                   Що далі?
                 </h2>
-                <p className="text-primary/80">
+                <p className="text-gray-600">
                   Ми отримали вашу заявку. Після оплати відкриється доступ до студії для створення пісні та листівки. Далі ми надрукуємо листівку та надішлемо її вам.
                 </p>
               </CardContent>
             </Card>
 
             {/* Payment Details Card */}
-            <Card className="border border-[#E8D5FF] shadow-sm bg-white">
+            <Card className="bg-white rounded-2xl shadow-sm border border-gray-100">
               <CardContent className="p-6">
-                <h2 className="text-xl font-bold text-primary mb-2 flex items-center gap-2">
-                  <CreditCard className="w-5 h-5 text-primary" />
+                <h2 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+                  <CreditCard className="w-5 h-5 text-gray-700" />
                   Оплата — 399 грн
                 </h2>
-                <p className="text-primary/80 pl-7">
+                <p className="text-gray-600 pl-7">
                   Реквізити для оплати ми надішлемо вам окремо.
                 </p>
               </CardContent>
             </Card>
 
-
-
             {/* Contact Card */}
-            <Card className="border border-[#E8D5FF] shadow-sm bg-white">
+            <Card className="bg-white rounded-2xl shadow-sm border border-gray-100">
               <CardContent className="p-6">
-                <h2 className="text-xl font-bold text-primary mb-4 flex items-center gap-2">
-                  <HelpCircle className="w-5 h-5 text-primary" />
+                <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <HelpCircle className="w-5 h-5 text-gray-700" />
                   Є питання?
                 </h2>
                 <div className="flex flex-wrap gap-3">
                   <a
                     href="mailto:melodlistiv@gmail.com"
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#FFD1DC]/20 hover:bg-[#FFD1DC]/40 transition-colors text-foreground"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors text-gray-700"
                   >
-                    <Mail className="w-4 h-4 text-primary" />
+                    <Mail className="w-4 h-4" />
                     <span className="text-sm">melodlistiv@gmail.com</span>
                   </a>
                   <a
                     href="https://t.me/genbyhuman"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#E8D5FF]/30 hover:bg-[#E8D5FF]/50 transition-colors text-foreground"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors text-gray-700"
                   >
-                    <MessageCircle className="w-4 h-4 text-primary" />
+                    <MessageCircle className="w-4 h-4" />
                     <span className="text-sm">Telegram: @genbyhuman</span>
                   </a>
                 </div>
@@ -132,7 +128,7 @@ export default function OrderPending() {
             <Button
               variant="outline"
               onClick={() => navigate('/')}
-              className="border-primary/30 hover:border-primary hover:bg-primary/5"
+              className="border-gray-200 hover:border-gray-300 hover:bg-gray-50"
             >
               Повернутися на головну
             </Button>
@@ -140,7 +136,7 @@ export default function OrderPending() {
         </div>
       </main>
 
-      <Footer />
+      <FooterExperiment />
     </div>
   );
 }
