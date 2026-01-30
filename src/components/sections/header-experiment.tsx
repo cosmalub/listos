@@ -13,14 +13,14 @@ interface MenuItem {
 }
 
 const mainMenuItems: MenuItem[] = [
-  { name: "Як це працює", href: "#how-it-works" },
-  { name: "Ціна", href: "#pricing" },
-  { name: "Кейси", href: "#cases" },
+  { name: "Як це працює", href: "/how-it-works" },
+  { name: "Ціна", href: "/pricing" },
+  { name: "Кейси", href: "/cases" },
   { name: "Хто такий Листосик", href: "/about-listosik" },
 ];
 
 const productItems = [
-  { name: "Валентин", href: "/valentine" },
+  { name: "День святого Валентина", href: "/valentine" },
 ];
 
 export function HeaderExperiment() {
@@ -78,9 +78,9 @@ export function HeaderExperiment() {
               )}
             </div>
 
-            <a href="#how-it-works" className="text-gray-700 hover:text-[#6A5ACD] transition-colors font-medium">Як це працює</a>
-            <a href="#pricing" className="text-gray-700 hover:text-[#6A5ACD] transition-colors font-medium">Ціна</a>
-            <a href="#cases" className="text-gray-700 hover:text-[#6A5ACD] transition-colors font-medium">Кейси</a>
+            <a href="/how-it-works" className="text-gray-700 hover:text-[#6A5ACD] transition-colors font-medium">Як це працює</a>
+            <a href="/pricing" className="text-gray-700 hover:text-[#6A5ACD] transition-colors font-medium">Ціна</a>
+            <a href="/cases" className="text-gray-700 hover:text-[#6A5ACD] transition-colors font-medium">Кейси</a>
           </nav>
 
           {/* Right side buttons */}

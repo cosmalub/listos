@@ -14,6 +14,9 @@ import PublicSong from "./pages/PublicSong";
 import Discount from "./pages/Discount";
 
 import ValentineNew from "./pages/ValentineNew";
+import HowItWorks from "./pages/HowItWorks";
+import Pricing from "./pages/Pricing";
+import Cases from "./pages/Cases";
 import NotFound from "./pages/NotFound";
 import { OrderDialogProvider } from "./components/order/OrderDialogContext";
 import { OrderDialog } from "./components/order/OrderDialog";
@@ -41,6 +44,9 @@ const App = () => (
               <Route path="/s/song/:orderId" element={<PublicSong />} />
               <Route path="/discount" element={<Discount />} />
               <Route path="/valentine" element={<ValentineNew />} />
+              <Route path="/how-it-works" element={<HowItWorks />} />
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/cases" element={<Cases />} />
 
 
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

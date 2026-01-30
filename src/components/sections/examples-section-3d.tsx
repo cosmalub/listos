@@ -340,7 +340,7 @@ export default function ExamplesSection3D() {
           Її можна побачити і послухати.
         </p>
 
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-primary mb-4">
+        <h2 className="text-3xl md:text-5xl font-bold text-center text-gray-900 mb-4 leading-tight tracking-tight">
           Справжні листівки і справжні історії
         </h2>
         <p className="text-lg text-center text-muted-foreground max-w-2xl mx-auto mb-12">
@@ -395,38 +395,6 @@ export default function ExamplesSection3D() {
             </div>
           </Carousel>
 
-          {/* CTA після прикладів */}
-          <div className="mt-16 max-w-3xl mx-auto">
-            <div className="bg-card rounded-3xl border-2 border-[#B8B3FF]/60 hover:border-[#B8B3FF] transition-all hover:shadow-lg p-6 md:p-8 text-center">
-              <h3 className="text-2xl font-bold text-[#6A5ACD] mb-6">
-                Створи свою унікальну історію
-              </h3>
-
-              <Button
-                onClick={() => openOrderDialog('examples', 'Замовити свою листівку')}
-                className="text-base md:text-lg w-full md:w-auto px-6 md:px-8 py-3 md:py-4 h-auto whitespace-normal rounded-full bg-gradient-to-r from-[#8A7AEE] to-[#D292FF] hover:from-[#7A6ADE] hover:to-[#C282EF] text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 font-bold mb-6"
-              >
-                🎵 Замовити свою листівку
-              </Button>
-
-              <div className="space-y-3 text-[#6A5ACD]/80">
-                <div className="flex items-center justify-center gap-2">
-                  <span className="text-xl">💝</span>
-                  <span className="text-sm md:text-base">Створи емоції, які запам'ятаються назавжди</span>
-                </div>
-
-                <div className="flex items-center justify-center gap-2">
-                  <span className="text-xl">✨</span>
-                  <span className="text-sm md:text-base">Листосик допоможе з усім — від слів пісні до дизайну листівки</span>
-                </div>
-
-                <div className="flex items-center justify-center gap-2">
-                  <span className="text-xl">⚡️</span>
-                  <span className="text-sm md:text-base">Готова листівка за 10 хвилин</span>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

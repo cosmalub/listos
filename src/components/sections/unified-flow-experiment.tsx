@@ -66,30 +66,7 @@ export function UnifiedFlowExperiment() {
                   </div>
                </div>
 
-               {/* CTA Buttons - Two neat buttons */}
-               <div className="mt-12">
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                     <Button
-                        onClick={() => openOrderDialog('how-it-works', 'Отримати доступ')}
-                        className="bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2] text-white hover:opacity-90 rounded-full px-8 py-6 text-lg font-bold shadow-md hover:shadow-lg hover:-translate-y-1 transition-all h-auto min-w-[200px]"
-                     >
-                        Отримати доступ
-                     </Button>
 
-                     <Button
-                        variant="outline"
-                        className="rounded-full px-8 py-6 text-lg font-bold border-2 border-gray-200 text-gray-600 hover:border-[#9370DB] hover:text-[#9370DB] hover:bg-transparent transition-all h-auto min-w-[200px]"
-                     >
-                        Увійти
-                     </Button>
-                  </div>
-
-                  <div className="flex justify-center mt-6">
-                     <p className="text-sm text-gray-500 font-medium text-center">
-                        * Все включено: від ідеї до створення, друк та доставка — 399 грн
-                     </p>
-                  </div>
-               </div>
 
             </div>
          </div>
