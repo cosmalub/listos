@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useOrderDialog } from "@/components/order/OrderDialogContext";
-import { ArrowDown, Sparkles, CheckCircle2 } from "lucide-react";
+import { ArrowDown, ArrowRight } from "lucide-react";
 import postcardScanImage from "@/assets/postcard-scan.png";
-import listosykMascot from "@/assets/listosyk-mascot.png";
 
 export function UnifiedFlowExperiment() {
    const { openOrderDialog } = useOrderDialog();
@@ -14,20 +13,20 @@ export function UnifiedFlowExperiment() {
 
                {/* Block 1: Intro */}
                <div className="text-center space-y-6">
-                  <h2 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
+                  <h2 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight tracking-tight">
                      Що це та як працює Листосик?
                   </h2>
-                  <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
+                  <p className="text-xl md:text-2xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
                      Листосик — це онлайн-сервіс, що допомагає створити незабутній подарунок з музикою для близької людини без зайвого клопоту.
                   </p>
                </div>
 
+               {/* 2 Separate Cards Layout with Arrow */}
+               <div className="flex flex-col md:flex-row items-center gap-8 md:gap-6">
 
-               {/* 2 Separate Cards Layout */}
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-                  {/* Card 1: Creation (Combined Step 1 & 2) */}
-                  <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col h-full items-center text-center md:items-start md:text-left">
-                     <div className="w-12 h-12 bg-[#E6E6FA] rounded-full flex items-center justify-center text-[#6A5ACD] font-bold text-xl mb-6">1</div>
+                  {/* Card 1: Creation */}
+                  <div className="flex-1 bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col h-full items-center text-center w-full">
+                     <h3 className="text-2xl font-bold text-gray-900 mb-4">Магія створення</h3>
                      <p className="text-lg text-gray-700 leading-relaxed font-medium mb-6">
                         Ти заходиш у “студію”, відповідаєш на кілька питань — і сервіс миттєво створює унікальний текст пісні, музику та дизайн листівки.
                      </p>
@@ -44,9 +43,15 @@ export function UnifiedFlowExperiment() {
                      </div>
                   </div>
 
-                  {/* Card 2: Result (Formerly Step 3) */}
-                  <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col h-full items-center text-center md:items-start md:text-left">
-                     <div className="w-12 h-12 bg-[#E6E6FA] rounded-full flex items-center justify-center text-[#6A5ACD] font-bold text-xl mb-6">2</div>
+                  {/* Connector Arrow */}
+                  <div className="flex items-center justify-center text-gray-300">
+                     <ArrowDown className="w-8 h-8 md:hidden" />
+                     <ArrowRight className="w-10 h-10 hidden md:block" />
+                  </div>
+
+                  {/* Card 2: Result */}
+                  <div className="flex-1 bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col h-full items-center text-center w-full">
+                     <h3 className="text-2xl font-bold text-gray-900 mb-4">Емоція в руках</h3>
                      <p className="text-lg text-gray-700 leading-relaxed font-medium mb-6">
                         Ми друкуємо цю листівку, додаємо QR-код із твоєю персональною історією-музикою і надсилаємо “Новою поштою” по Україні.
                      </p>
@@ -61,22 +66,28 @@ export function UnifiedFlowExperiment() {
                   </div>
                </div>
 
-
-               {/* CTA & Price - Compact Block (No Background) */}
+               {/* CTA Buttons - Two neat buttons */}
                <div className="mt-12">
-                  <div className="w-full text-center relative overflow-hidden group">
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                     <Button
+                        onClick={() => openOrderDialog('how-it-works', 'Отримати доступ')}
+                        className="bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2] text-white hover:opacity-90 rounded-full px-8 py-6 text-lg font-bold shadow-md hover:shadow-lg hover:-translate-y-1 transition-all h-auto min-w-[200px]"
+                     >
+                        Отримати доступ
+                     </Button>
 
-                     <div className="relative z-10 flex flex-col items-center gap-6">
-                        <Button
-                           onClick={() => openOrderDialog('how-it-works', 'Отримати доступ')}
-                           className="bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2] text-white hover:opacity-90 rounded-full px-8 py-4 text-lg font-bold shadow-md hover:shadow-lg hover:-translate-y-1 transition-all h-auto"
-                        >
-                           Отримати доступ
-                        </Button>
-                        <p className="text-xl md:text-2xl text-gray-900 font-medium">
-                           Все включено: від ідеї до створення, друк та доставка — <span className="text-[#6A5ACD] font-bold">399 грн</span>.
-                        </p>
-                     </div>
+                     <Button
+                        variant="outline"
+                        className="rounded-full px-8 py-6 text-lg font-bold border-2 border-gray-200 text-gray-600 hover:border-[#9370DB] hover:text-[#9370DB] hover:bg-transparent transition-all h-auto min-w-[200px]"
+                     >
+                        Увійти
+                     </Button>
+                  </div>
+
+                  <div className="flex justify-center mt-6">
+                     <p className="text-sm text-gray-500 font-medium text-center">
+                        * Все включено: від ідеї до створення, друк та доставка — 399 грн
+                     </p>
                   </div>
                </div>
 
