@@ -22,10 +22,7 @@ const ServiceOverviewHero = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
                 >
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full text-sm font-medium text-[#6A5ACD] mb-8 border border-[#E6E6FA] shadow-sm">
-                        <Music className="w-4 h-4" />
-                        <span>Більше ніж просто папір</span>
-                    </div>
+
 
                     <h1 className="text-5xl md:text-7xl font-bold text-gray-900 leading-[1.1] tracking-tight mb-8">
                         Новий спосіб подарувати <br />
@@ -53,13 +50,11 @@ const ServiceOverviewHero = () => {
                             {/* Background Decoration */}
                             <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#6A5ACD] to-[#9370DB]" />
 
-                            <div className="w-16 h-16 bg-[#F5F3FF] rounded-2xl flex items-center justify-center text-[#6A5ACD] mb-6 group-hover:scale-110 transition-transform duration-500">
-                                <Sparkles className="w-8 h-8" />
-                            </div>
 
                             <h3 className="text-2xl font-bold text-gray-900 mb-4">
                                 Крок 1: Твориш у студії
                             </h3>
+
                             <p className="text-gray-600 leading-relaxed mb-8 max-w-md">
                                 Заходиш у студію, відповідаєш на прості питання. Листосик миттєво генерує текст, створює музику та записує вокал.
                             </p>
@@ -91,10 +86,6 @@ const ServiceOverviewHero = () => {
                         <div className="bg-white rounded-[40px] p-8 md:p-12 shadow-[0_20px_50px_rgba(255,133,162,0.1)] border border-pink-50 flex flex-col items-center text-center relative overflow-hidden group hover:-translate-y-2 transition-transform duration-500">
                             {/* Background Decoration */}
                             <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#FF85A2] to-[#FF6B8A]" />
-
-                            <div className="w-16 h-16 bg-[#FFF0F3] rounded-2xl flex items-center justify-center text-[#FF85A2] mb-6 group-hover:scale-110 transition-transform duration-500">
-                                <Gift className="w-8 h-8" />
-                            </div>
 
                             <h3 className="text-2xl font-bold text-gray-900 mb-4">
                                 Крок 2: Отримуєш магію
@@ -141,11 +132,10 @@ const ListosykIntro = () => {
                     className="text-center mb-16"
                 >
                     <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-                        Як створити шедевр без досвіду?
+                        Складно? Насправді – ні.
                     </h2>
                     <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                        Тобі не потрібно бути композитором чи дизайнером. Все складне ми взяли на себе.
-                        Точніше, доручили це нашому генію.
+                        Ми приховали надсучасні технології за простим інтерфейсом і цим милим котом. Ти просто спілкуєшся, а він створює шедеври.
                     </p>
                 </motion.div>
 
@@ -201,19 +191,19 @@ const ValuesSection = () => {
         {
             icon: Fingerprint,
             title: "Унікальність",
-            description: "Твоя історія = твоя пісня. Ніхто більше не матиме такої ж — вона тільки твоя.",
+            description: "Твоя історія формує кожну деталь: від слів у пісні до дизайну листівки. Жодних повторів – тільки те, що важливо для тебе.",
             gradient: "from-purple-500 to-indigo-500"
         },
         {
             icon: Zap,
             title: "Легкість",
-            description: "10 хвилин — і готово. Відповідаєш на питання — Листосик робить магію.",
+            description: "Інтуїтивний сервіс, де Листосик допомагає на кожному етапі: від написання слів і генерації пісні до дизайну листівки.",
             gradient: "from-amber-500 to-orange-500"
         },
         {
             icon: Gift,
             title: "Результат",
-            description: "Отримуєш друковану листівку з QR-кодом, яка вражає з першого погляду.",
+            description: "Отримуєш друковану листівку з QR-кодом протягом 2 днів Новою поштою. Вона вразить того, кому ти її подаруєш.",
             gradient: "from-rose-500 to-pink-500"
         }
     ];
@@ -274,7 +264,7 @@ const GuaranteeSection = () => {
         {
             icon: RefreshCw,
             title: "Повний контроль",
-            description: "Не подобається — переробляй, поки не буде ідеально. Без обмежень.",
+            description: "Не подобається – переробляй, поки не буде ідеально. Без обмежень.",
             color: "bg-green-50 text-green-600"
         },
         {
@@ -321,20 +311,7 @@ const GuaranteeSection = () => {
                     ))}
                 </div>
 
-                {/* Extra trust indicator */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    className="flex flex-wrap justify-center gap-6 mt-12"
-                >
-                    {["Безкоштовна доставка", "500+ задоволених клієнтів", "Преміальна якість"].map((text) => (
-                        <div key={text} className="flex items-center gap-2 text-gray-600">
-                            <CheckCircle className="w-5 h-5 text-green-500" />
-                            <span className="font-medium">{text}</span>
-                        </div>
-                    ))}
-                </motion.div>
+
             </div>
         </section>
     );
@@ -354,14 +331,10 @@ const CTASection = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                 >
-                    <h2 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight tracking-tight mb-8">
-                        Готові створити магію?
-                    </h2>
-
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
                         <Button
                             onClick={() => openOrderDialog('how-it-works-page', 'Отримати доступ')}
-                            className="bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2] text-white hover:opacity-90 rounded-full px-10 py-7 text-lg font-bold shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all h-auto min-w-[220px]"
+                            className="bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2] text-white hover:opacity-90 rounded-full px-8 py-6 text-lg font-bold shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all h-auto min-w-[220px]"
                         >
                             <Sparkles className="w-5 h-5 mr-2" />
                             Створити листівку
@@ -370,15 +343,17 @@ const CTASection = () => {
                         <Button
                             variant="outline"
                             onClick={() => openOrderDialog('login', 'Увійти')}
-                            className="rounded-full px-10 py-7 text-lg font-bold border-2 border-gray-200 text-gray-600 hover:border-[#9370DB] hover:text-[#9370DB] hover:bg-transparent transition-all h-auto min-w-[220px]"
+                            className="rounded-full px-8 py-6 text-lg font-bold border-2 border-gray-200 text-gray-600 hover:border-[#9370DB] hover:text-[#9370DB] hover:bg-transparent transition-all h-auto min-w-[220px]"
                         >
                             Увійти
                         </Button>
                     </div>
 
-                    <p className="text-sm text-gray-500 font-medium">
-                        Все включено: від ідеї до доставки — <span className="text-gray-900 font-bold">399 грн</span>
-                    </p>
+                    <div className="flex justify-center mt-6">
+                        <p className="text-sm text-gray-500 font-medium text-center max-w-2xl mx-auto leading-relaxed">
+                            * Ти отримуєш доступ до студії, де з ШІ-помічником у зручному інтерфейсі створиш слова, музику та дизайн листівки. А ми її надрукуємо і відправимо – все включено за 399 грн.
+                        </p>
+                    </div>
                 </motion.div>
             </div>
         </section>
