@@ -136,12 +136,12 @@ export function OrderDialog() {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && closeOrderDialog()}>
-      <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto bg-white border border-gray-100 rounded-2xl">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-[#6A5ACD]">
+          <DialogTitle className="text-2xl font-bold text-gray-900">
             Оформлення замовлення
           </DialogTitle>
-          <DialogDescription className="text-[#6A5ACD]/70">
+          <DialogDescription className="text-gray-600">
             Заповни форму — і перейдеш до створення листівки
           </DialogDescription>
         </DialogHeader>
@@ -149,27 +149,28 @@ export function OrderDialog() {
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Ім'я */}
           <div className="space-y-2">
-            <Label htmlFor="name" className="text-[#6A5ACD]">Ваше ім'я *</Label>
+            <Label htmlFor="name" className="text-gray-700">Ваше ім'я *</Label>
             <Input
               id="name"
               value={formData.name}
               onChange={(e) => handleInputChange("name", e.target.value)}
               placeholder="Введіть ваше ім'я"
               required
+              className="border-gray-200 focus:border-gray-400 focus:ring-gray-400"
             />
           </div>
 
           {/* Спосіб зв'язку */}
           <div className="space-y-2">
-            <Label className="text-[#6A5ACD]">Спосіб зв'язку *</Label>
-            <div className="flex gap-2 p-1 bg-[#F8F4FF] rounded-lg">
+            <Label className="text-gray-700">Спосіб зв'язку *</Label>
+            <div className="flex gap-2 p-1 bg-gray-50 rounded-lg border border-gray-100">
               <button
                 type="button"
                 onClick={() => handleInputChange("contactType", "phone")}
                 className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-md transition-all ${
                   formData.contactType === "phone"
-                    ? "bg-[#6A5ACD] text-white"
-                    : "text-[#6A5ACD] hover:bg-white"
+                    ? "bg-gray-900 text-white"
+                    : "text-gray-700 hover:bg-white"
                 }`}
               >
                 <Phone className="h-4 w-4" />
@@ -180,8 +181,8 @@ export function OrderDialog() {
                 onClick={() => handleInputChange("contactType", "telegram")}
                 className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-md transition-all ${
                   formData.contactType === "telegram"
-                    ? "bg-[#6A5ACD] text-white"
-                    : "text-[#6A5ACD] hover:bg-white"
+                    ? "bg-gray-900 text-white"
+                    : "text-gray-700 hover:bg-white"
                 }`}
               >
                 <MessageCircle className="h-4 w-4" />
@@ -197,6 +198,7 @@ export function OrderDialog() {
                 onChange={(e) => handleInputChange("phone", e.target.value)}
                 placeholder="+380 XX XXX XX XX"
                 required
+                className="border-gray-200 focus:border-gray-400 focus:ring-gray-400"
               />
             ) : (
               <div className="space-y-1">
@@ -206,8 +208,9 @@ export function OrderDialog() {
                   onChange={(e) => handleInputChange("telegram", e.target.value)}
                   placeholder="@username"
                   required
+                  className="border-gray-200 focus:border-gray-400 focus:ring-gray-400"
                 />
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-gray-500">
                   Наприклад: @username або t.me/username
                 </p>
               </div>
@@ -215,27 +218,29 @@ export function OrderDialog() {
           </div>
 
           {/* Доставка */}
-          <div className="space-y-3 p-4 bg-[#F8F4FF]/50 rounded-lg border border-[#E5E0FF]">
-            <Label className="text-[#6A5ACD] font-medium">Доставка (Нова Пошта)</Label>
+          <div className="space-y-3 p-4 bg-gray-50 rounded-xl border border-gray-100">
+            <Label className="text-gray-700 font-medium">Доставка (Нова Пошта)</Label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <Label htmlFor="city" className="text-xs text-[#6A5ACD]/70">Місто *</Label>
+                <Label htmlFor="city" className="text-xs text-gray-500">Місто *</Label>
                 <Input
                   id="city"
                   value={formData.city}
                   onChange={(e) => handleInputChange("city", e.target.value)}
                   placeholder="Ваше місто"
                   required
+                  className="border-gray-200 focus:border-gray-400 focus:ring-gray-400"
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="novaPoshta" className="text-xs text-[#6A5ACD]/70">Відділення *</Label>
+                <Label htmlFor="novaPoshta" className="text-xs text-gray-500">Відділення *</Label>
                 <Input
                   id="novaPoshta"
                   value={formData.novaPoshta}
                   onChange={(e) => handleInputChange("novaPoshta", e.target.value)}
                   placeholder="№ відділення"
                   required
+                  className="border-gray-200 focus:border-gray-400 focus:ring-gray-400"
                 />
               </div>
             </div>
@@ -246,7 +251,7 @@ export function OrderDialog() {
             <CollapsibleTrigger asChild>
               <button
                 type="button"
-                className="flex items-center gap-1 text-sm text-[#6A5ACD]/70 hover:text-[#6A5ACD] transition-colors"
+                className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 transition-colors"
               >
                 <span>Є промокод?</span>
                 <ChevronDown className={`h-4 w-4 transition-transform ${showPromoField ? 'rotate-180' : ''}`} />
@@ -259,7 +264,7 @@ export function OrderDialog() {
                   value={formData.promoCode}
                   onChange={(e) => handleInputChange("promoCode", e.target.value.toUpperCase())}
                   placeholder="Введіть промокод"
-                  className="flex-1"
+                  className="flex-1 border-gray-200 focus:border-gray-400 focus:ring-gray-400"
                 />
                 <Button
                   type="button"
@@ -267,6 +272,7 @@ export function OrderDialog() {
                   disabled={validatingPromo || !formData.promoCode.trim()}
                   variant="outline"
                   size="sm"
+                  className="border-gray-200 hover:bg-gray-50"
                 >
                   {validatingPromo ? <Loader2 className="h-4 w-4 animate-spin" /> : 'OK'}
                 </Button>
@@ -280,13 +286,13 @@ export function OrderDialog() {
           </Collapsible>
 
           {/* Ціна */}
-          <div className="flex items-center justify-between py-3 border-t border-[#E5E0FF]">
-            <span className="text-[#6A5ACD]/70">До сплати:</span>
+          <div className="flex items-center justify-between py-3 border-t border-gray-100">
+            <span className="text-gray-600">До сплати:</span>
             <div className="text-right">
               {promoStatus?.valid && (
-                <span className="text-sm text-[#6A5ACD]/50 line-through mr-2">{basePrice} грн</span>
+                <span className="text-sm text-gray-400 line-through mr-2">{basePrice} грн</span>
               )}
-              <span className="text-xl font-bold text-[#6A5ACD]">{finalPrice} грн</span>
+              <span className="text-xl font-bold text-gray-900">{finalPrice} грн</span>
             </div>
           </div>
 
@@ -294,7 +300,7 @@ export function OrderDialog() {
             type="submit" 
             size="lg" 
             disabled={isSubmitting}
-            className="w-full bg-[#6A5ACD] hover:bg-[#5A4ABD] text-white font-semibold"
+            className="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold"
           >
             {isSubmitting ? (
               <>
@@ -308,7 +314,7 @@ export function OrderDialog() {
         </form>
 
         {/* Гарантія - мінімальна */}
-        <div className="flex items-center justify-center gap-2 text-sm text-[#6A5ACD]/60 pt-2">
+        <div className="flex items-center justify-center gap-2 text-sm text-gray-500 pt-2">
           <Shield className="h-4 w-4" />
           <span>Якщо результат не сподобається — ми повернемо гроші</span>
         </div>
