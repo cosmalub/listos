@@ -84,22 +84,30 @@ export function HeaderExperiment({ hideNav = false, showMenu = true, ctaLabel, o
                   <button
                     onClick={() => setIsProductsOpen(!isProductsOpen)}
                     onBlur={() => setTimeout(() => setIsProductsOpen(false), 150)}
-                    className={`flex items-center gap-1 font-medium transition-all duration-200 ${isProductsOpen || isProductActive ? 'text-[#6A5ACD]' : 'text-gray-700 hover:text-gray-900'}`}
+                    className={`flex items-center gap-1.5 font-medium transition-all duration-200 px-3 py-1.5 rounded-full ${isProductsOpen || isProductActive ? 'bg-[#6A5ACD]/10 text-[#6A5ACD]' : 'text-gray-700 hover:bg-gray-100'}`}
                   >
                     Продукти
-                    <ChevronDown size={16} className={`transition-transform duration-200 ${isProductsOpen ? 'rotate-180' : ''}`} />
+                    <ChevronDown size={14} className={`transition-transform duration-200 opacity-60 ${isProductsOpen ? 'rotate-180' : ''}`} />
                   </button>
 
                   {isProductsOpen && (
-                    <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-xl shadow-lg ring-1 ring-black/5 p-2 animate-in fade-in slide-in-from-top-2 duration-150">
+                    <div className="absolute top-full left-0 mt-3 w-80 bg-white rounded-2xl shadow-xl ring-1 ring-black/5 p-3 animate-in fade-in slide-in-from-top-2 duration-150 border border-gray-100">
+                      <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">
+                        Актуальні події
+                      </div>
                       {productItems.map(item => (
                         <a
                           key={item.name}
                           href={item.href}
-                          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-gray-900 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-200 whitespace-nowrap group/item"
+                          className="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200 group/item"
                         >
-                          <Heart size={16} className="shrink-0 text-rose-400 group-hover/item:scale-110 group-hover/item:text-rose-500 transition-all duration-200" />
-                          <span className="min-w-0 flex-1">{item.name}</span>
+                          <div className="w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center text-rose-500 group-hover/item:bg-rose-100 transition-colors">
+                            <Heart size={16} className="fill-rose-500/20" />
+                          </div>
+                          <div>
+                            <span className="block font-medium text-sm text-gray-900">{item.name}</span>
+                            <span className="block text-xs text-gray-500 mt-0.5">Створити унікальне привітання</span>
+                          </div>
                         </a>
                       ))}
                     </div>
