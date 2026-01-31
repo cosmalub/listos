@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, ChevronDown } from "lucide-react";
+import { Menu, ChevronDown, Heart } from "lucide-react";
 import logoListosik from "@/assets/logo-listosik.png";
 import { useOrderDialog } from "@/components/order/OrderDialogContext";
 
@@ -88,7 +88,7 @@ export function HeaderExperiment({ hideNav = false, showMenu = true, ctaLabel, o
                         href={item.href}
                         className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors whitespace-nowrap"
                       >
-                        <span className="shrink-0 text-gray-400">💌</span>
+                        <Heart size={16} className="shrink-0 text-rose-400" />
                         <span className="min-w-0 flex-1">{item.name}</span>
                       </a>
                     ))}
