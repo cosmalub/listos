@@ -225,7 +225,7 @@ function CustomerStory({ story, customerName, customerLocation }: {
   customerLocation: string;
 }) {
   return (
-    <div className="mt-4 bg-[#6A5ACD]/5 rounded-xl p-4 border-2 border-[#B8B3FF]/30">
+    <div className="mt-4 bg-[#6A5ACD]/5 rounded-2xl p-5">
       <div className="mb-3">
         <p className="text-sm font-semibold text-[#6A5ACD] mb-1">Історія від {customerName.split(',')[0]}:</p>
         <p className="text-sm text-[#6A5ACD]/80 leading-relaxed">{story}</p>
@@ -371,7 +371,7 @@ export default function ExamplesSection3D() {
               {filteredExamples.map((postcard) => (
                 <CarouselItem key={postcard.id} className="md:basis-2/3 lg:basis-1/2">
                   <div className="p-1">
-                    <Card className="border-2 border-[#6A5ACD]/30 overflow-hidden h-full">
+                    <Card className="border border-[#6A5ACD]/20 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden h-full">
                       <CardContent className="p-6 flex flex-col h-full">
                         <h3 className="text-xl font-bold mb-2 text-[#6A5ACD]">{postcard.title}</h3>
                         <p className="text-[#6A5ACD]/80 mb-4">{postcard.description}</p>
