@@ -27,7 +27,6 @@ const defaultMenuItems: MenuItem[] = [
   { name: "Як це працює", href: "/how-it-works" },
   { name: "Ціна", href: "/pricing" },
   { name: "Кейси", href: "/cases" },
-  { name: "Хто такий Листосик", href: "/about-listosik" },
 ];
 
 const productItems = [
@@ -132,6 +131,7 @@ export function HeaderExperiment({ hideNav = false, showMenu = true, ctaLabel, o
             {!hideNav && (
               <Button
                 variant="ghost"
+                onClick={() => navigate('/studio')}
                 className="hidden md:flex text-gray-600 hover:text-gray-900 hover:bg-transparent font-medium"
               >
                 Увійти
@@ -171,7 +171,7 @@ export function HeaderExperiment({ hideNav = false, showMenu = true, ctaLabel, o
                       </button>
                     ))}
                     <div className="pt-4 border-t border-gray-100 space-y-3">
-                      <Button variant="outline" className="w-full">Увійти</Button>
+                      <Button variant="outline" className="w-full" onClick={() => { navigate('/studio'); setIsOpen(false); }}>Увійти</Button>
                       <Button
                         onClick={handleCtaClick}
                         className="w-full bg-gray-900 hover:bg-gray-800 text-white"
