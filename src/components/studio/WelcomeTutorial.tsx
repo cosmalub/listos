@@ -165,10 +165,10 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
     <div className="min-h-screen px-4 py-8 md:py-12">
       {/* Promise text - integrated into page flow */}
       <div className="text-center mb-20 md:mb-24 mt-4 md:mt-8">
-        <h3 className="text-2xl md:text-3xl font-bold text-[#6A5ACD] mb-6">
+        <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
           Разом створимо шедевр
         </h3>
-        <p className="text-lg md:text-xl text-slate-900 dark:text-white max-w-2xl mx-auto leading-relaxed">
+        <p className="text-lg md:text-xl text-gray-700 max-w-2xl mx-auto leading-relaxed">
           Ви створите неймовірну музичну листівку, яка точно вразить отримувача. Листосик допоможе на кожному кроці!
         </p>
       </div>
@@ -187,11 +187,11 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
 
           {/* Speech Bubble */}
           <div className="w-full md:w-2/3 relative group">
-            <div className="bg-card p-6 rounded-3xl border-2 border-[#B8B3FF]/60 group-hover:border-[#B8B3FF] transition-colors group-hover:shadow-md relative">
+            <div className="bg-card p-6 rounded-3xl border-2 border-rose-200 group-hover:border-rose-300 transition-colors group-hover:shadow-md relative">
               {/* Speech bubble pointer */}
-              <div className="hidden md:block absolute top-1/2 -left-3 transform -translate-y-1/2 w-6 h-6 rotate-45 border-l-2 border-b-2 border-[#B8B3FF]/60 group-hover:border-[#B8B3FF] transition-colors bg-card"></div>
+              <div className="hidden md:block absolute top-1/2 -left-3 transform -translate-y-1/2 w-6 h-6 rotate-45 border-l-2 border-b-2 border-rose-200 group-hover:border-rose-300 transition-colors bg-card"></div>
 
-              <h3 className="text-xl font-bold text-[#6A5ACD] mb-3 text-left">4 прості кроки створенння + доставка</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-3 text-left">4 прості кроки створенння + доставка</h3>
               <p className="text-muted-foreground text-left">
                 Спершу ми створимо слова, далі — згенеруємо унікальну пісню та сторінку для неї.
                 А на завершення — зробимо дизайн самої листівки. Я буду поруч на кожному кроці!
@@ -297,7 +297,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
           <Button
             onClick={handleStartClick}
             size="lg"
-            className="min-w-[200px]"
+            className="min-w-[200px] bg-gradient-to-r from-rose-500 to-purple-600 hover:from-rose-600 hover:to-purple-700 shadow-lg"
           >
             Почати створення
             <ArrowRight className="h-5 w-5" />
@@ -321,7 +321,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
           <button
             type="button"
             onClick={() => openOrderDialog('studio_welcome', 'Оформити замовлення')}
-            className="text-[#6A5ACD] hover:underline font-medium bg-transparent border-0 p-0 cursor-pointer inline"
+            className="text-rose-500 hover:text-rose-600 hover:underline font-medium bg-transparent border-0 p-0 cursor-pointer inline"
           >
             Оформити замовлення
           </button>
@@ -333,7 +333,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Lock className="h-5 w-5 text-[#6A5ACD]" />
+              <Lock className="h-5 w-5 text-rose-500" />
               Введіть код доступу
             </DialogTitle>
             <DialogDescription className="space-y-2">
@@ -365,21 +365,21 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
               </p>
             </div>
 
-            <Card className="bg-gradient-to-br from-blue-50 to-purple-50 border-purple-200 p-4">
+            <Card className="bg-rose-50/50 border-rose-200 p-4">
               <div className="space-y-3">
                 <div>
-                  <p className="text-sm text-purple-900">
+                  <p className="text-sm text-gray-700">
                     <strong>Не отримали код?</strong><br />
                     Зв'яжіться з нами після оплати, і ми відправимо вам код доступу
                   </p>
                 </div>
 
-                <div className="border-t border-purple-200 pt-3">
-                  <p className="text-sm text-purple-900">
+                <div className="border-t border-rose-200 pt-3">
+                  <p className="text-sm text-gray-700">
                     <strong>У вас ще немає коду?</strong><br />
                     Ви можете{' '}
                     <button
-                      className="text-[#6A5ACD] underline hover:text-[#5A4ABD] font-semibold bg-transparent border-0 p-0 cursor-pointer inline"
+                      className="text-rose-500 underline hover:text-rose-600 font-semibold bg-transparent border-0 p-0 cursor-pointer inline"
                       onClick={(e) => {
                         e.preventDefault();
                         openOrderDialog('studio_token_dialog', 'Оформити замовлення');
@@ -406,7 +406,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
             <Button
               onClick={handleTokenSubmit}
               disabled={isValidating || !accessToken.trim()}
-              className="bg-[#6A5ACD] hover:bg-[#5A4ABD]"
+              className="bg-gradient-to-r from-rose-500 to-purple-600 hover:from-rose-600 hover:to-purple-700"
             >
               {isValidating ? (
                 <>

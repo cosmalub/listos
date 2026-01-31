@@ -12,8 +12,8 @@ import { MusicStyleSelector } from '@/components/studio/MusicStyleSelector';
 import { PageCaptionStep } from '@/components/studio/PageCaptionStep';
 import { PostcardDesign } from '@/components/studio/PostcardDesign';
 import { WelcomeTutorial } from '@/components/studio/WelcomeTutorial';
-import { Header } from '@/components/sections/header';
-import { Footer } from '@/components/sections/footer';
+import { HeaderExperiment } from '@/components/sections/header-experiment';
+import { FooterExperiment } from '@/components/sections/footer-experiment';
 import { StepsHeader } from '@/components/studio/StepsHeader';
 import { StepExplanation } from '@/components/studio/StepExplanation';
 import { useOrderDialog } from '@/components/order/OrderDialogContext';
@@ -600,9 +600,9 @@ const Studio = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFD1DC] via-white to-white">
+    <div className="min-h-screen bg-gradient-to-b from-[#FFE4EC] via-[#FFF0F5] to-white">
       {/* Header */}
-      <Header
+      <HeaderExperiment
         hideNav
         showMenu={false}
         ctaLabel={showWelcome ? "Оформити замовлення" : undefined}
@@ -703,7 +703,7 @@ const Studio = () => {
       </main>
 
       {/* Footer */}
-      <Footer />
+      <FooterExperiment />
     </div>
   );
 };

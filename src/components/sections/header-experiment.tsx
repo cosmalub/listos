@@ -12,6 +12,14 @@ interface MenuItem {
   isExternal?: boolean;
 }
 
+interface HeaderExperimentProps {
+  hideNav?: boolean;
+  showMenu?: boolean;
+  ctaLabel?: string;
+  ctaPath?: string;
+  onCtaClick?: () => void;
+}
+
 const mainMenuItems: MenuItem[] = [
   { name: "Як це працює", href: "/how-it-works" },
   { name: "Ціна", href: "/pricing" },
@@ -23,11 +31,19 @@ const productItems = [
   { name: "День святого Валентина", href: "/valentine" },
 ];
 
-export function HeaderExperiment() {
+export function HeaderExperiment({ hideNav = false, showMenu = true, ctaLabel, onCtaClick }: HeaderExperimentProps) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(false);
   const { openOrderDialog } = useOrderDialog();
+
+  const handleCtaClick = () => {
+    if (onCtaClick) {
+      onCtaClick();
+    } else {
+      openOrderDialog('header-experiment', ctaLabel || 'Отримати доступ');
+    }
+  };
 
   const handleNavClick = (item: MenuItem) => {
     if (item.isExternal || item.href.startsWith('/')) {
@@ -51,98 +67,102 @@ export function HeaderExperiment() {
           </a>
 
           {/* Desktop Navigation - centered on page like the title below */}
-          <nav className="absolute left-1/2 -translate-x-1/2 hidden md:flex items-center space-x-6">
-            {/* Products Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setIsProductsOpen(!isProductsOpen)}
-                onBlur={() => setTimeout(() => setIsProductsOpen(false), 150)}
-                className="flex items-center gap-1 text-gray-700 hover:text-[#6A5ACD] transition-colors font-medium"
-              >
-                Продукти
-                <ChevronDown size={16} className={`transition-transform ${isProductsOpen ? 'rotate-180' : ''}`} />
-              </button>
+          {!hideNav && (
+            <nav className="absolute left-1/2 -translate-x-1/2 hidden md:flex items-center space-x-6">
+              {/* Products Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => setIsProductsOpen(!isProductsOpen)}
+                  onBlur={() => setTimeout(() => setIsProductsOpen(false), 150)}
+                  className="flex items-center gap-1 text-gray-700 hover:text-gray-900 transition-colors font-medium"
+                >
+                  Продукти
+                  <ChevronDown size={16} className={`transition-transform ${isProductsOpen ? 'rotate-180' : ''}`} />
+                </button>
 
-              {isProductsOpen && (
-                <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-100 py-2 min-w-[160px]">
-                  {productItems.map(item => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className="block px-4 py-2 text-gray-700 hover:bg-[#6A5ACD]/5 hover:text-[#6A5ACD] transition-colors"
-                    >
-                      {item.name}
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <a href="/how-it-works" className="text-gray-700 hover:text-[#6A5ACD] transition-colors font-medium">Як це працює</a>
-            <a href="/pricing" className="text-gray-700 hover:text-[#6A5ACD] transition-colors font-medium">Ціна</a>
-            <a href="/cases" className="text-gray-700 hover:text-[#6A5ACD] transition-colors font-medium">Кейси</a>
-          </nav>
-
-          {/* Right side buttons */}
-          <div className="flex items-center gap-3">
-            {/* Get Access - first */}
-            <Button
-              onClick={() => openOrderDialog('header-experiment', 'Отримати доступ')}
-              className="bg-gray-100 hover:bg-gray-200 text-gray-900 border border-transparent hover:border-gray-300 rounded-full px-6 py-2 transition-all font-medium"
-            >
-              Отримати доступ
-            </Button>
-
-            {/* Login - second */}
-            <Button
-              variant="ghost"
-              className="hidden md:flex text-gray-600 hover:text-[#6A5ACD] hover:bg-transparent font-medium"
-            >
-              Увійти
-            </Button>
-
-            {/* Mobile Menu */}
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger asChild className="md:hidden">
-                <Button variant="ghost" size="icon" className="hover:bg-gray-100">
-                  <Menu className="h-5 w-5" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] bg-white border-l border-gray-100">
-                <div className="flex flex-col space-y-4 mt-8">
-                  <div className="pb-4 border-b border-gray-100">
-                    <p className="text-sm text-gray-500 mb-2">Продукти</p>
+                {isProductsOpen && (
+                  <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-100 py-2 min-w-[160px]">
                     {productItems.map(item => (
                       <a
                         key={item.name}
                         href={item.href}
-                        className="block py-2 text-gray-700 hover:text-[#6A5ACD]"
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors"
                       >
                         {item.name}
                       </a>
                     ))}
                   </div>
-                  {mainMenuItems.map(item => (
-                    <button
-                      key={item.name}
-                      onClick={() => handleNavClick(item)}
-                      className="text-left text-lg text-gray-700 hover:text-[#6A5ACD] py-2"
-                    >
-                      {item.name}
-                    </button>
-                  ))}
-                  <div className="pt-4 border-t border-gray-100 space-y-3">
-                    <Button variant="outline" className="w-full">Увійти</Button>
-                    <Button
-                      onClick={() => openOrderDialog('header-mobile', 'Отримати доступ')}
-                      className="w-full bg-[#6A5ACD] hover:bg-[#5A4ABD] text-white"
-                    >
-                      Отримати доступ
-                    </Button>
+                )}
+              </div>
+
+              <a href="/how-it-works" className="text-gray-700 hover:text-gray-900 transition-colors font-medium">Як це працює</a>
+              <a href="/pricing" className="text-gray-700 hover:text-gray-900 transition-colors font-medium">Ціна</a>
+              <a href="/cases" className="text-gray-700 hover:text-gray-900 transition-colors font-medium">Кейси</a>
+            </nav>
+          )}
+
+          {/* Right side buttons */}
+          <div className="flex items-center gap-3">
+            {/* Get Access - first */}
+            <Button
+              onClick={handleCtaClick}
+              className="bg-gray-100 hover:bg-gray-200 text-gray-900 border border-transparent hover:border-gray-300 rounded-full px-6 py-2 transition-all font-medium"
+            >
+              {ctaLabel || 'Отримати доступ'}
+            </Button>
+
+            {!hideNav && (
+              <Button
+                variant="ghost"
+                className="hidden md:flex text-gray-600 hover:text-gray-900 hover:bg-transparent font-medium"
+              >
+                Увійти
+              </Button>
+            )}
+
+            {showMenu && (
+              <Sheet open={isOpen} onOpenChange={setIsOpen}>
+                <SheetTrigger asChild className="md:hidden">
+                  <Button variant="ghost" size="icon" className="hover:bg-gray-100">
+                    <Menu className="h-5 w-5" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-[300px] bg-white border-l border-gray-100">
+                  <div className="flex flex-col space-y-4 mt-8">
+                    <div className="pb-4 border-b border-gray-100">
+                      <p className="text-sm text-gray-500 mb-2">Продукти</p>
+                      {productItems.map(item => (
+                        <a
+                          key={item.name}
+                          href={item.href}
+                          className="block py-2 text-gray-700 hover:text-gray-900"
+                        >
+                          {item.name}
+                        </a>
+                      ))}
+                    </div>
+                    {mainMenuItems.map(item => (
+                      <button
+                        key={item.name}
+                        onClick={() => handleNavClick(item)}
+                        className="text-left text-lg text-gray-700 hover:text-gray-900 py-2"
+                      >
+                        {item.name}
+                      </button>
+                    ))}
+                    <div className="pt-4 border-t border-gray-100 space-y-3">
+                      <Button variant="outline" className="w-full">Увійти</Button>
+                      <Button
+                        onClick={handleCtaClick}
+                        className="w-full bg-gray-900 hover:bg-gray-800 text-white"
+                      >
+                        {ctaLabel || 'Отримати доступ'}
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </SheetContent>
-            </Sheet>
+                </SheetContent>
+              </Sheet>
+            )}
           </div>
         </div>
       </div>
