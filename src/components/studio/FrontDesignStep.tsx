@@ -936,11 +936,12 @@ export function FrontDesignStep({
             onClick={() => {
               setCurrentState('preview');
             }}
-            className="w-full"
+            className="w-full text-sm sm:text-base"
             size="lg"
           >
             <Wand2 className="w-4 h-4 mr-2" />
-            Створити лицьову частину листівки
+            <span className="sm:hidden">Створити лицьову частину</span>
+            <span className="hidden sm:inline">Створити лицьову частину листівки</span>
           </Button>
         </div>
       )}
