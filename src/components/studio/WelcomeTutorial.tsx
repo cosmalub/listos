@@ -164,7 +164,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
   return (
     <div className="min-h-screen px-4 py-8 md:py-12">
       {/* Promise text - integrated into page flow */}
-      <div className="text-center mb-20 md:mb-24 mt-4 md:mt-8">
+      <div className="text-center mb-20 md:mb-24 mt-8 sm:mt-12 md:mt-8">
         <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
           Разом створимо шедевр
         </h3>
@@ -191,8 +191,8 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
               {/* Speech bubble pointer */}
               <div className="hidden md:block absolute top-1/2 -left-3 transform -translate-y-1/2 w-6 h-6 rotate-45 border-l-2 border-b-2 border-[#B8B3FF]/60 group-hover:border-[#B8B3FF] transition-colors bg-card"></div>
 
-              <h3 className="text-xl font-bold text-gray-900 mb-3 text-left">4 прості кроки створенння + доставка</h3>
-              <p className="text-muted-foreground text-left">
+              <h3 className="text-xl font-bold text-gray-900 mb-3 text-center md:text-left">4 прості кроки створенння + доставка</h3>
+              <p className="text-muted-foreground text-center md:text-left">
                 Спершу ми створимо слова, далі — згенеруємо унікальну пісню та сторінку для неї.
                 А на завершення — зробимо дизайн самої листівки. Я буду поруч на кожному кроці!
               </p>
