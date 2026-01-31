@@ -16,7 +16,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative min-h-[100svh] flex items-center lg:items-start justify-center overflow-hidden pt-20 sm:pt-24 md:pt-28 lg:pt-16 pb-12 sm:pb-16 md:pb-20 lg:pb-8 px-4 bg-white">
+    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-24 sm:pt-32 md:pt-40 pb-16 sm:pb-24 md:pb-32 px-4 bg-white">
       {/* Background Texture */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-0 mix-blend-multiply"
         style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E")` }}
@@ -29,7 +29,7 @@ export function HeroSection() {
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1, ease: "circOut" }}
-          className="relative flex items-center justify-center w-[340px] h-[340px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] lg:w-[min(520px,50vh)] lg:h-[min(520px,50vh)] xl:w-[min(580px,54vh)] xl:h-[min(580px,54vh)]"
+          className="relative flex items-center justify-center w-[340px] h-[340px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] lg:w-[680px] lg:h-[680px] xl:w-[720px] xl:h-[720px]"
         >
           {/* Heart Shape SVG Background */}
           <div className="absolute inset-0 flex items-center justify-center drop-shadow-2xl">
@@ -80,7 +80,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="flex flex-col sm:flex-row gap-4 mt-6 sm:mt-8 md:mt-10 lg:-mt-6 relative z-20"
+          className="flex flex-col sm:flex-row gap-4 mt-8 sm:mt-10 md:mt-12 relative z-20"
         >
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -97,7 +97,7 @@ export function HeroSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
-          className="flex flex-col items-center gap-3 mt-4 lg:mt-2 opacity-80"
+          className="flex flex-col items-center gap-3 mt-8 opacity-80"
         >
           <div className="flex -space-x-3">
             <div className="w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-sm">
