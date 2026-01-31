@@ -60,14 +60,14 @@ export function PainSection() {
       <div className="relative z-10 max-w-5xl mx-auto px-4">
         {/* Section header */}
         <div className="text-center mb-10 md:mb-16">
-          <motion.span
+          <motion.h2
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-base md:text-sm font-bold tracking-wider text-rose-500 uppercase block"
+            className="text-2xl md:text-4xl font-extrabold tracking-tight text-gray-900"
           >
-            Знайома ситуація?
-          </motion.span>
+            Звучить знайомо?
+          </motion.h2>
         </div>
 
         {/* Cards grid - optimized for mobile */}
