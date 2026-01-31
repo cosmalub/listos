@@ -212,7 +212,7 @@ export function SolutionSection() {
                 y: cardsExpanded ? 0 : 5
               }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="absolute z-10 w-64 sm:w-72 h-[360px] sm:h-[420px] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.12)] overflow-hidden"
+              className="absolute z-10 w-64 sm:w-72 md:w-80 h-[360px] sm:h-[420px] md:h-[480px] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.12)] overflow-hidden"
             >
               <img
                 src="/postcards/valentine-back.png"
@@ -231,7 +231,7 @@ export function SolutionSection() {
                 y: 0
               }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="absolute z-20 w-64 sm:w-72 h-[360px] sm:h-[420px] rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.18)] overflow-hidden"
+              className="absolute z-20 w-64 sm:w-72 md:w-80 h-[360px] sm:h-[420px] md:h-[480px] rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.18)] overflow-hidden"
             >
               <img
                 src="/postcards/valentine-front.jpg"
