@@ -50,7 +50,7 @@ function InteractiveReviewBadge() {
               onClick={() => setActiveIndex(i)}
             >
               <img
-                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 5}`} // Другой сид для разнообразия
+                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 5}&mouth=smile,default&eyes=default,happy,side`}
                 alt="Avatar"
                 className="w-full h-full object-cover"
               />
