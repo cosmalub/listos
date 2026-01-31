@@ -44,13 +44,13 @@ async function extractDominantColorsFromImage(frontDesign: FrontDesignData): Pro
       // Fallback на цвета стиля или дефолтные
     }
   }
-  
+
   // Если выбран стиль AI-генерации, используем цвета стиля
   if (frontDesign.style) {
     const styleColors = getStyleColors(frontDesign.style);
     return styleColors.slice(0, 3);
   }
-  
+
   // Fallback цвета
   return FALLBACK_COLORS;
 }
@@ -118,7 +118,7 @@ export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, o
         setIsLoadingColors(false);
       }
     };
-    
+
     loadColors();
   }, [frontDesign.imageUrl]);
 
@@ -189,33 +189,33 @@ export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, o
             >
               <div className="grid grid-cols-3 gap-2 sm:gap-4">
                 {dominantColors.map((color, index) => (
-                <div key={color} className="relative">
-                  <RadioGroupItem value={color} id={color} className="sr-only" />
-                  <Label
-                    htmlFor={color}
-                    className={`
+                  <div key={color} className="relative">
+                    <RadioGroupItem value={color} id={color} className="sr-only" />
+                    <Label
+                      htmlFor={color}
+                      className={`
                       block p-2 sm:p-4 border-2 rounded-lg cursor-pointer transition-all
-                      ${backData.selectedColor === color 
-                        ? 'border-primary bg-primary/5' 
-                        : 'border-border hover:border-primary/50'
-                      }
+                      ${backData.selectedColor === color
+                          ? 'border-primary bg-primary/5'
+                          : 'border-border hover:border-primary/50'
+                        }
                     `}
-                  >
-                    <div className="text-center space-y-2 sm:space-y-3">
-                      <div 
-                        className="h-10 w-full sm:h-16 rounded-lg border-2 border-border/20"
-                        style={{ backgroundColor: color }}
-                      />
-                      <div className="space-y-1">
-                        <h3 className="font-medium text-xs sm:text-base">Колір {index + 1}</h3>
-                        <p className="text-[10px] sm:text-xs text-muted-foreground font-mono">{color}</p>
+                    >
+                      <div className="text-center space-y-2 sm:space-y-3">
+                        <div
+                          className="h-10 w-full sm:h-16 rounded-lg border-2 border-border/20"
+                          style={{ backgroundColor: color }}
+                        />
+                        <div className="space-y-1">
+                          <h3 className="font-medium text-xs sm:text-base">Колір {index + 1}</h3>
+                          <p className="text-[10px] sm:text-xs text-muted-foreground font-mono">{color}</p>
+                        </div>
                       </div>
-                    </div>
-                  </Label>
-                </div>
-              ))}
-            </div>
-          </RadioGroup>
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </RadioGroup>
           )}
         </CardContent>
       </Card>
@@ -225,8 +225,8 @@ export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, o
         <CardHeader>
           <CardTitle>2. Персональне повідомлення</CardTitle>
           <p className="text-sm text-muted-foreground mt-3">
-            {isGeneratingMessage ? 
-              "Створюємо музичну магію на основі ваших слів..." : 
+            {isGeneratingMessage ?
+              "Створюємо музичну магію на основі ваших слів..." :
               "Ми створили персональне повідомлення на основі вашої листівки. Ви можете відредагувати його або згенерувати нове."
             }
           </p>
@@ -264,18 +264,20 @@ export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, o
       </Card>
 
       {/* Navigation Buttons */}
-      <div className="flex justify-between">
-        <Button variant="outline" onClick={onBack} className="flex items-center gap-2">
+      <div className="flex flex-col sm:flex-row gap-3 sm:justify-between">
+        <Button variant="outline" onClick={onBack} className="flex items-center justify-center gap-2 w-full sm:w-auto">
           <ArrowLeft className="w-4 h-4" />
-          До лицьової сторони
+          <span className="sm:hidden">Назад</span>
+          <span className="hidden sm:inline">До лицьової сторони</span>
         </Button>
         <Button
           onClick={handleComplete}
           disabled={!isComplete}
           size="lg"
-          className="flex items-center gap-2"
+          className="flex items-center justify-center gap-2 w-full sm:w-auto"
         >
-          Завершити дизайн
+          <span className="sm:hidden">Завершити</span>
+          <span className="hidden sm:inline">Завершити дизайн</span>
           <ArrowRight className="w-4 h-4" />
         </Button>
       </div>
