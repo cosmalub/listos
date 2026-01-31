@@ -99,7 +99,7 @@ export function HowItWorksSection() {
           </div>
 
           {/* Right: Timeline Steps */}
-          <div className="relative pt-8">
+          <div className="relative">
 
             {/* Step 1: Creation (Studio Process) */}
             <StepCard number="1" title="Магія створення" icon={Play}>
