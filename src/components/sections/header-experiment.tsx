@@ -21,6 +21,7 @@ interface HeaderExperimentProps {
   menuItems?: MenuItem[];
   showProductsDropdown?: boolean;
   logoHref?: string;
+  showLogin?: boolean;
 }
 
 const defaultMenuItems: MenuItem[] = [
@@ -33,13 +34,13 @@ const productItems = [
   { name: "День святого Валентина", href: "/valentine" },
 ];
 
-export function HeaderExperiment({ hideNav = false, showMenu = true, ctaLabel, onCtaClick, menuItems, showProductsDropdown = true, logoHref = "/" }: HeaderExperimentProps) {
+export function HeaderExperiment({ hideNav = false, showMenu = true, ctaLabel, onCtaClick, menuItems, showProductsDropdown = true, logoHref = "/", showLogin = true }: HeaderExperimentProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(false);
   const { openOrderDialog } = useOrderDialog();
-  
+
   const resolvedMenuItems = menuItems ?? defaultMenuItems;
 
   const isActive = (href: string) => location.pathname === href;
@@ -128,7 +129,7 @@ export function HeaderExperiment({ hideNav = false, showMenu = true, ctaLabel, o
               {ctaLabel || 'Отримати доступ'}
             </Button>
 
-            {!hideNav && (
+            {!hideNav && showLogin && (
               <Button
                 variant="ghost"
                 onClick={() => navigate('/studio')}
@@ -171,7 +172,9 @@ export function HeaderExperiment({ hideNav = false, showMenu = true, ctaLabel, o
                       </button>
                     ))}
                     <div className="pt-4 border-t border-gray-100 space-y-3">
-                      <Button variant="outline" className="w-full" onClick={() => { navigate('/studio'); setIsOpen(false); }}>Увійти</Button>
+                      {showLogin && (
+                        <Button variant="outline" className="w-full" onClick={() => { navigate('/studio'); setIsOpen(false); }}>Увійти</Button>
+                      )}
                       <Button
                         onClick={handleCtaClick}
                         className="w-full bg-gray-900 hover:bg-gray-800 text-white"

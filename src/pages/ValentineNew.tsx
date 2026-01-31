@@ -25,7 +25,7 @@ const valentineMenuItems = [
 export default function Valentine() {
   return (
     <div className="min-h-screen bg-rose-50/50 font-sans text-gray-900 overflow-x-hidden selection:bg-rose-100 selection:text-rose-600">
-      <HeaderExperiment ctaLabel="Створити" menuItems={valentineMenuItems} showProductsDropdown={false} logoHref="#top" />
+      <HeaderExperiment ctaLabel="Створити" menuItems={valentineMenuItems} showProductsDropdown={false} logoHref="#top" showLogin={false} />
       <HeroSection />
       <PainSection />
       <InsightSection />
