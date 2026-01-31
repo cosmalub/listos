@@ -11,7 +11,7 @@ import { FaqSection } from '../components/valentine-new/FaqSection';
 import { FinalCTASection } from '../components/valentine-new/FinalCTASection';
 import { PricingSection } from '../components/valentine-new/PricingSection';
 import { Footer } from '@/components/sections/footer';
-import { Header } from '@/components/sections/header';
+import { HeaderExperiment } from '@/components/sections/header-experiment';
 
 const valentineMenuItems = [
   { name: "Як це працює", href: "#how-it-works" },
@@ -25,7 +25,7 @@ const valentineMenuItems = [
 export default function Valentine() {
   return (
     <div className="min-h-screen bg-white font-sans text-gray-900 overflow-x-hidden selection:bg-rose-100 selection:text-rose-600">
-      <Header ctaLabel="Створити" menuItems={valentineMenuItems} />
+      <HeaderExperiment ctaLabel="Створити" menuItems={valentineMenuItems} showProductsDropdown={false} logoHref="#top" />
       <HeroSection />
       <PainSection />
       <InsightSection />
