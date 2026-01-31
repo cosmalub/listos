@@ -600,7 +600,7 @@ const Studio = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFE4EC] via-[#FFF0F5] to-white">
+    <div className="min-h-screen bg-gradient-to-b from-[#F0F8FF] via-[#F5F3FF] to-white">
       {/* Header */}
       <HeaderExperiment
         hideNav
