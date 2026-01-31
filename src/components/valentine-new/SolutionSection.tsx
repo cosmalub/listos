@@ -195,54 +195,37 @@ export function SolutionSection() {
             })}
           </div>
 
-          {/* The Cards: Overlapping & Tilted - LARGER */}
+          {/* The Cards: Overlapping & Tilted - REAL IMAGES */}
           <div className="relative w-full max-w-xl h-[450px] flex items-center justify-center">
 
-            {/* Back Card (QR) - Tilted Right */}
+            {/* Back Card (QR/зворотня) - Behind, tilted right */}
             <motion.div
-              initial={{ opacity: 0, rotate: 10, x: 60, y: 10 }}
-              whileInView={{ opacity: 1, rotate: 6, x: 50, y: 0 }}
+              initial={{ opacity: 0, rotate: 12, x: 70, y: 15 }}
+              whileInView={{ opacity: 1, rotate: 8, x: 60, y: 5 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="absolute z-20 w-72 h-[420px] bg-white rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.15)] flex flex-col items-center justify-center border border-white/50 backdrop-blur-sm"
+              className="absolute z-10 w-64 sm:w-72 h-[360px] sm:h-[420px] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.12)] overflow-hidden"
             >
-              {/* Texture/Noise */}
-              <div className="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/paper.png')] mix-blend-multiply rounded-2xl" />
-
-              <div className="relative z-10 flex flex-col items-center">
-                <div className="w-32 h-32 bg-gray-900 rounded-xl mb-6 flex items-center justify-center relative shadow-lg group hover:scale-105 transition-transform duration-300">
-                  <div className="absolute inset-0 border border-white/20 rounded-xl opacity-50" />
-                  <ScanLine className="text-white w-12 h-12 opacity-80" />
-                  {/* Small pulse from QR itself */}
-                  <motion.div
-                    className="absolute inset-0 bg-white/5 rounded-xl"
-                    animate={{ opacity: [0, 0.5, 0] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                </div>
-                <span className="text-sm font-medium text-gray-400 uppercase tracking-widest mb-1">Зворот</span>
-                <p className="text-xs text-gray-400 max-w-[140px] text-center">
-                  Наведи камеру,<br />і музика заграє
-                </p>
-              </div>
+              <img
+                src="/postcards/valentine-back.png"
+                alt="Зворотня сторона листівки з QR-кодом"
+                className="w-full h-full object-cover"
+              />
             </motion.div>
 
-            {/* Front Card (Design) - Tilted Left */}
+            {/* Front Card (Design/лицьова) - In front, tilted left */}
             <motion.div
-              initial={{ opacity: 0, rotate: -10, x: -60, y: -10 }}
-              whileInView={{ opacity: 1, rotate: -6, x: -50, y: 0 }}
+              initial={{ opacity: 0, rotate: -12, x: -70, y: -15 }}
+              whileInView={{ opacity: 1, rotate: -6, x: -55, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="absolute z-10 w-72 h-[420px] bg-white rounded-2xl shadow-[0_15px_40px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center border border-gray-100"
+              className="absolute z-20 w-64 sm:w-72 h-[360px] sm:h-[420px] rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.18)] overflow-hidden"
             >
-              {/* Placeholder Design */}
-              <div className="absolute inset-5 border border-rose-100 rounded-xl flex flex-col items-center justify-center">
-                <Heart className="w-14 h-14 text-rose-200 mb-4" strokeWidth={1} />
-                <span className="text-sm text-rose-300 font-handwriting">Ваші найтепліші слова...</span>
-              </div>
-              <div className="absolute bottom-6 text-xs text-gray-300 uppercase tracking-widest">
-                Лицьова
-              </div>
+              <img
+                src="/postcards/valentine-front.jpg"
+                alt="Лицьова сторона листівки"
+                className="w-full h-full object-cover"
+              />
             </motion.div>
 
           </div>
