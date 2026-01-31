@@ -21,8 +21,8 @@ export function FinalCTASection() {
           className="bg-white p-12 md:p-20 rounded-[3rem] shadow-2xl border border-rose-100 relative overflow-hidden text-center"
         >
           {/* Decorative Hearts from Original Design */}
-          <Heart className="absolute top-4 left-6 sm:top-10 sm:left-10 text-pink-100 w-14 h-14 sm:w-24 sm:h-24 -rotate-12" fill="currentColor" />
-          <Heart className="absolute bottom-4 right-4 sm:bottom-10 sm:right-10 text-purple-100 w-16 h-16 sm:w-32 sm:h-32 rotate-12" fill="currentColor" />
+          <Heart className="absolute top-4 left-6 sm:top-10 sm:left-10 text-pink-100 w-14 h-14 sm:w-24 sm:h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 -rotate-12" fill="currentColor" />
+          <Heart className="absolute bottom-4 right-4 sm:bottom-10 sm:right-10 text-purple-100 w-16 h-16 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 rotate-12" fill="currentColor" />
 
           <div className="relative z-10 space-y-8">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-gray-900 drop-shadow-sm">
