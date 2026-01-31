@@ -12,10 +12,10 @@ import { FooterExperiment } from '@/components/sections/footer-experiment';
 const detectLanguage = (text: string): 'uk' | 'ru' => {
   const ukrainianChars = /[іїєґ]/i;
   const russianChars = /[ыэъ]/i;
-  
+
   const hasUkrainian = ukrainianChars.test(text);
   const hasRussian = russianChars.test(text);
-  
+
   if (hasUkrainian && !hasRussian) return 'uk';
   if (hasRussian && !hasUkrainian) return 'ru';
   return 'uk';
@@ -41,6 +41,9 @@ const locale = {
 const cleanLyrics = (text: string): string => {
   return text
     .replace(/<LYRICS>|<\/LYRICS>/gi, '')
+    // Видаляємо слово LYRICS (з або без зворотних лапок)
+    .replace(/```?LYRICS```?/gi, '')
+    .replace(/^LYRICS\s*/gim, '')
     .replace(/```[\s\S]*?```/g, '')
     .replace(/\[.*?\]/g, '')
     .replace(/\(.*?\)/g, '')
@@ -101,7 +104,7 @@ const PublicSongDraft = () => {
   const occasion = draftData?.pageInfo?.occasion || draftData?.occasion || searchParams.get('occasion') || 'congratulations';
   const recipient = draftData?.pageInfo?.recipient || draftData?.recipient || searchParams.get('recipient') || '';
   const sender = draftData?.pageInfo?.sender || draftData?.sender || searchParams.get('sender') || '';
-  
+
   console.log('PublicSongDraft - occasion:', occasion);
 
   // Get song data from sessionStorage or use fallback
@@ -116,10 +119,10 @@ const PublicSongDraft = () => {
 Здоров'я, радості бажаю.
 Нехай мрії всі збуваються,
 А смуток геть розвіється.`;
-  
+
   const caption = draftData?.designData?.front?.caption || 'З найкращими побажаннями';
   const musicVariant = draftData?.musicVariant;
-  
+
   // Визначення мови та заголовка
   const language = detectLanguage(lyrics);
   const occasionTitle = getOccasionTitle(occasion, language);
@@ -144,10 +147,10 @@ const PublicSongDraft = () => {
     <div className="min-h-screen">
       {/* OccasionAnimation includes static background + intro ritual animation */}
       <OccasionAnimation occasion={occasion} ritualDuration={10000} />
-      
+
       {/* Header */}
       <Header centerTitle="Студія створення листівки" hideNav showMenu={false} />
-      
+
       {/* Steps indicator */}
       <StepsHeader currentStep={3} />
 
@@ -203,7 +206,7 @@ const PublicSongDraft = () => {
             {/* Текст пісні з HTML рендерингом */}
             {lyrics && (
               <div className="bg-gradient-to-r from-[hsl(var(--primary))]/10 to-[hsl(var(--secondary))]/10 rounded-lg p-6">
-                <div 
+                <div
                   className="whitespace-pre-wrap text-center"
                   dangerouslySetInnerHTML={{
                     __html: cleanLyrics(lyrics)
@@ -219,15 +222,15 @@ const PublicSongDraft = () => {
       <div className="fixed bottom-0 left-0 right-0 bg-background/98 backdrop-blur-md border-t border-border p-3 sm:p-4 z-20 shadow-lg">
         <div className="container mx-auto max-w-2xl">
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 sm:justify-center">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={() => navigate('/studio?step=4')}
               className="w-full sm:w-auto text-center text-sm sm:text-base"
             >
               Повернутися до редагування
             </Button>
-            <Button 
-              onClick={handleApprove} 
+            <Button
+              onClick={handleApprove}
               className="w-full sm:w-auto sm:min-w-[200px] text-center text-sm sm:text-base"
             >
               <CheckCircle className="h-4 w-4 mr-2 flex-shrink-0" />
