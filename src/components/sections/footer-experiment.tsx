@@ -18,13 +18,11 @@ export function FooterExperiment() {
             </div>
 
             {/* Right group: links + contacts */}
-            <div className="grid grid-cols-2 gap-6 md:flex md:flex-row md:gap-16 md:ml-auto">
-              {/* Useful Information */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-12 md:ml-auto">
+              {/* Start / CTA */}
               <div className="space-y-3 text-left">
-                <h3 className="font-bold text-gray-900 text-base md:text-lg">Корисна інформація</h3>
+                <h3 className="font-bold text-gray-900 text-base md:text-lg">Почати</h3>
                 <ul className="space-y-1.5">
-                  <li><a href="#faq" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">Часті запитання</a></li>
-
                   <li>
                     <button
                       onClick={() => openOrderDialog('footer', 'Оформити замовлення')}
@@ -35,7 +33,7 @@ export function FooterExperiment() {
                   </li>
                   <li>
                     <a
-                      href="https://lystosyk.com/studio"
+                      href="/studio"
                       className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
                     >
                       Створити листівку
@@ -49,12 +47,22 @@ export function FooterExperiment() {
                 <h3 className="font-bold text-gray-900 text-base md:text-lg">Зв'язок</h3>
                 <div className="space-y-2 text-gray-600">
                   <p className="text-sm">melodlistiv@gmail.com</p>
-
                   <div className="flex gap-3 pt-1">
                     <a href="https://www.instagram.com/melodiinalistivka/" target="_blank" rel="noopener noreferrer" className="text-sm hover:text-gray-900 transition-colors">Instagram</a>
                     <a href="https://t.me/genbyhuman" target="_blank" rel="noopener noreferrer" className="text-sm hover:text-gray-900 transition-colors">Telegram</a>
                   </div>
                 </div>
+              </div>
+
+              {/* Legal Info */}
+              <div className="space-y-3 text-left col-span-2 md:col-span-1">
+                <h3 className="font-bold text-gray-900 text-base md:text-lg">Юридична інформація</h3>
+                <ul className="space-y-1.5">
+                  <li><a href="/offer" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">Оферта</a></li>
+                  <li><a href="/privacy" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">Політика конфіденційності</a></li>
+                  <li><a href="/delivery" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">Оплата і доставка</a></li>
+                  <li><a href="/guarantee" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">Гарантія</a></li>
+                </ul>
               </div>
             </div>
           </div>
