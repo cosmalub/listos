@@ -95,7 +95,7 @@ export default function OrderSuccess() {
   useEffect(() => {
     const generatePromoCode = async () => {
       if (!orderData?.pre_order_id) return;
-      
+
       try {
         console.log('Generating promo code for pre_order_id:', orderData.pre_order_id);
         const { data, error } = await supabase.functions.invoke('generate-promo-code', {
@@ -103,7 +103,7 @@ export default function OrderSuccess() {
         });
 
         if (error) throw error;
-        
+
         console.log('Promo code generated:', data);
       } catch (error) {
         console.error('Error generating promo code:', error);
@@ -204,7 +204,7 @@ export default function OrderSuccess() {
 
             {/* Next Steps */}
             <div className="bg-gray-50 rounded-2xl p-6 mb-8 border border-gray-100">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Що далі?</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4 text-center sm:text-left">Що далі?</h2>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3 text-gray-700">
                   <span className="text-2xl">✓</span>
@@ -241,10 +241,11 @@ export default function OrderSuccess() {
             <div className="text-center mt-6">
               <Button
                 size="lg"
-                className="text-lg"
+                className="text-base sm:text-lg w-full sm:w-auto"
                 onClick={() => window.location.href = `/discount?ref=${orderData.pre_order_id}`}
               >
-                Отримати знижку 25% на наступне замовлення 🎁
+                <span className="sm:hidden">Отримати знижку 25% 🎁</span>
+                <span className="hidden sm:inline">Отримати знижку 25% на наступне замовлення 🎁</span>
               </Button>
             </div>
           </CardContent>
