@@ -300,7 +300,7 @@ export function OrderDialog() {
             type="submit" 
             size="lg" 
             disabled={isSubmitting}
-            className="w-full bg-[#6A5ACD] hover:bg-[#5A4ABD] hover:shadow-lg hover:shadow-[#6A5ACD]/25 text-white font-semibold transition-all"
+            className="w-full bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2] hover:opacity-90 hover:shadow-lg text-white font-semibold transition-all"
           >
             {isSubmitting ? (
               <>

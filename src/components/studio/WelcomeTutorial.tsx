@@ -297,7 +297,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
           <Button
             onClick={handleStartClick}
             size="lg"
-            className="min-w-[200px] bg-[#6A5ACD] hover:bg-[#5A4ABD] shadow-lg"
+            className="min-w-[200px] bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2] hover:opacity-90 shadow-lg"
           >
             Почати створення
             <ArrowRight className="h-5 w-5" />
@@ -406,7 +406,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
             <Button
               onClick={handleTokenSubmit}
               disabled={isValidating || !accessToken.trim()}
-              className="bg-[#6A5ACD] hover:bg-[#5A4ABD]"
+              className="bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2] hover:opacity-90"
             >
               {isValidating ? (
                 <>
