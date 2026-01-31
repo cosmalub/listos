@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Music, PenTool, Heart, Sparkles, ScanLine } from 'lucide-react';
 import { useOrderDialog } from '@/components/order/OrderDialogContext';
@@ -6,6 +6,17 @@ import { useOrderDialog } from '@/components/order/OrderDialogContext';
 export function SolutionSection() {
   const { openOrderDialog } = useOrderDialog();
   const [cardsExpanded, setCardsExpanded] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const checkDesktop = () => setIsDesktop(window.innerWidth >= 768);
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
+
+  // Різні значення раздвижки для десктопу і мобільного
+  const expandedX = isDesktop ? 160 : 120;
 
   return (
     <section className="py-32 px-4 bg-white relative overflow-hidden">
@@ -208,7 +219,7 @@ export function SolutionSection() {
               animate={{
                 opacity: 1,
                 rotate: cardsExpanded ? 3 : 8,
-                x: cardsExpanded ? 120 : 60,
+                x: cardsExpanded ? expandedX : 60,
                 y: cardsExpanded ? 0 : 5
               }}
               transition={{ duration: 0.5, ease: "easeOut" }}
@@ -227,7 +238,7 @@ export function SolutionSection() {
               animate={{
                 opacity: 1,
                 rotate: cardsExpanded ? -3 : -6,
-                x: cardsExpanded ? -120 : -55,
+                x: cardsExpanded ? -expandedX : -55,
                 y: 0
               }}
               transition={{ duration: 0.5, ease: "easeOut" }}
