@@ -120,10 +120,10 @@ export function HeaderExperiment({ hideNav = false, showMenu = true, ctaLabel, o
 
           {/* Right side buttons */}
           <div className="flex items-center gap-3">
-            {/* Get Access - first */}
+            {/* Get Access - hidden on mobile */}
             <Button
               onClick={handleCtaClick}
-              className="bg-gray-100 hover:bg-gray-200 text-gray-900 border border-transparent hover:border-gray-300 rounded-full px-6 py-2 transition-all font-medium"
+              className="hidden md:flex bg-gray-100 hover:bg-gray-200 text-gray-900 border border-transparent hover:border-gray-300 rounded-full px-6 py-2 transition-all font-medium"
             >
               {ctaLabel || 'Отримати доступ'}
             </Button>
