@@ -405,7 +405,13 @@ export default function ExamplesSection3D() {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <div className="flex justify-center gap-2 mt-8">
+
+            {/* Desktop Navigation Buttons */}
+            <CarouselPrevious className="hidden md:flex bg-[#6A5ACD] text-white border-[#6A5ACD] hover:bg-[#5A4BBD] hover:text-white -left-12 h-12 w-12" />
+            <CarouselNext className="hidden md:flex bg-[#6A5ACD] text-white border-[#6A5ACD] hover:bg-[#5A4BBD] hover:text-white -right-12 h-12 w-12" />
+
+            {/* Mobile Navigation Buttons */}
+            <div className="flex md:hidden justify-center gap-2 mt-8">
               <CarouselPrevious className="relative static transform-none bg-[#6A5ACD] hover:bg-[#5A4BBD] text-white border-[#6A5ACD]" />
               <CarouselNext className="relative static transform-none bg-[#6A5ACD] hover:bg-[#5A4BBD] text-white border-[#6A5ACD]" />
             </div>
