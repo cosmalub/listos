@@ -52,7 +52,7 @@ export default function OrderPending() {
     <div className="min-h-screen bg-gradient-to-b from-[#FFE4EC] via-[#FFF0F5] to-white flex flex-col">
       <HeaderExperiment />
 
-      <main className="flex-1 pt-20 pb-12 px-4">
+      <main className="flex-1 pt-28 pb-12 px-4">
         <div className="max-w-2xl mx-auto">
           {/* Success Header */}
           <div className="text-center mb-10">
