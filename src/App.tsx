@@ -20,6 +20,7 @@ import Cases from "./pages/Cases";
 import PublicOffer from "./pages/PublicOffer";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import GuaranteeAndRefund from "./pages/GuaranteeAndRefund";
+import PaymentAndDelivery from "./pages/PaymentAndDelivery";
 import NotFound from "./pages/NotFound";
 import { OrderDialogProvider } from "./components/order/OrderDialogContext";
 import { OrderDialog } from "./components/order/OrderDialog";
@@ -53,6 +54,7 @@ const App = () => (
               <Route path="/offer" element={<PublicOffer />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/guarantee" element={<GuaranteeAndRefund />} />
+              <Route path="/delivery" element={<PaymentAndDelivery />} />
 
 
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
