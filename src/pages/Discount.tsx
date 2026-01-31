@@ -277,18 +277,15 @@ END:VCALENDAR`;
               onClick={() => window.location.href = `/?promo=${promoData.code}`}
             >
               Створити нову листівку 🎨
-              <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-            {orderId && (
-              <Button
-                size="lg"
-                variant="outline"
-                className="text-lg md:text-xl font-baloo border-2 border-[#6A5ACD] text-[#6A5ACD] hover:bg-[#6A5ACD] hover:text-white shadow-md hover:shadow-lg transition-all"
-                onClick={() => window.location.href = `/s/song/${orderId}`}
-              >
-                Переглянути мою пісню 🎵
-              </Button>
-            )}
+            <Button
+              size="lg"
+              variant="outline"
+              className="text-lg md:text-xl font-baloo border-2 border-[#6A5ACD] text-[#6A5ACD] hover:bg-[#6A5ACD] hover:text-white shadow-md hover:shadow-lg transition-all"
+              onClick={() => window.location.href = '/'}
+            >
+              На головну
+            </Button>
           </div>
 
           {/* Social Sharing Suggestion */}
