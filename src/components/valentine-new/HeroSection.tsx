@@ -80,7 +80,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="flex flex-col sm:flex-row gap-4 mt-4 sm:mt-6 md:mt-8 relative z-20"
+          className="flex flex-col sm:flex-row gap-4 mt-3 sm:mt-4 md:mt-6 lg:mt-5 relative z-20"
         >
           <motion.button
             whileHover={{ scale: 1.05 }}
