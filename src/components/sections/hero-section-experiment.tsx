@@ -5,18 +5,26 @@ import { useOrderDialog } from "@/components/order/OrderDialogContext";
 import { motion, AnimatePresence } from "framer-motion";
 
 const TESTIMONIALS = [
-  { id: 0, text: "Мама плакала від щастя...", author: "Олена", image: "/lovable-uploads/review-iryna.png" },
-  { id: 1, text: "Найкращий подарунок у житті", author: "Андрій", image: "/lovable-uploads/review-artem.png" },
-  { id: 2, text: "Замовляла вже тричі!", author: "Софія", image: "/lovable-uploads/review-miroslav.png" },
-  { id: 3, text: "Дуже зворушливо і щиро", author: "Марія", image: "/lovable-uploads/review-oleksandr.png" },
-  { id: 4, text: "Всі гості були в захваті", author: "Дмитро", image: "/lovable-uploads/review-vitalii.png" },
-  { id: 5, text: "Це просто магія!", author: "Вікторія", image: "/lovable-uploads/review-iryna.png" },
-  { id: 6, text: "Не очікував такого ефекту", author: "Максим", image: "/lovable-uploads/review-artem.png" },
-  { id: 7, text: "Подарунок, що запам'ятається", author: "Ірина", image: "/lovable-uploads/review-miroslav.png" },
-  { id: 8, text: "Краще за будь-які квіти", author: "Олексій", image: "/lovable-uploads/review-oleksandr.png" },
-  { id: 9, text: "Справжні емоції!", author: "Наталя", image: "/lovable-uploads/review-vitalii.png" },
-  { id: 10, text: "Рекомендую всім друзям", author: "Тарас", image: "/lovable-uploads/review-iryna.png" },
+  { id: 0, text: "Мама плакала від щастя...", author: "Олена", image: "/lovable-uploads/review-iryna.png", gender: "female" as const },
+  { id: 1, text: "Найкращий подарунок у житті", author: "Андрій", image: "/lovable-uploads/review-artem.png", gender: "male" as const },
+  { id: 2, text: "Замовляла вже тричі!", author: "Софія", image: "/lovable-uploads/review-miroslav.png", gender: "female" as const },
+  { id: 3, text: "Дуже зворушливо і щиро", author: "Марія", image: "/lovable-uploads/review-oleksandr.png", gender: "female" as const },
+  { id: 4, text: "Всі гості були в захваті", author: "Дмитро", image: "/lovable-uploads/review-vitalii.png", gender: "male" as const },
+  { id: 5, text: "Це просто магія!", author: "Вікторія", image: "/lovable-uploads/review-iryna.png", gender: "female" as const },
+  { id: 6, text: "Не очікував такого ефекту", author: "Максим", image: "/lovable-uploads/review-artem.png", gender: "male" as const },
+  { id: 7, text: "Подарунок, що запам'ятається", author: "Ірина", image: "/lovable-uploads/review-miroslav.png", gender: "female" as const },
+  { id: 8, text: "Краще за будь-які квіти", author: "Олексій", image: "/lovable-uploads/review-oleksandr.png", gender: "male" as const },
+  { id: 9, text: "Справжні емоції!", author: "Наталя", image: "/lovable-uploads/review-vitalii.png", gender: "female" as const },
+  { id: 10, text: "Рекомендую всім друзям", author: "Тарас", image: "/lovable-uploads/review-iryna.png", gender: "male" as const },
 ];
+
+const getAvatarUrl = (index: number, gender: "male" | "female") => {
+  const baseUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${index + 5}&mouth=smile,default&eyes=default,happy,side`;
+  const topStyles = gender === "female" 
+    ? "&top=longHair,longHairBigHair,longHairBob,longHairCurly,longHairCurvy,longHairStraight"
+    : "&top=shortHairDreads01,shortHairDreads02,shortHairShortFlat,shortHairShortWaved,shortHairSides,shortHairShortCurly";
+  return baseUrl + topStyles;
+};
 
 // Interactive review badge with avatars
 function InteractiveReviewBadge() {
@@ -50,7 +58,7 @@ function InteractiveReviewBadge() {
               onClick={() => setActiveIndex(i)}
             >
               <img
-                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 5}&mouth=smile,default&eyes=default,happy,side`}
+                src={getAvatarUrl(i, TESTIMONIALS[i].gender)}
                 alt="Avatar"
                 className="w-full h-full object-cover"
               />
