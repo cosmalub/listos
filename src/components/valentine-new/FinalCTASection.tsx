@@ -21,8 +21,8 @@ export function FinalCTASection() {
           className="bg-white p-12 md:p-20 rounded-[3rem] shadow-2xl border border-rose-100 relative overflow-hidden text-center"
         >
           {/* Decorative Hearts from Original Design */}
-          <Heart className="absolute top-10 left-10 text-pink-100 w-24 h-24 -rotate-12" fill="currentColor" />
-          <Heart className="absolute bottom-10 right-10 text-purple-100 w-32 h-32 rotate-12" fill="currentColor" />
+          <Heart className="absolute -top-2 left-4 sm:top-10 sm:left-10 text-pink-100 w-16 h-16 sm:w-24 sm:h-24 -rotate-12" fill="currentColor" />
+          <Heart className="absolute -bottom-4 right-2 sm:bottom-10 sm:right-10 text-purple-100 w-20 h-20 sm:w-32 sm:h-32 rotate-12" fill="currentColor" />
 
           <div className="relative z-10 space-y-8">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-gray-900 drop-shadow-sm">
@@ -39,10 +39,10 @@ export function FinalCTASection() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => openOrderDialog('final-cta-valentine', 'Створити листівку')}
-              className="inline-flex items-center gap-3 bg-gradient-to-r from-rose-500 to-purple-600 text-white text-xl font-bold py-5 px-10 rounded-full shadow-lg hover:shadow-rose-500/40 transition-all"
+              className="inline-flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-rose-500 to-purple-600 text-white text-base sm:text-xl font-bold py-3 px-6 sm:py-5 sm:px-10 rounded-full shadow-lg hover:shadow-rose-500/40 transition-all"
             >
               <span>Створити листівку</span>
-              <ArrowRight size={24} />
+              <ArrowRight size={20} className="sm:w-6 sm:h-6" />
             </motion.button>
 
             <p className="text-sm text-gray-400 mt-6">
