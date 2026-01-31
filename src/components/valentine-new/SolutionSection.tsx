@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Music, PenTool, Heart, Sparkles, ScanLine } from 'lucide-react';
 import { useOrderDialog } from '@/components/order/OrderDialogContext';
 
 export function SolutionSection() {
   const { openOrderDialog } = useOrderDialog();
+  const [cardsExpanded, setCardsExpanded] = useState(false);
 
   return (
     <section className="py-32 px-4 bg-white relative overflow-hidden">
@@ -195,15 +196,22 @@ export function SolutionSection() {
             })}
           </div>
 
-          {/* The Cards: Overlapping & Tilted - REAL IMAGES */}
-          <div className="relative w-full max-w-xl h-[450px] flex items-center justify-center">
+          {/* The Cards: Overlapping & Tilted - REAL IMAGES with click interaction */}
+          <div
+            className="relative w-full max-w-xl h-[450px] flex items-center justify-center cursor-pointer"
+            onClick={() => setCardsExpanded(!cardsExpanded)}
+          >
 
             {/* Back Card (QR/зворотня) - Behind, tilted right */}
             <motion.div
               initial={{ opacity: 0, rotate: 12, x: 70, y: 15 }}
-              whileInView={{ opacity: 1, rotate: 8, x: 60, y: 5 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              animate={{
+                opacity: 1,
+                rotate: cardsExpanded ? 3 : 8,
+                x: cardsExpanded ? 120 : 60,
+                y: cardsExpanded ? 0 : 5
+              }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
               className="absolute z-10 w-64 sm:w-72 h-[360px] sm:h-[420px] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.12)] overflow-hidden"
             >
               <img
@@ -216,9 +224,13 @@ export function SolutionSection() {
             {/* Front Card (Design/лицьова) - In front, tilted left */}
             <motion.div
               initial={{ opacity: 0, rotate: -12, x: -70, y: -15 }}
-              whileInView={{ opacity: 1, rotate: -6, x: -55, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              animate={{
+                opacity: 1,
+                rotate: cardsExpanded ? -3 : -6,
+                x: cardsExpanded ? -120 : -55,
+                y: 0
+              }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
               className="absolute z-20 w-64 sm:w-72 h-[360px] sm:h-[420px] rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.18)] overflow-hidden"
             >
               <img
@@ -226,6 +238,15 @@ export function SolutionSection() {
                 alt="Лицьова сторона листівки"
                 className="w-full h-full object-cover"
               />
+            </motion.div>
+
+            {/* Hint to click */}
+            <motion.div
+              className="absolute -bottom-2 text-sm text-gray-400 flex items-center gap-1"
+              animate={{ opacity: cardsExpanded ? 0 : [0.5, 1, 0.5] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <span>Натисни для перегляду</span>
             </motion.div>
 
           </div>
