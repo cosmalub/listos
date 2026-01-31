@@ -253,7 +253,7 @@ export function SolutionSection() {
 
             {/* Hint to click */}
             <motion.div
-              className="absolute -bottom-2 text-sm text-gray-400 flex items-center gap-1"
+              className="absolute -bottom-2 md:-bottom-24 text-sm text-gray-400 flex items-center gap-1"
               animate={{ opacity: cardsExpanded ? 0 : [0.5, 1, 0.5] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
