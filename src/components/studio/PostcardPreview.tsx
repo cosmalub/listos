@@ -237,7 +237,7 @@ export const PostcardPreview = forwardRef<HTMLDivElement, PostcardPreviewProps>(
                     )}
                     style={{
                       fontFamily: "'Bebas Neue Cyrillic', 'Bebas Neue', sans-serif",
-                      fontSize: '14px',
+                      fontSize: '12px',
                       fontWeight: 'bold',
                       textTransform: 'uppercase'
                     }}

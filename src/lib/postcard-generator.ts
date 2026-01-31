@@ -316,7 +316,7 @@ export async function composeBackImageA6(opts: { color: string; message: string;
   // Note: Reduced from 14 to 11 to match Canva output size
   const PREVIEW_W = 320;
   const PREVIEW_TEXT_MAX = 200;
-  const PREVIEW_FONT = 11;
+  const PREVIEW_FONT = 10;
   const PREVIEW_LINE_H = 1.375; // leading-snug
   const PREVIEW_PARAGRAPH_GAP = 12; // mt-3 = 0.75rem = 12px
   const PREVIEW_QR_BOX = 96;
