@@ -9,7 +9,7 @@ import { ReviewsSection } from "@/components/sections/reviews-section";
 import { GuaranteeSection } from "@/components/sections/guarantee-section";
 import FaqAndCtaSections from "@/components/sections/faq-and-cta-sections";
 import { FinalCtaSection } from "@/components/sections/final-cta-section";
-import { Footer } from "@/components/sections/footer";
+import { FooterExperiment } from "@/components/sections/footer-experiment";
 
 const Index = () => {
   return (
@@ -45,7 +45,7 @@ const Index = () => {
       <section id="final-cta">
         <FinalCtaSection />
       </section>
-      <Footer />
+      <FooterExperiment />
     </div>
   );
 };
