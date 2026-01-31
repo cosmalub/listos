@@ -10,7 +10,7 @@ import { InsightSection } from '../components/valentine-new/InsightSection';
 import { FaqSection } from '../components/valentine-new/FaqSection';
 import { FinalCTASection } from '../components/valentine-new/FinalCTASection';
 import { PricingSection } from '../components/valentine-new/PricingSection';
-import { Footer } from '@/components/sections/footer';
+import { FooterExperiment } from '@/components/sections/footer-experiment';
 import { HeaderExperiment } from '@/components/sections/header-experiment';
 
 const valentineMenuItems = [
@@ -57,7 +57,7 @@ export default function Valentine() {
         <FaqSection />
       </div>
       <FinalCTASection />
-      <Footer />
+      <FooterExperiment />
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Copy, ArrowRight, Loader2, AlertTriangle, Camera, CalendarPlus, Send } from "lucide-react";
 import { Header } from "@/components/sections/header";
-import { Footer } from "@/components/sections/footer";
+import { FooterExperiment } from "@/components/sections/footer-experiment";
 import { supabase } from "@/integrations/supabase/client";
 
 const Discount = () => {

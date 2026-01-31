@@ -6,7 +6,7 @@ import { CheckCircle, Info } from 'lucide-react';
 import { OccasionAnimation } from '@/components/public/OccasionAnimation';
 import { Header } from '@/components/sections/header';
 import { StepsHeader } from '@/components/studio/StepsHeader';
-import { Footer } from '@/components/sections/footer';
+import { FooterExperiment } from '@/components/sections/footer-experiment';
 
 // Визначення мови
 const detectLanguage = (text: string): 'uk' | 'ru' => {
@@ -242,7 +242,7 @@ const PublicSongDraft = () => {
       </div>
 
       {/* Footer */}
-      <Footer />
+      <FooterExperiment />
     </div>
   );
 };
