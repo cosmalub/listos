@@ -44,17 +44,17 @@ export function PricingSection() {
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="space-y-8"
+              className="space-y-6 sm:space-y-8 text-center lg:text-left"
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
-                Подарунок, який <br />
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+                Подарунок, який{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-purple-600">неможливо забути</span>
               </h2>
-              <p className="text-xl text-gray-600 leading-relaxed">
+              <p className="text-lg sm:text-xl text-gray-600 leading-relaxed max-w-md mx-auto lg:mx-0">
                 Ми об'єднали технології та справжні почуття, щоб ти міг подарувати щось більше, ніж просто річ.
               </p>
 
-              <div className="space-y-6">
+              <div className="space-y-5 sm:space-y-6">
                 {features.map((feature, idx) => (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
@@ -62,14 +62,14 @@ export function PricingSection() {
                     viewport={{ once: true }}
                     transition={{ delay: idx * 0.1 }}
                     key={idx}
-                    className="flex gap-4"
+                    className="flex gap-4 text-left"
                   >
                     <div className="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-[#6B5CE7] flex-shrink-0">
                       <feature.icon size={24} />
                     </div>
                     <div>
-                      <h4 className="text-lg font-bold text-gray-900">{feature.title}</h4>
-                      <p className="text-gray-500">{feature.desc}</p>
+                      <h4 className="text-base sm:text-lg font-bold text-gray-900">{feature.title}</h4>
+                      <p className="text-sm sm:text-base text-gray-500">{feature.desc}</p>
                     </div>
                   </motion.div>
                 ))}
