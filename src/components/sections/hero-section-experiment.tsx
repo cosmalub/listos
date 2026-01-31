@@ -19,11 +19,9 @@ const TESTIMONIALS = [
 ];
 
 const getAvatarUrl = (index: number, gender: "male" | "female") => {
-  const baseUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${index + 5}&mouth=smile,default&eyes=default,happy,side`;
-  const topStyles = gender === "female" 
-    ? "&top=longHair,longHairBigHair,longHairBob,longHairCurly,longHairCurvy,longHairStraight"
-    : "&top=shortHairDreads01,shortHairDreads02,shortHairShortFlat,shortHairShortWaved,shortHairSides,shortHairShortCurly";
-  return baseUrl + topStyles;
+  // Різні seed offset для чоловіків та жінок — підвищує ймовірність відповідності
+  const seedOffset = gender === "female" ? 50 : 150;
+  return `https://api.dicebear.com/7.x/avataaars/svg?seed=${index + seedOffset}&mouth=smile,default&eyes=default,happy,side`;
 };
 
 // Interactive review badge with avatars
