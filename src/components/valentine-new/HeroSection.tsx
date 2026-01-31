@@ -16,7 +16,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-40 pb-32 px-4 bg-white">
+    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-24 sm:pt-32 md:pt-40 pb-16 sm:pb-24 md:pb-32 px-4 bg-white">
       {/* Background Texture */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-0 mix-blend-multiply"
         style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E")` }}
@@ -35,7 +35,7 @@ export function HeroSection() {
           <div className="absolute inset-0 flex items-center justify-center drop-shadow-2xl">
             <motion.svg
               viewBox="0 0 512 512"
-              className="w-[850px] h-[850px]"
+              className="w-[340px] h-[340px] sm:w-[500px] sm:h-[500px] md:w-[700px] md:h-[700px] lg:w-[850px] lg:h-[850px]"
               animate={{ y: [0, -15, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             >
@@ -50,14 +50,14 @@ export function HeroSection() {
           </div>
 
           {/* Text Content - Positioned visually inside the heart */}
-          <div className="relative z-10 flex flex-col items-center text-center pt-16 pb-12 px-12 max-w-2xl -translate-y-8">
+          <div className="relative z-10 flex flex-col items-center text-center pt-8 pb-6 px-4 sm:pt-12 sm:pb-10 sm:px-8 md:pt-16 md:pb-12 md:px-12 max-w-2xl -translate-y-4 sm:-translate-y-6 md:-translate-y-8">
 
             {/* Headline */}
             <motion.h1
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-gray-900 drop-shadow-sm mb-6"
+              className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold leading-[1.15] tracking-tight text-gray-900 drop-shadow-sm mb-3 sm:mb-4 md:mb-6"
             >
               Скажи <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-purple-600">"Я кохаю"</span> <br />
               так, щоб це запам'яталось.
@@ -68,7 +68,7 @@ export function HeroSection() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
-              className="text-xl text-gray-600 leading-relaxed font-light mb-8 max-w-lg mx-auto"
+              className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed font-light mb-4 sm:mb-6 md:mb-8 max-w-xs sm:max-w-md md:max-w-lg mx-auto"
             >
               Ваша історія кохання, перетворена на справжню, живу листівку, що звучить.
             </motion.p>
@@ -80,7 +80,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="flex flex-col sm:flex-row gap-4 mt-24 relative z-20"
+          className="flex flex-col sm:flex-row gap-4 mt-12 sm:mt-16 md:mt-24 relative z-20"
         >
           <motion.button
             whileHover={{ scale: 1.05 }}
