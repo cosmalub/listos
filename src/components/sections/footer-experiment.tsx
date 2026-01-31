@@ -43,7 +43,7 @@ export function FooterExperiment() {
               </div>
 
               {/* Contact Info */}
-              <div className="flex flex-col items-center md:items-start space-y-2 text-center md:text-left order-3 md:order-none col-span-2 md:col-span-1">
+              <div className="flex flex-col items-start space-y-2 text-left order-3 md:order-none col-span-1">
                 <h3 className="font-bold text-gray-900 text-base md:text-lg">Зв'язок</h3>
                 <div className="space-y-2 text-gray-600">
                   <p className="text-sm">melodlistiv@gmail.com</p>
