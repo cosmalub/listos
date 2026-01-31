@@ -224,7 +224,7 @@ const PublicSongDraft = () => {
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 sm:justify-center">
             <Button
               variant="outline"
-              onClick={() => navigate('/studio?step=2')}
+              onClick={() => navigate('/studio?step=3')}
               className="w-full sm:w-auto text-center text-sm sm:text-base"
             >
               ← Назад: Змінити
