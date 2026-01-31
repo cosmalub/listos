@@ -103,12 +103,20 @@ export default function PublicSong() {
       <div className="relative z-10">
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto bg-white/95 backdrop-blur-sm rounded-lg shadow-2xl p-8">
-            {/* Для кого / Від кого - НАД заголовком */}
-            <div className="mb-4">
-              <p className="text-lg text-center font-baloo text-muted-foreground">
-                {locale[detectLanguage(orderData.lyrics || '')].for} {orderData.page_recipient} • {locale[detectLanguage(orderData.lyrics || '')].from} {orderData.page_sender}
-              </p>
-            </div>
+            {/* Для кого / Від кого - НАД заголовком (показуємо тільки якщо є дані) */}
+            {(orderData.page_recipient || orderData.page_sender) && (
+              <div className="mb-4">
+                <p className="text-lg text-center font-baloo text-muted-foreground">
+                  {orderData.page_recipient && (
+                    <>{locale[detectLanguage(orderData.lyrics || '')].for} {orderData.page_recipient}</>
+                  )}
+                  {orderData.page_recipient && orderData.page_sender && ' • '}
+                  {orderData.page_sender && (
+                    <>{locale[detectLanguage(orderData.lyrics || '')].from} {orderData.page_sender}</>
+                  )}
+                </p>
+              </div>
+            )}
 
             {/* Заголовок - используем caption с лицевой стороны или стандартный по событию */}
             <h1 className="text-4xl font-bold font-baloo text-center mb-8">
