@@ -75,29 +75,12 @@ export function HeroSection() {
           </div>
         </motion.div>
 
-        {/* CTA Group - Moved Outside & Below Heart with increased margin */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-          className="flex flex-col sm:flex-row gap-4 -mt-4 sm:-mt-3 md:-mt-4 lg:-mt-4 relative z-20"
-        >
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => openOrderDialog('hero-valentine', 'Створити листівку')}
-            className="px-6 py-3 bg-gradient-to-r from-rose-500 to-purple-600 text-white rounded-full font-semibold shadow-lg hover:shadow-rose-500/40 transition-shadow"
-          >
-            Створити листівку
-          </motion.button>
-        </motion.div>
-
-        {/* Social Proof - Moved Below Button */}
+        {/* Social Proof - Above Button */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="flex flex-col items-center gap-3 mt-6 opacity-80"
+          transition={{ delay: 0.8 }}
+          className="flex flex-col items-center gap-3 -mt-4 sm:-mt-3 md:-mt-4 lg:-mt-4 opacity-80"
         >
           <div className="flex -space-x-3">
             <div className="w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-sm">
@@ -122,6 +105,23 @@ export function HeroSection() {
             </div>
             <span><span className="font-bold text-gray-900">500+</span> щасливих історій</span>
           </div>
+        </motion.div>
+
+        {/* CTA Group - Below Social Proof */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1 }}
+          className="flex flex-col sm:flex-row gap-4 mt-4 relative z-20"
+        >
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => openOrderDialog('hero-valentine', 'Створити листівку')}
+            className="px-6 py-3 bg-gradient-to-r from-rose-500 to-purple-600 text-white rounded-full font-semibold shadow-lg hover:shadow-rose-500/40 transition-shadow"
+          >
+            Створити листівку
+          </motion.button>
         </motion.div>
 
       </div>
