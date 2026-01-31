@@ -18,6 +18,7 @@ import HowItWorks from "./pages/HowItWorks";
 import Pricing from "./pages/Pricing";
 import Cases from "./pages/Cases";
 import PublicOffer from "./pages/PublicOffer";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
 import { OrderDialogProvider } from "./components/order/OrderDialogContext";
 import { OrderDialog } from "./components/order/OrderDialog";
@@ -49,6 +50,7 @@ const App = () => (
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/cases" element={<Cases />} />
               <Route path="/offer" element={<PublicOffer />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
 
 
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
