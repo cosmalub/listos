@@ -61,7 +61,7 @@ export function FooterExperiment() {
                   <li><a href="/offer" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">Оферта</a></li>
                   <li><a href="/privacy" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">Політика конфіденційності</a></li>
                   <li><a href="/delivery" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">Оплата і доставка</a></li>
-                  <li><a href="/guarantee" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">Гарантія</a></li>
+                  <li><a href="/guarantee" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">Гарантія та повернення коштів</a></li>
                 </ul>
               </div>
             </div>
