@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, forwardRef } from "react"
-import { Play, Pause, ArrowLeft, ArrowRight, Star } from "lucide-react"
+import { Play, Pause, ArrowLeft, ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import useEmblaCarousel from "embla-carousel-react"
 import { Card, CardContent } from "@/components/ui/card"
@@ -219,12 +219,10 @@ function AudioPlayer({ audioSrc, songTitle, artist }: { audioSrc: string; songTi
 
 
 // --- Customer Story Component ---
-function CustomerStory({ story, reaction, customerName, customerLocation, rating }: {
+function CustomerStory({ story, customerName, customerLocation }: {
   story: string;
-  reaction: string;
   customerName: string;
   customerLocation: string;
-  rating: number;
 }) {
   return (
     <div className="mt-4 bg-[#6A5ACD]/5 rounded-xl p-4 border-2 border-[#B8B3FF]/30">
@@ -232,17 +230,8 @@ function CustomerStory({ story, reaction, customerName, customerLocation, rating
         <p className="text-sm font-semibold text-[#6A5ACD] mb-1">Історія від {customerName.split(',')[0]}:</p>
         <p className="text-sm text-[#6A5ACD]/80 leading-relaxed">{story}</p>
       </div>
-      <div className="mb-3">
-        <p className="text-sm font-semibold text-[#6A5ACD] mb-1">Реакція:</p>
-        <p className="text-sm text-[#6A5ACD]/80 leading-relaxed">{reaction}</p>
-      </div>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-end">
         <p className="text-xs italic text-[#6A5ACD]/70">— {customerName} ({customerLocation})</p>
-        <div className="flex text-yellow-400">
-          {[...Array(rating)].map((_, i) => (
-            <Star key={i} className="h-3 w-3 fill-current" />
-          ))}
-        </div>
       </div>
     </div>
   )
@@ -407,10 +396,8 @@ export default function ExamplesSection3D() {
 
                         <CustomerStory
                           story={postcard.customerStory}
-                          reaction={postcard.customerReaction}
                           customerName={postcard.customerName}
                           customerLocation={postcard.customerLocation}
-                          rating={postcard.rating}
                         />
                       </CardContent>
                     </Card>
