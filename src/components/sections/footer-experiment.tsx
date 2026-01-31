@@ -20,7 +20,7 @@ export function FooterExperiment() {
             {/* Right group: links + contacts */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-12 md:ml-auto">
               {/* Start / CTA */}
-              <div className="space-y-3 text-left">
+              <div className="space-y-3 text-left order-1 md:order-none">
                 <h3 className="font-bold text-gray-900 text-base md:text-lg">Почати</h3>
                 <ul className="space-y-1.5">
                   <li>
@@ -43,7 +43,7 @@ export function FooterExperiment() {
               </div>
 
               {/* Contact Info */}
-              <div className="flex flex-col items-start space-y-2 text-left">
+              <div className="flex flex-col items-center md:items-start space-y-2 text-center md:text-left order-3 md:order-none col-span-2 md:col-span-1">
                 <h3 className="font-bold text-gray-900 text-base md:text-lg">Зв'язок</h3>
                 <div className="space-y-2 text-gray-600">
                   <p className="text-sm">melodlistiv@gmail.com</p>
@@ -55,8 +55,8 @@ export function FooterExperiment() {
               </div>
 
               {/* Legal Info */}
-              <div className="space-y-3 text-left col-span-2 md:col-span-1">
-                <h3 className="font-bold text-gray-900 text-base md:text-lg">Юридична інформація</h3>
+              <div className="space-y-3 text-left order-2 md:order-none md:col-span-1">
+                <h3 className="font-bold text-gray-900 text-base md:text-lg">Довідка</h3>
                 <ul className="space-y-1.5">
                   <li><a href="/offer" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">Оферта</a></li>
                   <li><a href="/privacy" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">Політика конфіденційності</a></li>
