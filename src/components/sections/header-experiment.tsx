@@ -74,10 +74,10 @@ export function HeaderExperiment({ hideNav = false, showMenu = true, ctaLabel, o
                 <button
                   onClick={() => setIsProductsOpen(!isProductsOpen)}
                   onBlur={() => setTimeout(() => setIsProductsOpen(false), 150)}
-                  className="flex items-center gap-1 text-gray-700 hover:text-gray-900 transition-colors font-medium"
+                  className={`flex items-center gap-1 font-medium transition-all duration-200 ${isProductsOpen ? 'text-[#6A5ACD]' : 'text-gray-700 hover:text-gray-900'}`}
                 >
                   Продукти
-                  <ChevronDown size={16} className={`transition-transform ${isProductsOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown size={16} className={`transition-transform duration-200 ${isProductsOpen ? 'rotate-180' : ''}`} />
                 </button>
 
                 {isProductsOpen && (
@@ -86,9 +86,9 @@ export function HeaderExperiment({ hideNav = false, showMenu = true, ctaLabel, o
                       <a
                         key={item.name}
                         href={item.href}
-                        className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors whitespace-nowrap"
+                        className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-gray-900 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-200 whitespace-nowrap group/item"
                       >
-                        <Heart size={16} className="shrink-0 text-rose-400" />
+                        <Heart size={16} className="shrink-0 text-rose-400 group-hover/item:scale-110 group-hover/item:text-rose-500 transition-all duration-200" />
                         <span className="min-w-0 flex-1">{item.name}</span>
                       </a>
                     ))}
