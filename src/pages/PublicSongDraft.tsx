@@ -163,10 +163,10 @@ const PublicSongDraft = () => {
             <AlertDescription>
               <div className="space-y-2">
                 <p className="text-sm">
-                  <strong>Це чернетка вашої сторінки</strong> — попередній перегляд того, як буде виглядати фінальна версія для отримувача.
+                  <strong>Це превью вашої сторінки</strong> — отримувач побачить її ще чистішою: тільки пісня, текст та святкова анімація, без меню та зайвих елементів.
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  Після натискання кнопки "Затвердити сторінку" вона стане доступна за QR-кодом на вашій листівці. Отримувач побачить чисту, елегантну сторінку з піснею, текстом та святковою анімацією — без меню сайту, підвалу чи інших зайвих елементів. Тільки ваш особистий подарунок! 🎁
+                  💡 Можете повернутись назад, щоб змінити привід, поля "Для кого" та "Від кого" — це вплине на анімацію та текст. Або переходьте далі до створення дизайну листівки з QR-кодом.
                 </p>
               </div>
             </AlertDescription>
@@ -224,22 +224,17 @@ const PublicSongDraft = () => {
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 sm:justify-center">
             <Button
               variant="outline"
-              onClick={() => navigate('/studio?step=4')}
+              onClick={() => navigate('/studio?step=2')}
               className="w-full sm:w-auto text-center text-sm sm:text-base"
             >
-              Повернутися до редагування
+              ← Назад: Змінити
             </Button>
             <Button
               onClick={handleApprove}
               className="w-full sm:w-auto sm:min-w-[200px] text-center text-sm sm:text-base"
             >
-              <CheckCircle className="h-4 w-4 mr-2 flex-shrink-0" />
-              <span className="whitespace-nowrap">Затвердити сторінку</span>
+              Далі: Дизайн листівки →
             </Button>
-          </div>
-          {/* Footer note */}
-          <div className="text-center text-xs sm:text-sm text-muted-foreground mt-2">
-            <p>Після затвердження ця сторінка буде доступна за QR-кодом на листівці</p>
           </div>
         </div>
       </div>
