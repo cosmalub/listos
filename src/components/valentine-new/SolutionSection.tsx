@@ -16,7 +16,7 @@ export function SolutionSection() {
   }, []);
 
   // Різні значення раздвижки для десктопу і мобільного
-  const expandedX = isDesktop ? 160 : 120;
+  const expandedX = isDesktop ? 160 : 100;
 
   return (
     <section className="py-32 px-4 bg-white relative overflow-hidden">
