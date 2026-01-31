@@ -1,106 +1,84 @@
 
-# Редизайн сторінок OrderPending та OrderSuccess
+# Редизайн OrderDialog — м'який стиль замість темного
 
-## Поточна проблема
-Сторінки оформлення замовлення використовують старий дизайн з фіолетовими акцентами та насиченим градієнтом, який не відповідає новому мінімалістичному стилю головної сторінки.
+## Проблема
+Темні кнопки `bg-gray-900` в діалозі замовлення виглядають занадто контрастно і не вписуються в загальний м'який стиль сайту, де використовується градієнт `from-rose-500 to-purple-600`.
 
-## Візуальне порівняння
+## Рішення
+Замінити темні елементи на м'які рожево-фіолетові тони, що відповідають основним CTA кнопкам сайту.
+
+## Візуальна схема
 
 ```text
-СТАРИЙ СТИЛЬ (OrderPending/OrderSuccess)     НОВИЙ СТИЛЬ (Index)
-─────────────────────────────────────────    ─────────────────────────────────
-Градієнт: #FFD1DC → #F3D1FF → white          Градієнт: #FFE4EC → #FFF0F5 → white
-Картки: border-[#E8D5FF] (фіолетовий)        Картки: border-gray-100 (сірий)
-Текст: text-primary (фіолетовий)             Текст: text-gray-900/600 (нейтральний)
-Header: старий Header                        Header: HeaderExperiment (glass)
-Footer: старий Footer                        Footer: FooterExperiment (чистий)
+БУЛО (темний стиль)                    СТАНЕ (м'який стиль)
+────────────────────                   ────────────────────
+Кнопки контакту:                       Кнопки контакту:
+bg-gray-900 (темний)                   bg-rose-500 (рожевий)
+
+Головна CTA кнопка:                    Головна CTA кнопка:
+bg-gray-900                            gradient from-rose-500 to-purple-600
+
+Переключатель Телефон/Telegram:        Переключатель:
+Активний: bg-gray-900                  Активний: bg-rose-500
+Неактивний: bg-white                   Неактивний: bg-white
 ```
 
-## План змін
+## Конкретні зміни
 
-### 1. OrderPending.tsx
-
-**Імпорти:**
-- Замінити `Header` на `HeaderExperiment`
-- Замінити `Footer` на `FooterExperiment`
-
-**Фон секції:**
+### 1. Переключатель способу зв'язку
 ```text
-Було:  bg-gradient-to-b from-[#FFD1DC] via-[#F3D1FF]/30 to-white
-Стане: bg-gradient-to-b from-[#FFE4EC] via-[#FFF0F5] to-white
+Було:
+  Активний: bg-gray-900 text-white
+  Неактивний: text-gray-700 hover:bg-white
+
+Стане:
+  Активний: bg-rose-500 text-white
+  Неактивний: text-gray-600 hover:bg-rose-50
 ```
 
-**Стиль карток:**
+### 2. Головна кнопка "Оформити замовлення"
 ```text
-Було:  border border-[#E8D5FF] shadow-sm bg-white
-Стане: bg-white rounded-2xl shadow-sm border border-gray-100
+Було:
+  bg-gray-900 hover:bg-gray-800
+
+Стане:
+  bg-gradient-to-r from-rose-500 to-purple-600 
+  hover:shadow-lg hover:shadow-rose-500/25
 ```
 
-**Типографіка:**
+### 3. Секція промокоду - кнопка "OK"
 ```text
-Було:  text-primary, text-primary/80
-Стане: text-gray-900, text-gray-600
+Було:
+  variant="outline" border-gray-200
+
+Стане:
+  variant="outline" border-rose-200 hover:bg-rose-50
 ```
 
-**Іконки:**
+### 4. Секція доставки
 ```text
-Було:  text-primary
-Стане: text-gray-700
-```
+Було:
+  bg-gray-50 border-gray-100
 
-**Кнопки контактів:**
-```text
-Було:  bg-[#FFD1DC]/20, bg-[#E8D5FF]/30
-Стане: bg-gray-50 hover:bg-gray-100
-```
-
-### 2. OrderSuccess.tsx
-
-**Імпорти:**
-- Замінити `Header` на `HeaderExperiment`
-- Замінити `Footer` на `FooterExperiment`
-
-**Фон секції:**
-```text
-Було:  bg-gradient-to-b from-[#FFD1DC] via-white to-white
-Стане: bg-gradient-to-b from-[#FFE4EC] via-[#FFF0F5] to-white
-```
-
-**Головна картка:**
-```text
-Було:  Card без специфікацій
-Стане: bg-white rounded-2xl shadow-sm border border-gray-100
-```
-
-**Секція "Що далі":**
-```text
-Було:  bg-secondary/30 border-border
-Стане: bg-gray-50 border border-gray-100 rounded-2xl
-```
-
-**Alert:**
-```text
-Було:  bg-secondary/30 border-border
-Стане: bg-gray-50 border border-gray-100 rounded-xl
-```
-
-**Gradient CTA кнопка:**
-```text
-Залишаємо градієнт як акцент (це CTA)
+Стане:
+  bg-rose-50/30 border-rose-100
 ```
 
 ## Технічна реалізація
 
-| Файл | Зміни |
-|------|-------|
-| OrderPending.tsx | Імпорти + градієнт + картки + типографіка |
-| OrderSuccess.tsx | Імпорти + градієнт + картки + типографіка |
+| Елемент | Було | Стане |
+|---------|------|-------|
+| Переключатель (активний) | `bg-gray-900` | `bg-rose-500` |
+| Переключатель (неактивний) | `hover:bg-white` | `hover:bg-rose-50` |
+| Фон доставки | `bg-gray-50 border-gray-100` | `bg-rose-50/30 border-rose-100` |
+| Промокод-кнопка | `border-gray-200` | `border-rose-200 hover:bg-rose-50` |
+| Головна CTA | `bg-gray-900` | `bg-gradient-to-r from-rose-500 to-purple-600` |
+| Гарантія іконка | `text-gray-500` | `text-rose-400` |
 
 ## Що НЕ змінюємо
-- Функціональність (fetch, navigate, toast)
-- Confetti анімація на OrderSuccess
-- Логіку генерації промокода
-- Структуру контенту
+- Всю функціональність (Supabase, промокоди, PostHog)
+- Поля вводу залишаємо нейтральними `border-gray-200`
+- Типографіку `text-gray-900/600`
 
 ## Результат
-Сторінки OrderPending та OrderSuccess будуть візуально узгоджені з новим мінімалістичним дизайном головної сторінки.
+Діалог замовлення матиме м'який рожево-фіолетовий стиль, що відповідає CTA кнопкам на головній сторінці та створює цілісне враження.
