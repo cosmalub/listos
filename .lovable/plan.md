@@ -1,47 +1,59 @@
 
-# Замена аватарок на более приятные
+# Соответствие пола аватарок и авторов отзывов
 
 ## Проблема
-Текущие аватарки DiceBear Avataaars иногда генерируют лица с гримасами, открытыми ртами и странными выражениями.
+Сейчас аватарки генерируются случайно по индексу, без учета пола автора. В результате мужские имена могут иметь женские аватарки и наоборот.
 
 ## Решение
-Заменить стиль аватарок на более контролируемый вариант.
+Добавить в данные TESTIMONIALS поле `gender` и генерировать аватарки с соответствующими типами причесок.
 
-### Вариант 1: Оставить Avataaars, но с фильтром выражений
+### Изменения в данных
+
 ```text
 БУЛО:
-https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 5}
+{ id: 0, text: "...", author: "Олена", image: "..." }
 
 СТАНЕ:
+{ id: 0, text: "...", author: "Олена", image: "...", gender: "female" }
+```
+
+### Изменения в URL аватарок
+
+```text
+БУЛО:
 https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 5}&mouth=smile,default&eyes=default,happy,side
-```
-Это ограничит рты и глаза только приятными вариантами.
 
-### Вариант 2: Использовать стиль Lorelei (минималистичный)
-```text
-https://api.dicebear.com/7.x/lorelei/svg?seed=${i + 5}
-```
-Очень чистый, минималистичный стиль — всегда нейтральные/улыбающиеся лица.
+СТАНЕ (для женщин):
+https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 5}&mouth=smile,default&eyes=default,happy,side&top=longHair,longHairBigHair,longHairBob,longHairCurly,longHairCurvy,longHairStraight
 
-### Вариант 3: Использовать стиль Notionists (Notion-подобный)
-```text
-https://api.dicebear.com/7.x/notionists/svg?seed=${i + 5}
+СТАНЕ (для мужчин):
+https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 5}&mouth=smile,default&eyes=default,happy,side&top=shortHairDreads01,shortHairDreads02,shortHairShortFlat,shortHairShortWaved,shortHairSides,shortHairShortCurly
 ```
-Современный стиль в духе Notion — всегда приятные выражения.
 
-### Вариант 4: Использовать стиль Big Ears (милый)
-```text
-https://api.dicebear.com/7.x/big-ears/svg?seed=${i + 5}
-```
-Милые дружелюбные персонажи.
+### Распределение по полу
 
-## Файл для редагування
+| Индекс | Автор | Пол |
+|--------|-------|-----|
+| 0 | Олена | female |
+| 1 | Андрій | male |
+| 2 | Софія | female |
+| 3 | Марія | female |
+| 4 | Дмитро | male |
+| 5 | Вікторія | female |
+| 6 | Максим | male |
+| 7 | Ірина | female |
+| 8 | Олексій | male |
+| 9 | Наталя | female |
+| 10 | Тарас | male |
+
+## Файл для редактирования
 
 | Файл | Зміни |
 |------|-------|
-| `src/components/sections/hero-section-experiment.tsx` | Змінити URL аватарок (рядок 53) |
+| `src/components/sections/hero-section-experiment.tsx` | Добавить gender в TESTIMONIALS, обновить URL генерации аватарок |
 
-## Рекомендация
-Советую **Вариант 1** — оставить Avataaars (та же стилистика), но добавить параметры фильтрации выражений. Так мы сохраним текущий узнаваемый стиль, но уберем странные гримасы.
-
-Если хочешь кардинально другой стиль — выбирай Lorelei или Notionists.
+## Что НЕ меняется
+- Логика анимации и переключения
+- Стилистика Avataaars
+- Скриншоты отзывов
+- Общий дизайн компонента
