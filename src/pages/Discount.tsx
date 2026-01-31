@@ -124,7 +124,7 @@ END:VCALENDAR`;
             <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto" />
           </div>
         </main>
-        <Footer />
+        <FooterExperiment />
       </div>
     );
   }
@@ -146,7 +146,7 @@ END:VCALENDAR`;
             </Button>
           </div>
         </main>
-        <Footer />
+        <FooterExperiment />
       </div>
     );
   }
@@ -300,7 +300,7 @@ END:VCALENDAR`;
         </div>
       </main>
 
-      <Footer />
+      <FooterExperiment />
     </div>
   );
 };
