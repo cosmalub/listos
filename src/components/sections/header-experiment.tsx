@@ -81,14 +81,15 @@ export function HeaderExperiment({ hideNav = false, showMenu = true, ctaLabel, o
                 </button>
 
                 {isProductsOpen && (
-                  <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-100 py-2 min-w-[160px]">
+                  <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-xl shadow-lg ring-1 ring-black/5 p-2 animate-in fade-in slide-in-from-top-2 duration-150">
                     {productItems.map(item => (
                       <a
                         key={item.name}
                         href={item.href}
-                        className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+                        className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors whitespace-nowrap"
                       >
-                        {item.name}
+                        <span className="shrink-0 text-gray-400">💌</span>
+                        <span className="min-w-0 flex-1">{item.name}</span>
                       </a>
                     ))}
                   </div>
