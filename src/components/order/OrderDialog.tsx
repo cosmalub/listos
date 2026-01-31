@@ -163,14 +163,14 @@ export function OrderDialog() {
           {/* Спосіб зв'язку */}
           <div className="space-y-2">
             <Label className="text-gray-700">Спосіб зв'язку *</Label>
-            <div className="flex gap-2 p-1 bg-rose-50/30 rounded-lg border border-rose-100">
+            <div className="flex gap-2 p-1 bg-[#6A5ACD]/5 rounded-lg border border-[#6A5ACD]/20">
               <button
                 type="button"
                 onClick={() => handleInputChange("contactType", "phone")}
                 className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-md transition-all ${
                   formData.contactType === "phone"
-                    ? "bg-rose-500 text-white"
-                    : "text-gray-600 hover:bg-rose-50"
+                    ? "bg-[#6A5ACD] text-white"
+                    : "text-gray-600 hover:bg-[#6A5ACD]/10"
                 }`}
               >
                 <Phone className="h-4 w-4" />
@@ -181,8 +181,8 @@ export function OrderDialog() {
                 onClick={() => handleInputChange("contactType", "telegram")}
                 className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-md transition-all ${
                   formData.contactType === "telegram"
-                    ? "bg-rose-500 text-white"
-                    : "text-gray-600 hover:bg-rose-50"
+                    ? "bg-[#6A5ACD] text-white"
+                    : "text-gray-600 hover:bg-[#6A5ACD]/10"
                 }`}
               >
                 <MessageCircle className="h-4 w-4" />
@@ -218,7 +218,7 @@ export function OrderDialog() {
           </div>
 
           {/* Доставка */}
-          <div className="space-y-3 p-4 bg-rose-50/30 rounded-xl border border-rose-100">
+          <div className="space-y-3 p-4 bg-[#6A5ACD]/5 rounded-xl border border-[#6A5ACD]/20">
             <Label className="text-gray-700 font-medium">Доставка (Нова Пошта)</Label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div className="space-y-1.5">
@@ -272,7 +272,7 @@ export function OrderDialog() {
                   disabled={validatingPromo || !formData.promoCode.trim()}
                   variant="outline"
                   size="sm"
-                  className="border-rose-200 hover:bg-rose-50"
+                  className="border-[#6A5ACD]/30 hover:bg-[#6A5ACD]/10"
                 >
                   {validatingPromo ? <Loader2 className="h-4 w-4 animate-spin" /> : 'OK'}
                 </Button>
@@ -300,7 +300,7 @@ export function OrderDialog() {
             type="submit" 
             size="lg" 
             disabled={isSubmitting}
-            className="w-full bg-gradient-to-r from-rose-500 to-purple-600 hover:shadow-lg hover:shadow-rose-500/25 text-white font-semibold transition-all"
+            className="w-full bg-[#6A5ACD] hover:bg-[#5A4ABD] hover:shadow-lg hover:shadow-[#6A5ACD]/25 text-white font-semibold transition-all"
           >
             {isSubmitting ? (
               <>
@@ -315,7 +315,7 @@ export function OrderDialog() {
 
         {/* Гарантія - мінімальна */}
         <div className="flex items-center justify-center gap-2 text-sm text-gray-500 pt-2">
-          <Shield className="h-4 w-4 text-rose-400" />
+          <Shield className="h-4 w-4 text-[#6A5ACD]" />
           <span>Якщо результат не сподобається — ми повернемо гроші</span>
         </div>
       </DialogContent>
