@@ -276,7 +276,7 @@ END:VCALENDAR`;
               className="text-lg md:text-xl font-baloo bg-[#6A5ACD] hover:bg-[#5B4BC2] text-white shadow-lg hover:shadow-xl transition-all"
               onClick={() => window.location.href = `/?promo=${promoData.code}`}
             >
-              Створити нову листівку 🎨
+              Створити нову листівку
             </Button>
             <Button
               size="lg"
