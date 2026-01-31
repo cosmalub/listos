@@ -26,7 +26,7 @@ const PublicOffer = () => {
             <main className="container mx-auto px-4 py-8 md:py-12 max-w-3xl">
                 <article className="prose prose-gray lg:prose-lg max-w-none">
                     <h1 className="text-3xl md:text-4xl font-bold mb-8 text-gray-900">Публічна оферта</h1>
-                    <p className="text-xl text-gray-600 mb-8">про надання послуг сервісу «Листосик»</p>
+                    <p className="text-xl text-gray-600 mb-8">про надання послуг сервісом «Листосик»</p>
 
                     <div className="space-y-6 text-gray-700 leading-relaxed">
                         <p>
