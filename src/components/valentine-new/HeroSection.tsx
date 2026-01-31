@@ -29,13 +29,13 @@ export function HeroSection() {
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1, ease: "circOut" }}
-          className="relative flex items-center justify-center"
+          className="relative flex items-center justify-center w-[340px] h-[340px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] lg:w-[680px] lg:h-[680px] xl:w-[720px] xl:h-[720px]"
         >
           {/* Heart Shape SVG Background */}
           <div className="absolute inset-0 flex items-center justify-center drop-shadow-2xl">
             <motion.svg
               viewBox="0 0 512 512"
-              className="w-[340px] h-[340px] sm:w-[500px] sm:h-[500px] md:w-[700px] md:h-[700px] lg:w-[850px] lg:h-[850px]"
+              className="w-full h-full"
               animate={{ y: [0, -15, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             >
@@ -50,17 +50,17 @@ export function HeroSection() {
           </div>
 
           {/* Text Content - Positioned visually inside the heart */}
-          <div className="relative z-10 flex flex-col items-center text-center pt-8 pb-6 px-4 sm:pt-12 sm:pb-10 sm:px-8 md:pt-16 md:pb-12 md:px-12 max-w-2xl -translate-y-4 sm:-translate-y-6 md:-translate-y-8">
+          <div className="relative z-10 flex flex-col items-center text-center pt-8 pb-6 px-4 sm:pt-10 sm:pb-8 sm:px-8 md:pt-12 md:pb-10 md:px-10 max-w-2xl -translate-y-2 sm:-translate-y-4 md:-translate-y-6 lg:-translate-y-4">
 
             {/* Headline */}
             <motion.h1
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold leading-[1.15] tracking-tight text-gray-900 drop-shadow-sm mb-3 sm:mb-4 md:mb-6"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] tracking-tight text-gray-900 drop-shadow-sm mb-3 sm:mb-4 md:mb-6"
             >
-              Скажи <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-purple-600">"Я кохаю"</span> <br />
-              так, щоб це запам'яталось.
+              <span className="whitespace-nowrap">Скажи <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-purple-600">"Я кохаю"</span></span>
+              <span className="block">так, щоб це запам'яталось.</span>
             </motion.h1>
 
             {/* Subheadline */}
@@ -80,7 +80,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="flex flex-col sm:flex-row gap-4 mt-12 sm:mt-16 md:mt-24 relative z-20"
+          className="flex flex-col sm:flex-row gap-4 mt-8 sm:mt-10 md:mt-12 relative z-20"
         >
           <motion.button
             whileHover={{ scale: 1.05 }}
