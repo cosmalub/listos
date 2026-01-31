@@ -732,10 +732,11 @@ export function FrontDesignStep({
 
           <Button
             onClick={handleComplete}
-            className="w-full"
+            className="w-full text-sm sm:text-base"
             size="lg"
           >
-            Перейти на створення зворотної сторони
+            <span className="sm:hidden">Далі: зворотна сторона</span>
+            <span className="hidden sm:inline">Перейти на створення зворотної сторони</span>
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </div>
