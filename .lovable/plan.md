@@ -1,47 +1,47 @@
 
-
-# Виправлення завантаження аватарок
+# Замена аватарок на более приятные
 
 ## Проблема
-Аватарки не завантажуються через неправильний формат параметра `top` в URL. DiceBear API не розуміє запит і повертає помилку.
+Текущие аватарки DiceBear Avataaars иногда генерируют лица с гримасами, открытыми ртами и странными выражениями.
 
-## Рішення
-Видалити проблемний параметр `top`, залишити тільки фільтри для посмішок та очей. Це дасть стабільно приємні аватарки у стилі Avataaars.
+## Решение
+Заменить стиль аватарок на более контролируемый вариант.
 
-### Зміни в коді
-
+### Вариант 1: Оставить Avataaars, но с фильтром выражений
 ```text
 БУЛО:
-const getAvatarUrl = (index: number, gender: "male" | "female") => {
-  const baseUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${index + 5}&mouth=smile,default&eyes=default,happy,side`;
-  const topStyles = gender === "female" 
-    ? "&top=longHair,longHairBigHair,longHairBob,longHairCurly,longHairCurvy,longHairStraight"
-    : "&top=shortHairDreads01,shortHairDreads02,shortHairShortFlat,shortHairShortWaved,shortHairSides,shortHairShortCurly";
-  return baseUrl + topStyles;
-};
+https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 5}
 
 СТАНЕ:
-const getAvatarUrl = (index: number, gender: "male" | "female") => {
-  // Різні seed offset для чоловіків та жінок — підвищує ймовірність відповідності
-  const seedOffset = gender === "female" ? 50 : 150;
-  return `https://api.dicebear.com/7.x/avataaars/svg?seed=${index + seedOffset}&mouth=smile,default&eyes=default,happy,side`;
-};
+https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 5}&mouth=smile,default&eyes=default,happy,side
 ```
+Это ограничит рты и глаза только приятными вариантами.
 
-### Логіка
-- Використовуємо різні діапазони `seed` для жінок (50+) і чоловіків (150+)
-- Це дає різні генерації аватарок для різних статей
-- Фільтри `mouth=smile,default` та `eyes=default,happy,side` залишаються — всі обличчя будуть приємними
-- Стиль Avataaars зберігається
+### Вариант 2: Использовать стиль Lorelei (минималистичный)
+```text
+https://api.dicebear.com/7.x/lorelei/svg?seed=${i + 5}
+```
+Очень чистый, минималистичный стиль — всегда нейтральные/улыбающиеся лица.
+
+### Вариант 3: Использовать стиль Notionists (Notion-подобный)
+```text
+https://api.dicebear.com/7.x/notionists/svg?seed=${i + 5}
+```
+Современный стиль в духе Notion — всегда приятные выражения.
+
+### Вариант 4: Использовать стиль Big Ears (милый)
+```text
+https://api.dicebear.com/7.x/big-ears/svg?seed=${i + 5}
+```
+Милые дружелюбные персонажи.
 
 ## Файл для редагування
 
 | Файл | Зміни |
 |------|-------|
-| `src/components/sections/hero-section-experiment.tsx` | Спростити функцію `getAvatarUrl` (рядки 21-27) |
+| `src/components/sections/hero-section-experiment.tsx` | Змінити URL аватарок (рядок 53) |
 
-## Що не змінюється
-- Дані TESTIMONIALS з полем gender
-- Анімації та логіка перемикання
-- Загальний дизайн компонента
+## Рекомендация
+Советую **Вариант 1** — оставить Avataaars (та же стилистика), но добавить параметры фильтрации выражений. Так мы сохраним текущий узнаваемый стиль, но уберем странные гримасы.
 
+Если хочешь кардинально другой стиль — выбирай Lorelei или Notionists.
