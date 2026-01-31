@@ -262,6 +262,9 @@ export const ChatInterface = forwardRef<ChatInterfaceRef, ChatInterfaceProps>(({
                       >
                         Підтвердити і далі →
                       </Button>
+                      <p className="text-xs text-muted-foreground mt-2">
+                        💡 Якщо хочете щось змінити — просто напишіть у чат, і я відредагую текст
+                      </p>
                     </div>
                   )}
 
