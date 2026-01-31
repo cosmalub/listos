@@ -29,7 +29,7 @@ export function HeroSection() {
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1, ease: "circOut" }}
-          className="relative flex items-center justify-center w-[340px] h-[340px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] lg:w-[680px] lg:h-[680px] xl:w-[720px] xl:h-[720px]"
+          className="relative flex items-center justify-center -mt-2 sm:-mt-3 md:-mt-4 w-[340px] h-[340px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] lg:w-[680px] lg:h-[680px] xl:w-[720px] xl:h-[720px]"
         >
           {/* Heart Shape SVG Background */}
           <div className="absolute inset-0 flex items-center justify-center drop-shadow-2xl">
@@ -80,7 +80,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="flex flex-col sm:flex-row gap-4 mt-8 sm:mt-10 md:mt-12 relative z-20"
+          className="flex flex-col sm:flex-row gap-4 mt-6 sm:mt-8 md:mt-10 relative z-20"
         >
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -97,7 +97,7 @@ export function HeroSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
-          className="flex flex-col items-center gap-3 mt-8 opacity-80"
+          className="flex flex-col items-center gap-3 mt-6 opacity-80"
         >
           <div className="flex -space-x-3">
             <div className="w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-sm">
