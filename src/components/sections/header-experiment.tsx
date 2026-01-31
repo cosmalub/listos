@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -33,9 +33,13 @@ const productItems = [
 
 export function HeaderExperiment({ hideNav = false, showMenu = true, ctaLabel, onCtaClick }: HeaderExperimentProps) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(false);
   const { openOrderDialog } = useOrderDialog();
+
+  const isActive = (href: string) => location.pathname === href;
+  const isProductActive = productItems.some(item => location.pathname === item.href);
 
   const handleCtaClick = () => {
     if (onCtaClick) {
@@ -74,7 +78,7 @@ export function HeaderExperiment({ hideNav = false, showMenu = true, ctaLabel, o
                 <button
                   onClick={() => setIsProductsOpen(!isProductsOpen)}
                   onBlur={() => setTimeout(() => setIsProductsOpen(false), 150)}
-                  className={`flex items-center gap-1 font-medium transition-all duration-200 ${isProductsOpen ? 'text-[#6A5ACD]' : 'text-gray-700 hover:text-gray-900'}`}
+                  className={`flex items-center gap-1 font-medium transition-all duration-200 ${isProductsOpen || isProductActive ? 'text-[#6A5ACD]' : 'text-gray-700 hover:text-gray-900'}`}
                 >
                   Продукти
                   <ChevronDown size={16} className={`transition-transform duration-200 ${isProductsOpen ? 'rotate-180' : ''}`} />
@@ -96,9 +100,9 @@ export function HeaderExperiment({ hideNav = false, showMenu = true, ctaLabel, o
                 )}
               </div>
 
-              <a href="/how-it-works" className="text-gray-700 hover:text-gray-900 transition-colors font-medium">Як це працює</a>
-              <a href="/pricing" className="text-gray-700 hover:text-gray-900 transition-colors font-medium">Ціна</a>
-              <a href="/cases" className="text-gray-700 hover:text-gray-900 transition-colors font-medium">Кейси</a>
+              <a href="/how-it-works" className={`font-medium transition-all duration-200 ${isActive('/how-it-works') ? 'text-[#6A5ACD]' : 'text-gray-700 hover:text-gray-900'}`}>Як це працює</a>
+              <a href="/pricing" className={`font-medium transition-all duration-200 ${isActive('/pricing') ? 'text-[#6A5ACD]' : 'text-gray-700 hover:text-gray-900'}`}>Ціна</a>
+              <a href="/cases" className={`font-medium transition-all duration-200 ${isActive('/cases') ? 'text-[#6A5ACD]' : 'text-gray-700 hover:text-gray-900'}`}>Кейси</a>
             </nav>
           )}
 
