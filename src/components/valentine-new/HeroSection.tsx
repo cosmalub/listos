@@ -83,24 +83,24 @@ export function HeroSection() {
           className="flex flex-col items-center gap-3 -mt-4 sm:-mt-3 md:-mt-4 lg:-mt-4 opacity-80"
         >
           <div className="flex -space-x-3">
-            <div className="w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-sm">
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-white overflow-hidden shadow-sm">
               <img src="/avatars/couple1.jpg" alt="couple" className="w-full h-full object-cover" />
             </div>
-            <div className="w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-sm">
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-white overflow-hidden shadow-sm">
               <img src="/avatars/couple2.jpg" alt="couple" className="w-full h-full object-cover" />
             </div>
-            <div className="w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-sm">
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-white overflow-hidden shadow-sm">
               <img src="/avatars/couple3.jpg" alt="couple" className="w-full h-full object-cover" />
             </div>
-            <div className="w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-sm">
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-white overflow-hidden shadow-sm">
               <img src="/avatars/couple4.jpg" alt="couple" className="w-full h-full object-cover" />
             </div>
-            <div className="w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-sm">
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-white overflow-hidden shadow-sm">
               <img src="/avatars/couple5.jpg" alt="couple" className="w-full h-full object-cover" />
             </div>
           </div>
-          <div className="text-sm text-gray-500 flex items-center gap-2">
-            <div className="flex text-yellow-400">
+          <div className="text-sm sm:text-base text-gray-500 flex items-center gap-2">
+            <div className="flex text-yellow-400 text-base sm:text-lg">
               {[1, 2, 3, 4, 5].map(s => <span key={s}>★</span>)}
             </div>
             <span><span className="font-bold text-gray-900">500+</span> щасливих історій</span>
@@ -118,7 +118,7 @@ export function HeroSection() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => openOrderDialog('hero-valentine', 'Створити листівку')}
-            className="px-6 py-3 bg-gradient-to-r from-rose-500 to-purple-600 text-white rounded-full font-semibold shadow-lg hover:shadow-rose-500/40 transition-shadow"
+            className="px-7 py-3.5 sm:px-8 sm:py-4 bg-gradient-to-r from-rose-500 to-purple-600 text-white rounded-full font-semibold text-base sm:text-lg shadow-lg hover:shadow-rose-500/40 transition-shadow"
           >
             Створити листівку
           </motion.button>
