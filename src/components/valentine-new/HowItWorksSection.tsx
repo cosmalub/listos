@@ -44,7 +44,7 @@ export function HowItWorksSection() {
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-100/30 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-24">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start">
 
           {/* Left: Sticky Title & CTA */}
           <div className="lg:sticky lg:top-32 h-fit space-y-8 text-center lg:text-left">
@@ -99,7 +99,7 @@ export function HowItWorksSection() {
           </div>
 
           {/* Right: Timeline Steps */}
-          <div className="relative">
+          <div className="relative lg:-mt-6">
 
             {/* Step 1: Creation (Studio Process) */}
             <StepCard number="1" title="Магія створення" icon={Play}>
