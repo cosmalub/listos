@@ -5,6 +5,7 @@ import { useOrderDialog } from "@/components/order/OrderDialogContext";
 import ExamplesSection3D from "@/components/sections/examples-section-3d";
 import { ReviewsSection } from "@/components/valentine-new/ReviewsSection";
 import { Heart, Star, Sparkles, MessageCircle } from "lucide-react";
+import { motion } from "framer-motion";
 
 const Cases = () => {
     const { openOrderDialog } = useOrderDialog();
@@ -42,12 +43,18 @@ const Cases = () => {
 
             {/* Page Header */}
             <section className="pt-44 pb-12 text-center px-4 bg-gradient-to-b from-[#FFF0E5] via-[#FFF5F0] to-white">
-                <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight tracking-tight mb-6">
-                    Одна листівка – <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2]">тисяча емоцій</span>
-                </h1>
-                <p className="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                    Листосик допомагає висловити те, що важко сказати просто словами.
-                </p>
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                >
+                    <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight tracking-tight mb-6">
+                        Одна листівка – <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2]">тисяча емоцій</span>
+                    </h1>
+                    <p className="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                        Листосик допомагає висловити те, що важко сказати просто словами.
+                    </p>
+                </motion.div>
             </section>
 
             {/* Jobs to be Done Section */}

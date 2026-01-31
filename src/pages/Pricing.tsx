@@ -38,12 +38,18 @@ const Pricing = () => {
 
             {/* Page Header */}
             <section className="pt-44 pb-12 text-center px-4 bg-gradient-to-b from-[#F3E8FF] via-[#F5F3FF] to-white">
-                <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight tracking-tight mb-6">
-                    Проста та <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2]">прозора ціна</span>
-                </h1>
-                <p className="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                    Все включено. Жодних прихованих платежів. Ти платиш лише за результат.
-                </p>
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                >
+                    <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight tracking-tight mb-6">
+                        Проста та <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2]">прозора ціна</span>
+                    </h1>
+                    <p className="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                        Все включено. Жодних прихованих платежів. Ти платиш лише за результат.
+                    </p>
+                </motion.div>
             </section>
 
             {/* Pricing Content */}

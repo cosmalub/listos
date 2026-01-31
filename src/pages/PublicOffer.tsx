@@ -7,25 +7,20 @@ const PublicOffer = () => {
 
     return (
         <div className="min-h-screen bg-white">
-            {/* Header with back button */}
-            <header className="sticky top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
-                <div className="container mx-auto px-4 h-16 flex items-center">
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
-                        onClick={() => navigate(-1)}
-                    >
-                        <ArrowLeft className="h-4 w-4" />
-                        Назад
-                    </Button>
-                </div>
-            </header>
-
             {/* Content */}
             <main className="container mx-auto px-4 py-8 md:py-12 max-w-3xl">
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 -ml-2"
+                    onClick={() => navigate(-1)}
+                >
+                    <ArrowLeft className="h-4 w-4" />
+                    Назад
+                </Button>
+
                 <article className="prose prose-gray lg:prose-lg max-w-none">
-                    <h1 className="text-3xl md:text-4xl font-bold mb-8 text-gray-900">Публічна оферта</h1>
+                    <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Публічна оферта</h1>
                     <p className="text-xl text-gray-600 mb-8">про надання послуг сервісом «Листосик»</p>
 
                     <div className="space-y-6 text-gray-700 leading-relaxed">
