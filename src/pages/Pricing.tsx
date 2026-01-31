@@ -56,7 +56,7 @@ const Pricing = () => {
 
                         {/* Left Content: Features List */}
                         <div className="space-y-10">
-                            <div className="text-left">
+                            <div className="text-center lg:text-left">
                                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight tracking-tight mb-4">
                                     Що входить у вартість?
                                 </h2>
@@ -67,7 +67,7 @@ const Pricing = () => {
 
                             <div className="space-y-8">
                                 {features.map((feature, idx) => (
-                                    <div key={idx} className="flex gap-5 group">
+                                    <div key={idx} className="flex flex-col lg:flex-row gap-4 lg:gap-5 items-center lg:items-start text-center lg:text-left group">
                                         <div className="w-14 h-14 rounded-2xl bg-[#F0F0FF] flex items-center justify-center text-[#6A5ACD] flex-shrink-0 group-hover:bg-[#E6E6FA] transition-colors">
                                             <feature.icon size={28} />
                                         </div>
