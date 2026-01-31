@@ -56,9 +56,6 @@ export default function OrderPending() {
         <div className="max-w-2xl mx-auto">
           {/* Success Header */}
           <div className="text-center mb-10">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Check className="w-8 h-8 text-green-600" />
-            </div>
             <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
               Заявка створена успішно!
             </h1>
