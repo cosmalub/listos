@@ -129,8 +129,7 @@ export function HeroSectionExperiment() {
               transition={{ duration: 0.7, delay: 0.4 }}
               className="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto leading-relaxed"
             >
-              Скажи «дякую», «кохаю» чи «вибач» — а Листосик створить пісню
-              і надрукує листівку з QR-кодом.
+              Твої слова стануть піснею. Твоя пісня — подарунком, який неможливо забути.
             </motion.p>
           </div>
 
