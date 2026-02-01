@@ -35,27 +35,27 @@ export const MusicVariantCard: React.FC<MusicVariantCardProps> = ({
     if (variant.audioUrl) {
       console.log('🎵 Setting up audio for variant:', variant.title);
       console.log('🎵 Audio URL:', variant.audioUrl.substring(0, 100) + '...');
-      
+
       const audioElement = new Audio(variant.audioUrl);
-      
+
       const handleEnded = () => {
         console.log('🎵 Audio ended');
         setIsPlaying(false);
         setProgress(0);
         setCurrentTime(0);
       };
-      
+
       const handleError = (e: any) => {
         console.error('🎵 Audio playback error:', e);
         console.error('🎵 Audio error details:', audioElement.error);
         setIsPlaying(false);
       };
-      
+
       const handleLoadedMetadata = () => {
         console.log('🎵 Audio metadata loaded - Duration:', audioElement.duration);
         setRealDuration(audioElement.duration);
       };
-      
+
       const handleTimeUpdate = () => {
         const current = audioElement.currentTime;
         const duration = audioElement.duration;
@@ -64,19 +64,19 @@ export const MusicVariantCard: React.FC<MusicVariantCardProps> = ({
           setProgress((current / duration) * 100);
         }
       };
-      
+
       const handleCanPlay = () => {
         console.log('🎵 Audio can play - Duration:', audioElement.duration);
       };
-      
+
       audioElement.addEventListener('ended', handleEnded);
       audioElement.addEventListener('error', handleError);
       audioElement.addEventListener('loadedmetadata', handleLoadedMetadata);
       audioElement.addEventListener('timeupdate', handleTimeUpdate);
       audioElement.addEventListener('canplay', handleCanPlay);
-      
+
       setAudio(audioElement);
-      
+
       return () => {
         audioElement.pause();
         audioElement.removeEventListener('ended', handleEnded);
@@ -93,7 +93,7 @@ export const MusicVariantCard: React.FC<MusicVariantCardProps> = ({
       console.log('🎵 Audio not available for playback');
       return;
     }
-    
+
     if (isPlaying) {
       console.log('🎵 Pausing audio at:', audio.currentTime);
       audio.pause();
@@ -114,22 +114,33 @@ export const MusicVariantCard: React.FC<MusicVariantCardProps> = ({
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!audio || realDuration === 0) return;
+    e.stopPropagation();
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const percentage = clickX / rect.width;
+    const newTime = percentage * realDuration;
+    audio.currentTime = newTime;
+    setCurrentTime(newTime);
+    setProgress(percentage * 100);
+  };
+
   return (
-    <Card 
+    <Card
       className={cn(
-        "cursor-pointer transition-all duration-300 hover:shadow-lg group",
-        isSelected 
-          ? "ring-2 ring-primary bg-primary/5 border-primary" 
+        "transition-all duration-300 hover:shadow-lg group",
+        isSelected
+          ? "ring-2 ring-primary bg-primary/5 border-primary"
           : "hover:border-primary/50"
       )}
-      onClick={onSelect}
     >
       <CardHeader className="pb-3">
         <div className="text-center space-y-1">
           <CardTitle className="text-lg">{variant.title}</CardTitle>
         </div>
       </CardHeader>
-      
+
       <CardContent className="space-y-4">
         <p className="text-sm text-muted-foreground leading-relaxed text-center">
           {variant.description}
@@ -162,13 +173,13 @@ export const MusicVariantCard: React.FC<MusicVariantCardProps> = ({
                 key={i}
                 className={cn(
                   "bg-primary/40 rounded-full transition-all duration-300 w-1.5",
-                  isPlaying 
-                    ? "animate-pulse" 
+                  isPlaying
+                    ? "animate-pulse"
                     : ""
                 )}
                 style={{
-                  height: isPlaying 
-                    ? `${Math.random() * 20 + 8}px` 
+                  height: isPlaying
+                    ? `${Math.random() * 20 + 8}px`
                     : '8px',
                   animationDelay: `${i * 0.15}s`
                 }}
@@ -182,23 +193,26 @@ export const MusicVariantCard: React.FC<MusicVariantCardProps> = ({
               <span>{formatTime(currentTime)}</span>
               <span>{realDuration > 0 ? formatTime(realDuration) : '--:--'}</span>
             </div>
-            <div className="w-full bg-secondary/40 rounded-full h-1">
-              <div 
-                className="bg-primary h-1 rounded-full transition-all duration-300"
+            <div
+              className="w-full bg-secondary/40 rounded-full h-2 cursor-pointer hover:h-3 transition-all"
+              onClick={handleSeek}
+            >
+              <div
+                className="bg-primary h-full rounded-full transition-all duration-100"
                 style={{ width: `${progress}%` }}
               />
             </div>
           </div>
         </div>
 
-        {/* Selection Indicator */}
-        {isSelected && (
-          <div className="text-center animate-fade-in">
-            <Badge className="bg-primary text-primary-foreground">
-              ✓ Обрано
-            </Badge>
-          </div>
-        )}
+        {/* Selection Button */}
+        <Button
+          variant={isSelected ? "default" : "outline"}
+          className="w-full mt-2"
+          onClick={onSelect}
+        >
+          {isSelected ? "✓ Обрано" : "Обрати цей варіант"}
+        </Button>
       </CardContent>
     </Card>
   );
