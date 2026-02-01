@@ -37,20 +37,20 @@ interface SongImagery {
 function detectLanguage(lyrics: string): 'Ukrainian' | 'Russian' | 'English' {
   const ukrainianMarkers = ['і', 'ї', 'є', 'ґ', 'тобі', 'мій', 'твій', 'щастя', 'доля', 'хай'];
   const russianMarkers = ['ы', 'ъ', 'тебе', 'мой', 'твой', 'что', 'это', 'счастье', 'судьба'];
-  
+
   let ukrainianScore = 0;
   let russianScore = 0;
-  
+
   const lowerLyrics = lyrics.toLowerCase();
-  
+
   ukrainianMarkers.forEach(marker => {
     if (lowerLyrics.includes(marker)) ukrainianScore++;
   });
-  
+
   russianMarkers.forEach(marker => {
     if (lowerLyrics.includes(marker)) russianScore++;
   });
-  
+
   if (ukrainianScore > russianScore) return 'Ukrainian';
   if (russianScore > ukrainianScore) return 'Russian';
   return 'English';
@@ -75,47 +75,35 @@ function getOccasionTheme(occasion: string): string {
     'fathers-day': 'день батька, повага, тепло',
     'valentines': 'день закоханих, романтика, пристрасть'
   };
-  
+
   return occasionThemes[occasion] || occasion;
 }
 
-// Check if occasion is romantic (allows human silhouettes)
+// Check if occasion is romantic (for reference only, not used for silhouettes anymore)
 function isRomanticOccasion(occasion: string): boolean {
   const romanticOccasions = ['love', 'wedding', 'anniversary', 'valentines'];
   return romanticOccasions.includes(occasion);
 }
 
-// Generate characters section based on occasion type
+// Generate characters section - NEVER use human silhouettes for any occasion
 function getCharactersSection(occasion: string): string {
-  if (isRomanticOccasion(occasion)) {
-    return `────────────────────────
-ПРО ПЕРСОНАЖІВ
+  // Always avoid human silhouettes - they don't resonate with all body types
+  return `────────────────────────
+ВАЖЛИВО: БЕЗ ЛЮДЕЙ І СИЛУЕТІВ!
 ────────────────────────
-Якщо пісня про РЕАЛЬНИХ ЛЮДЕЙ:
-– не зображай конкретну зовнішність, риси облич, вік або етнічність
-– персонажі мають бути СИМВОЛІЧНИМИ та УЗАГАЛЬНЕНИМИ
-  (силуети, світло, рух, присутність)
-– ілюстрація має відчуватися як ОСОБИСТА ІСТОРІЯ,
-  а не випадкова або стокова сцена
-– уникай типових, шаблонних образів людей`;
-  } else {
-    return `────────────────────────
-ВАЖЛИВО: БЕЗ ЛЮДЕЙ!
-────────────────────────
-Для цієї події НЕ ВИКОРИСТОВУЙ персонажів чи силуети людей!
-Використовуй ВІЗУАЛЬНІ ОБРАЗИ, які СИМВОЛІЧНО випливають зі слів пісні:
-– предмети або деталі, що відображають сенс (не персонажів)
+НЕ ВИКОРИСТОВУЙ персонажів, силуети людей чи контури тіл!
+Використовуй ВІЗУАЛЬНІ ОБРАЗИ, які СИМВОЛІЧНО передають почуття:
+– романтичні символи: серця, квіти, свічки, зірки
+– природні явища: захід сонця, море, небо, пелюстки
 – простір або середовище, пов'язане з настроєм пісні
 – світло і колір як носії емоції
-– метафори без людей або людських взаємодій
-– природні явища, рослини, абстрактні форми
-– символічні об'єкти: свічки, квіти, зірки, вікна, двері тощо`;
-  }
+– метафоричні об'єкти: два келихи, переплетені руки квітів тощо
+– абстрактні форми, що передають єдність і близькість`;
 }
 
 serve(async (req) => {
   console.log('Generate image description function called');
-  
+
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -123,7 +111,7 @@ serve(async (req) => {
 
   try {
     const { lyrics, caption, userContext, songImagery } = await req.json();
-    console.log('Input received:', { 
+    console.log('Input received:', {
       lyricsLength: lyrics?.length,
       caption,
       hasUserContext: !!userContext,
@@ -145,14 +133,14 @@ serve(async (req) => {
     let personalizationContext = '';
     if (userContext) {
       const hints: string[] = [];
-      
+
       if (userContext.recipient?.relationship) {
         hints.push(`Це листівка для ${userContext.recipient.relationship}`);
       }
       if (userContext.occasion) {
         hints.push(`Привід: ${getOccasionTheme(userContext.occasion)}`);
       }
-      
+
       if (hints.length > 0) {
         personalizationContext = `
 ────────────────────────
@@ -168,7 +156,7 @@ ${hints.join('\n')}
     let songImageryContext = '';
     if (songImagery) {
       const parts: string[] = [];
-      
+
       if (songImagery.directImages?.length > 0) {
         parts.push(`Візуальні образи з пісні: ${songImagery.directImages.join(', ')}`);
       }
@@ -184,7 +172,7 @@ ${hints.join('\n')}
       if (songImagery.emotionalCore) {
         parts.push(`Головна емоція: ${songImagery.emotionalCore}`);
       }
-      
+
       if (parts.length > 0) {
         songImageryContext = `
 ────────────────────────
