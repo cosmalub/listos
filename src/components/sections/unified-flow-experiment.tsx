@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useOrderDialog } from "@/components/order/OrderDialogContext";
 import { ArrowDown, ArrowRight } from "lucide-react";
-import postcardScanImage from "@/assets/postcard-scan.png";
 
 export function UnifiedFlowExperiment() {
    const { openOrderDialog } = useOrderDialog();
@@ -55,13 +54,16 @@ export function UnifiedFlowExperiment() {
                      <p className="text-lg text-gray-700 leading-relaxed font-medium mb-6">
                         Ми друкуємо цю листівку, додаємо QR-код із твоєю персональною історією-музикою і надсилаємо “Новою поштою” по Україні.
                      </p>
-                     {/* Media 2: Postcard Scan */}
-                     <div className="mt-auto relative w-full aspect-video bg-gradient-to-br from-[#F5F3FF] to-[#F0F0FF] rounded-xl overflow-hidden shadow-sm border border-[#E8B3FF]/30">
-                        <img
-                           src={postcardScanImage}
-                           alt="Листівка з QR-кодом"
+                     {/* Media 2: Video */}
+                     <div className="mt-auto relative w-full aspect-video bg-[#2A2A2A] rounded-xl overflow-hidden shadow-sm border border-gray-200">
+                        <video
                            className="w-full h-full object-cover"
-                        />
+                           controls
+                           playsInline
+                           preload="auto"
+                        >
+                           <source src="/videos/мамо.mp4" type="video/mp4" />
+                        </video>
                      </div>
                   </div>
                </div>
