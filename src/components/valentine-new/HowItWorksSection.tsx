@@ -114,7 +114,7 @@ export function HowItWorksSection() {
                   playsInline
                   preload="metadata"
                 >
-                  <source src="/videos/14.mp4" type="video/mp4" />
+                  <source src="/videos/14.mp4#t=0.1" type="video/mp4" />
                   Ваш браузер не підтримує відео.
                 </video>
               </div>
