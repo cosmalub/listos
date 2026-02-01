@@ -4,6 +4,7 @@ import { UnifiedFlowExperiment } from "@/components/sections/unified-flow-experi
 import { FooterExperiment } from "@/components/sections/footer-experiment";
 import { PainPointsSection } from "@/components/sections/pain-points-section";
 import { FinalCTAExperiment } from "@/components/sections/final-cta-experiment";
+import { FaqSectionMain } from "@/components/sections/faq-section-main";
 
 const Index = () => {
   return (
@@ -18,6 +19,9 @@ const Index = () => {
 
       {/* Problems/Benefits Section */}
       <PainPointsSection />
+
+      {/* FAQ Section */}
+      <FaqSectionMain />
 
       {/* Final CTA Buttons */}
       <FinalCTAExperiment />
