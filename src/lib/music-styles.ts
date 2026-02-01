@@ -89,6 +89,19 @@ export const MUSIC_STYLES: MusicStyle[] = [
     icon: '💕'
   },
   {
+    id: 'romantic-ballad-male',
+    style: 'Pop, RnB, Emotional, Heartfelt, male vocals',
+    name: 'Романтична Балада (чоловічий вокал)',
+    description: 'Ніжна емоційна балада з щирим чоловічим вокалом',
+    category: 'romantic',
+    mood: 'Романтичний, ніжний',
+    bestFor: ['Зізнання в коханні від хлопця', 'Романтичне послання для неї', 'Річниця', 'Вибачення'],
+    vocalGender: 'male',
+    energy: 2,
+    romance: 5,
+    icon: '💜'
+  },
+  {
     id: 'acoustic-folk',
     style: 'Classic Rock, Mellifluous Folk, Acoustic Guitar, male vocals',
     name: 'Акустична Фолк-Балада',
@@ -592,7 +605,7 @@ export function getStylesByCategory(category: MusicStyleCategory): MusicStyle[] 
 }
 
 export function getStylesByMood(searchMood: string): MusicStyle[] {
-  return MUSIC_STYLES.filter(style => 
+  return MUSIC_STYLES.filter(style =>
     style.mood.toLowerCase().includes(searchMood.toLowerCase())
   );
 }
@@ -603,11 +616,11 @@ export function getRecommendedStyles(
   recipientGender?: 'male' | 'female'
 ): MusicStyle[] {
   return MUSIC_STYLES.filter(style => {
-    const matchesOccasion = style.bestFor.some(use => 
+    const matchesOccasion = style.bestFor.some(use =>
       use.toLowerCase().includes(occasion.toLowerCase())
     );
     const matchesMood = style.mood.toLowerCase().includes(mood.toLowerCase());
-    
+
     // Якщо вказана стать отримувача, враховуємо рекомендований вокал
     let matchesGender = true;
     if (recipientGender && style.vocalGender) {
@@ -616,7 +629,7 @@ export function getRecommendedStyles(
         matchesGender = style.vocalGender !== recipientGender;
       }
     }
-    
+
     return (matchesOccasion || matchesMood) && matchesGender;
   });
 }
