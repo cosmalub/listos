@@ -33,12 +33,11 @@ export function UnifiedFlowExperiment() {
                      {/* Media 1: Video */}
                      <div className="mt-auto relative w-full aspect-video bg-[#2A2A2A] rounded-xl overflow-hidden shadow-sm border border-gray-200">
                         <video
-                           src="/videos/studio.mp4"
+                           src="/videos/mama-case.mp4#t=0.1"
                            className="w-full h-full object-cover"
-                           muted
+                           controls
                            playsInline
-                           loop
-                           autoPlay
+                           preload="metadata"
                         />
                      </div>
                   </div>
