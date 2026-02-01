@@ -587,6 +587,7 @@ const Studio = () => {
             onRequestSpecialist={handleRequestSpecialist}
             onContinueWithoutSong={handleContinueWithoutSong}
             onBackToLyrics={handleBackToLyrics}
+            recommendedStyles={recommendedStyles}
           />
         );
       case 3:

@@ -5,6 +5,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Music, Sparkles, RefreshCw, HeadphonesIcon, TestTube, ArrowRight, Mic, Palette } from 'lucide-react';
 import { MusicVariantCard } from './MusicVariantCard';
 import { MusicStyleSelector } from './MusicStyleSelector';
+import { MusicStyle } from '@/lib/music-styles';
 import { supabase } from '@/integrations/supabase/client';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -28,6 +29,7 @@ interface MusicGenerationProps {
   onRequestSpecialist: () => void;
   onContinueWithoutSong?: () => void;
   onBackToLyrics?: () => void;
+  recommendedStyles?: MusicStyle[];
 }
 
 export const MusicGeneration: React.FC<MusicGenerationProps> = ({
@@ -35,7 +37,8 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
   onVariantSelected,
   onRequestSpecialist,
   onContinueWithoutSong,
-  onBackToLyrics
+  onBackToLyrics,
+  recommendedStyles
 }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [variants, setVariants] = useState<MusicVariant[]>([]);
@@ -475,7 +478,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
             </p>
           </div>
           <MusicStyleSelector
-            recommendedStyles={[]}
+            recommendedStyles={recommendedStyles || []}
             onStyleSelected={async (style) => {
               setShowStylePicker(false);
               setIsGenerating(true);
