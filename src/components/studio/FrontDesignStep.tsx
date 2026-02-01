@@ -696,17 +696,35 @@ export function FrontDesignStep({
         {/* Action buttons */}
         <div className="space-y-3">
           {designData.mode === 'photo' && (
-            <Button
-              variant="outline"
-              onClick={() => {
-                setDesignData(prev => ({ ...prev, imageUrl: null }));
-                setCurrentState('editing');
-              }}
-              className="w-full"
-            >
-              <ImageIcon className="w-4 h-4 mr-2" />
-              Змінити фото
-            </Button>
+            <>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setDesignData(prev => ({ ...prev, imageUrl: null }));
+                  setCurrentState('editing');
+                }}
+                className="w-full"
+              >
+                <ImageIcon className="w-4 h-4 mr-2" />
+                Змінити фото
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setDesignData(prev => ({
+                    ...prev,
+                    imageUrl: null,
+                    mode: 'ai-generation',
+                  }));
+                  setSelectedSource('ai-generation');
+                  setCurrentState('editing');
+                }}
+                className="w-full text-muted-foreground hover:text-foreground"
+              >
+                <Wand2 className="w-4 h-4 mr-2" />
+                Або згенерувати AI замість фото
+              </Button>
+            </>
           )}
 
           {designData.mode === 'ai-generation' && (
