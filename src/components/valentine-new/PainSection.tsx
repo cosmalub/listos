@@ -86,19 +86,19 @@ export function PainSection() {
                 variants={cardVariants}
                 className="bg-white/80 backdrop-blur-sm rounded-2xl md:rounded-3xl p-4 md:p-8 border border-rose-100 shadow-sm hover:shadow-md transition-all duration-300"
               >
-                {/* Mobile: vertical centered layout, Desktop: horizontal layout */}
-                <div className="flex flex-col items-center text-center md:flex-row md:items-start md:text-left gap-3 md:gap-4">
+                {/* Centered layout for ALL devices */}
+                <div className="flex flex-col items-center text-center gap-3 md:gap-4">
                   {/* Icon container */}
                   <div className="flex-shrink-0 p-2.5 md:p-3 bg-rose-50 rounded-xl md:rounded-2xl">
                     <Icon className="w-5 h-5 md:w-6 md:h-6 text-rose-500" />
                   </div>
-                  
+
                   {/* Text */}
-                  <div className="md:pt-1">
+                  <div>
                     <p className="text-sm md:text-lg font-semibold text-gray-900 leading-tight">
                       {point.text}
                     </p>
-                    <p className="text-xs md:text-base text-gray-600 font-normal mt-0.5 md:mt-0">
+                    <p className="text-xs md:text-base text-gray-600 font-normal mt-0.5 md:mt-1">
                       {point.subtext}
                     </p>
                   </div>
