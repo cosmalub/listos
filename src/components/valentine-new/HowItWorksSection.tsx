@@ -106,18 +106,17 @@ export function HowItWorksSection() {
               <p className="mb-6">
                 Ти відповідаєш на питання — ШІ створює пісню. Створюєш дизайн (фото або генерація) і бачиш результат на екрані.
               </p>
-              {/* MEDIA PLACEHOLDER: Screencast */}
-              <div className="relative w-full aspect-video bg-gray-900 rounded-2xl overflow-hidden shadow-lg group cursor-pointer border border-gray-800">
-                {/* Placeholder overlay */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
-                  <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm mb-4 group-hover:scale-110 transition-transform">
-                    <Play className="text-white fill-white ml-1" size={32} />
-                  </div>
-                  <span className="text-gray-400 text-xs uppercase tracking-widest font-bold">Демонстрація процесу</span>
-                </div>
-
-                {/* Animated 'Code/Music' lines visual background */}
-                <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
+              {/* Video Demo */}
+              <div className="relative w-full aspect-video bg-gray-900 rounded-2xl overflow-hidden shadow-lg border border-gray-800">
+                <video
+                  className="w-full h-full object-cover"
+                  controls
+                  playsInline
+                  preload="metadata"
+                >
+                  <source src="/videos/14.mp4" type="video/mp4" />
+                  Ваш браузер не підтримує відео.
+                </video>
               </div>
             </StepCard>
 
