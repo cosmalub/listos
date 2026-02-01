@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const faqs = [
@@ -57,28 +58,47 @@ export function FaqSection() {
     <section className="py-24 px-4 bg-white" id="faq">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-gray-900 drop-shadow-sm mb-6">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-gray-900 drop-shadow-sm mb-6"
+          >
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-purple-600">Часті запитання</span>
-          </h2>
-          <p className="text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto"
+          >
             Все, що варто знати перед створенням листівки
-          </p>
+          </motion.p>
         </div>
 
         <Accordion type="single" collapsible className="w-full space-y-4">
           {faqs.map((faq, index) => (
-            <AccordionItem
+            <motion.div
               key={index}
-              value={`item-${index}`}
-              className="border border-gray-100 rounded-2xl px-6 data-[state=open]:bg-gray-50/50 transition-colors"
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: index * 0.05 }}
             >
-              <AccordionTrigger className="text-lg font-medium text-gray-900 hover:text-[#6B5CE7] text-left hover:no-underline py-6">
-                {faq.question}
-              </AccordionTrigger>
-              <AccordionContent className="text-gray-600 leading-relaxed pb-6 text-base">
-                {faq.answer}
-              </AccordionContent>
-            </AccordionItem>
+              <AccordionItem
+                value={`item-${index}`}
+                className="border border-gray-100 rounded-2xl px-6 data-[state=open]:bg-gray-50/50 transition-colors"
+              >
+                <AccordionTrigger className="text-lg font-medium text-gray-900 hover:text-[#6B5CE7] text-left hover:no-underline py-6">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-gray-600 leading-relaxed pb-6 text-base">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            </motion.div>
           ))}
         </Accordion>
       </div>
