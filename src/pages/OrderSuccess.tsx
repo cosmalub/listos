@@ -116,7 +116,7 @@ export default function OrderSuccess() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#FFE4EC] via-[#FFF0F5] to-white">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#F0F8FF] via-[#F5F3FF] to-white">
         <Loader2 className="w-8 h-8 animate-spin text-gray-700" />
       </div>
     );
@@ -124,7 +124,7 @@ export default function OrderSuccess() {
 
   if (!orderId || !orderData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#FFE4EC] via-[#FFF0F5] to-white">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#F0F8FF] via-[#F5F3FF] to-white">
         <Card className="max-w-md mx-4 bg-white rounded-2xl shadow-sm border border-gray-100">
           <CardContent className="p-6 text-center">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Замовлення не знайдено</h2>
@@ -141,7 +141,7 @@ export default function OrderSuccess() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFE4EC] via-[#FFF0F5] to-white">
+    <div className="min-h-screen bg-gradient-to-b from-[#F0F8FF] via-[#F5F3FF] to-white">
       <OccasionAnimation occasion={orderData.page_occasion || 'congratulations'} />
       <HeaderExperiment />
 
