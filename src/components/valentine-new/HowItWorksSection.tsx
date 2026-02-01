@@ -122,18 +122,21 @@ export function HowItWorksSection() {
 
 
 
-            {/* Step 2: Result (Photo Placeholder) */}
+            {/* Step 2: Result (Video) */}
             <StepCard number="2" title="Емоція в руках" icon={Gift} isLast={true}>
               <p className="mb-6">
                 Отримуєш фізичну листівку. Момент вручення, скан QR-коду — і емоції, які неможливо стримати.
               </p>
-              {/* MEDIA PLACEHOLDER: Photo of Result */}
-              <div className="relative w-full aspect-[4/3] bg-rose-50 rounded-2xl overflow-hidden shadow-lg border border-rose-100">
-                {/* Placeholder content */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <Gift className="text-rose-300 w-16 h-16 mb-2" />
-                  <span className="text-rose-300 font-medium">Фото готової листівки</span>
-                </div>
+              {/* Video Demo */}
+              <div className="relative w-full aspect-video bg-gray-900 rounded-2xl overflow-hidden shadow-lg border border-gray-800">
+                <video
+                  className="w-full h-full object-cover"
+                  controls
+                  playsInline
+                  preload="auto"
+                >
+                  <source src="/videos/14-lyst.mp4" type="video/mp4" />
+                </video>
               </div>
             </StepCard>
           </div>
