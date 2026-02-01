@@ -29,7 +29,7 @@ serve(async (req) => {
 
   try {
     const { lyrics, feedback }: AnalysisRequest = await req.json();
-    
+
     if (!lyrics) {
       throw new Error('Lyrics are required');
     }
@@ -136,13 +136,16 @@ ${feedbackSection}
 
 ### РОМАНТИЧНІ ТА НІЖНІ:
 - **romantic-ballad**: Ніжна емоційна балада (жін. вокал, енергія 2, романтика 5)
-  Найкраще для: Зізнання в коханні, Романтичне послання, Річниця
+  Найкраще для: Зізнання в коханні ВІД ДІВЧИНИ, Романтичне послання, Річниця
+
+- **romantic-ballad-male**: Ніжна емоційна балада (чол. вокал, енергія 2, романтика 5)
+  Найкраще для: Зізнання в коханні ВІД ХЛОПЦЯ, Романтичне послання для неї, Річниця
 
 - **acoustic-folk**: Теплий акустичний звук (чол. вокал, енергія 2, романтика 5)
-  Найкраще для: Романтичне послання, Подяка від щирого серця
+  Найкраще для: Романтичне послання від хлопця, Подяка від щирого серця
 
 - **indie-folk-intimate**: Ефірний інді-фолк (чол. вокал, енергія 2, романтика 5)
-  Найкраще для: Романтичні моменти, Особисті послання
+  Найкраще для: Романтичні моменти, Особисті послання від хлопця
 
 ### ЕМОЦІЙНІ ТА ЩИРІ:
 - **soul-emotional**: Глибокий душевний вокал (жін. вокал, енергія 3, романтика 4)
@@ -239,7 +242,15 @@ ${feedbackSection}
    - Від кого і кому (стать, відносини)
    - Настрій тексту (радісний, романтичний, емоційний, енергійний)
 
-2. **Обери РІВНО 4 НАЙКРАЩИХ стилів** зі списку вище за критеріями:
+2. **КРИТИЧНО ВАЖЛИВО - ВОКАЛ ВІДПРАВНИКА**:
+   Стать вокалу має відповідати ВІДПРАВНИКУ (той, хто говорить/співає), а НЕ одержувачу!
+   - Якщо чоловік пише жінці → обирай стилі з **male** вокалом
+   - Якщо жінка пише чоловіку → обирай стилі з **female** вокалом
+   - Шукай підказки в тексті: "я тебе кохаю" (хто каже?), звертання, імена
+   - Романтична пісня від хлопця дівчині = чоловічий вокал (romantic-ballad-male, acoustic-folk)
+   - Романтична пісня від дівчини хлопцю = жіночий вокал (romantic-ballad, dream-pop)
+
+3. **Обери РІВНО 4 НАЙКРАЩИХ стилів** зі списку вище за критеріями:
    - Відповідність події та настрою
    - Рівень енергії (1-5)
    - Рівень романтичності (1-5)
@@ -281,7 +292,7 @@ ${feedbackSection}
 
     const data = await response.json();
     const content = data.content[0].text;
-    
+
     console.log('Claude response:', content);
 
     // Parse JSON from Claude's response
@@ -291,7 +302,7 @@ ${feedbackSection}
     }
 
     const analysis: AnalysisResponse = JSON.parse(jsonMatch[0]);
-    
+
     // Валідація recommendedStyles
     if (!analysis.recommendedStyles || !Array.isArray(analysis.recommendedStyles)) {
       throw new Error('recommendedStyles must be an array');
@@ -299,7 +310,7 @@ ${feedbackSection}
     if (analysis.recommendedStyles.length !== 4) {
       console.warn(`Expected 4 styles, got ${analysis.recommendedStyles.length}`);
     }
-    
+
     // Validate ranges
     if (analysis.styleWeight !== undefined) {
       analysis.styleWeight = Math.max(0, Math.min(100, analysis.styleWeight));
@@ -320,7 +331,7 @@ ${feedbackSection}
   } catch (error) {
     console.error('Error in analyze-lyrics-for-music:', error);
     return new Response(
-      JSON.stringify({ 
+      JSON.stringify({
         error: error instanceof Error ? error.message : 'Unknown error',
         fallback: {
           recommendedStyles: ['pop-dance', 'acoustic-folk', 'soul-emotional', 'romantic-ballad'],
@@ -330,7 +341,7 @@ ${feedbackSection}
           audioWeight: 50,
           reasoning: 'Використано універсальні стилі як запасний варіант'
         }
-      }), 
+      }),
       {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
