@@ -50,7 +50,6 @@ const ServiceOverviewHero = () => {
                             {/* Background Decoration */}
                             <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#6A5ACD] to-[#9370DB]" />
 
-
                             <h3 className="text-2xl font-bold text-gray-900 mb-4">
                                 Крок 1: Твориш у студії
                             </h3>
@@ -59,21 +58,16 @@ const ServiceOverviewHero = () => {
                                 Заходиш у студію, відповідаєш на прості питання. Листосик миттєво генерує текст, створює музику та записує вокал.
                             </p>
 
-                            {/* Video Visual for Studio */}
-                            <div className="w-full bg-gray-900 rounded-3xl overflow-hidden relative shadow-lg aspect-video">
+                            {/* Video with controls like on main page */}
+                            <div className="w-full bg-[#2A2A2A] rounded-3xl overflow-hidden relative shadow-lg aspect-video border border-gray-200">
                                 <video
-                                    src="/videos/studio.mp4"
-                                    className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700"
-                                    muted
+                                    className="w-full h-full object-cover"
+                                    controls
                                     playsInline
-                                    loop
-                                    autoPlay
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                                <div className="absolute bottom-4 left-4 text-white text-sm font-medium flex items-center gap-2">
-                                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                                    Генерація магії...
-                                </div>
+                                    preload="metadata"
+                                >
+                                    <source src="/videos/mama-case.mp4#t=0.1" type="video/mp4" />
+                                </video>
                             </div>
                         </div>
 
@@ -94,21 +88,16 @@ const ServiceOverviewHero = () => {
                                 Ми друкуємо результат на преміальному картоні і надсилаємо тобі. Скануєш QR-код — і музика оживає.
                             </p>
 
-                            {/* Video Visual for Print (Placeholder) */}
-                            <div className="w-full bg-gray-900 rounded-3xl overflow-hidden relative shadow-lg aspect-video">
+                            {/* Video with controls like on main page */}
+                            <div className="w-full bg-[#2A2A2A] rounded-3xl overflow-hidden relative shadow-lg aspect-video border border-gray-200">
                                 <video
-                                    src="/videos/studio.mp4"
-                                    className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700"
-                                    muted
+                                    className="w-full h-full object-cover"
+                                    controls
                                     playsInline
-                                    loop
-                                    autoPlay
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                                <div className="absolute bottom-4 left-4 text-white text-sm font-medium flex items-center gap-2">
-                                    <div className="w-2 h-2 bg-pink-500 rounded-full animate-pulse" />
-                                    Очікування дива...
-                                </div>
+                                    preload="metadata"
+                                >
+                                    <source src="/videos/mamo.mp4#t=0.1" type="video/mp4" />
+                                </video>
                             </div>
                         </div>
                     </div>
