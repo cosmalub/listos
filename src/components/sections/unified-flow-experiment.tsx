@@ -35,9 +35,9 @@ export function UnifiedFlowExperiment() {
                            className="w-full h-full object-cover"
                            controls
                            playsInline
-                           preload="auto"
+                           preload="metadata"
                         >
-                           <source src="/videos/mama-case.mp4" type="video/mp4" />
+                           <source src="/videos/mama-case.mp4#t=0.1" type="video/mp4" />
                         </video>
                      </div>
                   </div>
@@ -60,9 +60,9 @@ export function UnifiedFlowExperiment() {
                            className="w-full h-full object-cover"
                            controls
                            playsInline
-                           preload="auto"
+                           preload="metadata"
                         >
-                           <source src="/videos/мамо.mp4" type="video/mp4" />
+                           <source src="/videos/mamo.mp4#t=0.1" type="video/mp4" />
                         </video>
                      </div>
                   </div>
