@@ -3,7 +3,7 @@ import { HeroSectionExperiment } from "@/components/sections/hero-section-experi
 import { UnifiedFlowExperiment } from "@/components/sections/unified-flow-experiment";
 import { FooterExperiment } from "@/components/sections/footer-experiment";
 import { FaqSection } from "@/components/valentine-new/FaqSection";
-import { FinalCTASection } from "@/components/valentine-new/FinalCTASection";
+import { FinalCTAGeneral } from "@/components/sections/final-cta-general";
 
 const IndexExperiment = () => {
   return (
@@ -20,7 +20,7 @@ const IndexExperiment = () => {
       <FaqSection />
 
       {/* Final CTA Section */}
-      <FinalCTASection />
+      <FinalCTAGeneral />
 
       {/* Минималистичный футер */}
       <FooterExperiment />
