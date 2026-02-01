@@ -57,8 +57,8 @@ export function FaqSectionMain() {
         <section className="py-24 px-4 bg-white" id="faq">
             <div className="max-w-3xl mx-auto">
                 <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-gray-900 drop-shadow-sm mb-6">
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6A5ACD] via-[#9370DB] to-[#FF85A2]">Часті запитання</span>
+                    <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6 tracking-tight leading-tight">
+                        Часті запитання
                     </h2>
                     <p className="text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
                         Все, що варто знати перед створенням листівки
