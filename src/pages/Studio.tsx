@@ -285,6 +285,20 @@ const Studio = () => {
     navigate('/studio?step=3');
   };
 
+  const handleBackToLyrics = () => {
+    // User wants to change lyrics - go back to chat with auto-message
+    console.log("User wants to change lyrics - going back to chat");
+    setCurrentStep(1);
+    navigate('/studio?step=1');
+
+    // Add auto-message asking what to change
+    setTimeout(() => {
+      if (chatRef.current) {
+        chatRef.current.prefillAndSend('Хочу змінити слова');
+      }
+    }, 500);
+  };
+
   const handleWelcomeStart = () => {
     // Скидаємо всі стейти для нової сесії
     setLyrics('');
@@ -303,7 +317,7 @@ const Studio = () => {
 
   const handlePostcardDesignComplete = async (postcardDesignData: any) => {
     const toastId = toast.loading('Створення замовлення...');
-    
+
     try {
       setDesignData(postcardDesignData);
 
@@ -572,6 +586,7 @@ const Studio = () => {
             onVariantSelected={handleMusicVariantSelected}
             onRequestSpecialist={handleRequestSpecialist}
             onContinueWithoutSong={handleContinueWithoutSong}
+            onBackToLyrics={handleBackToLyrics}
           />
         );
       case 3:

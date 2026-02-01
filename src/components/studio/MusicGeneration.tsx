@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2, Music, Sparkles, RefreshCw, HeadphonesIcon, TestTube, ArrowRight } from 'lucide-react';
+import { Loader2, Music, Sparkles, RefreshCw, HeadphonesIcon, TestTube, ArrowRight, Mic, Palette } from 'lucide-react';
 import { MusicVariantCard } from './MusicVariantCard';
+import { MusicStyleSelector } from './MusicStyleSelector';
 import { supabase } from '@/integrations/supabase/client';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -26,13 +27,15 @@ interface MusicGenerationProps {
   onVariantSelected: (variant: MusicVariant) => void;
   onRequestSpecialist: () => void;
   onContinueWithoutSong?: () => void;
+  onBackToLyrics?: () => void;
 }
 
 export const MusicGeneration: React.FC<MusicGenerationProps> = ({
   lyrics,
   onVariantSelected,
   onRequestSpecialist,
-  onContinueWithoutSong
+  onContinueWithoutSong,
+  onBackToLyrics
 }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [variants, setVariants] = useState<MusicVariant[]>([]);
@@ -46,6 +49,8 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
   const [isCheckingStatus, setIsCheckingStatus] = useState(false);
   const [showFeedbackDialog, setShowFeedbackDialog] = useState(false);
   const [feedbackText, setFeedbackText] = useState('');
+  const [showChoiceDialog, setShowChoiceDialog] = useState(false);
+  const [showStylePicker, setShowStylePicker] = useState(false);
 
   // Load analyzed parameters from sessionStorage
   useEffect(() => {
@@ -248,14 +253,14 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
 
   const handleVariantSelect = (variant: MusicVariant) => {
     setSelectedVariant(variant);
-    
+
     // Трекаємо вибір музики
     posthog.capture('music_generated', {
       variant_id: variant.id,
       style: variant.style,
       generation_attempt: generationAttempt
     });
-    
+
     onVariantSelected(variant);
   };
 
@@ -433,7 +438,7 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
             {generationAttempt < 2 ? (
               <Button
                 variant="outline"
-                onClick={() => setShowFeedbackDialog(true)}
+                onClick={() => setShowChoiceDialog(true)}
                 className="w-full sm:w-auto"
               >
                 <RefreshCw className="h-4 w-4 mr-2" />
@@ -460,104 +465,75 @@ export const MusicGeneration: React.FC<MusicGenerationProps> = ({
         </div>
       )}
 
-      {/* Feedback Dialog */}
-      <Dialog open={showFeedbackDialog} onOpenChange={setShowFeedbackDialog}>
-        <DialogContent className="sm:max-w-[500px]">
+      {/* Style Picker (shown when user chooses "Стиль") */}
+      {showStylePicker && (
+        <div className="space-y-4 animate-fade-in">
+          <div className="text-center">
+            <h3 className="text-lg font-semibold mb-2">Оберіть новий стиль</h3>
+            <p className="text-sm text-muted-foreground">
+              Виберіть стиль і пісня буде перегенерована
+            </p>
+          </div>
+          <MusicStyleSelector
+            recommendedStyles={[]}
+            onStyleSelected={async (style) => {
+              setShowStylePicker(false);
+              setIsGenerating(true);
+              setVariants([]);
+
+              // Update params with new style
+              const newParams = {
+                ...analyzedParams,
+                style: style.style,
+                vocalGender: style.vocalGender
+              };
+              setAnalyzedParams(newParams);
+              sessionStorage.setItem('music-parameters', JSON.stringify(newParams));
+
+              // Start generation with new style
+              await startGeneration();
+            }}
+            onBack={() => setShowStylePicker(false)}
+          />
+        </div>
+      )}
+
+      {/* Choice Dialog: Слова або Стиль */}
+      <Dialog open={showChoiceDialog} onOpenChange={setShowChoiceDialog}>
+        <DialogContent className="sm:max-w-[400px]">
           <DialogHeader>
-            <DialogTitle>Що ви хочете змінити?</DialogTitle>
+            <DialogTitle>Що не сподобалось?</DialogTitle>
             <DialogDescription>
-              Опишіть, що ви хочете покращити в музиці. Це допоможе нам створити саме те, що вам потрібно.
+              Оберіть, що ви хочете змінити
             </DialogDescription>
           </DialogHeader>
 
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label>Швидкий вибір:</Label>
-              <div className="grid grid-cols-2 gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setFeedbackText('Більш енергійно і весело')}
-                  className="text-xs"
-                >
-                  Більш енергійно
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setFeedbackText('Більш романтично і ніжно')}
-                  className="text-xs"
-                >
-                  Більш романтично
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setFeedbackText('Жіночий вокал замість чоловічого')}
-                  className="text-xs"
-                >
-                  Жіночий вокал
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setFeedbackText('Чоловічий вокал замість жіночого')}
-                  className="text-xs"
-                >
-                  Чоловічий вокал
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setFeedbackText('Повільніше і спокійніше')}
-                  className="text-xs"
-                >
-                  Повільніше
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setFeedbackText('Більш акустично, менше інструментів')}
-                  className="text-xs"
-                >
-                  Більш акустично
-                </Button>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="feedback">Або опишіть своїми словами:</Label>
-              <Textarea
-                id="feedback"
-                value={feedbackText}
-                onChange={(e) => setFeedbackText(e.target.value)}
-                placeholder="Наприклад: 'Хочу більш веселу мелодію з акустичною гітарою' або 'Зробіть більш емоційно і з жіночим вокалом'"
-                className="min-h-[100px]"
-              />
-            </div>
-          </div>
-
-          <DialogFooter>
+          <div className="grid grid-cols-2 gap-4 py-6">
             <Button
               variant="outline"
+              className="h-24 flex flex-col gap-2"
               onClick={() => {
-                setShowFeedbackDialog(false);
-                setFeedbackText('');
+                setShowChoiceDialog(false);
+                if (onBackToLyrics) {
+                  onBackToLyrics();
+                }
               }}
             >
-              Скасувати
+              <Mic className="h-8 w-8" />
+              <span className="font-medium">Слова</span>
             </Button>
             <Button
-              onClick={async () => {
-                setShowFeedbackDialog(false);
-                await handleRegenerateWithFeedback(feedbackText);
-                setFeedbackText('');
+              variant="outline"
+              className="h-24 flex flex-col gap-2"
+              onClick={() => {
+                setShowChoiceDialog(false);
+                setShowStylePicker(true);
               }}
-              disabled={!feedbackText.trim()}
             >
-              Перегенерувати
+              <Palette className="h-8 w-8" />
+              <span className="font-medium">Стиль</span>
             </Button>
-          </DialogFooter>
+          </div>
         </DialogContent>
       </Dialog>
 
