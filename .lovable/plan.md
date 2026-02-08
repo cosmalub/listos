@@ -1,59 +1,37 @@
 
-# План: Изменение цены с 399 грн на 249 грн
 
-## Файлы для изменения (11 файлов, ~15 мест)
+# План: PainPointsSection на второе место
 
-### 1. Pricing секции
-| Файл | Строка | Текущее значение |
-|------|--------|------------------|
-| `src/components/sections/pricing-section.tsx` | 93 | `399` |
-| `src/components/sections/pricing-section-experiment.tsx` | 85 | `399` |
-| `src/components/valentine-new/PricingSection.tsx` | 96 | `399` |
-| `src/components/sections/process-compact-experiment.tsx` | 90 | `399` |
+**Файл:** `src/pages/Index.tsx`
 
-### 2. Final CTA секции
-| Файл | Строка | Текущее значение |
-|------|--------|------------------|
-| `src/components/sections/final-cta-section.tsx` | 36 | `399 грн — це спосіб залишити спогад.` |
-| `src/components/sections/final-cta-experiment.tsx` | 29 | `...все включено за 399 грн.` |
+## Изменение
 
-### 3. How It Works секции
-| Файл | Строка | Текущее значение |
-|------|--------|------------------|
-| `src/components/valentine-new/HowItWorksSection.tsx` | 67 | `399 грн` |
-| `src/pages/HowItWorks.tsx` | 343 | `...все включено за 399 грн.` |
+Переставить `<PainPointsSection />` сразу после `<HeroSectionExperiment />`:
 
-### 4. Другие страницы
-| Файл | Строка | Текущее значение |
-|------|--------|------------------|
-| `src/pages/Cases.tsx` | 111 | `...все включено за 399 грн.` |
-| `src/components/sections/mascot-section.tsx` | 59 | `Оплачуєш 399 грн та вказуєш адресу...` |
+```text
+<HeroSectionExperiment />
 
-### 5. FAQ секция
-| Файл | Строка | Текущее значение |
-|------|--------|------------------|
-| `src/components/sections/faq-section-main.tsx` | 47 | `У вартість 399 грн входить...` |
-| `src/components/valentine-new/FaqSection.tsx` | 48 | `У вартість 399 грн входить...` |
+<PainPointsSection />  ← "Коли слів стає замало" - СЮДА
 
-### 6. Order Dialog (базовая цена)
-| Файл | Строка | Текущее значение |
-|------|--------|------------------|
-| `src/components/order/OrderDialog.tsx` | 73 | `const basePrice = 399;` |
+<AiBenefitsSection />
 
----
+<UnifiedFlowExperiment />
 
-## Что именно изменится
+<FaqSectionMain />
 
-Все упоминания **399** будут заменены на **249**:
-- Большие цифры цены в pricing секциях
-- Тексты типа "...все включено за 399 грн" → "...все включено за 249 грн"
-- FAQ ответы с упоминанием цены
-- Базовая цена в форме заказа (влияет на расчёт со скидками)
+<FinalCTAExperiment />
 
----
+<FooterExperiment />
+```
 
-## Технические детали
+## Результат
 
-- Изменения затрагивают только фронтенд (UI)
-- Переменная `basePrice` в OrderDialog.tsx используется для расчёта финальной цены с учётом промокодов
-- Все промокоды продолжат работать корректно (скидка считается от новой базовой цены 249 грн)
+Порядок секций на главной:
+1. Hero ("Перетвори почуття на музичну листівку")
+2. **PainPointsSection** ("Коли слів стає замало") 
+3. AiBenefitsSection ("Чому ШІ — це круто?")
+4. UnifiedFlowExperiment
+5. FAQ
+6. Final CTA
+7. Footer
+
