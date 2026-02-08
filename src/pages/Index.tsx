@@ -1,5 +1,6 @@
 import { HeaderExperiment } from "@/components/sections/header-experiment";
 import { HeroSectionExperiment } from "@/components/sections/hero-section-experiment";
+import { AiBenefitsSection } from "@/components/sections/ai-benefits-section";
 import { UnifiedFlowExperiment } from "@/components/sections/unified-flow-experiment";
 import { FooterExperiment } from "@/components/sections/footer-experiment";
 import { PainPointsSection } from "@/components/sections/pain-points-section";
@@ -13,6 +14,9 @@ const Index = () => {
 
       {/* Hero - чистый первый экран с главным CTA */}
       <HeroSectionExperiment />
+
+      {/* AI Benefits - почему ШІ это круто */}
+      <AiBenefitsSection />
 
       {/* Unified Flow: Problem -> Process -> Pricing (One seamless section) */}
       <UnifiedFlowExperiment />
