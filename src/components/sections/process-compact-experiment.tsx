@@ -87,7 +87,7 @@ export function ProcessCompactExperiment() {
               
               <div className="text-center md:text-left">
                 <div className="flex items-baseline justify-center md:justify-start gap-2 mb-2">
-                  <span className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-[#6A5ACD] to-[#9370DB] bg-clip-text text-transparent">399</span>
+                  <span className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-[#6A5ACD] to-[#9370DB] bg-clip-text text-transparent">249</span>
                   <span className="text-2xl text-gray-400 font-medium">грн</span>
                 </div>
                 <p className="text-gray-500 font-medium">

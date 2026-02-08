@@ -64,7 +64,7 @@ export function HowItWorksSection() {
             <div className="p-6 bg-white/60 backdrop-blur-xl rounded-3xl border border-white/50 shadow-xl inline-block w-full max-w-md">
               <div className="flex items-center justify-between mb-2">
                 <span className="font-semibold text-gray-900">Повна вартість</span>
-                <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-purple-600">399 грн</span>
+                <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-purple-600">249 грн</span>
               </div>
               <p className="text-xs text-gray-500 mb-6 text-left">Все включено: створення, друк, доставка</p>
 

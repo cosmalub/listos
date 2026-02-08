@@ -93,7 +93,7 @@ export function PricingSection() {
                 <div className="text-center mb-8">
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">Все включено</h3>
                   <div className="flex items-center justify-center gap-2 mb-2">
-                    <span className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-purple-600">399</span>
+                    <span className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-purple-600">249</span>
                     <span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-purple-600">грн</span>
                   </div>
                   <p className="text-gray-500">Єдина ціна. Жодних прихованих платежів.</p>
