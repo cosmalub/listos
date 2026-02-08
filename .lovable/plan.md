@@ -1,37 +1,29 @@
 
 
-# План: PainPointsSection на второе место
+# План: Видалити блок "Чому ШІ — це круто?"
 
-**Файл:** `src/pages/Index.tsx`
+## Проблема
 
-## Изменение
+Блок `AiBenefitsSection` ("Чому ШІ — це круто?") був **помилково доданий** мною на головну сторінку. Його там не було і не повинно бути.
 
-Переставить `<PainPointsSection />` сразу после `<HeroSectionExperiment />`:
+## Файл
 
-```text
-<HeroSectionExperiment />
+`src/pages/Index.tsx`
 
-<PainPointsSection />  ← "Коли слів стає замало" - СЮДА
+## Зміни
 
-<AiBenefitsSection />
-
-<UnifiedFlowExperiment />
-
-<FaqSectionMain />
-
-<FinalCTAExperiment />
-
-<FooterExperiment />
-```
+1. Видалити імпорт `AiBenefitsSection` (рядок 3)
+2. Видалити компонент `<AiBenefitsSection />` (рядки 21-22)
 
 ## Результат
 
-Порядок секций на главной:
+Порядок секцій після виправлення:
 1. Hero ("Перетвори почуття на музичну листівку")
-2. **PainPointsSection** ("Коли слів стає замало") 
-3. AiBenefitsSection ("Чому ШІ — це круто?")
-4. UnifiedFlowExperiment
-5. FAQ
-6. Final CTA
-7. Footer
+2. PainPointsSection ("Коли слів стає замало")
+3. UnifiedFlowExperiment
+4. FAQ
+5. Final CTA
+6. Footer
+
+Блок "Чому ШІ — це круто?" буде повністю видалений з головної сторінки.
 
