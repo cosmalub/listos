@@ -15,14 +15,14 @@ const Index = () => {
       {/* Hero - чистый первый экран с главным CTA */}
       <HeroSectionExperiment />
 
+      {/* Коли слів стає замало - второй блок */}
+      <PainPointsSection />
+
       {/* AI Benefits - почему ШІ это круто */}
       <AiBenefitsSection />
 
       {/* Unified Flow: Problem -> Process -> Pricing (One seamless section) */}
       <UnifiedFlowExperiment />
-
-      {/* Problems/Benefits Section */}
-      <PainPointsSection />
 
       {/* FAQ Section */}
       <FaqSectionMain />
