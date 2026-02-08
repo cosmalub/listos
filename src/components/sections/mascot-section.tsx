@@ -56,7 +56,7 @@ export function MascotSection() {
                 <div>
                   <h3 className="text-xl font-bold text-primary mb-3">Крок 1: Купуєш доступ до студії</h3>
                   <p className="text-muted-foreground">
-                    Оплачуєш 399 грн та вказуєш адресу доставки → на твій email приходить посилання на студію.
+                    Оплачуєш 249 грн та вказуєш адресу доставки → на твій email приходить посилання на студію.
                   </p>
                   <p className="text-muted-foreground mt-2">
                     <span className="font-semibold text-primary">Доставка безкоштовна</span> по всій Україні. Студія доступна <span className="font-semibold text-primary">24/7</span> — створюй, коли зручно!

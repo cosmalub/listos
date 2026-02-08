@@ -33,7 +33,7 @@ export function FinalCtaSection() {
               {/* Ціна */}
               <div className="mb-8">
                 <p className="text-lg md:text-xl text-[#6A5ACD] font-medium">
-                  399 грн — це спосіб залишити спогад.
+                  249 грн — це спосіб залишити спогад.
                 </p>
               </div>
 

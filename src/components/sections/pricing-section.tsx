@@ -90,7 +90,7 @@ export function PricingSection() {
                 <div className="mb-8">
                   <div className="inline-flex items-baseline gap-2 mb-3">
                     <span className="text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-[#6A5ACD] to-[#8A7CDD] bg-clip-text text-transparent">
-                      399
+                      249
                     </span>
                     <span className="text-2xl md:text-3xl font-semibold text-[#6A5ACD]/70">грн</span>
                   </div>

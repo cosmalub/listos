@@ -70,7 +70,7 @@ export function OrderDialog() {
     }
   };
 
-  const basePrice = 399;
+  const basePrice = 249;
   const finalPrice = promoStatus?.valid 
     ? basePrice * (1 - (promoStatus.discountPercent || 0) / 100)
     : basePrice;
