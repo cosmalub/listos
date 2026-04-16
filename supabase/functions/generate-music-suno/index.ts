@@ -10,7 +10,7 @@ interface MusicGenerationRequest {
   style?: string;
   title?: string;
   userFeedback?: string;
-  model?: 'V3_5' | 'V4' | 'V4_5' | 'V4_5PLUS' | 'V5';
+  model?: 'V3_5' | 'V4' | 'V4_5' | 'V4_5PLUS' | 'V5' | 'V5_5';
   vocalGender?: 'm' | 'f';
   styleWeight?: number;
   weirdnessConstraint?: number;
@@ -38,7 +38,7 @@ serve(async (req) => {
       style,
       title, 
       userFeedback, 
-      model = 'V5',
+      model = 'V5_5',
       vocalGender,
       styleWeight,
       weirdnessConstraint,
