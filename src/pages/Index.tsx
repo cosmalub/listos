@@ -9,7 +9,7 @@ import { FaqSectionMain } from "@/components/sections/faq-section-main";
 const Index = () => {
   return (
     <div className="min-h-screen bg-white">
-      <HeaderExperiment />
+      <HeaderExperiment ctaLabel="Створити QR-листівку" />
 
       {/* Hero - чистый первый экран с главным CTA */}
       <HeroSectionExperiment />
