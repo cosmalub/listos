@@ -2,7 +2,6 @@ import { HeaderExperiment } from "@/components/sections/header-experiment";
 import { HeroSectionExperiment } from "@/components/sections/hero-section-experiment";
 import { UnifiedFlowExperiment } from "@/components/sections/unified-flow-experiment";
 import { FooterExperiment } from "@/components/sections/footer-experiment";
-import { PainPointsSection } from "@/components/sections/pain-points-section";
 import { FinalCTAExperiment } from "@/components/sections/final-cta-experiment";
 import { FaqSectionMain } from "@/components/sections/faq-section-main";
 import { OccasionsCatalogSection } from "@/components/sections/occasions-catalog-section";
@@ -14,9 +13,6 @@ const Index = () => {
 
       {/* Hero - чистый первый экран с главным CTA */}
       <HeroSectionExperiment />
-
-      {/* Коли слів стає замало - второй блок */}
-      <PainPointsSection />
 
       {/* Каталог поводов: выбор ситуации -> тематический лендинг */}
       <OccasionsCatalogSection />

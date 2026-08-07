@@ -13,42 +13,70 @@ function OccasionCard({ occasion }: { occasion: Occasion }) {
     return (
         <Link
             to={`/povody/${occasion.slug}`}
-            className="group flex h-full flex-col rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9370DB] focus-visible:ring-offset-2"
+            className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all border-2 border-[#F3D1FF]/50 hover:border-[#B8B3FF] flex flex-col h-full group text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9370DB]"
         >
-            <div
-                className={`mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${occasion.accent} text-white shadow-sm transition-transform group-hover:scale-105`}
-            >
-                <Icon className="h-6 w-6" />
+            <div className="h-28 mb-6 flex items-center justify-center p-4 bg-gray-50 rounded-xl group-hover:scale-105 transition-transform duration-300">
+                <div className={`flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${occasion.accent} text-white shadow-sm`}>
+                    <Icon className="h-8 w-8" />
+                </div>
             </div>
+            
+            <h4 className="text-xl font-bold text-gray-900 mb-3 leading-tight">{occasion.title}</h4>
+            
+            {/* Using emotionalProblem as the problem text, falling back to shortDescription if missing */}
+            <p className="text-gray-600 text-base mb-6 flex-grow leading-relaxed px-2">
+                {occasion.emotionalProblem || occasion.shortDescription}
+            </p>
 
-            <h4 className="mb-2 text-xl font-bold leading-tight text-gray-900">{occasion.title}</h4>
-            <p className="mb-6 text-base leading-relaxed text-gray-600">{occasion.shortDescription}</p>
-
-            <span className="mt-auto inline-flex items-center gap-2 text-sm font-bold text-[#6A5ACD]">
-                Обрати привід
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </span>
+            <div className="mt-auto flex flex-col gap-4">
+                {/* Solution text - using heroDescription or shortDescription */}
+                <div className="bg-gradient-to-br from-[#F8F7FF] to-[#F0F0FF] rounded-xl p-4 border border-[#E6E6FA] group-hover:border-[#D8D4FF] transition-colors">
+                    <p className="text-[#6A5ACD] font-bold text-sm leading-snug line-clamp-3">
+                        {occasion.heroDescription}
+                    </p>
+                </div>
+                
+                <span className="inline-flex items-center justify-center gap-2 text-sm font-bold text-[#6A5ACD] group-hover:text-[#5849b8] transition-colors mt-2">
+                    Обрати привід
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </span>
+            </div>
         </Link>
     );
 }
 
 export function OccasionsCatalogSection() {
     return (
-        <section className="bg-white py-24" id="povody">
+        <section className="bg-gray-50/50 py-24" id="povody">
             <div className="container mx-auto max-w-6xl px-4">
-                <div className="mb-14 text-center">
-                    <h2 className="mb-6 text-3xl font-bold leading-tight tracking-tight text-gray-900 md:text-5xl">
-                        Знайдемо привід сказати важливе
-                    </h2>
-                    <p className="mx-auto max-w-2xl text-xl leading-relaxed text-gray-600">
-                        Обери ситуацію — і ми покажемо, як перетворити твою історію на особливий музичний подарунок.
-                    </p>
+                <div className="mb-20 text-center space-y-12">
+                    {/* First text block */}
+                    <div>
+                        <h2 className="mb-6 text-3xl font-bold leading-tight tracking-tight text-gray-900 md:text-5xl">
+                            Коли слів стає замало
+                        </h2>
+                        <p className="mx-auto max-w-2xl text-xl leading-relaxed text-gray-600">
+                            Листосик допомагає там, де звичайні подарунки безсилі, а емоції потребують голосу.
+                        </p>
+                    </div>
+                    
+                    <div className="w-16 h-1 bg-gradient-to-r from-[#9370DB] to-[#FF85A2] mx-auto rounded-full opacity-50"></div>
+
+                    {/* Second text block */}
+                    <div>
+                        <h3 className="mb-6 text-2xl font-bold leading-tight tracking-tight text-gray-900 md:text-4xl">
+                            Знайдемо привід сказати важливе
+                        </h3>
+                        <p className="mx-auto max-w-2xl text-lg leading-relaxed text-gray-600">
+                            Обери ситуацію — і ми покажемо, як перетворити твою історію на особливий музичний подарунок.
+                        </p>
+                    </div>
                 </div>
 
-                <div className="space-y-14">
+                <div className="space-y-16">
                     {/* Свята та важливі дати */}
                     <div>
-                        <h3 className="mb-6 text-center text-sm font-semibold uppercase tracking-wider text-gray-400 md:text-left">
+                        <h3 className="mb-8 text-center text-sm font-semibold uppercase tracking-wider text-gray-400">
                             {occasionCategoryTitles.holidays}
                         </h3>
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -60,7 +88,7 @@ export function OccasionsCatalogSection() {
 
                     {/* Особливі моменти */}
                     <div>
-                        <h3 className="mb-6 text-center text-sm font-semibold uppercase tracking-wider text-gray-400 md:text-left">
+                        <h3 className="mb-8 text-center text-sm font-semibold uppercase tracking-wider text-gray-400">
                             {occasionCategoryTitles.moments}
                         </h3>
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
