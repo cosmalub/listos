@@ -5,6 +5,7 @@ import { FooterExperiment } from "@/components/sections/footer-experiment";
 import { PainPointsSection } from "@/components/sections/pain-points-section";
 import { FinalCTAExperiment } from "@/components/sections/final-cta-experiment";
 import { FaqSectionMain } from "@/components/sections/faq-section-main";
+import { OccasionsCatalogSection } from "@/components/sections/occasions-catalog-section";
 
 const Index = () => {
   return (
@@ -16,6 +17,9 @@ const Index = () => {
 
       {/* Коли слів стає замало - второй блок */}
       <PainPointsSection />
+
+      {/* Каталог поводов: выбор ситуации -> тематический лендинг */}
+      <OccasionsCatalogSection />
 
       {/* Unified Flow: Problem -> Process -> Pricing (One seamless section) */}
       <UnifiedFlowExperiment />
