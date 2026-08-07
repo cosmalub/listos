@@ -8,17 +8,15 @@ import {
 } from "@/data/occasionData";
 
 function OccasionCard({ occasion }: { occasion: Occasion }) {
-    const Icon = occasion.icon;
-
     return (
         <Link
             to={`/povody/${occasion.slug}`}
             className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all border-2 border-[#F3D1FF]/50 hover:border-[#B8B3FF] flex flex-col h-full group text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9370DB]"
         >
-            <div className="h-28 mb-6 flex items-center justify-center p-4 bg-gray-50 rounded-xl group-hover:scale-105 transition-transform duration-300">
-                <div className={`flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${occasion.accent} text-white shadow-sm`}>
-                    <Icon className="h-8 w-8" />
-                </div>
+            <div className="h-40 mb-6 flex items-center justify-center p-4 bg-gray-50 rounded-xl group-hover:scale-105 transition-transform duration-300">
+                {occasion.image && (
+                    <img src={occasion.image} alt={occasion.title} className="max-h-full object-contain mix-blend-multiply" />
+                )}
             </div>
             
             <h4 className="text-xl font-bold text-gray-900 mb-3 leading-tight">{occasion.title}</h4>
