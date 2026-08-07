@@ -47,28 +47,16 @@ export function OccasionsCatalogSection() {
     return (
         <section className="bg-gray-50/50 py-24" id="povody">
             <div className="container mx-auto max-w-6xl px-4">
-                <div className="mb-20 text-center space-y-12">
-                    {/* First text block */}
-                    <div>
-                        <h2 className="mb-6 text-3xl font-bold leading-tight tracking-tight text-gray-900 md:text-5xl">
-                            Коли слів стає замало
-                        </h2>
-                        <p className="mx-auto max-w-2xl text-xl leading-relaxed text-gray-600">
-                            Листосик допомагає там, де звичайні подарунки безсилі, а емоції потребують голосу.
-                        </p>
-                    </div>
-                    
-                    <div className="w-16 h-1 bg-gradient-to-r from-[#9370DB] to-[#FF85A2] mx-auto rounded-full opacity-50"></div>
-
-                    {/* Second text block */}
-                    <div>
-                        <h3 className="mb-6 text-2xl font-bold leading-tight tracking-tight text-gray-900 md:text-4xl">
-                            Знайдемо привід сказати важливе
-                        </h3>
-                        <p className="mx-auto max-w-2xl text-lg leading-relaxed text-gray-600">
-                            Обери ситуацію — і ми покажемо, як перетворити твою історію на особливий музичний подарунок.
-                        </p>
-                    </div>
+                <div className="mb-20 text-center">
+                    <span className="inline-block py-1.5 px-4 rounded-full bg-[#F3D1FF]/30 text-[#9370DB] text-sm font-bold tracking-wider uppercase mb-6 border border-[#B8B3FF]/30">
+                        Коли слів стає замало
+                    </span>
+                    <h2 className="mb-6 text-3xl font-bold leading-tight tracking-tight text-gray-900 md:text-5xl">
+                        Знайдемо привід сказати важливе
+                    </h2>
+                    <p className="mx-auto max-w-2xl text-xl leading-relaxed text-gray-600">
+                        Листосик допомагає там, де звичайні подарунки безсилі. Обери ситуацію — і ми покажемо, як перетворити твою історію на особливий музичний подарунок.
+                    </p>
                 </div>
 
                 <div className="space-y-16">
