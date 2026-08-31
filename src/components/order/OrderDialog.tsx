@@ -16,10 +16,12 @@ import {
 } from "@/components/ui/dialog";
 import { useOrderDialog } from "./OrderDialogContext";
 import { posthog } from "@/providers/PostHogProvider";
+import type { ProductFormat } from "@/lib/product-format";
 
 export function OrderDialog() {
   const navigate = useNavigate();
-  const { isOpen, source, closeOrderDialog } = useOrderDialog();
+  const { isOpen, source, productFormat, closeOrderDialog } = useOrderDialog();
+  const isSound = productFormat === 'sound';
   
   const [formData, setFormData] = useState({
     name: "",
@@ -90,6 +92,7 @@ export function OrderDialog() {
           nova_poshta: formData.novaPoshta,
           comment: formData.comment,
           contact_type: formData.contactType,
+          product_format: (productFormat || 'qr') as ProductFormat,
         })
         .select()
         .single();
@@ -110,9 +113,10 @@ export function OrderDialog() {
       // Трекаємо успішне замовлення
       posthog.capture('order_submitted', {
         source,
-        price: finalPrice,
-        has_promo: promoStatus?.valid || false,
-        contact_type: formData.contactType
+        price: isSound ? null : finalPrice,
+        has_promo: !isSound && (promoStatus?.valid || false),
+        contact_type: formData.contactType,
+        product_format: productFormat,
       });
 
       closeOrderDialog();
@@ -139,10 +143,12 @@ export function OrderDialog() {
       <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto bg-white border border-gray-100 rounded-2xl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-gray-900">
-            Оформлення замовлення
+            {isSound ? 'Заявка на листівку, що звучить' : 'Оформлення замовлення'}
           </DialogTitle>
           <DialogDescription className="text-gray-600">
-            Заповни форму — і перейдеш до створення листівки
+            {isSound
+              ? 'Залиште контакти — ми напишемо про запуск і вартість. Пісня й дизайн створюються в тій самій студії.'
+              : 'Заповни форму — і перейдеш до створення листівки'}
           </DialogDescription>
         </DialogHeader>
 
@@ -246,7 +252,8 @@ export function OrderDialog() {
             </div>
           </div>
 
-          {/* Промокод - згорнутий */}
+          {/* Промокод - згорнутий. Для звукової листівки ціни ще немає. */}
+          {!isSound && (
           <Collapsible open={showPromoField} onOpenChange={setShowPromoField}>
             <CollapsibleTrigger asChild>
               <button
@@ -284,16 +291,25 @@ export function OrderDialog() {
               )}
             </CollapsibleContent>
           </Collapsible>
+          )}
 
           {/* Ціна */}
           <div className="flex items-center justify-between py-3 border-t border-gray-100">
-            <span className="text-gray-600">До сплати:</span>
-            <div className="text-right">
-              {promoStatus?.valid && (
-                <span className="text-sm text-gray-400 line-through mr-2">{basePrice} грн</span>
-              )}
-              <span className="text-xl font-bold text-gray-900">{finalPrice} грн</span>
-            </div>
+            {isSound ? (
+              <p className="text-sm text-gray-500">
+                Вартість оголосимо згодом — це заявка, не оплата.
+              </p>
+            ) : (
+              <>
+                <span className="text-gray-600">До сплати:</span>
+                <div className="text-right">
+                  {promoStatus?.valid && (
+                    <span className="text-sm text-gray-400 line-through mr-2">{basePrice} грн</span>
+                  )}
+                  <span className="text-xl font-bold text-gray-900">{finalPrice} грн</span>
+                </div>
+              </>
+            )}
           </div>
 
           <Button 
@@ -307,6 +323,8 @@ export function OrderDialog() {
                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                 Оформлення...
               </>
+            ) : isSound ? (
+              'Залишити заявку'
             ) : (
               'Оформити замовлення'
             )}

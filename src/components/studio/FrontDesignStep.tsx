@@ -7,10 +7,12 @@ import { Switch } from '@/components/ui/switch';
 import { ArrowLeft, Wand2, Loader2, RotateCcw, ArrowRight, Heart, Gift, MessageCircle, Info, RefreshCw, Image as ImageIcon } from 'lucide-react';
 import { ImageUploader } from './ImageUploader';
 import { PostcardPreview } from './PostcardPreview';
+import { SoundCardPreview } from './SoundCardPreview';
 import { getStylePrompt, type StyleKey, POSTCARD_STYLES } from '@/lib/postcard-styles';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
+import type { ProductFormat } from '@/lib/product-format';
 
 interface FrontDesignData {
   mode: 'photo' | 'ai-generation';
@@ -55,6 +57,7 @@ interface FrontDesignStepProps {
     sender?: string;
   };
   chatMessages?: any[];
+  productFormat?: ProductFormat;
 }
 
 type ComponentState = 'editing' | 'preview';
@@ -125,7 +128,8 @@ export function FrontDesignStep({
   onComplete,
   onBack,
   pageData,
-  chatMessages
+  chatMessages,
+  productFormat = 'qr',
 }: FrontDesignStepProps) {
   const [designData, setDesignData] = useState<FrontDesignData>({
     mode: 'ai-generation',
@@ -663,15 +667,25 @@ export function FrontDesignStep({
         {/* Postcard Preview */}
         <div className="flex justify-center">
           <div className="w-full max-w-xs">
-            <PostcardPreview
-              frontData={designData}
-              backData={{
-                selectedColor: 'red',
-                personalMessage: ''
-              }}
-              showFront={true}
-              size="compact"
-            />
+            {productFormat === 'sound' ? (
+              <SoundCardPreview
+                frontData={designData}
+                insideData={{ selectedColor: '', personalMessage: '' }}
+                view="closed"
+                closedSide="cover"
+                size="compact"
+              />
+            ) : (
+              <PostcardPreview
+                frontData={designData}
+                backData={{
+                  selectedColor: 'red',
+                  personalMessage: ''
+                }}
+                showFront={true}
+                size="compact"
+              />
+            )}
           </div>
         </div>
 
@@ -753,8 +767,14 @@ export function FrontDesignStep({
             className="w-full text-sm sm:text-base"
             size="lg"
           >
-            <span className="sm:hidden">Далі: зворотна сторона</span>
-            <span className="hidden sm:inline">Перейти на створення зворотної сторони</span>
+            {productFormat === 'sound' ? (
+              <span>Далі: всередина листівки</span>
+            ) : (
+              <>
+                <span className="sm:hidden">Далі: зворотна сторона</span>
+                <span className="hidden sm:inline">Перейти на створення зворотної сторони</span>
+              </>
+            )}
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </div>
@@ -769,7 +789,9 @@ export function FrontDesignStep({
       <div className="space-y-4 border-2 border-dashed border-muted-foreground/20 rounded-lg p-6">
         <h2 className="text-lg font-semibold">1. Підпис для листівки</h2>
         <p className="text-sm text-muted-foreground">
-          Підпис буде розміщено на лицьовій частині листівки
+          {productFormat === 'sound'
+            ? 'Цей підпис буде на обкладинці — те, що видно, коли листівка ще закрита'
+            : 'Підпис буде розміщено на лицьовій частині листівки'}
         </p>
 
         <Textarea
@@ -828,7 +850,9 @@ export function FrontDesignStep({
       <div className="space-y-4 border-2 border-dashed border-muted-foreground/20 rounded-lg p-6">
         <h2 className="text-lg font-semibold">2. Вибір основи</h2>
         <p className="text-sm text-muted-foreground">
-          Лицьова частина листівки може бути створена на основі вашого фото або згенерованого дизайну під вашу пісню
+          {productFormat === 'sound'
+            ? 'Обкладинка може бути з вашого фото або з малюнка під вашу пісню'
+            : 'Лицьова частина листівки може бути створена на основі вашого фото або згенерованого дизайну під вашу пісню'}
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3">

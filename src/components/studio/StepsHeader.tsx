@@ -1,18 +1,31 @@
 import React from 'react';
 import { CheckCircle } from 'lucide-react';
+import type { ProductFormat } from '@/lib/product-format';
+import { getStoredProductFormat } from '@/lib/product-format';
 
-const steps = [
+const qrSteps = [
   { id: 1, title: 'Створення слів', description: 'Створюємо слова\nдля пісні' },
   { id: 2, title: 'Генерація музики', description: 'Генеруємо 2 варіанти на основі тексту' },
   { id: 3, title: 'Сторінка з піснею', description: 'Створюємо персональну сторінку з піснею' },
   { id: 4, title: 'Дизайн листівки', description: 'Робимо дизайн\nлистівки з QR-кодом' },
 ];
 
+const soundSteps = [
+  { id: 1, title: 'Створення слів', description: 'Створюємо слова\nдля пісні' },
+  { id: 2, title: 'Генерація музики', description: 'Генеруємо 2 варіанти на основі тексту' },
+  { id: 3, title: 'Сторінка з піснею', description: 'Підписуємо пісню:\nнагода, кому і від кого' },
+  { id: 4, title: 'Дизайн листівки', description: 'Оформлюємо листівку,\nщо грає при відкритті' },
+];
+
 interface StepsHeaderProps {
   currentStep: number;
+  productFormat?: ProductFormat;
 }
 
-export const StepsHeader: React.FC<StepsHeaderProps> = ({ currentStep }) => {
+export const StepsHeader: React.FC<StepsHeaderProps> = ({ currentStep, productFormat }) => {
+  const format = productFormat ?? getStoredProductFormat();
+  const steps = format === 'sound' ? soundSteps : qrSteps;
+
   return (
     <div className="bg-transparent pt-24 md:pt-28">
       <div className="container mx-auto px-4 py-6">

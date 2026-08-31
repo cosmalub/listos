@@ -27,6 +27,8 @@ export type Database = {
           front_design_style: string | null
           front_image_url: string | null
           id: string
+          inside_left_image_url: string | null
+          inside_right_image_url: string | null
           internal_comment: string | null
           lyrics: string
           music_audio_url: string | null
@@ -37,8 +39,11 @@ export type Database = {
           music_variant_title: string | null
           page_occasion: string
           page_recipient: string
+          outer_back_image_url: string | null
           page_sender: string
           pre_order_id: string
+          print_sheet_image_url: string | null
+          product_format: string
           production_stage: string | null
           qr_code_url: string | null
           studio_completed: boolean
@@ -58,6 +63,8 @@ export type Database = {
           front_design_style?: string | null
           front_image_url?: string | null
           id?: string
+          inside_left_image_url?: string | null
+          inside_right_image_url?: string | null
           internal_comment?: string | null
           lyrics: string
           music_audio_url?: string | null
@@ -68,8 +75,11 @@ export type Database = {
           music_variant_title?: string | null
           page_occasion: string
           page_recipient: string
+          outer_back_image_url?: string | null
           page_sender: string
           pre_order_id: string
+          print_sheet_image_url?: string | null
+          product_format?: string
           production_stage?: string | null
           qr_code_url?: string | null
           studio_completed?: boolean
@@ -89,6 +99,8 @@ export type Database = {
           front_design_style?: string | null
           front_image_url?: string | null
           id?: string
+          inside_left_image_url?: string | null
+          inside_right_image_url?: string | null
           internal_comment?: string | null
           lyrics?: string
           music_audio_url?: string | null
@@ -99,8 +111,11 @@ export type Database = {
           music_variant_title?: string | null
           page_occasion?: string
           page_recipient?: string
+          outer_back_image_url?: string | null
           page_sender?: string
           pre_order_id?: string
+          print_sheet_image_url?: string | null
+          product_format?: string
           production_stage?: string | null
           qr_code_url?: string | null
           studio_completed?: boolean
@@ -131,6 +146,7 @@ export type Database = {
           internal_comment: string | null
           is_paid: boolean
           nova_poshta: string | null
+          product_format: string
           status: string | null
           updated_at: string
           user_email: string | null
@@ -148,6 +164,7 @@ export type Database = {
           internal_comment?: string | null
           is_paid?: boolean
           nova_poshta?: string | null
+          product_format?: string
           status?: string | null
           updated_at?: string
           user_email?: string | null
@@ -165,6 +182,7 @@ export type Database = {
           internal_comment?: string | null
           is_paid?: boolean
           nova_poshta?: string | null
+          product_format?: string
           status?: string | null
           updated_at?: string
           user_email?: string | null

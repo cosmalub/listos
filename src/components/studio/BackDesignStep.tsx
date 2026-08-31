@@ -8,6 +8,7 @@ import { ArrowLeft, ArrowRight, RefreshCw } from 'lucide-react';
 import type { StyleKey } from '@/lib/postcard-styles';
 import { getStyleColors } from '@/lib/postcard-styles';
 import { extractDominantColors as extractColors, FALLBACK_COLORS } from '@/lib/color-extractor';
+import type { ProductFormat } from '@/lib/product-format';
 
 interface FrontDesignData {
   mode: 'photo' | 'ai-generation';
@@ -30,6 +31,10 @@ interface BackDesignStepProps {
   onBack: () => void;
   onDataChange?: (data: BackDesignData) => void;
   onGeneratingChange?: (isGenerating: boolean) => void;
+  productFormat?: ProductFormat;
+  occasion?: string;
+  recipient?: string;
+  sender?: string;
 }
 
 // Helper function to extract dominant colors from front design
@@ -56,7 +61,12 @@ async function extractDominantColorsFromImage(frontDesign: FrontDesignData): Pro
 }
 
 // Helper function to generate personal message using AI
-async function generatePersonalMessage(caption: string, lyrics: string): Promise<string> {
+async function generatePersonalMessage(
+  caption: string,
+  lyrics: string,
+  productFormat: ProductFormat = 'qr',
+  extra?: { occasion?: string; recipient?: string; sender?: string }
+): Promise<string> {
   try {
     const response = await fetch(
       `https://fmucxrtpiqxnfgvamjlo.supabase.co/functions/v1/generate-personal-message`,
@@ -65,7 +75,14 @@ async function generatePersonalMessage(caption: string, lyrics: string): Promise
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ caption, lyrics }),
+        body: JSON.stringify({
+          caption,
+          lyrics,
+          format: productFormat,
+          occasion: extra?.occasion,
+          recipient: extra?.recipient,
+          sender: extra?.sender,
+        }),
       }
     );
 
@@ -77,7 +94,14 @@ async function generatePersonalMessage(caption: string, lyrics: string): Promise
     return data.personalMessage;
   } catch (error) {
     console.error('Error generating personal message:', error);
-    // Fallback to predefined message on error
+    if (productFormat === 'sound') {
+      const soundFallbacks = [
+        'Моя люба! Ця пісня — тепло, яке я хотів передати тобі в долоні.\n\nВідкриєш листівку — і почуєш, як сильно тебе люблю. Зростай щасливою.',
+        'Для тебе я склав цю мелодію. У ній — наші тихі «люблю» і всі обійми, які не вміщаються в слова.\n\nВідкриєш — і пісня заграє сама. Нехай гріє щоразу, коли засумуєш.',
+        'Це наша пісня, написана спеціально для тебе.\n\nЩойно відкриєш листівку, вона зазвучить. Слухай і знай: ти мені дуже дорогий.',
+      ];
+      return soundFallbacks[Math.floor(Math.random() * soundFallbacks.length)];
+    }
     const fallbackMessages = [
       'Дорогий друже! Ця особлива пісня нагадала мені про тебе. Скануй QR-код і послухай мелодію, створену спеціально для тебе. Хай вона принесе радість!',
       'Привіт! Створив для тебе цю унікальну музичну листівку. Відскануй QR-код та послухай пісню, що розповідає про наші спогади. Насолоджуйся!',
@@ -87,7 +111,19 @@ async function generatePersonalMessage(caption: string, lyrics: string): Promise
   }
 }
 
-export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, onBack, onDataChange, onGeneratingChange }: BackDesignStepProps) {
+export function BackDesignStep({
+  frontDesign,
+  lyrics,
+  initialData,
+  onComplete,
+  onBack,
+  onDataChange,
+  onGeneratingChange,
+  productFormat = 'qr',
+  occasion,
+  recipient,
+  sender,
+}: BackDesignStepProps) {
   const [backData, setBackData] = useState<BackDesignData>(initialData);
   const [isGeneratingMessage, setIsGeneratingMessage] = useState(false);
   const [dominantColors, setDominantColors] = useState<string[]>(FALLBACK_COLORS);
@@ -126,7 +162,7 @@ export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, o
   useEffect(() => {
     if (!backData.personalMessage.trim() && !isGeneratingMessage) {
       setIsGeneratingMessage(true);
-      generatePersonalMessage(frontDesign.caption, lyrics)
+      generatePersonalMessage(frontDesign.caption, lyrics, productFormat, { occasion, recipient, sender })
         .then((generatedMessage) => {
           // Use functional update to get the latest state (preserves selectedColor)
           setBackData(prev => {
@@ -148,7 +184,11 @@ export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, o
   const handleRegenerateMessage = async () => {
     setIsGeneratingMessage(true);
     try {
-      const newMessage = await generatePersonalMessage(frontDesign.caption, lyrics);
+      const newMessage = await generatePersonalMessage(frontDesign.caption, lyrics, productFormat, {
+        occasion,
+        recipient,
+        sender,
+      });
       // Use functional update to preserve selectedColor
       setBackData(prev => {
         const newData = { ...prev, personalMessage: newMessage };
@@ -169,9 +209,11 @@ export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, o
       {/* Color Selection */}
       <Card>
         <CardHeader>
-          <CardTitle>1. Оберіть колір для дизайну</CardTitle>
+          <CardTitle>{productFormat === 'sound' ? '1. Колір тла всередині' : '1. Оберіть колір для дизайну'}</CardTitle>
           <p className="text-sm text-muted-foreground mt-3">
-            Ми автоматично визначили домінуючі кольори з лицьової частини. Оберіть колір для оформлення зворотної частини листівки.
+            {productFormat === 'sound'
+              ? 'Ми взяли кольори з обкладинки. Оберіть тло для правої сторінки всередині — там буде ваш текст.'
+              : 'Ми автоматично визначили домінуючі кольори з лицьової частини. Оберіть колір для оформлення зворотної частини листівки.'}
           </p>
         </CardHeader>
         <CardContent>
@@ -223,12 +265,13 @@ export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, o
       {/* Personal Message */}
       <Card>
         <CardHeader>
-          <CardTitle>2. Персональне повідомлення</CardTitle>
+          <CardTitle>{productFormat === 'sound' ? '2. Текст усередині листівки' : '2. Персональне повідомлення'}</CardTitle>
           <p className="text-sm text-muted-foreground mt-3">
-            {isGeneratingMessage ?
-              "Створюємо музичну магію на основі ваших слів..." :
-              "Ми створили персональне повідомлення на основі вашої листівки. Ви можете відредагувати його або згенерувати нове."
-            }
+            {isGeneratingMessage
+              ? (productFormat === 'sound' ? 'Пишемо теплі слова про вашу пісню...' : 'Створюємо музичну магію на основі ваших слів...')
+              : productFormat === 'sound'
+                ? 'Ми написали короткий текст про пісню, яка заграє, щойно листівку відкриють. Можете виправити або згенерувати ще раз.'
+                : 'Ми створили персональне повідомлення на основі вашої листівки. Ви можете відредагувати його або згенерувати нове.'}
           </p>
         </CardHeader>
         <CardContent>
@@ -269,7 +312,7 @@ export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, o
         <Button variant="outline" onClick={onBack} className="flex items-center justify-center gap-2 w-full sm:w-auto">
           <ArrowLeft className="w-4 h-4" />
           <span className="sm:hidden">Назад</span>
-          <span className="hidden sm:inline">До лицьової сторони</span>
+          <span className="hidden sm:inline">{productFormat === 'sound' ? 'До обкладинки' : 'До лицьової сторони'}</span>
         </Button>
         <Button
           onClick={handleComplete}
@@ -278,7 +321,7 @@ export function BackDesignStep({ frontDesign, lyrics, initialData, onComplete, o
           className="flex items-center justify-center gap-2 w-full sm:w-auto"
         >
           <span className="sm:hidden">Завершити</span>
-          <span className="hidden sm:inline">Завершити дизайн</span>
+          <span className="hidden sm:inline">{productFormat === 'sound' ? 'Завершити оформлення' : 'Завершити дизайн'}</span>
           <ArrowRight className="w-4 h-4" />
         </Button>
       </div>

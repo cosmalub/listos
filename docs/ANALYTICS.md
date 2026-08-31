@@ -19,8 +19,8 @@
 | Подія | Опис | Параметри |
 |-------|------|-----------|
 | `$pageview` | Перегляд сторінки | `$current_url` |
-| `order_dialog_opened` | Відкриття діалогу замовлення | `source`, `button_label` |
-| `order_submitted` | Успішне оформлення замовлення | `price`, `has_promo`, `contact_type` |
+| `order_dialog_opened` | Відкриття діалогу замовлення | `source`, `button_label`, `product_format` (`qr` \| `sound`) |
+| `order_submitted` | Успішне оформлення замовлення | `price`, `has_promo`, `contact_type`, `product_format` |
 
 **Значення `source`:**
 - `hero` — головний екран
@@ -33,15 +33,17 @@
 - `examples` — секція прикладів
 - `welcome_tutorial` — туторіал в студії
 - `studio_no_token` — студія без токена
+- `homepage-product-qr` — картка QR-формату на головній / occasion
+- `homepage-product-sound` — картка звукової листівки (заявка без ціни)
 
 ### Студія (воронка створення)
 
 | Подія | Опис | Параметри |
 |-------|------|-----------|
-| `studio_started` | Початок роботи в студії | `order_id` |
+| `studio_started` | Початок роботи в студії | `order_id`, `product_format` |
 | `lyrics_confirmed` | Підтвердження тексту пісні | — |
 | `music_generated` | Вибір музичного варіанту | `variant_id`, `style`, `generation_attempt` |
-| `postcard_completed` | Завершення дизайну листівки | `front_mode`, `front_style`, `has_frame` |
+| `postcard_completed` | Завершення дизайну листівки | `front_mode`, `front_style`, `has_frame`, `product_format` |
 
 ## Воронки в PostHog
 

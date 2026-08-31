@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useOrderDialog } from '@/components/order/OrderDialogContext';
 import { posthog } from '@/providers/PostHogProvider';
+import { isProductFormat, setStoredProductFormat } from '@/lib/product-format';
 
 const DEV_MODE = import.meta.env.DEV;
 
@@ -54,7 +55,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
       id: 4,
       icon: Send,
       title: "Готова сторінка",
-      description: "Персональна сторінка з QR-кодом",
+      description: "Персональна сторінка з піснею",
       color: "from-green-500 to-emerald-500",
       bgColor: "bg-green-50 dark:bg-green-950/20",
       iconColor: "text-green-600"
@@ -109,11 +110,19 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
         // Зберігаємо новий токен і preOrderId
         sessionStorage.setItem('studio-access-token', accessToken.trim());
         sessionStorage.setItem('studio-pre-order-id', data.preOrderId);
+        if (isProductFormat(data.productFormat)) {
+          setStoredProductFormat(data.productFormat);
+        } else {
+          setStoredProductFormat('qr');
+        }
 
         console.log('Token validated successfully, cleared old data, stored new token');
 
         // Трекаємо початок роботи в студії
-        posthog.capture('studio_started');
+        posthog.capture('studio_started', {
+          order_id: data.preOrderId,
+          product_format: isProductFormat(data.productFormat) ? data.productFormat : 'qr',
+        });
 
         toast.success(data.message || 'Код доступу підтверджено!');
 

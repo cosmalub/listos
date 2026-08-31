@@ -10,13 +10,19 @@ const SOUND_CARD_REQUEST_URL: string | null = null;
 interface ProductFormatCardsProps {
    /** Source для існуючого openOrderDialog. Контракт замовлення не змінюється. */
    qrOrderSource?: string;
+   soundOrderSource?: string;
 }
 
 /**
  * Дві рівноправні карточки фізичних форматів листівки.
- * QR-версія веде в наявний order dialog, звукова версія залишається зі статусом «Незабаром».
+ * QR-версія веде в наявний order dialog. Звукова — «Новинка» / заявка без ціни
+ * (`SOUND_CARD_PRICE` лишається null), але CTA відкриває той самий OrderDialog
+ * з `productFormat: 'sound'`.
  */
-export function ProductFormatCards({ qrOrderSource = "homepage-product-qr" }: ProductFormatCardsProps) {
+export function ProductFormatCards({
+   qrOrderSource = "homepage-product-qr",
+   soundOrderSource = "homepage-product-sound",
+}: ProductFormatCardsProps) {
    const { openOrderDialog } = useOrderDialog();
 
    return (
@@ -102,12 +108,13 @@ export function ProductFormatCards({ qrOrderSource = "homepage-product-qr" }: Pr
                      Залишити заявку
                   </a>
                ) : (
-                  <div
-                     aria-disabled="true"
-                     className="flex w-full items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-gray-50 px-6 py-4 text-base font-bold text-gray-500"
+                  <Button
+                     onClick={() => openOrderDialog(soundOrderSource, 'Залишити заявку на звукову листівку', 'sound')}
+                     variant="outline"
+                     className="w-full rounded-full border-2 border-[#9370DB] px-6 py-6 text-base font-bold text-[#6A5ACD] hover:bg-[#9370DB]/10 h-auto"
                   >
-                     Незабаром
-                  </div>
+                     Незабаром — залишити заявку
+                  </Button>
                )}
             </div>
          </div>

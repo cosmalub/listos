@@ -21,14 +21,29 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { MusicStyle, getStyleById } from '@/lib/music-styles';
 import { composeFrontImageA6, captureElement } from '@/lib/postcard-generator';
+import { composeSoundCardPrintPackage } from '@/lib/sound-card-generator';
 import { posthog } from '@/providers/PostHogProvider';
+import {
+  getStoredProductFormat,
+  setStoredProductFormat,
+  isProductFormat,
+  type ProductFormat,
+} from '@/lib/product-format';
 
-const steps = [
+const qrSteps = [
   { id: 1, title: 'Створення слів', description: 'Створюємо слова для пісні' },
   { id: 1.5, title: 'Вибір стилю', description: 'Обираємо стиль музики' },
   { id: 2, title: 'Генерація музики', description: 'Генеруємо 2 варіанти на основі тексту' },
   { id: 3, title: 'Сторінка з піснею', description: 'Створюємо персональну сторінку з піснею' },
   { id: 4, title: 'Дизайн листівки', description: 'Робимо дизайн листівки з QR-кодом' },
+];
+
+const soundSteps = [
+  { id: 1, title: 'Створення слів', description: 'Створюємо слова для пісні' },
+  { id: 1.5, title: 'Вибір стилю', description: 'Обираємо стиль музики' },
+  { id: 2, title: 'Генерація музики', description: 'Генеруємо 2 варіанти на основі тексту' },
+  { id: 3, title: 'Сторінка з піснею', description: 'Підписуємо пісню: нагода, кому і від кого' },
+  { id: 4, title: 'Дизайн листівки', description: 'Оформлюємо листівку, що грає при відкритті' },
 ];
 
 // Test data for dev mode
@@ -73,6 +88,7 @@ const Studio = () => {
   const [isAnalyzingLyrics, setIsAnalyzingLyrics] = useState(false);
   const [chatKey, setChatKey] = useState(0);
   const chatRef = useRef<ChatInterfaceRef>(null);
+  const [productFormat, setProductFormat] = useState<ProductFormat>(() => getStoredProductFormat());
 
   // Load chat history from localStorage
   useEffect(() => {
@@ -134,7 +150,16 @@ const Studio = () => {
     }
   }, []);
 
-  // Sync current step with URL parameter
+  // Persist product format (qr | sound) from token, URL, or session
+  useEffect(() => {
+    const formatParam = searchParams.get('format');
+    if (isProductFormat(formatParam)) {
+      setStoredProductFormat(formatParam);
+      setProductFormat(formatParam);
+      return;
+    }
+    setProductFormat(getStoredProductFormat());
+  }, [searchParams]);
   useEffect(() => {
     const stepParam = searchParams.get('step');
     if (stepParam) {
@@ -346,6 +371,7 @@ const Studio = () => {
           pageData: parsedPageData.pageInfo,
           frontDesign: postcardDesignData.front,
           backDesign: postcardDesignData.back,
+          productFormat,
         },
       });
 
@@ -354,74 +380,97 @@ const Studio = () => {
       const orderId = createData.orderId;
       console.log('Order created with ID:', orderId);
 
-      // Update toast for image generation
       toast.loading('Генерація зображень...', { id: toastId });
 
-      // Generate QR code URL with correct orderId
-      const qrUrl = `https://lystosyk.com/s/song/${orderId}`;
-      console.log('QR URL generated:', qrUrl);
+      let frontImageBase64: string;
+      let backImageBase64: string | undefined;
+      let qrUrl: string | undefined;
+      let soundImages:
+        | {
+            insideLeft: string;
+            insideRight: string;
+            outerBack: string;
+            printSheet: string;
+          }
+        | undefined;
 
-      // Create offscreen container for capturing previews
-      const offscreenContainer = document.createElement('div');
-      offscreenContainer.style.cssText = 'position: fixed; left: -9999px; top: 0; width: 320px; pointer-events: none;';
-      document.body.appendChild(offscreenContainer);
-
-      // Import React and ReactDOM for rendering
-      const { createRoot } = await import('react-dom/client');
-      const { PostcardPreview } = await import('@/components/studio/PostcardPreview');
-
-      // Helper to render and capture a preview
-      const capturePreview = async (showFront: boolean, qrUrlForCapture?: string): Promise<string> => {
-        return new Promise((resolve, reject) => {
-          const wrapper = document.createElement('div');
-          wrapper.style.cssText = 'width: 320px;';
-          offscreenContainer.appendChild(wrapper);
-
-          const root = createRoot(wrapper);
-          root.render(
-            React.createElement(PostcardPreview, {
-              frontData: postcardDesignData.front,
-              backData: postcardDesignData.back,
-              showFront,
-              size: 'compact',
-              qrUrl: qrUrlForCapture,
-            })
-          );
-
-          // Wait for render + images to load
-          setTimeout(async () => {
-            try {
-              // Scale up for print quality (320px * 4 = 1280px, close to A6 1240px)
-              const base64 = await captureElement(wrapper, 4);
-              root.unmount();
-              wrapper.remove();
-              resolve(base64);
-            } catch (err) {
-              root.unmount();
-              wrapper.remove();
-              reject(err);
-            }
-          }, 500);
+      if (productFormat === 'sound') {
+        console.log('Composing sound card faces + A4 print sheet...');
+        const pack = await composeSoundCardPrintPackage({
+          imageUrl: postcardDesignData.front.imageUrl,
+          caption: postcardDesignData.front.caption,
+          useFrame: postcardDesignData.front.useFrame,
+          mode: postcardDesignData.front.mode,
+          color: postcardDesignData.back.selectedColor,
+          personalMessage: postcardDesignData.back.personalMessage,
         });
-      };
+        frontImageBase64 = pack.cover;
+        backImageBase64 = pack.insideRight;
+        soundImages = {
+          insideLeft: pack.insideLeft,
+          insideRight: pack.insideRight,
+          outerBack: pack.outerBack,
+          printSheet: pack.printSheet,
+        };
+        console.log('Sound card print package composed');
+      } else {
+        const qrCodeUrl = `https://lystosyk.com/s/song/${orderId}`;
+        qrUrl = qrCodeUrl;
+        console.log('QR URL generated:', qrUrl);
 
-      // FRONT: Use Canvas-based composeFrontImageA6 (original method)
-      console.log('Composing front image...');
-      const frontImageBase64 = await composeFrontImageA6(
-        postcardDesignData.front.imageUrl,
-        postcardDesignData.front.caption,
-        postcardDesignData.front.useFrame,
-        postcardDesignData.front.mode
-      );
-      console.log('Front image composed');
+        const offscreenContainer = document.createElement('div');
+        offscreenContainer.style.cssText = 'position: fixed; left: -9999px; top: 0; width: 320px; pointer-events: none;';
+        document.body.appendChild(offscreenContainer);
 
-      // BACK: Use DOM capture (keeps preview look exactly)
-      console.log('Capturing back preview with QR...');
-      const backImageBase64 = await capturePreview(false, qrUrl);
-      console.log('Back preview captured');
+        const { createRoot } = await import('react-dom/client');
+        const { PostcardPreview } = await import('@/components/studio/PostcardPreview');
 
-      // Cleanup
-      offscreenContainer.remove();
+        const capturePreview = async (showFront: boolean, qrUrlForCapture?: string): Promise<string> => {
+          return new Promise((resolve, reject) => {
+            const wrapper = document.createElement('div');
+            wrapper.style.cssText = 'width: 320px;';
+            offscreenContainer.appendChild(wrapper);
+
+            const root = createRoot(wrapper);
+            root.render(
+              React.createElement(PostcardPreview, {
+                frontData: postcardDesignData.front,
+                backData: postcardDesignData.back,
+                showFront,
+                size: 'compact',
+                qrUrl: qrUrlForCapture,
+              })
+            );
+
+            setTimeout(async () => {
+              try {
+                const base64 = await captureElement(wrapper, 4);
+                root.unmount();
+                wrapper.remove();
+                resolve(base64);
+              } catch (err) {
+                root.unmount();
+                wrapper.remove();
+                reject(err);
+              }
+            }, 500);
+          });
+        };
+
+        console.log('Composing front image...');
+        frontImageBase64 = await composeFrontImageA6(
+          postcardDesignData.front.imageUrl,
+          postcardDesignData.front.caption,
+          postcardDesignData.front.useFrame,
+          postcardDesignData.front.mode
+        );
+        console.log('Front image composed');
+
+        console.log('Capturing back preview with QR...');
+        backImageBase64 = await capturePreview(false, qrUrl);
+        console.log('Back preview captured');
+        offscreenContainer.remove();
+      }
 
       // Update toast for upload
       toast.loading('Завантаження на сервер...', { id: toastId });
@@ -440,6 +489,15 @@ const Studio = () => {
           frontImageBase64,
           backImageBase64,
           qrCodeUrl: qrUrl,
+          productFormat,
+          ...(soundImages
+            ? {
+                insideLeftImageBase64: soundImages.insideLeft,
+                insideRightImageBase64: soundImages.insideRight,
+                outerBackImageBase64: soundImages.outerBack,
+                printSheetImageBase64: soundImages.printSheet,
+              }
+            : {}),
         },
       });
 
@@ -608,6 +666,7 @@ const Studio = () => {
             onBack={() => setCurrentStep(3)}
             pageData={pageData}
             chatMessages={chatMessages}
+            productFormat={productFormat}
           />
         );
       default:
@@ -627,10 +686,10 @@ const Studio = () => {
       />
 
       {/* Steps indicator */}
-      {!showWelcome && <StepsHeader currentStep={currentStep} />}
+      {!showWelcome && <StepsHeader currentStep={currentStep} productFormat={productFormat} />}
 
       {/* Step explanation */}
-      <StepExplanation currentStep={currentStep} showTutorial={showWelcome} />
+      <StepExplanation currentStep={currentStep} showTutorial={showWelcome} productFormat={productFormat} />
 
       {/* Dev Mode Panel */}
       {DEV_MODE && (
@@ -657,7 +716,7 @@ const Studio = () => {
 
             {/* Step Buttons */}
             <div className="grid grid-cols-5 gap-1">
-              {steps.map((step) => (
+              {(productFormat === 'sound' ? soundSteps : qrSteps).map((step) => (
                 <Button
                   key={step.id}
                   variant={currentStep === step.id && !showWelcome ? "default" : "outline"}
@@ -696,6 +755,21 @@ const Studio = () => {
                 className="text-xs"
               >
                 View Data
+              </Button>
+            </div>
+            <div className="mt-2">
+              <Button
+                variant={productFormat === 'sound' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => {
+                  const next: ProductFormat = productFormat === 'sound' ? 'qr' : 'sound';
+                  setStoredProductFormat(next);
+                  setProductFormat(next);
+                  toast.success(next === 'sound' ? 'Format: sound card' : 'Format: QR postcard');
+                }}
+                className="text-xs w-full"
+              >
+                Format: {productFormat}
               </Button>
             </div>
             <div className="mt-2">

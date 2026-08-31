@@ -164,9 +164,9 @@ export default function OrderSuccess() {
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-3 text-center">
-                  Лицьова сторона
+                  {orderData.product_format === 'sound' ? 'Обкладинка' : 'Лицьова сторона'}
                 </h3>
-                <div className="aspect-[105/148] rounded-lg overflow-hidden border-2 border-gray-200">
+                <div className={`rounded-lg overflow-hidden border-2 border-gray-200 ${orderData.product_format === 'sound' ? 'aspect-[88/166]' : 'aspect-[105/148]'}`}>
                   {orderData.front_image_url ? (
                     <img
                       src={orderData.front_image_url}
@@ -183,9 +183,9 @@ export default function OrderSuccess() {
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-3 text-center">
-                  Зворотня сторона
+                  {orderData.product_format === 'sound' ? 'Всередині справа' : 'Зворотня сторона'}
                 </h3>
-                <div className="aspect-[105/148] rounded-lg overflow-hidden border-2 border-gray-200">
+                <div className={`rounded-lg overflow-hidden border-2 border-gray-200 ${orderData.product_format === 'sound' ? 'aspect-[88/166]' : 'aspect-[105/148]'}`}>
                   {orderData.back_image_url ? (
                     <img
                       src={orderData.back_image_url}
@@ -201,6 +201,12 @@ export default function OrderSuccess() {
                 </div>
               </div>
             </div>
+
+            {orderData.product_format === 'sound' && (
+              <p className="text-center text-gray-600 mb-8 -mt-4">
+                Листівка заграє пісню, щойно її відкриють. Ми надрукуємо її, вкладемо звуковий модуль і надішлемо.
+              </p>
+            )}
 
             {/* Next Steps */}
             <div className="bg-gray-50 rounded-2xl p-6 mb-8 border border-gray-100">

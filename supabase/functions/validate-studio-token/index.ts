@@ -101,6 +101,7 @@ Deno.serve(async (req) => {
       JSON.stringify({ 
         valid: true,
         preOrderId: preOrder.id,
+        productFormat: preOrder.product_format === 'sound' ? 'sound' : 'qr',
         message: 'Код доступу дійсний. Ласкаво просимо до створення вашої музичної листівки!' 
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

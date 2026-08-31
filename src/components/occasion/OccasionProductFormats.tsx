@@ -18,7 +18,10 @@ export function OccasionProductFormats({ occasion }: { occasion: Occasion }) {
                     </p>
                 </div>
 
-                <ProductFormatCards qrOrderSource={`occasion-${occasion.slug}-product-qr`} />
+                <ProductFormatCards
+                    qrOrderSource={`occasion-${occasion.slug}-product-qr`}
+                    soundOrderSource={`occasion-${occasion.slug}-product-sound`}
+                />
             </div>
         </section>
     );

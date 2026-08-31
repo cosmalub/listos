@@ -27,11 +27,17 @@ Deno.serve(async (req) => {
       frontImageBase64,
       backImageBase64,
       qrCodeUrl,
+      productFormat = 'qr',
+      insideLeftImageBase64,
+      insideRightImageBase64,
+      outerBackImageBase64,
+      printSheetImageBase64,
     } = await req.json();
 
     console.log('Saving order with data:', {
       phase,
       preOrderId,
+      productFormat,
       hasLyrics: !!lyrics,
       hasMusicVariant: !!musicVariant,
       hasPageData: !!pageData,
@@ -39,6 +45,10 @@ Deno.serve(async (req) => {
       hasBackDesign: !!backDesign,
       hasFrontImage: !!frontImageBase64,
       hasBackImage: !!backImageBase64,
+      hasInsideLeft: !!insideLeftImageBase64,
+      hasInsideRight: !!insideRightImageBase64,
+      hasOuterBack: !!outerBackImageBase64,
+      hasPrintSheet: !!printSheetImageBase64,
       qrCodeUrl,
     });
 
@@ -97,12 +107,9 @@ Deno.serve(async (req) => {
 
     let orderId: string;
 
-    if (existingOrder) {
-      // Якщо запис існує - оновлюємо його
-      console.log('Updating existing order:', existingOrder.id);
-      const { error: updateError } = await supabase
-        .from('orders')
-        .update({
+    const resolvedFormat = productFormat === 'sound' ? 'sound' : 'qr';
+
+    const orderPayload = {
           lyrics,
           music_variant_id: musicVariant?.id || null,
           music_variant_title: musicVariant?.title || null,
@@ -119,7 +126,15 @@ Deno.serve(async (req) => {
           front_design_prompt: frontDesign.prompt,
           back_design_color: backDesign.selectedColor,
           back_design_message: backDesign.personalMessage,
-        })
+          product_format: resolvedFormat,
+    };
+
+    if (existingOrder) {
+      // Якщо запис існує - оновлюємо його
+      console.log('Updating existing order:', existingOrder.id);
+      const { error: updateError } = await supabase
+        .from('orders')
+        .update(orderPayload)
         .eq('id', existingOrder.id);
 
       if (updateError) {
@@ -136,22 +151,7 @@ Deno.serve(async (req) => {
         .from('orders')
         .insert({
           pre_order_id: actualPreOrderId,
-          lyrics,
-          music_variant_id: musicVariant?.id || null,
-          music_variant_title: musicVariant?.title || null,
-          music_variant_description: musicVariant?.description || null,
-          music_variant_style: musicVariant?.style || null,
-          music_selected: !!musicVariant,
-          music_audio_url: musicVariant?.audioUrl || null,
-          page_occasion: pageData.occasion,
-          page_recipient: pageData.recipient,
-          page_sender: pageData.sender,
-          front_design_mode: frontDesign.mode,
-          front_design_style: frontDesign.style,
-          front_design_caption: frontDesign.caption,
-          front_design_prompt: frontDesign.prompt,
-          back_design_color: backDesign.selectedColor,
-          back_design_message: backDesign.personalMessage,
+          ...orderPayload,
           production_stage: 'created',
         })
         .select()
@@ -203,23 +203,47 @@ Deno.serve(async (req) => {
       return publicUrl;
     }
 
-    // Upload front image
+    // Upload front image (QR back, or sound cover)
     const frontImagePath = `${orderId}/front.png`;
     const frontImageUrl = await uploadBase64Image(frontImageBase64, frontImagePath);
     console.log('Front image uploaded:', frontImageUrl);
 
-    // Upload back image
-    const backImagePath = `${orderId}/back.png`;
-    const backImageUrl = await uploadBase64Image(backImageBase64, backImagePath);
-    console.log('Back image uploaded:', backImageUrl);
+    const imageUpdates: Record<string, string | null> = {
+      front_image_url: frontImageUrl,
+      qr_code_url: resolvedFormat === 'sound' ? null : (qrCodeUrl || null),
+    };
 
-    // Update order with image URLs, QR code URL, and mark as completed
+    if (resolvedFormat === 'sound') {
+      // Cover already stored as front_image_url.
+      // inside-right is the designed interior (analogous to QR back).
+      const insideRightUrl = insideRightImageBase64
+        ? await uploadBase64Image(insideRightImageBase64, `${orderId}/inside-right.png`)
+        : (backImageBase64 ? await uploadBase64Image(backImageBase64, `${orderId}/back.png`) : null);
+      imageUpdates.back_image_url = insideRightUrl;
+      imageUpdates.inside_right_image_url = insideRightUrl;
+
+      if (insideLeftImageBase64) {
+        imageUpdates.inside_left_image_url = await uploadBase64Image(insideLeftImageBase64, `${orderId}/inside-left.png`);
+      }
+      if (outerBackImageBase64) {
+        imageUpdates.outer_back_image_url = await uploadBase64Image(outerBackImageBase64, `${orderId}/outer-back.png`);
+      }
+      if (printSheetImageBase64) {
+        imageUpdates.print_sheet_image_url = await uploadBase64Image(printSheetImageBase64, `${orderId}/print-sheet.png`);
+      }
+      console.log('Sound card faces uploaded');
+    } else {
+      const backImagePath = `${orderId}/back.png`;
+      const backImageUrl = await uploadBase64Image(backImageBase64, backImagePath);
+      console.log('Back image uploaded:', backImageUrl);
+      imageUpdates.back_image_url = backImageUrl;
+    }
+
+    // Update order with image URLs and mark as completed
     const { error: finalUpdateError } = await supabase
       .from('orders')
       .update({
-        front_image_url: frontImageUrl,
-        back_image_url: backImageUrl,
-        qr_code_url: qrCodeUrl || null,
+        ...imageUpdates,
         studio_completed: true,
         studio_completed_at: new Date().toISOString()
       })

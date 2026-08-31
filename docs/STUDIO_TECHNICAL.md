@@ -347,15 +347,15 @@ supabase.functions.invoke('save-order', {
 { orderId: string }
 ```
 
-**Между фазами — генерация изображений для печати:**
+**Між фазами — генерація зображень для печати:**
 ```typescript
-// Лицевая сторона (Canvas API) — src/lib/postcard-generator.ts
-const frontImageBase64 = await composeFrontImageA6(
-  imageUrl, caption, useFrame, mode
-);
-
-// Обратная сторона (html2canvas)
+// QR (A6) — src/lib/postcard-generator.ts
+const frontImageBase64 = await composeFrontImageA6(...);
 const backImageBase64 = await captureElement(previewElement, scale=4);
+
+// Sound — src/lib/sound-card-generator.ts (four 88×166 faces + A4 300 DPI die)
+const pack = await composeSoundCardPrintPackage({ imageUrl, caption, useFrame, mode, color, personalMessage });
+// pack.cover, insideLeft, insideRight, outerBack, printSheet
 ```
 
 **Фаза 2 — Финализация:**
@@ -369,9 +369,15 @@ supabase.functions.invoke('save-order', {
     pageData,
     frontDesign,
     backDesign,
-    frontImageBase64,      // base64 PNG
-    backImageBase64,       // base64 PNG
-    qrCodeUrl              // https://lystosyk.com/s/song/{orderId}
+    frontImageBase64,      // base64 PNG (QR front or sound cover)
+    backImageBase64,       // base64 PNG (QR back; sound also sends named faces)
+    qrCodeUrl,             // https://lystosyk.com/s/song/{orderId} — omitted for sound
+    productFormat,         // 'qr' | 'sound'
+    // sound only:
+    insideLeftImageBase64,
+    insideRightImageBase64,
+    outerBackImageBase64,
+    printSheetImageBase64, // A4 landscape 300 DPI die — ops only
   }
 })
 ```
