@@ -51,7 +51,7 @@ export const occasions: Occasion[] = [
         ],
         accent: "from-[#FF85A2] to-[#9370DB]",
         icon: Flower2,
-        image: "https://placehold.co/400x300/f8f9fa/a0aec0?text=Image",
+        image: "/occasions/occasion-8-bereznya.png",
         seoTitle: "Музична листівка на 8 березня — персональна пісня у подарунок | Листосик",
         seoDescription:
             "Створи персональну пісню та фізичну листівку на 8 березня для мами, коханої, сестри чи подруги. Друк і доставка по Україні.",
@@ -99,7 +99,7 @@ export const occasions: Occasion[] = [
         ],
         accent: "from-[#6A5ACD] to-[#4FA3D9]",
         icon: GraduationCap,
-        image: "https://placehold.co/400x300/f8f9fa/a0aec0?text=Image",
+        image: "/occasions/occasion-den-vchytelia.png",
         seoTitle: "Листівка з піснею на День учителя — персональна подяка | Листосик",
         seoDescription:
             "Створи персональну пісню та фізичну листівку до Дня учителя, щоб подякувати за знання й підтримку. Друк і доставка по Україні.",
@@ -123,7 +123,7 @@ export const occasions: Occasion[] = [
         ],
         accent: "from-[#4FA3D9] to-[#9370DB]",
         icon: Snowflake,
-        image: "https://placehold.co/400x300/f8f9fa/a0aec0?text=Image",
+        image: "/occasions/occasion-novyi-rik.png",
         seoTitle: "Новорічна музична листівка — персональна пісня у подарунок | Листосик",
         seoDescription:
             "Створи персональну новорічну пісню та фізичну листівку для близьких. Друк і доставка по Україні.",
@@ -171,7 +171,7 @@ export const occasions: Occasion[] = [
         ],
         accent: "from-[#B8A6FF] to-[#FF85A2]",
         icon: Church,
-        image: "https://placehold.co/400x300/f8f9fa/a0aec0?text=Image",
+        image: "/occasions/occasion-vesillia.png",
         seoTitle: "Музичне запрошення на весілля — листівка з піснею | Листосик",
         seoDescription:
             "Створи персональну пісню та фізичну листівку-запрошення на весілля. Друк і доставка по Україні.",
@@ -195,7 +195,7 @@ export const occasions: Occasion[] = [
         ],
         accent: "from-[#6A5ACD] to-[#FF5C8A]",
         icon: Gem,
-        image: "https://placehold.co/400x300/f8f9fa/a0aec0?text=Image",
+        image: "/occasions/occasion-propozytsiia.png",
         seoTitle: "Пропозиція з піснею — музична листівка для важливого питання | Листосик",
         seoDescription:
             "Створи персональну пісню та фізичну листівку, щоб зробити пропозицію особливою. Друк і доставка по Україні.",
@@ -267,7 +267,7 @@ export const occasions: Occasion[] = [
         ],
         accent: "from-[#FF85A2] to-[#4FA3D9]",
         icon: Baby,
-        image: "https://placehold.co/400x300/f8f9fa/a0aec0?text=Image",
+        image: "/occasions/occasion-narodzhennya.png",
         seoTitle: "Музична листівка на народження дитини — персональна пісня | Листосик",
         seoDescription:
             "Створи персональну пісню та фізичну листівку, щоб привітати з народженням дитини. Друк і доставка по Україні.",
