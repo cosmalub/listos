@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Shield, Phone, MessageCircle, Loader2, ChevronDown } from "lucide-react";
+import { Shield, Phone, MessageCircle, Loader2, ChevronDown, QrCode, Volume2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -29,8 +29,17 @@ export function OrderDialog() {
     comment: "",
     contactType: "phone",
     telegram: "",
-    promoCode: ""
+    promoCode: "",
+    cardFormat: "qr" as "qr" | "sound"
   });
+
+  useEffect(() => {
+    if (source && (source.includes("sound") || source.includes("physical"))) {
+      setFormData(prev => ({ ...prev, cardFormat: "sound" }));
+    } else if (source && source.includes("qr")) {
+      setFormData(prev => ({ ...prev, cardFormat: "qr" }));
+    }
+  }, [source]);
 
   const [promoStatus, setPromoStatus] = useState<{
     valid: boolean;
@@ -80,6 +89,11 @@ export function OrderDialog() {
     setIsSubmitting(true);
     
     try {
+      const formatTag = formData.cardFormat === 'sound' ? '[FORMAT:SOUND]' : '[FORMAT:QR]';
+      const combinedComment = formData.comment
+        ? `${formatTag} ${formData.comment}`
+        : formatTag;
+
       const { data, error } = await supabase
         .from('pre_orders')
         .insert({
@@ -88,7 +102,7 @@ export function OrderDialog() {
           user_phone: formData.contactType === 'phone' ? formData.phone : null,
           city: formData.city,
           nova_poshta: formData.novaPoshta,
-          comment: formData.comment,
+          comment: combinedComment,
           contact_type: formData.contactType,
         })
         .select()
@@ -147,6 +161,37 @@ export function OrderDialog() {
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Формат листівки */}
+          <div className="space-y-2">
+            <Label className="text-gray-700">Формат листівки *</Label>
+            <div className="grid grid-cols-2 gap-2 p-1 bg-[#6A5ACD]/5 rounded-lg border border-[#6A5ACD]/20">
+              <button
+                type="button"
+                onClick={() => handleInputChange("cardFormat", "qr")}
+                className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-md transition-all ${
+                  formData.cardFormat === "qr"
+                    ? "bg-[#6A5ACD] text-white shadow-sm"
+                    : "text-gray-600 hover:bg-[#6A5ACD]/10"
+                }`}
+              >
+                <QrCode className="h-4 w-4 shrink-0" />
+                <span className="text-xs sm:text-sm font-medium">QR-листівка</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleInputChange("cardFormat", "sound")}
+                className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-md transition-all ${
+                  formData.cardFormat === "sound"
+                    ? "bg-[#6A5ACD] text-white shadow-sm"
+                    : "text-gray-600 hover:bg-[#6A5ACD]/10"
+                }`}
+              >
+                <Volume2 className="h-4 w-4 shrink-0" />
+                <span className="text-xs sm:text-sm font-medium">Звукова листівка</span>
+              </button>
+            </div>
+          </div>
+
           {/* Ім'я */}
           <div className="space-y-2">
             <Label htmlFor="name" className="text-gray-700">Ваше ім'я *</Label>

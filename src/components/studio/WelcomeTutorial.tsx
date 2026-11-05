@@ -55,8 +55,8 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
     {
       id: 4,
       icon: Send,
-      title: "Готова сторінка",
-      description: "Персональна сторінка з QR-кодом",
+      title: "Готовий результат",
+      description: "Сторінка з QR або звуковий модуль",
       color: "from-green-500 to-emerald-500",
       bgColor: "bg-green-50 dark:bg-green-950/20",
       iconColor: "text-green-600"
@@ -118,7 +118,29 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
         sessionStorage.setItem('studio-access-token', cleanToken);
         sessionStorage.setItem('studio-pre-order-id', data.preOrderId);
 
-        if (isPhysicalCode) {
+        // Перевіряємо тип замовлення у базі (pre_orders.comment / internal_comment)
+        let isSoundOrderInDb = false;
+        try {
+          const { data: preOrderRow } = await supabase
+            .from('pre_orders')
+            .select('comment, internal_comment')
+            .eq('id', data.preOrderId)
+            .maybeSingle();
+
+          const combinedNotes = `${preOrderRow?.comment || ''} ${preOrderRow?.internal_comment || ''}`.toLowerCase();
+          if (
+            combinedNotes.includes('[format:sound]') ||
+            combinedNotes.includes('physical') ||
+            combinedNotes.includes('sound') ||
+            combinedNotes.includes('звуков')
+          ) {
+            isSoundOrderInDb = true;
+          }
+        } catch (e) {
+          console.warn('Could not check pre_order format in DB:', e);
+        }
+
+        if (isPhysicalCode || isSoundOrderInDb) {
           sessionStorage.setItem('studio-type', 'physical');
           posthog.capture('studio_started', { postcard_type: 'physical_sound' });
           toast.success('Код доступу підтверджено! Переходимо до студії звукової листівки');
@@ -128,10 +150,11 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
           return;
         }
 
+        sessionStorage.setItem('studio-type', 'qr');
         console.log('Token validated successfully, cleared old data, stored new token');
 
         // Трекаємо початок роботи в студії
-        posthog.capture('studio_started');
+        posthog.capture('studio_started', { postcard_type: 'qr' });
 
         toast.success(data.message || 'Код доступу підтверджено!');
 
@@ -209,10 +232,10 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
               {/* Speech bubble pointer */}
               <div className="hidden md:block absolute top-1/2 -left-3 transform -translate-y-1/2 w-6 h-6 rotate-45 border-l-2 border-b-2 border-[#B8B3FF]/60 group-hover:border-[#B8B3FF] transition-colors bg-card"></div>
 
-              <h3 className="text-xl font-bold text-gray-900 mb-3 text-center md:text-left">4 прості кроки створенння + доставка</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-3 text-center md:text-left">Прості кроки створення + доставка</h3>
               <p className="text-muted-foreground text-center md:text-left">
-                Спершу ми створимо слова, далі — згенеруємо унікальну пісню та сторінку для неї.
-                А на завершення — зробимо дизайн самої листівки. Я буду поруч на кожному кроці!
+                Спершу ми створимо слова та згенеруємо унікальну пісню.
+                А далі — оформимо дизайн вашої листівки (класичної з QR-кодом або звукової, що співає при відкритті). Введіть ваш код доступу, і студія автоматично відкриє потрібний формат!
               </p>
             </div>
           </div>
