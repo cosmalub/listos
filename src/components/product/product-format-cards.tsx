@@ -84,9 +84,6 @@ export function ProductFormatCards({ qrOrderSource = "homepage-product-qr" }: Pr
          {/* ФОРМАТ 2: Фізична листівка зі звуковим модулем (899 грн)          */}
          {/* ================================================================= */}
          <div className="group relative h-full flex flex-col bg-gradient-to-b from-white via-white to-[#FFF5F8]/60 rounded-[2rem] p-6 sm:p-8 shadow-md hover:shadow-xl transition-all duration-300 border-2 border-[#FFB8D0]/80 hover:border-[#FF85A2]">
-            {/* Top Accent Gradient Line */}
-            <div className="absolute top-0 inset-x-8 h-1.5 rounded-b-full bg-gradient-to-r from-[#FF85A2] via-[#9370DB] to-[#6A5ACD]" />
-
             {/* Top Badge Row */}
             <div className="flex items-center justify-start gap-3 mb-5">
                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FFF0F5] text-[#D6336C] px-3.5 py-1.5 text-xs font-bold tracking-wide uppercase border border-[#FFCCE0]">
