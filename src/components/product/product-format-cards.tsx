@@ -86,12 +86,8 @@ export function ProductFormatCards({ qrOrderSource = "homepage-product-qr" }: Pr
             </div>
 
             <div className="mt-auto space-y-4">
-               {SOUND_CARD_PRICE ? (
+               {SOUND_CARD_PRICE && (
                   <p className="text-lg font-bold text-gray-900">{SOUND_CARD_PRICE}</p>
-               ) : (
-                  <p className="text-base font-medium text-gray-500">
-                     Готуємо цей формат до запуску — вартість оголосимо згодом.
-                  </p>
                )}
 
                {SOUND_CARD_REQUEST_URL ? (
@@ -102,12 +98,12 @@ export function ProductFormatCards({ qrOrderSource = "homepage-product-qr" }: Pr
                      Залишити заявку
                   </a>
                ) : (
-                  <div
-                     aria-disabled="true"
-                     className="flex w-full items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-gray-50 px-6 py-4 text-base font-bold text-gray-500"
+                  <Button
+                     onClick={() => openOrderDialog("homepage-product-sound", "Створити звукову листівку")}
+                     className="w-full bg-gradient-to-r from-[#FF85A2] via-[#9370DB] to-[#6A5ACD] text-white hover:opacity-90 rounded-full px-6 py-6 text-base font-bold shadow-md hover:shadow-lg transition-all h-auto"
                   >
-                     Незабаром
-                  </div>
+                     Замовити звукову листівку
+                  </Button>
                )}
             </div>
          </div>
