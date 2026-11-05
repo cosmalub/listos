@@ -9,7 +9,7 @@ import { OccasionsCatalogSection } from "@/components/sections/occasions-catalog
 const Index = () => {
   return (
     <div className="min-h-screen bg-white">
-      <HeaderExperiment ctaLabel="Створити QR-листівку" />
+      <HeaderExperiment ctaLabel="Створити листівку" />
 
       {/* Hero - чистый первый экран с главным CTA */}
       <HeroSectionExperiment />

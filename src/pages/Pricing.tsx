@@ -163,7 +163,7 @@ const Pricing = () => {
                         </Button>
                         <Button
                             variant="outline"
-                            onClick={() => openOrderDialog('login', 'Увійти')}
+                            onClick={() => window.location.href = '/studio'}
                             className="w-full sm:w-auto rounded-full px-8 py-6 text-lg font-bold border-2 border-gray-200 text-gray-600 hover:border-[#9370DB] hover:text-[#9370DB] hover:bg-transparent transition-all h-auto min-w-[220px]"
                         >
                             Увійти
