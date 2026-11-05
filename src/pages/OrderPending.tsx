@@ -48,6 +48,9 @@ export default function OrderPending() {
     );
   }
 
+  const isSoundFormat = `${orderData?.comment || ''} ${orderData?.internal_comment || ''}`.toLowerCase().includes('[format:sound]');
+  const orderPrice = isSoundFormat ? 899 : 249;
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FFE4EC] via-[#FFF0F5] to-white flex flex-col">
       <HeaderExperiment />
@@ -83,7 +86,7 @@ export default function OrderPending() {
               <CardContent className="p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2">
                   <CreditCard className="w-5 h-5 text-gray-700" />
-                  Оплата — 249 грн
+                  Оплата — {orderPrice} грн
                 </h2>
                 <p className="text-gray-600 pl-7">
                   Реквізити для оплати ми надішлемо вам окремо.

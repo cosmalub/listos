@@ -86,9 +86,9 @@ export function ProductFormatCards({ qrOrderSource = "homepage-product-qr" }: Pr
             </div>
 
             <div className="mt-auto space-y-4">
-               {SOUND_CARD_PRICE && (
-                  <p className="text-lg font-bold text-gray-900">{SOUND_CARD_PRICE}</p>
-               )}
+               <p className="text-lg font-bold text-gray-900">
+                  899 грн <span className="text-base font-medium text-gray-500">— все включено</span>
+               </p>
 
                {SOUND_CARD_REQUEST_URL ? (
                   <a

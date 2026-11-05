@@ -79,10 +79,12 @@ export function OrderDialog() {
     }
   };
 
-  const basePrice = 249;
-  const finalPrice = promoStatus?.valid 
-    ? basePrice * (1 - (promoStatus.discountPercent || 0) / 100)
-    : basePrice;
+  const basePrice = formData.cardFormat === 'sound' ? 899 : 249;
+  const finalPrice = Math.round(
+    promoStatus?.valid 
+      ? basePrice * (1 - (promoStatus.discountPercent || 0) / 100)
+      : basePrice
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
