@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Order from "./pages/Order";
 import OrderPending from "./pages/OrderPending";
 import Studio from "./pages/Studio";
+import StudioPhysical from "./pages/StudioPhysical";
 import PublicSongDraft from "./pages/PublicSongDraft";
 import OrderSuccess from "./pages/OrderSuccess";
 import PublicSong from "./pages/PublicSong";
@@ -44,6 +45,7 @@ const App = () => (
               <Route path="/order" element={<Order />} />
               <Route path="/order-pending" element={<OrderPending />} />
               <Route path="/studio" element={<Studio />} />
+              <Route path="/studio-physical" element={<StudioPhysical />} />
               <Route path="/s/draft" element={<PublicSongDraft />} />
               <Route path="/order-success" element={<OrderSuccess />} />
               <Route path="/s/song/:orderId" element={<PublicSong />} />

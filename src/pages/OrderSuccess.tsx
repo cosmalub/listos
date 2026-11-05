@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { Info, Loader2 } from 'lucide-react';
+import { Info, Loader2, Printer, Download } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { HeaderExperiment } from '@/components/sections/header-experiment';
 import { FooterExperiment } from '@/components/sections/footer-experiment';
@@ -10,13 +10,68 @@ import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { composePhysicalA4PrintSheets } from '@/lib/physical-postcard-generator';
 
 export default function OrderSuccess() {
   const [searchParams] = useSearchParams();
   const orderId = searchParams.get('orderId');
+  const typeParam = searchParams.get('type');
+  const printParam = searchParams.get('print');
   const [orderData, setOrderData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [downloadingA4, setDownloadingA4] = useState(false);
   const { toast } = useToast();
+
+  const isPhysicalOrder =
+    typeParam === 'physical' ||
+    orderData?.qr_code_url === 'physical_sound_postcard' ||
+    orderData?.page_occasion === 'sound_postcard';
+  const showPrintPanel = isPhysicalOrder && (import.meta.env.DEV || printParam === '1' || typeParam === 'physical');
+
+  const handleDownloadA4PrintSheets = async () => {
+    if (!orderData || !orderId) return;
+    setDownloadingA4(true);
+    try {
+      let outerBase64 = sessionStorage.getItem(`physical-a4-outer-${orderId}`);
+      let innerBase64 = sessionStorage.getItem(`physical-a4-inner-${orderId}`);
+
+      if (!outerBase64 || !innerBase64) {
+        const sheets = await composePhysicalA4PrintSheets({
+          frontImageUrl: orderData.front_image_url || '',
+          caption: orderData.front_design_caption || '',
+          useFrame: false,
+          mode: (orderData.front_design_mode as 'photo' | 'ai-generation') || 'ai-generation',
+          color: orderData.back_design_color || '#E8B878',
+          personalMessage: orderData.back_design_message || '',
+        });
+        outerBase64 = sheets.a4OuterSideBase64;
+        innerBase64 = sheets.a4InnerSideBase64;
+      }
+
+      const downloadFile = (dataUrl: string, filename: string) => {
+        const a = document.createElement('a');
+        a.href = dataUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      };
+
+      downloadFile(outerBase64, `Lystosyk_${orderId.slice(0, 8)}_A4_Side1_Outer.png`);
+      setTimeout(() => {
+        downloadFile(innerBase64!, `Lystosyk_${orderId.slice(0, 8)}_A4_Side2_Inner.png`);
+      }, 400);
+    } catch (error) {
+      console.error('Error generating A4 print sheets:', error);
+      toast({
+        title: 'Помилка',
+        description: 'Не вдалося згенерувати A4 макети для друку',
+        variant: 'destructive',
+      });
+    } finally {
+      setDownloadingA4(false);
+    }
+  };
 
   useEffect(() => {
     // Fire confetti animation
@@ -164,9 +219,9 @@ export default function OrderSuccess() {
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-3 text-center">
-                  Лицьова сторона
+                  {isPhysicalOrder ? 'Лицьова обкладинка (88×166 мм)' : 'Лицьова сторона'}
                 </h3>
-                <div className="aspect-[105/148] rounded-lg overflow-hidden border-2 border-gray-200">
+                <div className={`${isPhysicalOrder ? 'aspect-[88/166] max-w-[260px] mx-auto' : 'aspect-[105/148]'} rounded-lg overflow-hidden border-2 border-gray-200`}>
                   {orderData.front_image_url ? (
                     <img
                       src={orderData.front_image_url}
@@ -183,9 +238,9 @@ export default function OrderSuccess() {
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-3 text-center">
-                  Зворотня сторона
+                  {isPhysicalOrder ? 'Внутрішній розворот (ліва + права сторінки)' : 'Зворотня сторона'}
                 </h3>
-                <div className="aspect-[105/148] rounded-lg overflow-hidden border-2 border-gray-200">
+                <div className={`${isPhysicalOrder ? 'aspect-[176/166]' : 'aspect-[105/148]'} rounded-lg overflow-hidden border-2 border-gray-200`}>
                   {orderData.back_image_url ? (
                     <img
                       src={orderData.back_image_url}
@@ -201,6 +256,39 @@ export default function OrderSuccess() {
                 </div>
               </div>
             </div>
+
+            {/* Print Production Panel (A4 Die-Cut Sheets with cut/fold lines) */}
+            {showPrintPanel && (
+              <div className="bg-amber-50/70 rounded-2xl p-6 mb-8 border border-amber-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="space-y-1 text-center sm:text-left">
+                  <h3 className="text-base font-bold text-gray-900 flex items-center justify-center sm:justify-start gap-2">
+                    <Printer className="w-5 h-5 text-amber-700" />
+                    Макети А4 з лініями різу та біговки (для виробництва)
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-600">
+                    Розгортка 88.5 / 6 / 88 / 5 / 87 / 4 / 13 × 166 мм на листі А4 (300 DPI, Сторона 1 + Сторона 2)
+                  </p>
+                </div>
+                <Button
+                  onClick={handleDownloadA4PrintSheets}
+                  disabled={downloadingA4}
+                  variant="outline"
+                  className="border-amber-400 bg-white hover:bg-amber-100 text-gray-900 shrink-0"
+                >
+                  {downloadingA4 ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Генерація А4...
+                    </>
+                  ) : (
+                    <>
+                      <Download className="w-4 h-4 mr-2" />
+                      Завантажити А4 для друку (2 сторони)
+                    </>
+                  )}
+                </Button>
+              </div>
+            )}
 
             {/* Next Steps */}
             <div className="bg-gray-50 rounded-2xl p-6 mb-8 border border-gray-100">
@@ -226,16 +314,18 @@ export default function OrderSuccess() {
             </div>
 
 
-            {/* Draft Page Link */}
-            <Alert className="bg-gray-50 border border-gray-100 rounded-xl">
-              <Info className="h-4 w-4 text-gray-600" />
-              <AlertDescription className="flex items-center justify-between text-gray-700">
-                <span>Ваша персональна сторінка з піснею готова!</span>
-                <Button asChild variant="outline" size="sm" className="border-gray-200 hover:bg-gray-100">
-                  <Link to={`/s/song/${orderId}`}>Переглянути</Link>
-                </Button>
-              </AlertDescription>
-            </Alert>
+            {/* Draft Page Link (only for QR orders) */}
+            {!isPhysicalOrder && (
+              <Alert className="bg-gray-50 border border-gray-100 rounded-xl">
+                <Info className="h-4 w-4 text-gray-600" />
+                <AlertDescription className="flex items-center justify-between text-gray-700">
+                  <span>Ваша персональна сторінка з піснею готова!</span>
+                  <Button asChild variant="outline" size="sm" className="border-gray-200 hover:bg-gray-100">
+                    <Link to={`/s/song/${orderId}`}>Переглянути</Link>
+                  </Button>
+                </AlertDescription>
+              </Alert>
+            )}
 
             {/* Discount CTA */}
             <div className="text-center mt-6">

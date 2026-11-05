@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -21,6 +22,7 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
   const [accessToken, setAccessToken] = useState('');
   const [isValidating, setIsValidating] = useState(false);
   const { openOrderDialog } = useOrderDialog();
+  const navigate = useNavigate();
 
   const steps = [
     {
@@ -78,7 +80,8 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
   };
 
   const handleTokenSubmit = async () => {
-    if (!accessToken.trim()) {
+    const rawInput = accessToken.trim();
+    if (!rawInput) {
       toast.error('Будь ласка, введіть код доступу');
       return;
     }
@@ -88,8 +91,12 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
     try {
       console.log('Validating access token...');
 
+      // Якщо код починається з SOUND- або PHYS- — автоматично відкриваємо студію фізичної листівки
+      const isPhysicalCode = /^(SOUND-|PHYS-)/i.test(rawInput);
+      const cleanToken = rawInput.replace(/^(SOUND-|PHYS-)/i, '').trim();
+
       const { data, error } = await supabase.functions.invoke('validate-studio-token', {
-        body: { token: accessToken.trim() }
+        body: { token: cleanToken }
       });
 
       if (error) {
@@ -102,13 +109,24 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
       if (data.valid) {
         // ОЧИЩАЄМО ВСІ СТАРІ ДАНІ ПЕРЕД НОВИМ ЗАМОВЛЕННЯМ
         localStorage.removeItem('studio-chat-messages');
+        localStorage.removeItem('studio-physical-chat-messages');
         sessionStorage.removeItem('studio-draft-data');
         sessionStorage.removeItem('music-parameters');
         sessionStorage.removeItem('studio-selected-music');
 
         // Зберігаємо новий токен і preOrderId
-        sessionStorage.setItem('studio-access-token', accessToken.trim());
+        sessionStorage.setItem('studio-access-token', cleanToken);
         sessionStorage.setItem('studio-pre-order-id', data.preOrderId);
+
+        if (isPhysicalCode) {
+          sessionStorage.setItem('studio-type', 'physical');
+          posthog.capture('studio_started', { postcard_type: 'physical_sound' });
+          toast.success('Код доступу підтверджено! Переходимо до студії звукової листівки');
+          setShowTokenDialog(false);
+          setAccessToken('');
+          navigate('/studio-physical?step=1');
+          return;
+        }
 
         console.log('Token validated successfully, cleared old data, stored new token');
 
@@ -305,14 +323,24 @@ export const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ onStart }) => 
 
           {/* Dev кнопка - показується тільки в dev режимі */}
           {DEV_MODE && (
-            <Button
-              onClick={handleDevSkip}
-              size="lg"
-              variant="outline"
-              className="min-w-[200px] border-orange-500 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950"
-            >
-              🔧 Skip (Dev)
-            </Button>
+            <>
+              <Button
+                onClick={handleDevSkip}
+                size="lg"
+                variant="outline"
+                className="min-w-[200px] border-orange-500 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950"
+              >
+                🔧 Skip (Dev QR)
+              </Button>
+              <Button
+                onClick={() => navigate('/studio-physical')}
+                size="lg"
+                variant="outline"
+                className="min-w-[200px] border-pink-500 text-pink-600 hover:bg-pink-50 dark:hover:bg-pink-950"
+              >
+                🎵 Фізична студія (Dev)
+              </Button>
+            </>
           )}
         </div>
 
